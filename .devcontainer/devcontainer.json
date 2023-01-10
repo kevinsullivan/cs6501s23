@@ -1,0 +1,38 @@
+{
+    "name": "leanstuff",
+    "image": "ghcr.io/kevinsullivan/mathpub_config:latest",
+    "containerEnv": {
+        "WORKSPACE_FOLDER": "${containerWorkspaceFolder}"
+    },
+    "settings": {},
+    "extensions": [
+		"ms-vsliveshare.vsliveshare-pack",
+		"ms-vscode-remote.remote-containers",
+		"yzhang.markdown-all-in-one",
+		"goessner.mdmath",
+		"davidanson.vscode-markdownlint",
+		"mathematic.vscode-pdf",
+		"ms-azuretools.vscode-docker",
+		"eamodio.gitlens",
+		"stephanvs.dot",
+		"ms-vscode-remote.remote-ssh",
+		"tht13.html-preview-vscode",
+		"github.codespaces",
+		"jroesch.lean",
+		"github.vscode-pull-request-github",
+		"esbenp.prettier-vscode",
+		"vscjava.vscode-java-pack",
+		"Dart-Code.flutter",
+		"vaticle.typeql",
+		"mechatroner.rainbow-csv",
+		"redhat.fabric8-analytics",
+		"ZainChen.json",
+		"ms-python.python",
+		"amazonwebservices.aws-toolkit-vscode",
+		"mark-tucker.aws-cli-configure",
+		"redhat.vscode-yaml",
+		"DanielThielking.aws-cloudformation-yaml"
+	],
+    "forwardPorts": [],
+	"postCreateCommand": "elan self update"
+}

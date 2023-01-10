@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.8
 
 import sys
 import regex
@@ -9,7 +9,8 @@ section_name = sys.argv[2]
 
 # Paths to input and output files.
 root = Path(__file__).parent
-source_path = root/chapter_name/('source_' + section_name + '.lean')
+source_path = root/chapter_name/(section_name + '.lean')
+# source_path = root/chapter_name/('source_' + section_name + '.lean')
 rst_chapter_path = root.resolve().parent/'source'/chapter_name
 if not rst_chapter_path.exists():
     rst_chapter_path.mkdir()

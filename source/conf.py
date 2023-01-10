@@ -16,9 +16,9 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'Mathematics in Lean'
-copyright = '2020, Jeremy Avigad, Kevin Buzzard, Robert Y. Lewis, Patrick Massot'
-author = 'Jeremy Avigad, Kevin Buzzard, Robert Y. Lewis, Patrick Massot'
+project = 'Elementary Discrete Mathematics'
+copyright = '2023, Kevin Sullivan'
+author = 'Kevin Sullivan'
 
 # The full version, including alpha/beta/rc tags
 release = '0.1'
