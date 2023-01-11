@@ -1,5 +1,6 @@
-Axioms of Generalization
-========================
+**************
+Generalization
+**************
 
 .. code-block:: lean
 

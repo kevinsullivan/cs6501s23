@@ -1,5 +1,6 @@
-Axioms of Biimplication
-=======================
+*************
+Biimplication
+*************
 
 .. code-block:: lean
 

@@ -1,12 +1,8 @@
 /- TEXT:
-***********
-Quantifiers
-***********
-TEXT. -/
+*********************
+Play with Quantifiers
+*********************
 
-
-
-/- TEXT:
 In this file, we present predicate logic formalizations
 of the informal propositions on the last slide from today's
 class. We repeat each one as a comment below, followed by 
@@ -26,13 +22,14 @@ Finally, isEven, isOdd, and isPrime are all predicates taking one
 natural number argument and reducing to a proposition "about" that
 number.
 TEXT. -/
+
 -- QUOTE:
 variable Person : Type        -- Person is a type
 variables P Q R : Person      -- P Q R are objects of this type
 variables isMortal isHappy : Person → Prop   -- one-argument predicates, Person arg
 variables likes might_like: Person → Person → Prop  -- predicates taking two Persons
 variables isEven isOdd isPrime : nat → Prop -- one nat argument predicates
--- QUOTE.
+-- QUOTE. 
 
 /- TEXT:
 With these terms defined, we can now write all our propositions
@@ -49,36 +46,56 @@ TEXT. -/
 -- QUOTE:
 -- Every person is mortal
 #check ∀ (P : Person), isMortal P
+-- QUOTE. 
 
+-- QUOTE:
 -- Someone is happy
 #check ∃ (P : Person), isHappy P
+-- QUOTE.
 
+-- QUOTE:
 --  Someone likes everyone
 #check ∃ (P : Person), ∀ (Q : Person), likes P Q
+-- QUOTE. 
 
+-- QUOTE:
 -- Everyone likes someone
 #check ∀ (P : Person), ∃ (Q : Person), likes P Q
+-- QUOTE. 
 
+-- QUOTE:
 -- There is someone everyone likes
 #check ∃ (P : Person), ∀ (Q : Person), likes Q P
+-- QUOTE.
 
+-- QUOTE:
 -- For any persons, P, Q, R, if P likes Q, and Q likes R, then P might like R
 #check ∀ (P Q R : Person), likes P Q → likes Q R → might_like P R
+-- QUOTE.
 
+-- QUOTE:
 -- The enemy of your enemy is your friend
 #check ∀ P Q R, ¬ likes P Q → ¬ likes Q R → likes P R   -- Look ma, no type annotations
+-- QUOTE.
 
+-- QUOTE:
 -- For any natural number, n, if n is even then n+1 is odd
 #check ∀ (n : nat), isEven n → isOdd (n + 1)
+-- QUOTE.
 
+-- QUOTE:
 -- With n being any natural number, if n >= 2, then if no number in 2,...,n/2 
 -- divides n evenly, then n is prime
 #check ∀ (n : nat), n >= 2 → (∀ m, m >=2 ∧ m <= n/2 → n%m ≠ 0) → isPrime n
 -- exercise: rewrite that using an ∃ instead of ∀ in the parentheses
+-- QUOTE.
 
+-- QUOTE:
 -- No one likes everyone
 #check ¬∃ (P : Person), ∀ (Q : Person), likes P Q
+-- QUOTE.
 
+-- QUOTE:
 -- If there’s a person everyone likes, then everyone likes someone
 #check (∃ (P : Person), ∀ (Q : Person), likes Q P) → (∀ P, ∃ Q , likes P Q)
 -- QUOTE.

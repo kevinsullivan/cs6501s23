@@ -8,7 +8,7 @@ Elementary Discrete Mathematics
    :maxdepth: 2
 
    00_Introduction
-   01_Propositional_Logic
+   01_Functions_and_Applications
    02_Inference_Rules_and_Proofs
    
 .. toctree::

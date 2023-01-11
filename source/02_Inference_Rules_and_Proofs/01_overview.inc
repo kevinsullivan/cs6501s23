@@ -1,5 +1,6 @@
-Overview
-========
+************
+Introduction
+************
 As a reminder, here are the inference rules (and a few
 "logical fallacies" that you tested for validity in the
 setting of propositional logic. 

@@ -1,7 +1,9 @@
 /- TEXT:
-Axioms of Generalization
-========================
+**************
+Generalization
+**************
 TEXT. -/
+
 
 -- QUOTE:
 section pred_logic

@@ -1,8 +1,8 @@
 /- TEXT:
-Axioms of Implication
-=====================
+************
+Implication
+************
 TEXT. -/
-
 
 /- TEXT:
 Arrow elimination is the reduction of a function 

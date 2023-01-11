@@ -1,5 +1,6 @@
-Axioms of Negation
-==================
+*************
+Negation
+*************
 
 .. code-block:: lean
 
@@ -63,7 +64,7 @@ show that this assumption gives rise to an impossibility
 (a proof of false). 
 
 Proof by Negation
------------------
+=================
 
 What we've now seen is a crucial "proof strategy" often 
 called "proof by negation."" To show ¬P (that P is false), 
@@ -96,7 +97,7 @@ have been false. Therefore ¬(X ∧ ¬X) is proved. QED.
 
 
 Proof by Contradiction
-----------------------
+======================
 
 First, recall that in proof by negation, we prove ¬P by 
 assuming that P is true, deriving an impossibility, and

@@ -1,6 +1,7 @@
 /- TEXT:
-Axioms of True and False
-========================
+**************
+True and False
+**************
 TEXT. -/
 
 -- QUOTE:

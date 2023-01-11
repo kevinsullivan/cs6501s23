@@ -1,5 +1,6 @@
-Diversion: Predicates
-=====================
+*************
+Predicates
+*************
 OVERVIEW
 
 To readily understand the introduction rule and the

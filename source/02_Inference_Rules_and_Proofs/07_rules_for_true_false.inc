@@ -1,5 +1,6 @@
-Axioms of True and False
-========================
+**************
+True and False
+**************
 
 .. code-block:: lean
 

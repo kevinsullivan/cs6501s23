@@ -1,6 +1,7 @@
 /- TEXT:
-Axioms of Biimplication
-=======================
+*************
+Biimplication
+*************
 TEXT. -/
 
 -- QUOTE:

@@ -1,7 +1,9 @@
 /- TEXT:
-Axioms of Existence
-===================
+*************
+Existence
+*************
 TEXT. -/
+
 
 /- TEXT:
 There are two inference rules for ∃ propositions: 

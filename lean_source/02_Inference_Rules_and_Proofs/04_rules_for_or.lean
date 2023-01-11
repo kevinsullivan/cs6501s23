@@ -1,7 +1,9 @@
 /- TEXT:
-Axioms of Disjunction
-=====================
-TEXT. /
+************
+Disjunction
+************
+TEXT. -/
+
 
 
 /- TEXT: 

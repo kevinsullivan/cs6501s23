@@ -1,7 +1,9 @@
 /- TEXT:
-Axioms of Negation
-==================
+*************
+Negation
+*************
 TEXT. -/
+
 
 -- QUOTE:
 section pred_logic
@@ -81,7 +83,7 @@ TEXT. -/
 /- TEXT:
 
 Proof by Negation
------------------
+=================
 
 What we've now seen is a crucial "proof strategy" often 
 called "proof by negation."" To show ¬P (that P is false), 
@@ -122,7 +124,7 @@ end
 /- TEXT:
 
 Proof by Contradiction
-----------------------
+======================
 
 First, recall that in proof by negation, we prove ¬P by 
 assuming that P is true, deriving an impossibility, and

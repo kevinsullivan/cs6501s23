@@ -31,7 +31,7 @@ Numbering in outputs is determined by sphinx labels
 - \“, for paragraphs
 
 
-Is everything is set up right, the command
+If everything is set up right, the command
 ```
 lean_source/mkall.sh
 ```

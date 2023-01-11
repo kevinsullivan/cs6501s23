@@ -1,7 +1,9 @@
-/- TEXT: 
-Diversion: Predicates
-=====================
+/- TEXT:
+*************
+Predicates
+*************
 TEXT. -/
+
 
 /- TEXT: 
 OVERVIEW

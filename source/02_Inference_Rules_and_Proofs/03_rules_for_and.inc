@@ -1,5 +1,6 @@
-Axioms of Conjunction
-=====================
+************
+Conjunction
+************
 
 .. code-block:: lean
 

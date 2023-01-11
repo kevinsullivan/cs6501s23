@@ -1,19 +1,16 @@
 /- TEXT:
-********
-Theorems
-********
-TEXT. -/
+A Theorem
+=========
 
-
-/- TEXT:
 Let's construct a fully formal and certifiable correct proof of the 
 commutativity of conjunction.
 TEXT. -/
 
-/-  TEXT:
-theorem and_commutes : ∀ (P Q : Prop), P ∧ Q → Q ∧ P := _
+/- TEXT: 
+-- theorem and_commutes : ∀ (P Q : Prop), P ∧ Q → Q ∧ P := _
 TEXT. -/
 
+-- QUOTE:
 theorem                           -- keyword: we're going to create a proof
 and_commutes:                     -- this will be its name
 ∀ (P Q : Prop), P ∧ Q → Q ∧ P     -- the proposition/claim to be proved
@@ -25,6 +22,8 @@ begin                             -- ⊢ ∀ (P Q : Prop), P ∧ Q → Q ∧ P
   let q : Q := and.elim_right h,  -- P Q : Prop, h : P ∧ Q, p : P, q : Q ⊢ Q ∧ P  (right)
   apply and.intro q p,            -- QED (that means the claim has been proven)
 end
+-- QUOTE.
+
 
 /- TEXT:
 Theorem: Logical "and" is commutative.
@@ -37,7 +36,7 @@ a proof of Q ∧ P.
 TEXT. -/
 
 /- TEXT:
--- Here are two versions of a formal proof
+Here are two versions of a formal proof
 TEXT. -/
 
 -- QUOTE:
@@ -46,28 +45,30 @@ or_commutes:   -- the name we'll give to the proof once it's accepted
 ∀ (P Q : Prop), P ∧ Q → Q ∨ P -- the proposition that's to be proved
 :=              -- syntax for binding a name to a (proof) value
 begin           -- and now, between begin/end, we build the proof 
-
-  -- intros P Q,
-  -- assume h : P ∨ Q,
-  -- apply or.elim h _ _,
+/-
+  intros P Q,
+  assume h : P ∨ Q,
+  apply or.elim h _ _,
   
-  -- -- case where P ∨ Q is true because P is
-  -- assume p : P,
-  -- apply or.intro_right,
-  -- exact p,
+  -- case where P ∨ Q is true because P is
+  assume p : P,
+  apply or.intro_right,
+  exact p,
 
-  -- -- case where P ∨ Q is true because Q is
-  -- assume q : Q,
-  -- apply or.intro_left,
-  -- exact q,
-
+  -- case where P ∨ Q is true because Q is
+  assume q : Q,
+  apply or.intro_left,
+  exact q,
+-/
   -- In either case, we can prove that Q ∨ P is true. QED.
 assume P Q h,
 cases h with p q,      -- applies or.elim to h
 exact or.inr p,
 -- exact or.inl q,
 end
+-- QUOTE. 
 
+-- QUOTE:
 example : 
   ∀ (P Q R S: Prop),
     R → P ∨ Q ∨ R ∨ S :=
@@ -79,10 +80,14 @@ begin
   apply or.intro_left,
   assumption,
 end
+-- QUOTE. 
 
+-- QUOTE:
 example : ∀ (P Q R S: Prop),
     Q → R → P ∨ Q ∨ R ∨ S := _
+-- QUOTE. 
 
+-- QUOTE:
 example : 
   ∀ (P Q R: Prop), 
     (P ∨ Q) ∧ R →
@@ -96,8 +101,7 @@ begin
   apply or.intro_right,
   apply and.intro q r,
 end 
--- QUOTE.
-
+-- QUOTE. 
 
 -- QUOTE:
 example : 
@@ -128,7 +132,6 @@ begin
   apply or.intro_right,
   apply and.intro q s,
 end 
-
 -- QUOTE.
 
 #print or_commutes

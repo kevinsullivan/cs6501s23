@@ -1,7 +1,9 @@
 /- TEXT:
-Axioms of Conjunction
-=====================
+************
+Conjunction
+************
 TEXT. -/
+
 
 -- QUOTE: 
 def and_introduction  : Prop  := ∀ (X Y : Prop), X → Y → (X ∧ Y)

@@ -1,10 +1,15 @@
-lean_source/mkdoc.py 00_Introduction 00_chapter
+lean_source/mkdoc.py 00_Introduction 00_part
 lean_source/mkdoc.py 00_Introduction 09_13_22_play_with_quantifiers
 lean_source/mkdoc.py 00_Introduction 09_15_22_and_is_commutative
 
-lean_source/mkdoc.py 01_Propositional_Logic 00_chapter
+lean_source/mkdoc.py 01_Functions_and_Applications 00_part
+lean_source/mkdoc.py 01_Functions_and_Applications 01_introduction
+lean_source/mkdoc.py 01_Functions_and_Applications 02_function_basics
+lean_source/mkdoc.py 01_Functions_and_Applications 03_functions_by_cases_bool
+lean_source/mkdoc.py 01_Functions_and_Applications 04_functions_by_cases_nat
+lean_source/mkdoc.py 01_Functions_and_Applications 05_recursive_function_definitions
 
-lean_source/mkdoc.py 02_Inference_Rules_and_Proofs 00_chapter
+lean_source/mkdoc.py 02_Inference_Rules_and_Proofs 00_part
 lean_source/mkdoc.py 02_Inference_Rules_and_Proofs 01_overview
 lean_source/mkdoc.py 02_Inference_Rules_and_Proofs 02_arrow_elimination_extra_help
 lean_source/mkdoc.py 02_Inference_Rules_and_Proofs 03_rules_for_and

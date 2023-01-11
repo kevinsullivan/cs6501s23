@@ -1,8 +1,6 @@
-Axioms of Disjunction
-=====================
-TEXT. /
-
-
+************
+Disjunction
+************
 A LEAN DETAIL and IMPORTANT LANGUAGE DESIGN CONCEPT
 A good language gives you good ways not to repeat yourself.
 We can avoid having to repeatedly write "∀ (X Y : Prop),"

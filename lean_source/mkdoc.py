@@ -68,14 +68,14 @@ if __name__ == '__main__':
             elif quote_start.match(line):
                 if quoting:
                     raise RuntimeError(
-                        "{0}: '-- QUOTE:' while already quoting".format(line_num))
+                        "{0}: '-- QUOTE:' while already quoting".format(line_num,source_file))
                 if mode == 'text':
-                    raise RuntimeError("{0}: '-- QUOTE:' while in text mode".format(line_num))
+                    raise RuntimeError("{0}: '-- QUOTE:' while in text mode in {1}".format(line_num,source_file))
                 rst_file.write('\n.. code-block:: lean\n\n')
                 quoting = True
             elif quote_end.match(line):
                 if not quoting:
-                    raise RuntimeError("{0}: '-- QUOTE.' while not quoting".format(line_num))
+                    raise RuntimeError("{0}: '-- QUOTE.' while not quoting".format(line_num,source_file))
                 rst_file.write('\n')
                 quoting = False
             elif match_literalinclude := literalinclude.match(line):

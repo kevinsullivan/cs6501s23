@@ -1,6 +1,6 @@
 .. _introduction:
 
-.. include:: 02_Inference_Rules_and_Proofs/00_chapter.inc
+.. include:: 02_Inference_Rules_and_Proofs/00_part.inc
 .. include:: 02_Inference_Rules_and_Proofs/01_overview.inc
 .. include:: 02_Inference_Rules_and_Proofs/02_arrow_elimination_extra_help.inc
 .. include:: 02_Inference_Rules_and_Proofs/03_rules_for_and.inc

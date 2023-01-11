@@ -1,5 +1,6 @@
-Axioms of Existence
-===================
+*************
+Existence
+*************
 There are two inference rules for ∃ propositions: 
 one introduction, one elimination. In Lean they are
 called exists.intro and exists.elim. We will usually

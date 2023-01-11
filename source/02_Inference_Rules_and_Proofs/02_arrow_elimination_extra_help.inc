@@ -1,5 +1,6 @@
-Axioms of Implication
-=====================
+************
+Implication
+************
 Arrow elimination is the reduction of a function 
 application to an argument to obtain a result.
 
