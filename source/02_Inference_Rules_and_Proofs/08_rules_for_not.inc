@@ -29,8 +29,6 @@ for (not P).
 
   #check not 
 
-Ex
-~~
 
 .. code-block:: lean
 

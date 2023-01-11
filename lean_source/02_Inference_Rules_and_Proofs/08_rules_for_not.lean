@@ -40,10 +40,6 @@ TEXT. -/
 #check not 
 -- QUOTE.
 
-/- TEXT:
-Ex
-~~
-TEXT. -/
 
 -- QUOTE:
 section pred_logic

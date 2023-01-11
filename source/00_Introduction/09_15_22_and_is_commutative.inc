@@ -1,6 +1,5 @@
-
 A Theorem
-==========
+=========
 
 Let's construct a fully formal and certifiable correct proof of the 
 commutativity of conjunction.

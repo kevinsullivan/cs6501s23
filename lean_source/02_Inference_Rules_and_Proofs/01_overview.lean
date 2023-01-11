@@ -33,6 +33,7 @@ predicate logic.
 18. X → Y ⊢ ¬Y → ¬X          -- contrapositive
 19. ¬(X ∨ Y) ↔ ¬X ∧ ¬Y       -- DeMorgan #1 (¬ distributes over ∨)
 20. ¬(X ∧ Y) ↔ ¬X ∨ ¬Y       -- Demorgan #2 (¬ distributes over ∧)
+
 TEXT. -/
 
 /- TEXT: 

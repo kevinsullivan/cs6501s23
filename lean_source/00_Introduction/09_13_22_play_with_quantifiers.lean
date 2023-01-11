@@ -1,7 +1,7 @@
 /- TEXT:
-
+*********************
 Play with Quantifiers
-=====================
+*********************
 
 In this file, we present predicate logic formalizations
 of the informal propositions on the last slide from today's

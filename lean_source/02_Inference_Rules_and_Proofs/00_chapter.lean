@@ -1,5 +1,5 @@
 /- TEXT: 
-************
-Introduction
-************
+***************
+Predicate Logic
+***************
 TEXT. -/

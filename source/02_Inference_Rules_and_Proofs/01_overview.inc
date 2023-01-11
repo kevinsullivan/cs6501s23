@@ -29,6 +29,7 @@ predicate logic.
 18. X → Y ⊢ ¬Y → ¬X          -- contrapositive
 19. ¬(X ∨ Y) ↔ ¬X ∧ ¬Y       -- DeMorgan #1 (¬ distributes over ∨)
 20. ¬(X ∧ Y) ↔ ¬X ∨ ¬Y       -- Demorgan #2 (¬ distributes over ∧)
+
 In what follows, we present the familiar inference 
 rules above but now in the context of the more expressive
 predicate logic of the Lean Prover tool. A big benefit 

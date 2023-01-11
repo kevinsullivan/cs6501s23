@@ -34,5 +34,5 @@
 		"DanielThielking.aws-cloudformation-yaml"
 	],
     "forwardPorts": [],
-	"postCreateCommand": "elan self update && leanpackage get-mathlib-cache"
+	"postCreateCommand": "elan self update && leanproject get-mathlib-cache"
 }
