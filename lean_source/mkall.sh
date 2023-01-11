@@ -1,2 +1,18 @@
-lean_source/mkdoc.py 01_Inference_Rules_and_Proofs 01_overview
-lean_source/mkdoc.py 01_Inference_Rules_and_Proofs 02_rules_for_and
+lean_source/mkdoc.py 00_Introduction 00_chapter
+lean_source/mkdoc.py 00_Introduction 09_13_22_play_with_quantifiers
+lean_source/mkdoc.py 00_Introduction 09_15_22_and_is_commutative
+
+lean_source/mkdoc.py 01_Propositional_Logic 00_chapter
+
+lean_source/mkdoc.py 02_Inference_Rules_and_Proofs 00_chapter
+lean_source/mkdoc.py 02_Inference_Rules_and_Proofs 01_overview
+lean_source/mkdoc.py 02_Inference_Rules_and_Proofs 02_arrow_elimination_extra_help
+lean_source/mkdoc.py 02_Inference_Rules_and_Proofs 03_rules_for_and
+lean_source/mkdoc.py 02_Inference_Rules_and_Proofs 04_rules_for_or
+lean_source/mkdoc.py 02_Inference_Rules_and_Proofs 05_rules_for_iff
+lean_source/mkdoc.py 02_Inference_Rules_and_Proofs 06_rules_for_all_and_arrow
+lean_source/mkdoc.py 02_Inference_Rules_and_Proofs 07_rules_for_true_false
+lean_source/mkdoc.py 02_Inference_Rules_and_Proofs 08_rules_for_not
+lean_source/mkdoc.py 02_Inference_Rules_and_Proofs 09_predicates
+lean_source/mkdoc.py 02_Inference_Rules_and_Proofs 10_rules_for_exists
+lean_source/mkdoc.py 02_Inference_Rules_and_Proofs 11_fallacies

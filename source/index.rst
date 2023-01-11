@@ -7,7 +7,9 @@ Elementary Discrete Mathematics
    :numbered:
    :maxdepth: 2
 
-   01_Inference_Rules_and_Proofs
+   00_Introduction
+   01_Propositional_Logic
+   02_Inference_Rules_and_Proofs
    
 .. toctree::
    :hidden:

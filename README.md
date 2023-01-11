@@ -3,16 +3,16 @@ Mathematics in Lean Source
 ==========================
 
 This is the source code for
-[Mathematics in Lean](https://leanprover-community.github.io/mathematics_in_lean/).
+[Elementary Discrete Mathematics](https://leanprover-community.github.io/mathematics_in_lean/).
 
-Our build process is rudimentary and not ready for prime time, but it is fairly
-convenient to use. Most of the source is written directly in the `.lean` files
-in `lean_source` using some simple markup. The Python script
-`lean_source/mkall.sh` then generates the `.rst` source for the textbook and
-an exercise file and a solution file for each section.
+Most of the source is written directly in the `.lean` files in `lean_source` 
+using some simple markup. The Python script `lean_source/mkall.sh` then generates
+the `.rst` source for the textbook and an exercise file and a solution file for 
+each section.
 
-To build the textbook, you need to have
+You need to have
 [Sphinx and ReadTheDocs installed](https://sphinx-rtd-tutorial.readthedocs.io/en/latest/install.html).
+
 The following files are maintained by hand:
 - The file `source/index.rst` should have an entry for each chapter.
 - For each chapter, there should be a `.rst` file in `source`. It should include
@@ -20,6 +20,16 @@ The following files are maintained by hand:
 - For each section, there should be a `.lean` file in the appropriate place
   in `lean_source`.
 - Each section should have a corresponding line in `lean_source/mk_all.sh`.
+
+Numbering in outputs is determined by sphinx labels
+
+- \# with overline, for parts
+- \* with overline, for chapters
+- \=, for sections
+- \-, for subsections
+- \^, for subsubsections
+- \“, for paragraphs
+
 
 Is everything is set up right, the command
 ```
