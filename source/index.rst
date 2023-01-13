@@ -1,7 +1,7 @@
 
 
-Elementary Discrete Mathematics
-===============================
+A Predicate Logic
+=================
 
 .. toctree::
    :numbered:

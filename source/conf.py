@@ -16,7 +16,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'Elementary Discrete Mathematics'
+project = 'A Predicate Logic'
 copyright = '2023, Kevin Sullivan'
 author = 'Kevin Sullivan'
 

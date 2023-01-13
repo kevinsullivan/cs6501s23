@@ -1,17 +1,21 @@
 
-Mathematics in Lean Source
-==========================
+Elementary Discrete Mathematics DevOps
+======================================
 
-This is the source code for
-[Elementary Discrete Mathematics](https://leanprover-community.github.io/mathematics_in_lean/).
+This is the development environment for [Deep Joe](https://www.deepjoe.com/).
 
-Most of the source is written directly in the `.lean` files in `lean_source` 
-using some simple markup. The Python script `lean_source/mkall.sh` then generates
-the `.rst` source for the textbook and an exercise file and a solution file for 
-each section.
+The `lean_source` directory contains all of the information needed to produce one 
+volume of Elementary Discrete Mathematics. Each major topic is published as a volume:
+Valid reasoning. Propositional logic. A predicate logic. Sets theory. Combinatorics.
+Probability. Number Theory.
 
-You need to have
-[Sphinx and ReadTheDocs installed](https://sphinx-rtd-tutorial.readthedocs.io/en/latest/install.html).
+- Edit `.lean` with Avigad markup files in `lean_source` 
+- From root directory, `lean_source/mkall.sh` generates `.rst` files 
+  - in `source.` for the book
+  - an exercise file and a solution file for each section (KS: where?)
+
+◊
+Have [Sphinx and ReadTheDocs](https://sphinx-rtd-tutorial.readthedocs.io/en/latest/install.html).
 
 The following files are maintained by hand:
 - The file `source/index.rst` should have an entry for each chapter.
@@ -31,29 +35,14 @@ Numbering in outputs is determined by sphinx labels
 - \“, for paragraphs
 
 
-If everything is set up right, the command
-```
-lean_source/mkall.sh
-```
-from the top level should build the restructured text files, the exercise files,
-and the solutions. The command
-```
-make html
-```
-builds the html textbook and puts it in the `build` folder. The command
-```
-make latexpdf
-```
-builds the pdf textbook instead.
-
-The script `deploy.sh` is used to deploy everything (the textbook and the
-user's version of the example and solution files) to an arbitrary repository, set up to use the `gh-pages` branch
+- lean_source/mkall.sh
+- make html
+- make latexpdf
+- deploy.sh (fix)
+  
+The script `deploy.sh` KS: FIX deploy everythings (textbook 
+and user version of the example and solution files) to an 
+arbitrary repository, set up to use the `gh-pages` branch
 to display the html. Specifically, we use the following:
-```
 ./deploy.sh leanprover-community mathematics_in_lean
-```
 
-## How to contribute
-
-The textbook is still a work in progress, but feedback and corrections are welcome.
-You can open a pull request, find us on the [Lean Zulip channel](https://leanprover.zulipchat.com/), or contact any of us by email.
