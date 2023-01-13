@@ -26,8 +26,8 @@ out first, then you may check your answer by using
 TEXT. -/
 
 /- TEXT:
-syntax options for defining your own functions
-==============================================
+Syntax options for defining functions
+=====================================
 TEXT. -/
 
 /- TEXT:
