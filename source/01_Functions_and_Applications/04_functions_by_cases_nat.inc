@@ -17,8 +17,8 @@ subtleties that we'll open up later.)
 Question: What is the type of nat.succ? Figure it
 out first, then you may check your answer by using 
 #check.
-syntax options for defining your own functions
-==============================================
+Syntax options for defining functions
+=====================================
 First we'll see how to implement basic Boolean functions,
 such as "and." For a value of this type, there are just two
 cases: tt and ff (in Lean). Then we'll turn to functions 
