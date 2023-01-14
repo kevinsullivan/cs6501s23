@@ -1,6 +1,6 @@
 {
     "name": "leanstuff",
-    "image": "ghcr.io/kevinsullivan/mathpub_config:latest",
+    "image": "ghcr.io/kevinsullivan/mathpub_container:latest",
     "containerEnv": {
         "WORKSPACE_FOLDER": "${containerWorkspaceFolder}"
     },
