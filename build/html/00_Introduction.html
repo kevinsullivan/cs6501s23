@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1. Introduction &mdash; A Predicate Logic 0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="2. Functions and Applications" href="01_Functions_and_Applications.html" />
+    <link rel="prev" title="A Predicate Logic" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> A Predicate Logic
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#quantifiers">1.1. Quantifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#theorems">1.2. Theorems</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="01_Functions_and_Applications.html">2. Functions and Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Inference_Rules_and_Proofs.html">3. Inference/Deduction/Proofs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">A Predicate Logic</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">1. </span>Introduction</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/00_Introduction.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="introduction">
+<span id="id1"></span><h1><span class="section-number">1. </span>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">&#61633;</a></h1>
+<p>Introduction to the Rest of the Book</p>
+<section id="quantifiers">
+<h2><span class="section-number">1.1. </span>Quantifiers<a class="headerlink" href="#quantifiers" title="Permalink to this heading">&#61633;</a></h2>
+<p>In this file, we present predicate logic formalizations
+of the informal propositions on the last slide from today&#8217;s
+class. We repeat each one as a comment below, followed by
+a formal version in the constructive predicate logic of the
+Lean Prover tool.
+Here we define some terms that we then use in the expressions below:
+There is a type of object called Person. The variables P, Q, and R
+refer to objects of this type. Meanwhile, isMortal and isHappy are
+predicates, each taking one Person as an argument and &#8220;reducing&#8221; to
+a proposition (in Lean any proposition is an object of type Prop!).
+Similarly, likes and might_like are predicates each taking <em>two</em>
+arguments of type Person and reducing to a proposition about them.
+Finally, isEven, isOdd, and isPrime are all predicates taking one
+natural number argument and reducing to a proposition &#8220;about&#8221; that
+number.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">variable</span> <span class="n">Person</span> <span class="o">:</span> <span class="kt">Type</span>        <span class="c1">-- Person is a type</span>
+<span class="kd">variables</span> <span class="n">P</span> <span class="n">Q</span> <span class="n">R</span> <span class="o">:</span> <span class="n">Person</span>      <span class="c1">-- P Q R are objects of this type</span>
+<span class="kd">variables</span> <span class="n">isMortal</span> <span class="n">isHappy</span> <span class="o">:</span> <span class="n">Person</span> <span class="bp">&#8594;</span> <span class="kt">Prop</span>   <span class="c1">-- one-argument predicates, Person arg</span>
+<span class="kd">variables</span> <span class="n">likes</span> <span class="n">might_like</span><span class="o">:</span> <span class="n">Person</span> <span class="bp">&#8594;</span> <span class="n">Person</span> <span class="bp">&#8594;</span> <span class="kt">Prop</span>  <span class="c1">-- predicates taking two Persons</span>
+<span class="kd">variables</span> <span class="n">isEven</span> <span class="n">isOdd</span> <span class="n">isPrime</span> <span class="o">:</span> <span class="n">nat</span> <span class="bp">&#8594;</span> <span class="kt">Prop</span> <span class="c1">-- one nat argument predicates</span>
+</pre></div>
+</div>
+<p>With these terms defined, we can now write all our propositions
+in a completely precise and fully type-checked syntax. You cannot
+fool the Lean type checker. In the expressions below, #check is a
+command to Lean asking it to typecheck and output the type of each
+expression. These expressions are all propositions, so their types
+are all &#8220;Prop,&#8221; which is the type of all logical propositions that
+you might write in Lean. If you hover over the #check command or
+open the Lean InfoView window, you can see what Lean reports as the
+types of these expressions.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Every person is mortal</span>
+<span class="k">#check</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="n">Person</span><span class="o">),</span> <span class="n">isMortal</span> <span class="n">P</span>
+
+<span class="c1">-- Someone is happy</span>
+<span class="k">#check</span> <span class="bp">&#8707;</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="n">Person</span><span class="o">),</span> <span class="n">isHappy</span> <span class="n">P</span>
+
+<span class="c1">--  Someone likes everyone</span>
+<span class="k">#check</span> <span class="bp">&#8707;</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="n">Person</span><span class="o">),</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">Q</span> <span class="o">:</span> <span class="n">Person</span><span class="o">),</span> <span class="n">likes</span> <span class="n">P</span> <span class="n">Q</span>
+
+<span class="c1">-- Everyone likes someone</span>
+<span class="k">#check</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="n">Person</span><span class="o">),</span> <span class="bp">&#8707;</span> <span class="o">(</span><span class="n">Q</span> <span class="o">:</span> <span class="n">Person</span><span class="o">),</span> <span class="n">likes</span> <span class="n">P</span> <span class="n">Q</span>
+
+<span class="c1">-- There is someone everyone likes</span>
+<span class="k">#check</span> <span class="bp">&#8707;</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="n">Person</span><span class="o">),</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">Q</span> <span class="o">:</span> <span class="n">Person</span><span class="o">),</span> <span class="n">likes</span> <span class="n">Q</span> <span class="n">P</span>
+
+<span class="c1">-- For any persons, P, Q, R, if P likes Q, and Q likes R, then P might like R</span>
+<span class="k">#check</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">P</span> <span class="n">Q</span> <span class="n">R</span> <span class="o">:</span> <span class="n">Person</span><span class="o">),</span> <span class="n">likes</span> <span class="n">P</span> <span class="n">Q</span> <span class="bp">&#8594;</span> <span class="n">likes</span> <span class="n">Q</span> <span class="n">R</span> <span class="bp">&#8594;</span> <span class="n">might_like</span> <span class="n">P</span> <span class="n">R</span>
+
+<span class="c1">-- The enemy of your enemy is your friend</span>
+<span class="k">#check</span> <span class="bp">&#8704;</span> <span class="n">P</span> <span class="n">Q</span> <span class="n">R</span><span class="o">,</span> <span class="bp">&#172;</span> <span class="n">likes</span> <span class="n">P</span> <span class="n">Q</span> <span class="bp">&#8594;</span> <span class="bp">&#172;</span> <span class="n">likes</span> <span class="n">Q</span> <span class="n">R</span> <span class="bp">&#8594;</span> <span class="n">likes</span> <span class="n">P</span> <span class="n">R</span>   <span class="c1">-- Look ma, no type annotations</span>
+
+<span class="c1">-- For any natural number, n, if n is even then n+1 is odd</span>
+<span class="k">#check</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">n</span> <span class="o">:</span> <span class="n">nat</span><span class="o">),</span> <span class="n">isEven</span> <span class="n">n</span> <span class="bp">&#8594;</span> <span class="n">isOdd</span> <span class="o">(</span><span class="n">n</span> <span class="bp">+</span> <span class="mi">1</span><span class="o">)</span>
+
+<span class="c1">-- With n being any natural number, if n &gt;= 2, then if no number in 2,...,n/2</span>
+<span class="c1">-- divides n evenly, then n is prime</span>
+<span class="k">#check</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">n</span> <span class="o">:</span> <span class="n">nat</span><span class="o">),</span> <span class="n">n</span> <span class="bp">&gt;=</span> <span class="mi">2</span> <span class="bp">&#8594;</span> <span class="o">(</span><span class="bp">&#8704;</span> <span class="n">m</span><span class="o">,</span> <span class="n">m</span> <span class="bp">&gt;=</span><span class="mi">2</span> <span class="bp">&#8743;</span> <span class="n">m</span> <span class="bp">&lt;=</span> <span class="n">n</span><span class="bp">/</span><span class="mi">2</span> <span class="bp">&#8594;</span> <span class="n">n</span><span class="bp">%</span><span class="n">m</span> <span class="bp">&#8800;</span> <span class="mi">0</span><span class="o">)</span> <span class="bp">&#8594;</span> <span class="n">isPrime</span> <span class="n">n</span>
+<span class="c1">-- exercise: rewrite that using an &#8707; instead of &#8704; in the parentheses</span>
+
+<span class="c1">-- No one likes everyone</span>
+<span class="k">#check</span> <span class="bp">&#172;&#8707;</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="n">Person</span><span class="o">),</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">Q</span> <span class="o">:</span> <span class="n">Person</span><span class="o">),</span> <span class="n">likes</span> <span class="n">P</span> <span class="n">Q</span>
+
+<span class="c1">-- If there&#8217;s a person everyone likes, then everyone likes someone</span>
+<span class="k">#check</span> <span class="o">(</span><span class="bp">&#8707;</span> <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="n">Person</span><span class="o">),</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">Q</span> <span class="o">:</span> <span class="n">Person</span><span class="o">),</span> <span class="n">likes</span> <span class="n">Q</span> <span class="n">P</span><span class="o">)</span> <span class="bp">&#8594;</span> <span class="o">(</span><span class="bp">&#8704;</span> <span class="n">P</span><span class="o">,</span> <span class="bp">&#8707;</span> <span class="n">Q</span> <span class="o">,</span> <span class="n">likes</span> <span class="n">P</span> <span class="n">Q</span><span class="o">)</span>
+</pre></div>
+</div>
+</section>
+<section id="theorems">
+<h2><span class="section-number">1.2. </span>Theorems<a class="headerlink" href="#theorems" title="Permalink to this heading">&#61633;</a></h2>
+<p>Let&#8217;s construct a fully formal and certifiable correct proof of the
+commutativity of conjunction.
+Theorem: Logical &#8220;and&#8221; is commutative.</p>
+<p>Proof: Assume P and Q are arbitrary but specific propositions,
+and that we have proof of P &#8743; Q. From this proof we can derive
+proofs of P and of Q separately (using and elimination). Then
+we can combine these proofs in the opposite order to construct
+a proof of Q &#8743; P.
+&#8211; Here are two versions of a formal proof</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">theorem</span>         <span class="c1">-- a keyword saying we&#39;re going to construct a proof</span>
+<span class="n">or_commutes</span><span class="o">:</span>   <span class="c1">-- the name we&#39;ll give to the proof once it&#39;s accepted</span>
+<span class="bp">&#8704;</span> <span class="o">(</span><span class="n">P</span> <span class="n">Q</span> <span class="o">:</span> <span class="kt">Prop</span><span class="o">),</span> <span class="n">P</span> <span class="bp">&#8743;</span> <span class="n">Q</span> <span class="bp">&#8594;</span> <span class="n">Q</span> <span class="bp">&#8744;</span> <span class="n">P</span> <span class="c1">-- the proposition that&#39;s to be proved</span>
+<span class="o">:=</span>              <span class="c1">-- syntax for binding a name to a (proof) value</span>
+<span class="kd">begin</span>           <span class="c1">-- and now, between begin/end, we build the proof</span>
+
+  <span class="c1">-- intros P Q,</span>
+  <span class="c1">-- assume h : P &#8744; Q,</span>
+  <span class="c1">-- apply or.elim h _ _,</span>
+
+  <span class="c1">-- -- case where P &#8744; Q is true because P is</span>
+  <span class="c1">-- assume p : P,</span>
+  <span class="c1">-- apply or.intro_right,</span>
+  <span class="c1">-- exact p,</span>
+
+  <span class="c1">-- -- case where P &#8744; Q is true because Q is</span>
+  <span class="c1">-- assume q : Q,</span>
+  <span class="c1">-- apply or.intro_left,</span>
+  <span class="c1">-- exact q,</span>
+
+  <span class="c1">-- In either case, we can prove that Q &#8744; P is true. QED.</span>
+<span class="k">assume</span> <span class="n">P</span> <span class="n">Q</span> <span class="n">h</span><span class="o">,</span>
+<span class="n">cases</span> <span class="n">h</span> <span class="k">with</span> <span class="n">p</span> <span class="n">q</span><span class="o">,</span>      <span class="c1">-- applies or.elim to h</span>
+<span class="n">exact</span> <span class="n">or.inr</span> <span class="n">p</span><span class="o">,</span>
+<span class="c1">-- exact or.inl q,</span>
+<span class="kd">end</span>
+
+<span class="kd">example</span> <span class="o">:</span>
+  <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">P</span> <span class="n">Q</span> <span class="n">R</span> <span class="n">S</span><span class="o">:</span> <span class="kt">Prop</span><span class="o">),</span>
+    <span class="n">R</span> <span class="bp">&#8594;</span> <span class="n">P</span> <span class="bp">&#8744;</span> <span class="n">Q</span> <span class="bp">&#8744;</span> <span class="n">R</span> <span class="bp">&#8744;</span> <span class="n">S</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+  <span class="n">intros</span> <span class="n">P</span> <span class="n">Q</span> <span class="n">R</span> <span class="n">S</span><span class="o">,</span>
+  <span class="k">assume</span> <span class="n">r</span><span class="o">,</span>
+  <span class="n">apply</span> <span class="n">or.intro_right</span><span class="o">,</span>
+  <span class="n">apply</span> <span class="n">or.intro_right</span><span class="o">,</span>
+  <span class="n">apply</span> <span class="n">or.intro_left</span><span class="o">,</span>
+  <span class="n">assumption</span><span class="o">,</span>
+<span class="kd">end</span>
+
+<span class="kd">example</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">P</span> <span class="n">Q</span> <span class="n">R</span> <span class="n">S</span><span class="o">:</span> <span class="kt">Prop</span><span class="o">),</span>
+    <span class="n">Q</span> <span class="bp">&#8594;</span> <span class="n">R</span> <span class="bp">&#8594;</span> <span class="n">P</span> <span class="bp">&#8744;</span> <span class="n">Q</span> <span class="bp">&#8744;</span> <span class="n">R</span> <span class="bp">&#8744;</span> <span class="n">S</span> <span class="o">:=</span> <span class="n">_</span>
+
+<span class="kd">example</span> <span class="o">:</span>
+  <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">P</span> <span class="n">Q</span> <span class="n">R</span><span class="o">:</span> <span class="kt">Prop</span><span class="o">),</span>
+    <span class="o">(</span><span class="n">P</span> <span class="bp">&#8744;</span> <span class="n">Q</span><span class="o">)</span> <span class="bp">&#8743;</span> <span class="n">R</span> <span class="bp">&#8594;</span>
+    <span class="o">(</span><span class="n">P</span> <span class="bp">&#8743;</span> <span class="n">R</span><span class="o">)</span> <span class="bp">&#8744;</span> <span class="o">(</span><span class="n">Q</span> <span class="bp">&#8743;</span> <span class="n">R</span><span class="o">)</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+  <span class="n">intros</span> <span class="n">P</span> <span class="n">Q</span> <span class="n">R</span> <span class="n">h</span><span class="o">,</span>
+  <span class="n">cases</span> <span class="n">h</span> <span class="k">with</span> <span class="n">pq</span> <span class="n">r</span><span class="o">,</span>
+  <span class="n">cases</span> <span class="n">pq</span> <span class="k">with</span> <span class="n">p</span> <span class="n">q</span><span class="o">,</span>
+  <span class="n">apply</span> <span class="n">or.intro_left</span><span class="o">,</span>
+  <span class="n">apply</span> <span class="n">and.intro</span> <span class="n">p</span> <span class="n">r</span><span class="o">,</span>
+  <span class="n">apply</span> <span class="n">or.intro_right</span><span class="o">,</span>
+  <span class="n">apply</span> <span class="n">and.intro</span> <span class="n">q</span> <span class="n">r</span><span class="o">,</span>
+<span class="kd">end</span>
+</pre></div>
+</div>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">example</span> <span class="o">:</span>
+  <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">P</span> <span class="n">Q</span> <span class="n">R</span> <span class="n">S</span><span class="o">:</span> <span class="kt">Prop</span><span class="o">),</span>
+    <span class="o">(</span><span class="n">P</span> <span class="bp">&#8744;</span> <span class="n">Q</span><span class="o">)</span> <span class="bp">&#8743;</span> <span class="o">(</span><span class="n">R</span> <span class="bp">&#8744;</span> <span class="n">S</span><span class="o">)</span> <span class="bp">&#8594;</span>
+    <span class="o">(</span><span class="n">P</span> <span class="bp">&#8743;</span> <span class="n">R</span><span class="o">)</span> <span class="bp">&#8744;</span> <span class="o">(</span><span class="n">P</span> <span class="bp">&#8743;</span> <span class="n">S</span><span class="o">)</span> <span class="bp">&#8744;</span> <span class="o">(</span><span class="n">Q</span> <span class="bp">&#8743;</span> <span class="n">R</span><span class="o">)</span> <span class="bp">&#8744;</span> <span class="o">(</span><span class="n">Q</span> <span class="bp">&#8743;</span> <span class="n">S</span><span class="o">)</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+  <span class="n">intros</span> <span class="n">P</span> <span class="n">Q</span> <span class="n">R</span> <span class="n">S</span> <span class="n">h</span><span class="o">,</span>
+  <span class="n">cases</span> <span class="n">h</span><span class="o">,</span>
+  <span class="n">cases</span> <span class="n">h_left</span> <span class="k">with</span> <span class="n">p</span> <span class="n">q</span><span class="o">,</span>
+  <span class="n">cases</span> <span class="n">h_right</span> <span class="k">with</span> <span class="n">r</span> <span class="n">s</span><span class="o">,</span>
+
+  <span class="n">apply</span> <span class="n">or.intro_left</span><span class="o">,</span>
+  <span class="n">apply</span> <span class="n">and.intro</span> <span class="n">p</span> <span class="n">r</span><span class="o">,</span>
+
+  <span class="n">apply</span> <span class="n">or.intro_right</span><span class="o">,</span>
+  <span class="n">apply</span> <span class="n">or.intro_left</span><span class="o">,</span>
+  <span class="n">apply</span> <span class="n">and.intro</span> <span class="n">p</span> <span class="n">s</span><span class="o">,</span>
+
+  <span class="n">cases</span> <span class="n">h_right</span> <span class="k">with</span> <span class="n">r</span> <span class="n">s</span><span class="o">,</span>
+  <span class="n">apply</span> <span class="n">or.intro_right</span><span class="o">,</span>
+  <span class="n">apply</span> <span class="n">or.intro_right</span><span class="o">,</span>
+  <span class="n">apply</span> <span class="n">or.intro_left</span><span class="o">,</span>
+  <span class="n">apply</span> <span class="n">and.intro</span> <span class="n">q</span> <span class="n">r</span><span class="o">,</span>
+
+  <span class="n">apply</span> <span class="n">or.intro_right</span><span class="o">,</span>
+  <span class="n">apply</span> <span class="n">or.intro_right</span><span class="o">,</span>
+  <span class="n">apply</span> <span class="n">or.intro_right</span><span class="o">,</span>
+  <span class="n">apply</span> <span class="n">and.intro</span> <span class="n">q</span> <span class="n">s</span><span class="o">,</span>
+<span class="kd">end</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="A Predicate Logic" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="01_Functions_and_Applications.html" class="btn btn-neutral float-right" title="2. Functions and Applications" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Kevin Sullivan.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

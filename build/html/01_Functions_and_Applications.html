@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2. Functions and Applications &mdash; A Predicate Logic 0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="3. Inference/Deduction/Proofs" href="02_Inference_Rules_and_Proofs.html" />
+    <link rel="prev" title="1. Introduction" href="00_Introduction.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> A Predicate Logic
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="00_Introduction.html">1. Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. Functions and Applications</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">2.1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#basics">2.2. Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#functions-by-cases-bool">2.3. Functions by cases (bool)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#function-definition-by-cases-nat">2.4. Function definition by cases (nat)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#case-analysis-by-pattern-matching-unification">2.4.1. Case analysis by pattern matching (unification)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#recursive-function-definitions">2.5. Recursive function definitions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="02_Inference_Rules_and_Proofs.html">3. Inference/Deduction/Proofs</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">A Predicate Logic</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">2. </span>Functions and Applications</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/01_Functions_and_Applications.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="functions-and-applications">
+<span id="introduction"></span><h1><span class="section-number">2. </span>Functions and Applications<a class="headerlink" href="#functions-and-applications" title="Permalink to this heading">&#61633;</a></h1>
+<section id="id1">
+<h2><span class="section-number">2.1. </span>Introduction<a class="headerlink" href="#id1" title="Permalink to this heading">&#61633;</a></h2>
+</section>
+<section id="basics">
+<h2><span class="section-number">2.2. </span>Basics<a class="headerlink" href="#basics" title="Permalink to this heading">&#61633;</a></h2>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="n">string.length</span>
+<span class="k">#check</span> <span class="n">string.length</span> <span class="s2">&quot;CLIC!&quot;</span>  <span class="c1">-- &quot;CLIC!&quot;.length works</span>
+<span class="k">#eval</span> <span class="n">string.length</span> <span class="s2">&quot;CLIC!&quot;</span>   <span class="c1">-- There&#39;s the actual length</span>
+</pre></div>
+</div>
+<p>In predicate logic, a function application
+can be thought of an an expression that names
+another object: it&#8217;s return result. For example,
+the expression (string.length &#8220;CLIC!&#8221;), serves
+as another expression/name for 5. They&#8217;re equal,
+as we can even now state and prove formally.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">example</span> <span class="o">:</span> <span class="n">string.length</span> <span class="s2">&quot;CLIC!&quot;</span> <span class="bp">=</span> <span class="mi">5</span> <span class="o">:=</span> <span class="n">rfl</span>
+</pre></div>
+</div>
+</section>
+<section id="functions-by-cases-bool">
+<h2><span class="section-number">2.3. </span>Functions by cases (bool)<a class="headerlink" href="#functions-by-cases-bool" title="Permalink to this heading">&#61633;</a></h2>
+<p>Finally we implement the function using a Java
+style of syntax.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kn">namespace</span> <span class="n">impl_cstyle</span>
+
+<span class="kd">def</span> <span class="n">sub1</span> <span class="o">(</span><span class="n">n</span> <span class="o">:</span> <span class="n">&#8469;</span><span class="o">)</span> <span class="o">:</span> <span class="n">&#8469;</span> <span class="o">:=</span>   <span class="c1">-- first arg named to left of :</span>
+  <span class="k">match</span> <span class="n">n</span> <span class="k">with</span>            <span class="c1">-- match does case analysis after all</span>
+  <span class="bp">|</span> <span class="mi">0</span> <span class="o">:=</span> <span class="mi">0</span>
+  <span class="bp">|</span> <span class="o">(</span><span class="n">n&#39;</span> <span class="bp">+</span> <span class="mi">1</span><span class="o">)</span> <span class="o">:=</span> <span class="n">n&#39;</span>
+  <span class="kd">end</span>
+
+<span class="kd">def</span> <span class="n">add2</span> <span class="o">(</span><span class="n">n</span> <span class="o">:</span> <span class="n">&#8469;</span><span class="o">)</span> <span class="o">:=</span> <span class="n">n</span><span class="bp">+</span><span class="mi">2</span>   <span class="c1">-- n+2 is short for succ(succ n)!</span>
+</pre></div>
+</div>
+<p>Our tests suggest our functions are working yet again.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">example</span> <span class="o">:</span> <span class="n">sub1</span> <span class="mi">0</span> <span class="bp">=</span> <span class="mi">0</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">sub1</span> <span class="mi">1</span> <span class="bp">=</span> <span class="mi">0</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">sub1</span> <span class="mi">2</span> <span class="bp">=</span> <span class="mi">1</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">sub1</span> <span class="mi">3</span> <span class="bp">=</span> <span class="mi">1</span> <span class="o">:=</span> <span class="n">rfl</span>  <span class="c1">-- bad test</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">add2</span> <span class="mi">0</span> <span class="bp">=</span> <span class="mi">2</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">add2</span> <span class="mi">1</span> <span class="bp">=</span> <span class="mi">3</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">add2</span> <span class="mi">2</span> <span class="bp">=</span> <span class="mi">4</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">add2</span> <span class="mi">3</span> <span class="bp">=</span> <span class="mi">6</span> <span class="o">:=</span> <span class="n">rfl</span> <span class="c1">-- bad test</span>
+</pre></div>
+</div>
+<p>Next we define functions that implement
+Boolean  &#8220;and.&#8221; Note that in each case we
+&#8220;pattern match&#8221; on both arguments.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">my_bool_and</span> <span class="o">:</span> <span class="n">bool</span> <span class="bp">&#8594;</span> <span class="n">bool</span> <span class="bp">&#8594;</span> <span class="n">bool</span>
+<span class="bp">|</span> <span class="n">tt</span> <span class="n">tt</span> <span class="o">:=</span> <span class="n">tt</span>
+<span class="bp">|</span> <span class="n">tt</span> <span class="n">ff</span> <span class="o">:=</span> <span class="n">ff</span>
+<span class="bp">|</span> <span class="n">ff</span> <span class="n">tt</span> <span class="o">:=</span> <span class="n">ff</span>
+<span class="bp">|</span> <span class="n">ff</span> <span class="n">ff</span> <span class="o">:=</span> <span class="n">ff</span>
+</pre></div>
+</div>
+<p>Evaluation of this &#8220;cases&#8221; syntax
+is, again, in top-to-bottomorder:
+if the arguments match the first
+pattern (tt tt), this function return
+the value expressed to the right of
+that := (tt). If the arguments don&#8217;t
+match the first pattern, Lean moves
+on to the next, until a match is found
+and the corresponding result is returned.
+Lean will tell you if you&#8217;ve forgotten
+a possible combination of argument
+values. Try it by commenting out one
+of the cases.
+A nice property of this syntax is that the
+truth table for &#8220;Boolean and&#8221; is as clear as
+day. That said, after the first of the rules,
+the rest all return false. You can use the
+&#8220;wildcard&#8221; character, _ (underscore) in Lean
+to match any value to avoid having to write
+the three rules separately.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">my_bool_and2</span> <span class="o">:</span> <span class="n">bool</span> <span class="bp">&#8594;</span> <span class="n">bool</span> <span class="bp">&#8594;</span> <span class="n">bool</span>
+<span class="bp">|</span> <span class="n">tt</span> <span class="n">tt</span> <span class="o">:=</span> <span class="n">tt</span>
+<span class="bp">|</span> <span class="n">_</span> <span class="n">_</span> <span class="o">:=</span> <span class="n">ff</span>
+</pre></div>
+</div>
+<p>Maybe at this point you&#8217;re not sure that these
+two functions have exactly the same meaning.
+Let&#8217;s check that by stating the proposition
+that they return the same values for all of
+the possible combinations of argument values,
+and proving it. The proof is by case analysis
+on the possible values of the arguments.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">example</span> <span class="o">:</span>
+  <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">b1</span> <span class="n">b2</span> <span class="o">:</span> <span class="n">bool</span><span class="o">),</span>
+    <span class="n">my_bool_and</span> <span class="n">b1</span> <span class="n">b2</span> <span class="bp">=</span>
+    <span class="n">my_bool_and2</span> <span class="n">b1</span> <span class="n">b2</span>
+  <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">assume</span> <span class="n">b1</span> <span class="n">b2</span><span class="o">,</span> <span class="c1">-- bind argument names</span>
+
+<span class="c1">-- case analysis on b1</span>
+<span class="n">cases</span> <span class="n">b1</span><span class="o">,</span>
+
+<span class="c1">-- b1 false</span>
+
+<span class="c1">-- case analysis on b2</span>
+<span class="n">cases</span> <span class="n">b2</span><span class="o">,</span>
+<span class="c1">-- b2 false</span>
+<span class="n">apply</span> <span class="n">rfl</span><span class="o">,</span>
+<span class="c1">-- b2 true</span>
+<span class="n">apply</span> <span class="n">rfl</span><span class="o">,</span>
+
+<span class="c1">-- b1 true</span>
+
+<span class="c1">-- case analysis on b2</span>
+<span class="n">cases</span> <span class="n">b2</span><span class="o">,</span>
+<span class="c1">-- b2 false</span>
+<span class="n">apply</span> <span class="n">rfl</span><span class="o">,</span>
+<span class="c1">-- b2 true</span>
+<span class="n">apply</span> <span class="n">rfl</span><span class="o">,</span>
+<span class="kd">end</span>
+</pre></div>
+</div>
+<p>Here are test cases</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">example</span> <span class="o">:</span> <span class="n">my_bool_and</span> <span class="n">tt</span> <span class="n">tt</span> <span class="bp">=</span> <span class="n">tt</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">my_bool_and</span> <span class="n">tt</span> <span class="n">ff</span> <span class="bp">=</span> <span class="n">ff</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">my_bool_and</span> <span class="n">ff</span> <span class="n">tt</span> <span class="bp">=</span> <span class="n">ff</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">my_bool_and</span> <span class="n">ff</span> <span class="n">ff</span> <span class="bp">=</span> <span class="n">ff</span> <span class="o">:=</span> <span class="n">rfl</span>
+</pre></div>
+</div>
+<p>Functions in Lean must be &#8220;total,&#8221; which means that
+they must be defined to return values of the right
+types for <em>all</em> possible combinations of arguments.
+If you delete cases from the my_bool_and definition
+you&#8217;ll get a missing cases error and the following
+evaluations will &#8220;block&#8221; on the undefined cases. Try
+it!</p>
+</section>
+<section id="function-definition-by-cases-nat">
+<h2><span class="section-number">2.4. </span>Function definition by cases (nat)<a class="headerlink" href="#function-definition-by-cases-nat" title="Permalink to this heading">&#61633;</a></h2>
+<p>In the field of natural number arithmetic, one
+of the fundamental functions is called successor.
+In Lean it&#8217;s nat.succ in Lean. It&#8217;s the function
+that, when applied to any nat, returns its successor,
+the next larger nat. For example, the application
+expression, (nat.succ 0), means 1, while the term,
+nat.succ(nat.succ 0) means 2. (There are some
+subtleties that we&#8217;ll open up later.)</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">example</span> <span class="o">:</span> <span class="n">nat.succ</span> <span class="mi">0</span> <span class="bp">=</span> <span class="mi">1</span> <span class="o">:=</span> <span class="n">rfl</span>
+</pre></div>
+</div>
+<p>Question: What is the type of nat.succ? Figure it
+out first, then you may check your answer by using
+#check.
+Syntax options for defining functions
+=====================================
+First we&#8217;ll see how to implement basic Boolean functions,
+such as &#8220;and.&#8221; For a value of this type, there are just two
+cases: tt and ff (in Lean). Then we&#8217;ll turn to functions
+involving natural numbers, where for any natural number,
+there are still just two cases but they are now n = 0 and
+n &gt; 0.
+We will also use this discussion to present a few different
+styles you can use to define functions in Lean. We wil in
+particular implement two simple functions using each of three
+different syntactic approaches. The functions, sub1, and add2,
+respectively, return the predecessor, and the successor of the
+successor of their arguments.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>sub1<span class="classifier">&#8469; &#8594; &#8469;</span></dt><dd><dl class="simple">
+<dt>Given n,</dt><dd><dl class="simple">
+<dt>case analysis:</dt><dd><p>when n is 0, return 0,              &#8211; case n = 0
+when n is (nat.succ n&#8217;), return n&#8217;  &#8211; case n &gt; 0</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>add2<span class="classifier">&#8469; &#8594; &#8469;</span></dt><dd><p>Given n,
+return nat.succ(nat.succ n))</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>First, we&#8217;ll see how we can define these
+functions by declaring their types and then
+using <em>tactic scripts</em> to produce correct
+implementations: values of these function
+types that compute and return the correct
+results. It feels like you&#8217;re just proving
+a theorem, but now the proof is a program!
+that implements your task.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kn">namespace</span> <span class="n">impl_script</span>
+</pre></div>
+</div>
+<p>To start, we&#8217;ll declare each function just
+as we&#8217;d state a logical proposition, then
+we&#8217;ll &#8220;prove&#8221; they type by providing not
+any program of this type but one that also
+does what we require. Here we go.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">sub1</span> <span class="o">:</span> <span class="n">&#8469;</span> <span class="bp">&#8594;</span> <span class="n">&#8469;</span> <span class="o">:=</span>
+  <span class="kd">begin</span>
+  <span class="c1">-- give argument a name</span>
+  <span class="k">assume</span> <span class="n">n</span><span class="o">,</span>
+  <span class="c1">-- do case analysis on n (=0, &gt;0)</span>
+  <span class="n">cases</span> <span class="n">n</span> <span class="k">with</span> <span class="n">n&#39;</span><span class="o">,</span>
+  <span class="c1">-- case where n = 0</span>
+  <span class="n">exact</span> <span class="mi">0</span><span class="o">,</span>
+  <span class="c1">-- case where n = (succ n&#39;) &gt; 0</span>
+  <span class="n">exact</span> <span class="n">n&#39;</span><span class="o">,</span>
+  <span class="kd">end</span>
+
+
+<span class="kd">def</span> <span class="n">add2</span> <span class="o">:</span> <span class="n">&#8469;</span> <span class="bp">&#8594;</span> <span class="n">&#8469;</span> <span class="o">:=</span>
+  <span class="kd">begin</span>
+    <span class="k">assume</span> <span class="n">n</span><span class="o">,</span>   <span class="c1">-- bind name to argument</span>
+    <span class="n">exact</span> <span class="n">n</span><span class="bp">+</span><span class="mi">2</span><span class="o">,</span>  <span class="c1">-- means exactly nat.succ(nat.succ n)</span>
+  <span class="kd">end</span>
+</pre></div>
+</div>
+<p>Next we can show that we can apply these
+functions and that they work as expected.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">example</span> <span class="o">:</span> <span class="n">sub1</span> <span class="mi">0</span> <span class="bp">=</span> <span class="mi">0</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">sub1</span> <span class="mi">1</span> <span class="bp">=</span> <span class="mi">0</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">sub1</span> <span class="mi">2</span> <span class="bp">=</span> <span class="mi">1</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">sub1</span> <span class="mi">3</span> <span class="bp">=</span> <span class="mi">1</span> <span class="o">:=</span> <span class="n">rfl</span>  <span class="c1">-- bad test</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">add2</span> <span class="mi">0</span> <span class="bp">=</span> <span class="mi">2</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">add2</span> <span class="mi">1</span> <span class="bp">=</span> <span class="mi">3</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">add2</span> <span class="mi">2</span> <span class="bp">=</span> <span class="mi">4</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">add2</span> <span class="mi">3</span> <span class="bp">=</span> <span class="mi">6</span> <span class="o">:=</span> <span class="n">rfl</span> <span class="c1">-- bad test</span>
+</pre></div>
+</div>
+<section id="case-analysis-by-pattern-matching-unification">
+<h3><span class="section-number">2.4.1. </span>Case analysis by pattern matching (unification)<a class="headerlink" href="#case-analysis-by-pattern-matching-unification" title="Permalink to this heading">&#61633;</a></h3>
+<p>Next we&#8217;ll implement the same functions using
+Lean&#8217;s &#8220;pattern matching&#8221; or &#8220;by cases&#8221; syntax.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">sub1</span> <span class="o">:</span> <span class="n">&#8469;</span> <span class="bp">&#8594;</span> <span class="n">&#8469;</span>
+  <span class="bp">|</span> <span class="mi">0</span> <span class="o">:=</span> <span class="mi">0</span>                <span class="c1">-- if arg is 0, then 0</span>
+  <span class="bp">|</span> <span class="o">(</span><span class="n">nat.succ</span> <span class="n">n&#39;</span><span class="o">)</span> <span class="o">:=</span> <span class="n">n&#39;</span>   <span class="c1">-- otherwise one less than arg</span>
+</pre></div>
+</div>
+<p>Each line starting with | gives a pattern-result
+pair. Each line is <a href="#id2"><span class="problematic" id="id3">|</span></a>, pattern, := result. The really
+fundamental idea here is that you can pull apart the
+arguments while you&#8217;re matching to get at value that
+they incorporate. Starting from the top, Lean matches
+given arguments with each pattern until one matches.
+The matching process can bind names to parts of the
+arguments. These names can then be used on the right
+of the := to define the value of the return result.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">add2</span> <span class="o">:</span> <span class="n">&#8469;</span> <span class="bp">&#8594;</span> <span class="n">&#8469;</span> <span class="o">:=</span>
+  <span class="k">fun</span> <span class="n">n</span><span class="o">,</span> <span class="n">nat.succ</span> <span class="o">(</span><span class="n">nat.succ</span> <span class="n">n</span><span class="o">)</span>
+</pre></div>
+</div>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">example</span> <span class="o">:</span> <span class="n">sub1</span> <span class="mi">0</span> <span class="bp">=</span> <span class="mi">0</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">sub1</span> <span class="mi">1</span> <span class="bp">=</span> <span class="mi">0</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">sub1</span> <span class="mi">2</span> <span class="bp">=</span> <span class="mi">1</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">sub1</span> <span class="mi">3</span> <span class="bp">=</span> <span class="mi">1</span> <span class="o">:=</span> <span class="n">rfl</span>  <span class="c1">-- bad test</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">add2</span> <span class="mi">0</span> <span class="bp">=</span> <span class="mi">2</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">add2</span> <span class="mi">1</span> <span class="bp">=</span> <span class="mi">3</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">add2</span> <span class="mi">2</span> <span class="bp">=</span> <span class="mi">4</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">add2</span> <span class="mi">3</span> <span class="bp">=</span> <span class="mi">6</span> <span class="o">:=</span> <span class="n">rfl</span> <span class="c1">-- bad test</span>
+</pre></div>
+</div>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">sub1</span> <span class="o">(</span><span class="n">n</span> <span class="o">:</span> <span class="n">&#8469;</span><span class="o">)</span> <span class="o">:</span> <span class="n">&#8469;</span> <span class="o">:=</span>   <span class="c1">-- first arg named to left of :</span>
+  <span class="k">match</span> <span class="n">n</span> <span class="k">with</span>            <span class="c1">-- match in Leandoes case analysis</span>
+  <span class="bp">|</span> <span class="mi">0</span> <span class="o">:=</span> <span class="mi">0</span>                <span class="c1">-- n = 0</span>
+  <span class="bp">|</span> <span class="o">(</span><span class="n">n&#39;</span> <span class="bp">+</span> <span class="mi">1</span><span class="o">)</span> <span class="o">:=</span> <span class="n">n&#39;</span>        <span class="c1">-- n &gt; 0</span>
+  <span class="kd">end</span>
+
+<span class="kd">def</span> <span class="n">add2</span> <span class="o">(</span><span class="n">n</span> <span class="o">:</span> <span class="n">&#8469;</span><span class="o">)</span> <span class="o">:=</span> <span class="n">n</span><span class="bp">+</span><span class="mi">2</span>   <span class="c1">-- n+2 is short for succ(succ n)!</span>
+</pre></div>
+</div>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">example</span> <span class="o">:</span> <span class="n">sub1</span> <span class="mi">0</span> <span class="bp">=</span> <span class="mi">0</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">sub1</span> <span class="mi">1</span> <span class="bp">=</span> <span class="mi">0</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">sub1</span> <span class="mi">2</span> <span class="bp">=</span> <span class="mi">1</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">sub1</span> <span class="mi">3</span> <span class="bp">=</span> <span class="mi">1</span> <span class="o">:=</span> <span class="n">rfl</span>  <span class="c1">-- bad test</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">add2</span> <span class="mi">0</span> <span class="bp">=</span> <span class="mi">2</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">add2</span> <span class="mi">1</span> <span class="bp">=</span> <span class="mi">3</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">add2</span> <span class="mi">2</span> <span class="bp">=</span> <span class="mi">4</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">add2</span> <span class="mi">3</span> <span class="bp">=</span> <span class="mi">6</span> <span class="o">:=</span> <span class="n">rfl</span> <span class="c1">-- bad test</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="recursive-function-definitions">
+<h2><span class="section-number">2.5. </span>Recursive function definitions<a class="headerlink" href="#recursive-function-definitions" title="Permalink to this heading">&#61633;</a></h2>
+<p>You should (almost must) use this &#8220;by cases&#8221; syntax
+to define functions recursive functions. If you use
+other syntax, you&#8217;ll find that you won&#8217;t be able to
+have the function body call the function itself.
+Here is the mathematical definition of the factorial
+function as expressed in the particular syntax of the
+Lean Prover.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">factorial</span> <span class="o">:</span> <span class="n">&#8469;</span> <span class="bp">&#8594;</span> <span class="n">&#8469;</span>           <span class="c1">-- remember, no := here</span>
+<span class="bp">|</span> <span class="mi">0</span> <span class="o">:=</span> <span class="mi">1</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">n&#39;</span> <span class="bp">+</span> <span class="mi">1</span><span class="o">)</span> <span class="o">:=</span> <span class="o">(</span><span class="n">n&#39;</span> <span class="bp">+</span> <span class="mi">1</span><span class="o">)</span> <span class="bp">*</span> <span class="n">factorial</span> <span class="n">n&#39;</span>
+</pre></div>
+</div>
+<p>It&#8217;s a recursive function definition as the return value
+for n-1 is computed as part of the process of computing
+the return value for the argument, n.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">factorial2</span> <span class="o">:</span> <span class="n">&#8469;</span> <span class="bp">&#8594;</span> <span class="n">&#8469;</span>           <span class="c1">-- remember, no := here</span>
+<span class="bp">|</span> <span class="mi">0</span> <span class="o">:=</span> <span class="mi">1</span>
+<span class="bp">|</span> <span class="n">n</span> <span class="o">:=</span> <span class="n">n</span> <span class="bp">*</span> <span class="n">factorial2</span> <span class="o">(</span><span class="n">n</span><span class="bp">-</span><span class="mi">1</span><span class="o">)</span>     <span class="c1">-- can&#39;t prove termination</span>
+</pre></div>
+</div>
+<p>The problem with the preceding code, for reasons we
+can&#8217;t get into deeply yet, is thatLean can&#8217;t tell that
+the argument to factorial2 will decrease in value on
+each recursive call, because all it sees is a function
+(subtraction) applied to n. Lean doesn&#8217;t try to analyze
+the result, at all. On the other hand, if n is of the
+form (n&#8217; + 1), i.e., &gt; 0, Lean knows that n&#8217; is one
+nat.succ application smaller than n. If n is the
+argument into the function and it calls itself with
+n&#8217;, the function is certain to terminate for any
+finite argument (as all values of all inductively
+defined types are). Termination of all function calls
+in turn is required for all functions to be &#8220;total&#8221;
+and that in turn is required for the unification of
+logic and programming in Lean.  It&#8217;s a price but not
+a terrible price to pay for such a magical thing!</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#eval</span> <span class="n">factorial</span> <span class="mi">5</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="00_Introduction.html" class="btn btn-neutral float-left" title="1. Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="02_Inference_Rules_and_Proofs.html" class="btn btn-neutral float-right" title="3. Inference/Deduction/Proofs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Kevin Sullivan.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

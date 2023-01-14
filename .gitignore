@@ -1,6 +1,6 @@
 /.venv
 /.vscode
-/build
+# /build
 /__pycache__
 *.olean
 /_target
