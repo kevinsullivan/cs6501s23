@@ -2,7 +2,7 @@
 Elementary Discrete Mathematics DevOps
 ======================================
 
-This is the development environment for [Deep Joe](https://www.deepjoe.com/).
+This is the development environment for [Elementary Discrete Mathematics](https://www.computingfoundations/).
 
 The `lean_source` directory contains all of the information needed to produce one 
 volume of Elementary Discrete Mathematics. Each major topic is published as a volume:
