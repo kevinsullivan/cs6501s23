@@ -32,8 +32,21 @@ science community can now take advantage of what the mathematics
 research community is providing, by using abstract mathematics in
 automated forms for software development. That is, having helped to
 sow a research in automated mathematics, we now propose to import
-what they are producing to build foundationally verified semantics 
-for next generation software systems. 
+what they are producing to build foundationally verified, abstract
+mathematical semantics for next generation software systems. 
 
-Stay tuned for further developments.
+As an example, we have developed an formal mathematical definition 
+of affine spaces and their surrouding spaces of affine coordinate 
+systems as a way to bring sanity to handling of multiple physical
+dimensions and arbitrary coordinate systems imposed upon them, and
+with automated translations between coordinate systems. But this 
+is just a start. Hang around for more later.
+
+As for the rest of this document, it's just a set of rough notes
+from part of a course related to these ideas. It's not recommended
+to spend much time on this material at this point. I'll be pulling
+it together in the weeks to come.
+
+
+
 TEXT. -/
