@@ -5,9 +5,13 @@ Introduction
 TEXT. -/
 
 /- TEXT:
-Computing foundations are not to be found in the formal semantics 
-of programming languages but in the abstract mathematical semantics
-of the worlds that are to be programmed. 
+Computing foundations are to be found in the connections 
+between the precise abstract mathematics of the worlds to 
+be computed about and the formal semantics of programming
+languages and systems. The formal semantics of programming
+languages are well developed. And while precise, abstract
+mathematics of many domains are well worked out, there has
+been little effort to link the two.
 
 Formalized abstract mathematics will provide a powerful new 
 foundation for software-intensive systems of the future. Our
