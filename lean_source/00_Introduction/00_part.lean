@@ -5,20 +5,25 @@ Introduction
 TEXT. -/
 
 /- TEXT:
-Computing foundations are to be found in the connections 
-between the precise abstract mathematics of the worlds to 
-be computed about and the formal semantics of programming
-languages and systems. The formal semantics of programming
-languages are well developed. And while precise, abstract
-mathematics of many domains are well worked out, there has
-been little effort to link the two.
+Computing foundations are to be found not in the formal syntax 
+and semantics of programming languages alone but princiapally 
+as well in the abstract mathematics of the application domain.
+In the future we will start there and map down to programs that
+wil remain written in "lightweight" abstractions and languages. 
 
-Formalized abstract mathematics will provide a powerful new 
-foundation for software-intensive systems of the future. Our
-most successful models of reality are deeply mathematical. As
-examples, physics rests on the rigorous, abstract mathematics
-of topological manifolds, tangent bundles, vector and tensor
-fields, etc. 
+Formalized and automated abstract mathematics will provide a 
+powerful new foundation for software-intensive systems of the 
+future. Our most successful models of the real world are deeply
+mathematical. As an example, physics rests on the mathematics
+of topological manifolds. Such are the languages that have by
+now proven most useful for describing (actual and potential)
+states of affairs in world that we as human beings really care
+about. 
+
+Note: this comment presuppsed mathematics for all the fields
+we care about, and that's not true. It's true for fields like
+scientific computing, cyber-physical systems, controls, and so
+forth, but probably not so much for human and social concerns.
 
 Until recently -- and still mostly today -- abstract mathematics
 has been largely a paper and pencil exercise, but we are seeing 
