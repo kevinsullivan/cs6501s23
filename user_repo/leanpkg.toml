@@ -1,1 +1,8 @@
-../leanpkg.toml
+[package]
+name = "sullivan_discrete_math"
+version = "0.1"
+lean_version = "leanprover-community/lean:3.48.0"
+path = "lean_source"
+
+[dependencies]
+mathlib = {git = "https://github.com/leanprover-community/mathlib", rev = "d45a8ace0fb50f4b0a1ea72bdf57f3881f6f8112"}

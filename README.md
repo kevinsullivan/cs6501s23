@@ -28,7 +28,7 @@ The following files are maintained by hand:
 Numbering in outputs is determined by sphinx labels
 
 - \# with overline, for parts
-- \* with overline, for chapters
+- \* with overline, for chapters (individual lean file)
 - \=, for sections
 - \-, for subsections
 - \^, for subsubsections
