@@ -1,38 +1,19 @@
-/- TEXT:
-Syntax
-======
-
-Propositional logic is the first formal language we will
-study. In its simplest form it has a very simple syntax,
-with the following elements:
-
-- variables
-- expressions
-  - variable expressions
-  - unary operator expressions
-  - binary operator expressions
-- sometimes two constants, *true* and *false*
-
-The language of propositional logic is the language of
-these expressions, each formed either from a variable or
-by composing smaller expressions using logical operators.
--/
-
-/-
--/
 
 namespace cs6501
 
-/-
+/- TEXT:
 Propositional logic has an infinite supply of variables.
-We will represent variables -/
+We will represent each variable, then, as a term, var.mk
+with a natural-number-valued argument. This type defines
+an infinite set of terms of type *var*, each *indexed* by
+a natural number. You can think of these as var₀, var₁, 
+etc.  
+TEXT. -/
+
+-- QUOTE:
 
 inductive var : Type
 | mk : ℕ → var
-
-/-
-SYNTAX
--/
 
 -- Abstract syntax
 inductive pExp : Type
@@ -48,11 +29,18 @@ inductive pExp : Type
 
 open pExp
 
-
+/-
+We can now *overload* some predefined operators in Lean
+to obtain a nice *concrete syntax* for our language. 
+-/
 #print notation ∧
 
--- Overload operators to provide a concrete syntax ("syntactic sugar")
--- https://github.com/leanprover/lean/blob/master/library/init/core.lean
+/- 
+Overload operators to provide a concrete syntax ("syntactic sugar")
+https://github.com/leanprover/lean/blob/master/library/init/core.lean
+-/
+
+notation (name := var_mk) `[` v `]` :=  pVar v
 notation (name := pAnd) e1 ∧ e2 :=  pAnd e1 e2
 notation (name := pOr) e1 ∨ e2 :=  pOr e1 e2
 notation (name := pNot) ¬e := pNot e
@@ -60,12 +48,28 @@ notation (name := pImp) e1 => e2 := pImp e1 e2
 notation (name := pIff) e1 ↔ e2 := pIff e1 e2
 notation (name := pXor) e1 ⊕ e2 := pXor e1 e2
 
-variables p1 p2 : pExp
 
 /-
-SEMANTICS
+Some examples of expressions in our concrete syntax.
 -/
 
+def X := [var.mk 0]
+def Y := [var.mk 1]
+def Z := [var.mk 2]
+
+def e1 := X ∧ Y
+def e2 := X ∨ Y
+def e3 := ¬ Z
+def e4 := e1 => e2  -- avoid overloading →
+def e5 := e1 ↔ e1
+def e6 := X ⊕ ¬X
+-- QUOTE.
+
+/- TEXT:
+SEMANTICS
+TEST. -/
+
+-- QUOTE:
 -- Helper functions
 def bimp : bool → bool → bool
 | tt tt := tt
@@ -88,7 +92,11 @@ def pEval : pExp → (var → bool) → bool
 | (pAnd e1 e2) i := band (pEval e1 i) (pEval e2 i) 
 | (pOr e1 e2) i := bor (pEval e1 i) (pEval e2 i)
 | (pImp e1 e2) i := bimp (pEval e1 i) (pEval e2 i)
-| (pIff e1 e2) i := biff (pEval e1 i) (pEval e2 i)  -- HOMEWORK Solution
+| (pIff e1 e2) i := biff (pEval e1 i) (pEval e2 i)
 | (pXor e1 e2) i := xor (pEval e1 i) (pEval e2 i)
+-- QUOTE.
+
+/-
+-/
 
 end cs6501

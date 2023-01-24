@@ -56,6 +56,7 @@ manifolds.
 TEXT. -/
 
 /- TEXT: 
+- formal languages
 - objects and their properties
 - imperative vs declarative languages
 - implementation vs specification
