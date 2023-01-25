@@ -18,10 +18,9 @@ languages such as Java.
 
 Our first task will be to see how to formalize the syntax and 
 semantics of this language in Lean. 
-TEXT. -/
 
-Syntax of Propositional Logic
------------------------------
+Syntax 
+------
 
 The set of expressions (strings) comprising the formal 
 language of propositional logic is defined inductively. 
@@ -97,8 +96,8 @@ def XandY_and_Z : prop_expr := and_expr XandY Z
 
 /- TEXT:
 
-Semantics of Propositional Logic
---------------------------------
+Semantics
+---------
 
 The semantics of propositional logic assigns a Boolean
 truth value to each expression in the language, but to

@@ -1,7 +1,7 @@
 
 
-A Predicate Logic
-=================
+CS6501, Spring 2023, Sullivan
+==============================
 
 .. toctree::
    :numbered:

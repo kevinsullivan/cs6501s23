@@ -68,17 +68,12 @@ a string with unbalanced parentheses. So we have a grammar
 for the language we've described informally up to now. 
 
 Next we give an equivalent and *completely formal* definition
-of this language in Lean. 
-
-Inductive Data Type Definitions
--------------------------------
-
-In this case, we'll start by defining separate data 
-types, each with just one value, to represent left and 
-right parentheses, respectively. The names of the type
-are lparen and rparen and each has a single value that
-we will call *mk*. We can also say that *mk* in the one
-parameterless (constant) value (or *term*) of this type.
+of this language in Lean.  We'll start by defining separate 
+data  types, each with just one value, to represent left and 
+right parentheses, respectively. The names of the type are 
+*lparen* and *rparen* and each has a single value (in the 
+form of a constructor that takes no arguments and is thus a
+constant) that we will call *mk*. 
 
 .. code-block:: lean
 

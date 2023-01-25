@@ -46,14 +46,15 @@
 <li class="toctree-l2"><a class="reference internal" href="#balanced-parentheses">2.1. Balanced Parentheses</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id1">2.1.1. Formal languages</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#syntax">2.1.2. Syntax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#inductive-data-type-definitions">2.1.3. Inductive Data Type Definitions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#semantics">2.1.4. Semantics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#semantics">2.1.3. Semantics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#simplified-propositional-logic">2.2. Simplified Propositional Logic</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#semantics-of-propositional-logic">2.2.1. Semantics of Propositional Logic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">2.2.1. Syntax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">2.2.2. Semantics</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#propositional-logic">2.3. Propositional Logic</a></li>
 </ul>
 </li>
 </ul>
@@ -144,16 +145,12 @@ parentheses. It isn&#8217;t possible with these rules to produce
 a string with unbalanced parentheses. So we have a grammar
 for the language we&#8217;ve described informally up to now.</p>
 <p>Next we give an equivalent and <em>completely formal</em> definition
-of this language in Lean.</p>
-</section>
-<section id="inductive-data-type-definitions">
-<h3><span class="section-number">2.1.3. </span>Inductive Data Type Definitions<a class="headerlink" href="#inductive-data-type-definitions" title="Permalink to this heading">&#61633;</a></h3>
-<p>In this case, we&#8217;ll start by defining separate data
-types, each with just one value, to represent left and
-right parentheses, respectively. The names of the type
-are lparen and rparen and each has a single value that
-we will call <em>mk</em>. We can also say that <em>mk</em> in the one
-parameterless (constant) value (or <em>term</em>) of this type.</p>
+of this language in Lean.  We&#8217;ll start by defining separate
+data  types, each with just one value, to represent left and
+right parentheses, respectively. The names of the type are
+<em>lparen</em> and <em>rparen</em> and each has a single value (in the
+form of a constructor that takes no arguments and is thus a
+constant) that we will call <em>mk</em>.</p>
 <div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">inductive</span> <span class="n">lparen</span>
 <span class="bp">|</span> <span class="n">mk</span>
 
@@ -236,7 +233,7 @@ For example, our <em>bal</em> language doesn&#8217;t contain any <em>error</em> 
 any other terms not constructible by the given constructors.</p>
 </section>
 <section id="semantics">
-<h3><span class="section-number">2.1.4. </span>Semantics<a class="headerlink" href="#semantics" title="Permalink to this heading">&#61633;</a></h3>
+<h3><span class="section-number">2.1.3. </span>Semantics<a class="headerlink" href="#semantics" title="Permalink to this heading">&#61633;</a></h3>
 <p>The semantics of a formal language defines an association
 between some or all of the terms of a language and what each
 such term means, in some <em>semantic domain</em>. For example, we
@@ -268,6 +265,30 @@ writing conditions in if and loop commands in everyday programming
 languages such as Java.</p>
 <p>Our first task will be to see how to formalize the syntax and
 semantics of this language in Lean.</p>
+<section id="id2">
+<h3><span class="section-number">2.2.1. </span>Syntax<a class="headerlink" href="#id2" title="Permalink to this heading">&#61633;</a></h3>
+<p>The set of expressions (strings) comprising the formal
+language of propositional logic is defined inductively.
+That is, some smallest expressions are first defined,
+with larger expressions then defined as being constructed,
+at least in part, from smaller ones <em>of the same type</em>.</p>
+<p>The syntax of propositional logic comprises</p>
+<ul class="simple">
+<li><p>variables, e.g., x, y, y, theSkyIsBlue, etc</p></li>
+<li><p>a language of propositional expressions (propositions)
+* constant expressions, <em>true</em> and <em>false</em>
+* variable expressions, such as X, Y, Z, TheSkyIsBlue, each such expression having an associated variable
+<a href="#id3"><span class="problematic" id="id4">*</span></a>operator expressions, such as &#172;X, X &#8743; Y, and X &#8744; Y</p></li>
+</ul>
+<p>You can think of these operators as taking expressions
+as their arguments and returning longer expressions as
+their results.</p>
+<p>To begin, we define a datatype the values of which will
+represent our the variables. We&#8217;ll name the type <em>prop_var,</em>
+for propositional variable. For now we&#8217;ll assume we&#8217;re
+restricted to using at most three variables.  We&#8217;ll call
+them <em>x, y,</em> and <em>z</em> and will just list them as being the
+distinct constant values of the <em>prop_var</em> type.</p>
 <div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">inductive</span> <span class="n">prop_var</span> <span class="o">:</span> <span class="kt">Type</span>
 <span class="bp">|</span> <span class="n">x</span>
 <span class="bp">|</span> <span class="n">y</span>
@@ -301,8 +322,9 @@ build larger expressions out of smaller ones.</p>
 <span class="kd">def</span> <span class="n">XandY_and_Z</span> <span class="o">:</span> <span class="n">prop_expr</span> <span class="o">:=</span> <span class="n">and_expr</span> <span class="n">XandY</span> <span class="n">Z</span>
 </pre></div>
 </div>
-<section id="semantics-of-propositional-logic">
-<h3><span class="section-number">2.2.1. </span>Semantics of Propositional Logic<a class="headerlink" href="#semantics-of-propositional-logic" title="Permalink to this heading">&#61633;</a></h3>
+</section>
+<section id="id5">
+<h3><span class="section-number">2.2.2. </span>Semantics<a class="headerlink" href="#id5" title="Permalink to this heading">&#61633;</a></h3>
 <p>The semantics of propositional logic assigns a Boolean
 truth value to each expression in the language, but to
 do this, an additional piece of data is required: one
@@ -404,6 +426,94 @@ semantics of a subset of propositional logic. As an
 in-class exercise, let&#8217;s add some new logical operators:
 for not, or, implies, bi-implication, and exclusive or.</p>
 </section>
+</section>
+<section id="propositional-logic">
+<h2><span class="section-number">2.3. </span>Propositional Logic<a class="headerlink" href="#propositional-logic" title="Permalink to this heading">&#61633;</a></h2>
+<p>Propositional logic has an infinite supply of variables.
+We will represent each variable, then, as a term, var.mk
+with a natural-number-valued argument. This type defines
+an infinite set of terms of type <em>prop_var</em>, each <em>indexed</em>
+by a natural number. You can think of these as var&#8320;, var&#8321;,
+etc.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kn">namespace</span> <span class="n">cs6501</span>
+
+<span class="c1">-- variables, indexed by natural numbers</span>
+<span class="kd">inductive</span> <span class="n">prop_var</span> <span class="o">:</span> <span class="kt">Type</span>
+<span class="bp">|</span> <span class="n">mk</span> <span class="o">(</span><span class="n">n</span> <span class="o">:</span> <span class="n">&#8469;</span><span class="o">)</span>
+
+<span class="c1">-- Abstract syntax</span>
+<span class="kd">inductive</span> <span class="n">prop_expr</span> <span class="o">:</span> <span class="kt">Type</span>
+<span class="bp">|</span> <span class="n">pTrue</span> <span class="o">:</span> <span class="n">prop_expr</span>
+<span class="bp">|</span> <span class="n">pFalse</span> <span class="o">:</span> <span class="n">prop_expr</span>
+<span class="bp">|</span> <span class="n">pVar</span> <span class="o">(</span><span class="n">v</span><span class="o">:</span> <span class="n">prop_var</span><span class="o">)</span>
+<span class="bp">|</span> <span class="n">pNot</span> <span class="o">(</span><span class="n">e</span> <span class="o">:</span> <span class="n">prop_expr</span><span class="o">)</span>
+<span class="bp">|</span> <span class="n">pAnd</span> <span class="o">(</span><span class="n">e1</span> <span class="n">e2</span> <span class="o">:</span> <span class="n">prop_expr</span><span class="o">)</span>
+<span class="bp">|</span> <span class="n">pOr</span> <span class="o">(</span><span class="n">e1</span> <span class="n">e2</span> <span class="o">:</span> <span class="n">prop_expr</span><span class="o">)</span>
+<span class="bp">|</span> <span class="n">pImp</span> <span class="o">(</span><span class="n">e1</span> <span class="n">e2</span> <span class="o">:</span> <span class="n">prop_expr</span><span class="o">)</span>
+<span class="bp">|</span> <span class="n">pIff</span> <span class="o">(</span><span class="n">e1</span> <span class="n">e2</span> <span class="o">:</span> <span class="n">prop_expr</span><span class="o">)</span>
+<span class="bp">|</span> <span class="n">pXor</span> <span class="o">(</span><span class="n">e1</span> <span class="n">e2</span> <span class="o">:</span> <span class="n">prop_expr</span><span class="o">)</span>
+
+<span class="kn">open</span> <span class="n">prop_expr</span>
+</pre></div>
+</div>
+<p>We can now <em>overload</em> some predefined operators in Lean
+having appropriate associativity and precedence properties
+to obtain a nice <em>concrete syntax</em> for our language. See also
+(<a class="reference external" href="https://github.com/leanprover/lean/blob/master/library/init/core.lean">https://github.com/leanprover/lean/blob/master/library/init/core.lean</a>)</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">notation</span> <span class="o">(</span><span class="n">name</span> <span class="o">:=</span> <span class="n">var_mk</span><span class="o">)</span> <span class="bp">`</span><span class="o">[</span><span class="bp">`</span> <span class="n">v</span> <span class="bp">`</span><span class="o">]</span><span class="bp">`</span> <span class="o">:=</span>  <span class="n">pVar</span> <span class="n">v</span>
+<span class="kd">notation</span> <span class="o">(</span><span class="n">name</span> <span class="o">:=</span> <span class="n">pAnd</span><span class="o">)</span> <span class="n">e1</span> <span class="bp">&#8743;</span> <span class="n">e2</span> <span class="o">:=</span>  <span class="n">pAnd</span> <span class="n">e1</span> <span class="n">e2</span>
+<span class="kd">notation</span> <span class="o">(</span><span class="n">name</span> <span class="o">:=</span> <span class="n">pOr</span><span class="o">)</span> <span class="n">e1</span> <span class="bp">&#8744;</span> <span class="n">e2</span> <span class="o">:=</span>  <span class="n">pOr</span> <span class="n">e1</span> <span class="n">e2</span>
+<span class="kd">notation</span> <span class="o">(</span><span class="n">name</span> <span class="o">:=</span> <span class="n">pNot</span><span class="o">)</span> <span class="bp">&#172;</span><span class="n">e</span> <span class="o">:=</span> <span class="n">pNot</span> <span class="n">e</span>
+<span class="kd">notation</span> <span class="o">(</span><span class="n">name</span> <span class="o">:=</span> <span class="n">pImp</span><span class="o">)</span> <span class="n">e1</span> <span class="bp">=&gt;</span> <span class="n">e2</span> <span class="o">:=</span> <span class="n">pImp</span> <span class="n">e1</span> <span class="n">e2</span>
+<span class="kd">notation</span> <span class="o">(</span><span class="n">name</span> <span class="o">:=</span> <span class="n">pIff</span><span class="o">)</span> <span class="n">e1</span> <span class="bp">&#8596;</span> <span class="n">e2</span> <span class="o">:=</span> <span class="n">pIff</span> <span class="n">e1</span> <span class="n">e2</span>
+<span class="kd">notation</span> <span class="o">(</span><span class="n">name</span> <span class="o">:=</span> <span class="n">pXor</span><span class="o">)</span> <span class="n">e1</span> <span class="bp">&#8853;</span> <span class="n">e2</span> <span class="o">:=</span> <span class="n">pXor</span> <span class="n">e1</span> <span class="n">e2</span>
+</pre></div>
+</div>
+<p>Here, after giving nice names, X, Y, and Z, to
+the first three variables, we givesome examples of
+propositional logic expressions written using our
+new <em>concrete</em> syntax.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">X</span> <span class="o">:=</span> <span class="o">[</span><span class="n">prop_var.mk</span> <span class="mi">0</span><span class="o">]</span>
+<span class="kd">def</span> <span class="n">Y</span> <span class="o">:=</span> <span class="o">[</span><span class="n">prop_var.mk</span> <span class="mi">1</span><span class="o">]</span>
+<span class="kd">def</span> <span class="n">Z</span> <span class="o">:=</span> <span class="o">[</span><span class="n">prop_var.mk</span> <span class="mi">2</span><span class="o">]</span>
+
+<span class="kd">def</span> <span class="n">e1</span> <span class="o">:=</span> <span class="n">X</span> <span class="bp">&#8743;</span> <span class="n">Y</span>
+<span class="kd">def</span> <span class="n">e2</span> <span class="o">:=</span> <span class="n">X</span> <span class="bp">&#8744;</span> <span class="n">Y</span>
+<span class="kd">def</span> <span class="n">e3</span> <span class="o">:=</span> <span class="bp">&#172;</span> <span class="n">Z</span>
+<span class="kd">def</span> <span class="n">e4</span> <span class="o">:=</span> <span class="n">e1</span> <span class="bp">=&gt;</span> <span class="n">e2</span>  <span class="c1">-- avoid overloading &#8594;</span>
+<span class="kd">def</span> <span class="n">e5</span> <span class="o">:=</span> <span class="n">e1</span> <span class="bp">&#8596;</span> <span class="n">e1</span>
+<span class="kd">def</span> <span class="n">e6</span> <span class="o">:=</span> <span class="n">X</span> <span class="bp">&#8853;</span> <span class="bp">&#172;</span><span class="n">X</span>
+</pre></div>
+</div>
+<p>SEMANTICS</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Helper functions</span>
+<span class="kd">def</span> <span class="n">bimp</span> <span class="o">:</span> <span class="n">bool</span> <span class="bp">&#8594;</span> <span class="n">bool</span> <span class="bp">&#8594;</span> <span class="n">bool</span>
+<span class="bp">|</span> <span class="n">tt</span> <span class="n">tt</span> <span class="o">:=</span> <span class="n">tt</span>
+<span class="bp">|</span> <span class="n">tt</span> <span class="n">ff</span> <span class="o">:=</span> <span class="n">ff</span>
+<span class="bp">|</span> <span class="n">ff</span> <span class="n">tt</span> <span class="o">:=</span> <span class="n">tt</span>
+<span class="bp">|</span> <span class="n">ff</span> <span class="n">ff</span> <span class="o">:=</span> <span class="n">tt</span>
+
+<span class="kd">def</span> <span class="n">biff</span> <span class="o">:</span> <span class="n">bool</span> <span class="bp">&#8594;</span> <span class="n">bool</span> <span class="bp">&#8594;</span> <span class="n">bool</span>
+<span class="bp">|</span> <span class="n">tt</span> <span class="n">tt</span> <span class="o">:=</span> <span class="n">tt</span>
+<span class="bp">|</span> <span class="n">tt</span> <span class="n">ff</span> <span class="o">:=</span> <span class="n">ff</span>
+<span class="bp">|</span> <span class="n">ff</span> <span class="n">tt</span> <span class="o">:=</span> <span class="n">ff</span>
+<span class="bp">|</span> <span class="n">ff</span> <span class="n">ff</span> <span class="o">:=</span> <span class="n">tt</span>
+
+<span class="c1">-- Operational semantics</span>
+<span class="kd">def</span> <span class="n">pEval</span> <span class="o">:</span> <span class="n">prop_expr</span> <span class="bp">&#8594;</span> <span class="o">(</span><span class="n">prop_var</span> <span class="bp">&#8594;</span> <span class="n">bool</span><span class="o">)</span> <span class="bp">&#8594;</span> <span class="n">bool</span>
+<span class="bp">|</span> <span class="n">pTrue</span> <span class="n">_</span> <span class="o">:=</span> <span class="n">tt</span>
+<span class="bp">|</span> <span class="n">pFalse</span> <span class="n">_</span> <span class="o">:=</span> <span class="n">ff</span>
+<span class="bp">|</span> <span class="o">([</span><span class="n">v</span><span class="o">])</span> <span class="n">i</span> <span class="o">:=</span> <span class="n">i</span> <span class="n">v</span>
+<span class="bp">|</span> <span class="o">(</span><span class="bp">&#172;</span> <span class="n">e</span><span class="o">)</span> <span class="n">i</span> <span class="o">:=</span> <span class="n">bnot</span> <span class="o">(</span><span class="n">pEval</span> <span class="n">e</span> <span class="n">i</span><span class="o">)</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">e1</span> <span class="bp">&#8743;</span> <span class="n">e2</span><span class="o">)</span> <span class="n">i</span> <span class="o">:=</span> <span class="o">(</span><span class="n">pEval</span> <span class="n">e1</span> <span class="n">i</span><span class="o">)</span> <span class="bp">&amp;&amp;</span> <span class="o">(</span><span class="n">pEval</span> <span class="n">e2</span> <span class="n">i</span><span class="o">)</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">e1</span> <span class="bp">&#8744;</span> <span class="n">e2</span><span class="o">)</span> <span class="n">i</span> <span class="o">:=</span> <span class="o">(</span><span class="n">pEval</span> <span class="n">e1</span> <span class="n">i</span><span class="o">)</span> <span class="bp">||</span> <span class="o">(</span><span class="n">pEval</span> <span class="n">e2</span> <span class="n">i</span><span class="o">)</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">e1</span> <span class="bp">=&gt;</span> <span class="n">e2</span><span class="o">)</span> <span class="n">i</span> <span class="o">:=</span> <span class="n">bimp</span> <span class="o">(</span><span class="n">pEval</span> <span class="n">e1</span> <span class="n">i</span><span class="o">)</span> <span class="o">(</span><span class="n">pEval</span> <span class="n">e2</span> <span class="n">i</span><span class="o">)</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">e1</span> <span class="bp">&#8596;</span> <span class="n">e2</span><span class="o">)</span> <span class="n">i</span> <span class="o">:=</span> <span class="n">biff</span> <span class="o">(</span><span class="n">pEval</span> <span class="n">e1</span> <span class="n">i</span><span class="o">)</span> <span class="o">(</span><span class="n">pEval</span> <span class="n">e2</span> <span class="n">i</span><span class="o">)</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">e1</span> <span class="bp">&#8853;</span> <span class="n">e2</span><span class="o">)</span> <span class="n">i</span> <span class="o">:=</span> <span class="n">xor</span> <span class="o">(</span><span class="n">pEval</span> <span class="n">e1</span> <span class="n">i</span><span class="o">)</span> <span class="o">(</span><span class="n">pEval</span> <span class="n">e2</span> <span class="n">i</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>I&#8217;ll fill in explanatory text later, but for now wanted
+to get you the <em>code</em>.</p>
 </section>
 </section>
 

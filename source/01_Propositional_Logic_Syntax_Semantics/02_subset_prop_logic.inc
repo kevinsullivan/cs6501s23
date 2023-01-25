@@ -17,6 +17,34 @@ languages such as Java.
 Our first task will be to see how to formalize the syntax and 
 semantics of this language in Lean. 
 
+Syntax 
+------
+
+The set of expressions (strings) comprising the formal 
+language of propositional logic is defined inductively. 
+That is, some smallest expressions are first defined, 
+with larger expressions then defined as being constructed, 
+at least in part, from smaller ones *of the same type*.
+
+The syntax of propositional logic comprises 
+
+* variables, e.g., x, y, y, theSkyIsBlue, etc
+* a language of propositional expressions (propositions)
+  * constant expressions, *true* and *false*
+  * variable expressions, such as X, Y, Z, TheSkyIsBlue, each such expression having an associated variable
+  *operator expressions, such as ¬X, X ∧ Y, and X ∨ Y
+
+You can think of these operators as taking expressions
+as their arguments and returning longer expressions as 
+their results.
+
+To begin, we define a datatype the values of which will
+represent our the variables. We'll name the type *prop_var,* 
+for propositional variable. For now we'll assume we're 
+restricted to using at most three variables.  We'll call
+them *x, y,* and *z* and will just list them as being the
+distinct constant values of the *prop_var* type.
+
 .. code-block:: lean
 
   inductive prop_var : Type
@@ -58,8 +86,8 @@ build larger expressions out of smaller ones.
   def XandY_and_Z : prop_expr := and_expr XandY Z 
 
 
-Semantics of Propositional Logic
---------------------------------
+Semantics
+---------
 
 The semantics of propositional logic assigns a Boolean
 truth value to each expression in the language, but to
