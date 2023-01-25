@@ -16,7 +16,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'A Predicate Logic'
+project = 'CS6501 Spring 2023'
 copyright = '2023, Kevin Sullivan'
 author = 'Kevin Sullivan'
 

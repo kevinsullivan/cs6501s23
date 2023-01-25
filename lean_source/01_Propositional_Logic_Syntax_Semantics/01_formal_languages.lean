@@ -1,51 +1,49 @@
 /- TEXT:
-Formal Languages : Syntax and Semantics
-=======================================
 
-To begin our journey into the formalization of abstract
-mathematics for software engineering, we will specify the 
-syntax and semantics of a very simple mathatical language, 
-namely *propositional logic*. 
+********************
+Balanced Parentheses
+********************
 
-*Propositional logic* is *isomorphic* to (essentially 
-the same thing as) Boolean algebra. You already know about 
-Boolean algebra from writing conditions in *if* and *loop* 
-commands in everyday programming languages such as Java.  
-
-Our task is to see how to formalize the syntax and semantics
-of this language in Lean. As a warmup, and to put some basic
-concepts into play, however, we will first specify the syntax 
-and semantics of a simpler formal language: the language of
-strings of balanced parentheses. So let's get started.
+As a warmup, and to put some basic
+concepts into play, we'll begin by specifying the syntax 
+and semantics of a simple formal language: the language of
+strings of balanced parentheses. Before we do that, we'll
+better explain wht it all menas. So let's get started.
 
 Formal languages
 ----------------
 
-The syntax of propositional logic defines a *formal language:* 
-a (possibly infinite) set of strings of symbols from a given 
-*alphabet*. The formal language of basic algebra, for example, 
-includes strings such as *x*, *y*, and *x + y*, but not *x y*,
-while propositional logic includes *X*, *Y*, and *X ∧ Y* but
-not *X Y*. 
+The syntax of a *formal language* defines a (possibly 
+infinite) set of strings. Strings are sequences of symbols 
+from some *alphabet* of symbols. The formal language of basic 
+algebra, for example, includes strings such as *x*, *y*, and 
+*x + y*, but not *x y*. Propositional logic includes *X*, *Y*, 
+and *X ∧ Y* but not *X Y*. 
 
-As another example, consider the formal language of all strings 
-of balanced parentheses. The language include the empty string, 
-*(), (()), ((())), ...., ad infinitum,* but not *(*, *)*, *(()*
-and so forth. 
+As another example, which shortly we will specify formally,
+consider the language of all strings of balanced parentheses. 
+The language includes the empty string, *(), (()), ((())), etc. 
+It does not include any unbalanced strings, such as *(*, *)*, 
+or *(()*. 
 
-What we need first is a complete and precise way to specify all 
-and only the strings in such a language. One way to do this is 
-to give a *finite* set of *rules* for building all and only the 
-strings in of a given langauge language.
+The number of strings in this language is infinite, one for 
+each possible finite nesting depth of such a string. That is,
+for any natural number, n, there is a string with that nesting
+depth. 
+
+We clearly can't specify the set of strings by exhaustively
+enumerating them. There are too many for that. Rather, we need 
+a concise and precise way to specify rules for buildng all and
+only the strings in the language.
 
 We can specify the balanced parentheses language with just two
-rules. First, the empty string, denoted ∅, is an string in the 
-language. Second, if *e* is *any* string in the language, then 
-so is *(e)*, i.e., *e* inside another pair of parentheses. 
+rules. First, the empty string, let's write it as ∅, is a string 
+in our language. Second, if *b* is *any* string in the language, 
+then so is *(b)*. 
 
-We can obtain a string of any nesting depth in this language
+We can construct a string of any nesting depth in this language
 by applying the first rule once then the second rule as many
-(but a finite) times as needed to obtain the desired string. The
+(finite) times as needed to construct the desired string. The
 length of each such string is finite but the number of strings 
 in the language is infinite. 
 
@@ -56,9 +54,9 @@ We can write this set of rules somewhat more formally as
 a *grammar* expressed in so-called *Backus-Naur Form*, or
 BNF, as follows: 
 
-  *expression ::= 
+  expression ::= 
   | ∅ 
-  | (expression)*. 
+  | (expression)
 
 This definition says that an expression (string) in our
 language is either the empty string or it's an expression
@@ -86,12 +84,16 @@ TEXT. -/
 
 
 -- QUOTE:
-
 inductive lparen 
 | mk
 
 inductive rparen
 | mk
+
+
+-- named and anonymous demo/test values
+def a_left_paren : lparen := lparen.mk
+example          : rparen := rparen.mk
 -- QUOTE.
 
 /- TEXT:
@@ -139,6 +141,13 @@ mk_nonempty           -- constructor
   lparen.mk           -- arguments
   b0 
   rparen.mk
+
+def b2 := 
+mk_nonempty  
+  lparen.mk
+  b1
+  rparen.mk
+
 -- QUOTE.
 
 
@@ -167,13 +176,6 @@ TEXT. -/
 From here we can build larger and larger strings in *bal*.
 TEXT. -/
 
--- QUOTE:
-def b2 : bal :=   -- construct this larger string in bal ...
-mk_nonempty 
-  lparen.mk 
-  b1              -- ... from this smaller string in bal
-  rparen.mk
--- QUOTE.
 
 /- TEXT: 
 There are three crucial properties of constructors of inductive

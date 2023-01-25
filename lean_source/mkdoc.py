@@ -75,7 +75,7 @@ if __name__ == '__main__':
                 quoting = True
             elif quote_end.match(line):
                 if not quoting:
-                    raise RuntimeError("{0}: '-- QUOTE.' while not quoting".format(line_num,source_file))
+                    raise RuntimeError("{0}, {1}: '-- QUOTE.' while not quoting".format(line_num,source_file))
                 rst_file.write('\n')
                 quoting = False
             elif match_literalinclude := literalinclude.match(line):

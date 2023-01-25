@@ -1,4 +1,9 @@
 /- TEXT:
+
+*******************
+To Think Abstractly
+*******************
+
 To think abstractly, and certainly to perform scientific
 reasoning effectively, we need languages in which we can
 describe and reason about complex worlds. By a world we 

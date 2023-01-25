@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2. Formal Languages &mdash; CS6501 Spring 2023 0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Index" href="genindex.html" />
+    <link rel="prev" title="1. CS6501 Spring 2023" href="00_Introduction.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> CS6501 Spring 2023
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="00_Introduction.html">1. CS6501 Spring 2023</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. Formal Languages</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#balanced-parentheses">2.1. Balanced Parentheses</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">2.1.1. Formal languages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#syntax">2.1.2. Syntax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inductive-data-type-definitions">2.1.3. Inductive Data Type Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#semantics">2.1.4. Semantics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#simplified-propositional-logic">2.2. Simplified Propositional Logic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#semantics-of-propositional-logic">2.2.1. Semantics of Propositional Logic</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CS6501 Spring 2023</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">2. </span>Formal Languages</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/01_Propositional_Logic_Syntax_Semantics.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="formal-languages">
+<span id="introduction"></span><h1><span class="section-number">2. </span>Formal Languages<a class="headerlink" href="#formal-languages" title="Permalink to this heading">&#61633;</a></h1>
+<section id="balanced-parentheses">
+<h2><span class="section-number">2.1. </span>Balanced Parentheses<a class="headerlink" href="#balanced-parentheses" title="Permalink to this heading">&#61633;</a></h2>
+<p>As a warmup, and to put some basic
+concepts into play, we&#8217;ll begin by specifying the syntax
+and semantics of a simple formal language: the language of
+strings of balanced parentheses. Before we do that, we&#8217;ll
+better explain wht it all menas. So let&#8217;s get started.</p>
+<section id="id1">
+<h3><span class="section-number">2.1.1. </span>Formal languages<a class="headerlink" href="#id1" title="Permalink to this heading">&#61633;</a></h3>
+<p>The syntax of a <em>formal language</em> defines a (possibly
+infinite) set of strings. Strings are sequences of symbols
+from some <em>alphabet</em> of symbols. The formal language of basic
+algebra, for example, includes strings such as <em>x</em>, <em>y</em>, and
+<em>x + y</em>, but not <em>x y</em>. Propositional logic includes <em>X</em>, <em>Y</em>,
+and <em>X &#8743; Y</em> but not <em>X Y</em>.</p>
+<p>As another example, which shortly we will specify formally,
+consider the language of all strings of balanced parentheses.
+The language includes the empty string, <em>(), (()), ((())), etc.
+It does not include any unbalanced strings, such as *(</em>, <em>)</em>,
+or <em>(()</em>.</p>
+<p>The number of strings in this language is infinite, one for
+each possible finite nesting depth of such a string. That is,
+for any natural number, n, there is a string with that nesting
+depth.</p>
+<p>We clearly can&#8217;t specify the set of strings by exhaustively
+enumerating them. There are too many for that. Rather, we need
+a concise and precise way to specify rules for buildng all and
+only the strings in the language.</p>
+<p>We can specify the balanced parentheses language with just two
+rules. First, the empty string, let&#8217;s write it as &#8709;, is a string
+in our language. Second, if <em>b</em> is <em>any</em> string in the language,
+then so is <em>(b)</em>.</p>
+<p>We can construct a string of any nesting depth in this language
+by applying the first rule once then the second rule as many
+(finite) times as needed to construct the desired string. The
+length of each such string is finite but the number of strings
+in the language is infinite.</p>
+</section>
+<section id="syntax">
+<h3><span class="section-number">2.1.2. </span>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading">&#61633;</a></h3>
+<p>We can write this set of rules somewhat more formally as
+a <em>grammar</em> expressed in so-called <em>Backus-Naur Form</em>, or
+BNF, as follows:</p>
+<blockquote>
+<div><p>expression ::=
+| &#8709;
+| (expression)</p>
+</div></blockquote>
+<p>This definition says that an expression (string) in our
+language is either the empty string or it&#8217;s an expression
+within a pair of parentheses. That&#8217;s it.</p>
+<p>You can see that the strings <em>generated</em> by this grammar
+include the empty string, and any longer string of balanced
+parentheses. It isn&#8217;t possible with these rules to produce
+a string with unbalanced parentheses. So we have a grammar
+for the language we&#8217;ve described informally up to now.</p>
+<p>Next we give an equivalent and <em>completely formal</em> definition
+of this language in Lean.</p>
+</section>
+<section id="inductive-data-type-definitions">
+<h3><span class="section-number">2.1.3. </span>Inductive Data Type Definitions<a class="headerlink" href="#inductive-data-type-definitions" title="Permalink to this heading">&#61633;</a></h3>
+<p>In this case, we&#8217;ll start by defining separate data
+types, each with just one value, to represent left and
+right parentheses, respectively. The names of the type
+are lparen and rparen and each has a single value that
+we will call <em>mk</em>. We can also say that <em>mk</em> in the one
+parameterless (constant) value (or <em>term</em>) of this type.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">inductive</span> <span class="n">lparen</span>
+<span class="bp">|</span> <span class="n">mk</span>
+
+<span class="kd">inductive</span> <span class="n">rparen</span>
+<span class="bp">|</span> <span class="n">mk</span>
+
+
+<span class="c1">-- named and anonymous demo/test values</span>
+<span class="kd">def</span> <span class="n">a_left_paren</span> <span class="o">:</span> <span class="n">lparen</span> <span class="o">:=</span> <span class="n">lparen.mk</span>
+<span class="kd">example</span>          <span class="o">:</span> <span class="n">rparen</span> <span class="o">:=</span> <span class="n">rparen.mk</span>
+</pre></div>
+</div>
+<p>Next we specify the set of balanced parenthesis strings.
+It&#8217;s an inductive definition. First, the empty string, &#8709;,
+is balanced. We represent it as the term mk_empty of type
+bal. The second <em>constructor</em>, <em>mk_nonempty</em> takes three
+arguments: (1) any term, l, of type lparen, (2) any balanced
+string, b, (3) any term, r, of type rparen. It then packages
+these arguments into the term, <em>mk_nonempty l b r</em>.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">inductive</span> <span class="n">bal</span>
+<span class="bp">|</span> <span class="n">mk_empty</span>
+<span class="bp">|</span> <span class="n">mk_nonempty</span> <span class="o">(</span><span class="n">l</span><span class="o">:</span> <span class="n">lparen</span><span class="o">)</span> <span class="o">(</span><span class="n">b</span> <span class="o">:</span> <span class="n">bal</span><span class="o">)</span> <span class="o">(</span><span class="n">r</span> <span class="o">:</span> <span class="n">rparen</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>The only thing that a constructor does in such a definition
+is to package up its arguments (if any) into a new term with
+the constructor name as a label. The type system of Lean will
+now recognize any such term as also being of type bal. Here
+are definitions of the first few balanced strings in our new
+language.</p>
+<p>WE Open the bal namespace so that we don&#8217;t have to write
+<em>bal.</em> before each constructor name of <em>bal</em>. These names
+do not conflict with any existing definitions in the current
+(global) namespace. We don&#8217;t open the lparen and rparen
+namespaces because then we&#8217;d have two (ambiguous) definitions
+of the identifier, mk, and we&#8217;d have to write <em>lparen.mk</em> or
+<em>rparen.mk</em> in any case to disambiguate them.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kn">open</span> <span class="n">bal</span>
+
+
+<span class="kd">def</span> <span class="n">b0</span> <span class="o">:</span> <span class="n">bal</span> <span class="o">:=</span>       <span class="c1">-- &#8709;</span>
+  <span class="n">mk_empty</span>
+
+<span class="kd">def</span> <span class="n">b1</span> <span class="o">:</span> <span class="n">bal</span> <span class="o">:=</span>       <span class="c1">-- (&#8709;)</span>
+<span class="n">mk_nonempty</span>           <span class="c1">-- constructor</span>
+  <span class="n">lparen.mk</span>           <span class="c1">-- arguments</span>
+  <span class="n">b0</span>
+  <span class="n">rparen.mk</span>
+
+<span class="kd">def</span> <span class="n">b2</span> <span class="o">:=</span>
+<span class="n">mk_nonempty</span>
+  <span class="n">lparen.mk</span>
+  <span class="n">b1</span>
+  <span class="n">rparen.mk</span>
+</pre></div>
+</div>
+<p>You can confirm that the type of b1 is bal using the
+<em>check</em> command in Lean. The output of this  command is
+visible if you hover your cursor over the blue underline
+(in VSCode) and in your Lean infoview. You can open and
+close that view in VSCode with CMD/CTRL-SHIFT-ENTER.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="n">b1</span>
+</pre></div>
+</div>
+<p>You can now use the <em>reduce</em> command in Lean to see that <em>b1</em> is
+bound to the term, <em>mk_nonempty lparen.mk mk_empty rparen.mk</em>.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#reduce</span> <span class="n">b1</span>
+</pre></div>
+</div>
+<p>From here we can build larger and larger strings in <em>bal</em>.
+There are three crucial properties of constructors of inductive
+data types in Lean that you should now understand. First, they
+are <em>disjoint</em>. Different constructors <em>never</em> produce the same
+value. Second, they are <em>injective</em>. A constructor applied to
+different argument values will always produce different terms.
+Finally, they are complete. The langauge they define contains
+<em>all</em> of the strings constructible by any finite number of
+applications of the defined constructors <em>and no other terms</em>.
+For example, our <em>bal</em> language doesn&#8217;t contain any <em>error</em> or
+any other terms not constructible by the given constructors.</p>
+</section>
+<section id="semantics">
+<h3><span class="section-number">2.1.4. </span>Semantics<a class="headerlink" href="#semantics" title="Permalink to this heading">&#61633;</a></h3>
+<p>The semantics of a formal language defines an association
+between some or all of the terms of a language and what each
+such term means, in some <em>semantic domain</em>. For example, we
+can associate each string in our <em>bal</em> language with the
+natural number that describes its nesting depth.</p>
+<p>In this case, there is total function from terms of type
+<em>bal</em> to <em>&#8469;</em>, so we can specify the semantics as a function
+in Lean.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">sem</span> <span class="o">:</span> <span class="n">bal</span> <span class="bp">&#8594;</span> <span class="n">&#8469;</span>
+<span class="bp">|</span> <span class="n">mk_empty</span> <span class="o">:=</span> <span class="mi">0</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">mk_nonempty</span> <span class="n">l</span> <span class="n">b</span> <span class="n">r</span><span class="o">)</span> <span class="o">:=</span> <span class="mi">1</span> <span class="bp">+</span> <span class="n">sem</span> <span class="n">b</span>
+
+<span class="c1">-- We can now run some tests to see that it works</span>
+<span class="k">#reduce</span> <span class="n">sem</span> <span class="n">b0</span>
+<span class="k">#reduce</span> <span class="n">sem</span> <span class="n">b1</span>
+<span class="k">#reduce</span> <span class="n">sem</span> <span class="n">b2</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="simplified-propositional-logic">
+<h2><span class="section-number">2.2. </span>Simplified Propositional Logic<a class="headerlink" href="#simplified-propositional-logic" title="Permalink to this heading">&#61633;</a></h2>
+<p>Our next step toward formalizing abstract mathematics for software
+engineering, we will specify the syntax and semantics of a simple
+but important mathatical language, namely <em>propositional logic</em>.</p>
+<p>Propositional logic is isomorphic to (essentially the same thing
+as) Boolean algebra. You already know about Boolean algebra from
+writing conditions in if and loop commands in everyday programming
+languages such as Java.</p>
+<p>Our first task will be to see how to formalize the syntax and
+semantics of this language in Lean.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">inductive</span> <span class="n">prop_var</span> <span class="o">:</span> <span class="kt">Type</span>
+<span class="bp">|</span> <span class="n">x</span>
+<span class="bp">|</span> <span class="n">y</span>
+<span class="bp">|</span> <span class="n">z</span>
+
+<span class="kn">open</span> <span class="n">prop_var</span>
+</pre></div>
+</div>
+<p>Next we&#8217;ll define the set of expressions in our language,
+which we&#8217;ll call <em>prop_expr</em>, the language of expressions
+in propositional logic.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">inductive</span> <span class="n">prop_expr</span>
+<span class="bp">|</span> <span class="n">var_expr</span> <span class="o">(</span><span class="n">v</span> <span class="o">:</span> <span class="n">prop_var</span><span class="o">)</span>
+<span class="bp">|</span> <span class="n">and_expr</span> <span class="o">(</span><span class="n">e1</span> <span class="n">e2</span> <span class="o">:</span> <span class="n">prop_expr</span><span class="o">)</span>
+<span class="bp">|</span> <span class="n">or_expr</span> <span class="o">(</span><span class="n">e1</span> <span class="n">e2</span> <span class="o">:</span> <span class="n">prop_expr</span><span class="o">)</span>
+
+<span class="kn">open</span> <span class="n">prop_expr</span>
+</pre></div>
+</div>
+<p>We can now form both variable and operator
+expressions! Let&#8217;s start with some variable
+expressions.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">X</span> <span class="o">:</span> <span class="n">prop_expr</span> <span class="o">:=</span> <span class="n">var_expr</span> <span class="n">x</span>
+<span class="kd">def</span> <span class="n">Y</span> <span class="o">:</span> <span class="n">prop_expr</span> <span class="o">:=</span> <span class="n">var_expr</span> <span class="n">y</span>
+<span class="kd">def</span> <span class="n">Z</span> <span class="o">:</span> <span class="n">prop_expr</span> <span class="o">:=</span> <span class="n">var_expr</span> <span class="n">z</span>
+</pre></div>
+</div>
+<p>We can also define operator expressions, which
+build larger expressions out of smaller ones.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">XandY</span> <span class="o">:</span> <span class="n">prop_expr</span> <span class="o">:=</span> <span class="n">and_expr</span> <span class="n">X</span> <span class="n">Y</span>
+<span class="kd">def</span> <span class="n">XandY_and_Z</span> <span class="o">:</span> <span class="n">prop_expr</span> <span class="o">:=</span> <span class="n">and_expr</span> <span class="n">XandY</span> <span class="n">Z</span>
+</pre></div>
+</div>
+<section id="semantics-of-propositional-logic">
+<h3><span class="section-number">2.2.1. </span>Semantics of Propositional Logic<a class="headerlink" href="#semantics-of-propositional-logic" title="Permalink to this heading">&#61633;</a></h3>
+<p>The semantics of propositional logic assigns a Boolean
+truth value to each expression in the language, but to
+do this, an additional piece of data is required: one
+that defines the Boolean meaning (truth value) of each
+<em>variable</em> referenced by any variable expression.</p>
+<p>What for example is the meaning of the variable expression,
+<em>X</em>? It&#8217;s impossible to say unless you know the meaning of
+the variable, <em>x</em>. If the meaning of <em>x</em> is true, then we
+define the meaning of <em>X</em> to be true, and likewise for the
+value, false.</p>
+<p>We will use the word <em>interpretation</em> to refer to any
+assignment of Boolean truth values to all variables that
+can be referenced by any given variable expression. For
+example, we might define <em>x</em>, <em>y</em>, and <em>z</em> all to have
+true as their meanings.  We can formalize this mapping
+from variables to truth values as a total function from
+terms of type <em>prop_var</em> to terms of type <em>bool</em> in Lean.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">all_true</span> <span class="o">:</span> <span class="n">prop_var</span> <span class="bp">&#8594;</span> <span class="n">bool</span>
+<span class="bp">|</span> <span class="n">_</span> <span class="o">:=</span> <span class="n">tt</span>   <span class="c1">-- for any argument return true (tt in Lean)</span>
+</pre></div>
+</div>
+<p>Similarly here&#8217;s an interpretation under which all variables
+are assigned the value, false.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">all_false</span> <span class="o">:</span> <span class="n">prop_var</span> <span class="bp">&#8594;</span> <span class="n">bool</span>
+<span class="bp">|</span> <span class="n">_</span> <span class="o">:=</span> <span class="n">ff</span>   <span class="c1">-- for any argument return true (tt in Lean)</span>
+</pre></div>
+</div>
+<p>Now here&#8217;s an interpretation under which x is assigned true,
+and the remaining variables (y and z) are assigned false.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">mixed</span> <span class="o">:</span> <span class="n">prop_var</span> <span class="bp">&#8594;</span> <span class="n">bool</span>
+<span class="bp">|</span> <span class="n">prop_var.x</span> <span class="o">:=</span> <span class="n">tt</span>
+<span class="bp">|</span> <span class="n">_</span> <span class="o">:=</span> <span class="n">ff</span>
+
+<span class="k">#reduce</span> <span class="n">mixed</span> <span class="n">z</span>
+
+<span class="kd">def</span> <span class="n">another_interpretation</span> <span class="o">:</span> <span class="n">prop_var</span> <span class="bp">&#8594;</span> <span class="n">bool</span>
+<span class="bp">|</span> <span class="n">x</span> <span class="o">:=</span> <span class="n">tt</span>
+<span class="bp">|</span> <span class="n">y</span> <span class="o">:=</span> <span class="n">ff</span>
+<span class="bp">|</span> <span class="n">z</span> <span class="o">:=</span> <span class="n">tt</span>
+</pre></div>
+</div>
+<p>Given one of these interpretations as additional data, we
+can now assign truth value semantic meanings to expressions
+such as XandY (and_expr X Y). We do this recursively. First
+we evaluate X to get its truth value (by applying a given
+interpretation function to the variable, x, that expression
+X &#8220;contains&#8221;.</p>
+<p>Recall that X is defined to be the term, var_expr x. We just
+need to <em>destructure</em> this term to get the <em>x</em> part of it.
+Remember that constructors simply package up their arguments
+into terms in which those arguments appear in order. Once we
+get at the variable, <em>x</em>, we just apply an interpretation
+function to it to get its corresponding Boolean value, and
+we take that as the meaning of the variable expression, <em>X</em>.</p>
+<p>Ok, so what about the meaning of <em>(and_expr X Y)</em>? First we
+need to know the meanings of <em>X</em> and <em>Y</em>. Suppose they are
+true and false, respectively. Then we define the meaning of
+<em>(and_expr X Y)</em> as the Boolean <em>conjunction</em> of these truth
+values. In this case, that&#8217;d be <em>tt &amp;&amp; ff,</em> which is <em>ff</em>.</p>
+<p>Here then is a semantic evaluation function that implements
+these two notions: one in the case where the expression to
+be given a meaning is a variable expression, and one where
+it&#8217;s an <em>and</em> expression.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">prop_eval</span> <span class="o">:</span> <span class="n">prop_expr</span> <span class="bp">&#8594;</span> <span class="o">(</span><span class="n">prop_var</span> <span class="bp">&#8594;</span> <span class="n">bool</span><span class="o">)</span> <span class="bp">&#8594;</span> <span class="n">bool</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">var_expr</span> <span class="n">v</span><span class="o">)</span> <span class="n">i</span> <span class="o">:=</span> <span class="n">i</span> <span class="n">v</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">and_expr</span> <span class="n">e1</span> <span class="n">e2</span><span class="o">)</span> <span class="n">i</span> <span class="o">:=</span> <span class="n">band</span> <span class="o">(</span><span class="n">prop_eval</span> <span class="n">e1</span> <span class="n">i</span><span class="o">)</span> <span class="o">(</span><span class="n">prop_eval</span> <span class="n">e2</span> <span class="n">i</span><span class="o">)</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">or_expr</span> <span class="n">e1</span> <span class="n">e2</span><span class="o">)</span> <span class="n">i</span> <span class="o">:=</span> <span class="n">bor</span> <span class="o">(</span><span class="n">prop_eval</span> <span class="n">e1</span> <span class="n">i</span><span class="o">)</span> <span class="o">(</span><span class="n">prop_eval</span> <span class="n">e2</span> <span class="n">i</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>Now we can find the meaning of <em>any</em> expression in our
+initial subset of the language of propositional logic.
+To be more precise, we&#8217;d say that we&#8217;ve specified an
+<em>abstract syntax</em> for our language. In our next unit,
+we&#8217;ll see how to use Lean&#8217;s syntax extension capabilities
+to define a corresponding <em>concrete</em> syntax, one that&#8217;ll
+let us write expressions in our language as if we were
+using paper and pencil methods and standard syntax for
+propositional logic.</p>
+<div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="n">all_true</span>
+
+
+<span class="k">#reduce</span> <span class="n">prop_eval</span> <span class="n">X</span> <span class="n">all_true</span>
+<span class="k">#reduce</span> <span class="n">prop_eval</span> <span class="n">Y</span> <span class="n">all_true</span>
+<span class="k">#reduce</span> <span class="n">prop_eval</span> <span class="n">Z</span> <span class="n">all_true</span>
+
+<span class="k">#reduce</span> <span class="n">prop_eval</span> <span class="n">X</span> <span class="n">all_false</span>
+<span class="k">#reduce</span> <span class="n">prop_eval</span> <span class="n">Y</span> <span class="n">all_false</span>
+<span class="k">#reduce</span> <span class="n">prop_eval</span> <span class="n">Z</span> <span class="n">all_false</span>
+
+<span class="k">#reduce</span> <span class="n">prop_eval</span> <span class="n">XandY</span> <span class="n">all_true</span>
+<span class="k">#reduce</span> <span class="n">prop_eval</span> <span class="n">XandY</span> <span class="n">all_false</span>
+<span class="k">#reduce</span> <span class="n">prop_eval</span> <span class="n">XandY</span> <span class="n">mixed</span>
+
+<span class="k">#reduce</span> <span class="n">prop_eval</span> <span class="o">(</span><span class="n">and_expr</span> <span class="o">(</span><span class="n">and_expr</span> <span class="n">X</span> <span class="n">Y</span><span class="o">)</span> <span class="o">(</span><span class="n">or_expr</span> <span class="n">X</span> <span class="n">Z</span><span class="o">))</span> <span class="n">mixed</span>
+</pre></div>
+</div>
+<p>So we now have is a specification of the syntax and
+semantics of a subset of propositional logic. As an
+in-class exercise, let&#8217;s add some new logical operators:
+for not, or, implies, bi-implication, and exclusive or.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="00_Introduction.html" class="btn btn-neutral float-left" title="1. CS6501 Spring 2023" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="genindex.html" class="btn btn-neutral float-right" title="Index" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Kevin Sullivan.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

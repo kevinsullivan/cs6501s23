@@ -1,7 +1,9 @@
+# OBSOLETE
+
 #!/usr/bin/env bash
 set -e
 if [ "$#" -ne 2 ]; then
-    echo "Usage example: $0 leanprover-community mathematics_in_lean"
+    echo "Usage example: $0 cs6501s23"
     exit 1
 fi
 

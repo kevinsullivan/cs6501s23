@@ -2,19 +2,18 @@
 Elementary Discrete Mathematics DevOps
 ======================================
 
-This is the development environment for [Elementary Discrete Mathematics](https://www.computingfoundations/).
+This is the development environment for [CS6501 Spring 2023](https://www.computingfoundations/).
 
 The `lean_source` directory contains all of the information needed to produce one 
 volume of Elementary Discrete Mathematics. Each major topic is published as a volume:
 Valid reasoning. Propositional logic. A predicate logic. Sets theory. Combinatorics.
 Probability. Number Theory.
 
-- Edit `.lean` with Avigad markup files in `lean_source` 
+- Edit `.lean` with Avigad-style markup files in `lean_source` 
 - From root directory, `lean_source/mkall.sh` generates `.rst` files 
   - in `source.` for the book
-  - an exercise file and a solution file for each section (KS: where?)
+  - an exercise file and a solution file for each section 
 
-◊
 Have [Sphinx and ReadTheDocs](https://sphinx-rtd-tutorial.readthedocs.io/en/latest/install.html).
 
 The following files are maintained by hand:

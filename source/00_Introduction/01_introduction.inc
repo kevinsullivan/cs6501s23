@@ -1,7 +1,8 @@
-/- TEXT:
 
-CS6501: Special Topics in Software Engineering, Spr23.
-======================================================
+******************
+Welcome. Overview.
+******************
+
 
 This is a special topics course in software engineering. The idea 
 that we will explore is that we can now import ongoing advances 
@@ -92,4 +93,3 @@ the need for statically type checked specifications in the abstract
 language of the domain, with corresponding parametric representations
 carried along for computational possibly and oher purposes. 
 
-TEXT. -/

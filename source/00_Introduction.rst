@@ -1,5 +1,5 @@
 .. _introduction:
 
-.. include:: 00_Introduction/00_part.inc
-.. include:: 00_Introduction/09_13_22_play_with_quantifiers.inc
-.. include:: 00_Introduction/09_15_22_and_is_commutative.inc
+.. include:: 00_Introduction/00_unit_title.inc
+.. include:: 00_Introduction/01_abstract_language_and_thought.inc
+.. include:: 00_Introduction/02_this_class.inc

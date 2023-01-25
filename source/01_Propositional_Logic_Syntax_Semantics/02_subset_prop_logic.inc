@@ -1,74 +1,62 @@
-/- TEXT:
-Syntax of Propositional Logic
------------------------------
 
-The set of expressions (strings) in the formal language
-of propositional logis is defined inductively. That is, 
-some smallest expressions are first defined, with larger 
-expressions then constructed from smaller ones.
+******************************
+Simplified Propositional Logic
+******************************
 
-The syntax comprises 
-- propositions variables, e.g., x, y, y, theSkyIsBlue, etc
-- a language of propositional expressions (*propositions*)
-  - constant expressions, *true* and *false*
-  - variable expressions, such as X, Y, Z, TheSkyIsBlue,
-    with each such expression having an associated variable
-  - operator expressions, such as ¬X, X ∧ Y, and X ∨ Y
 
-The language of propositional logic is the language of
-these expressions, each formed either from a variable or
-by composing smaller expressions using logical operators.
 
-We'll begin by defining a datatype that, for now, defines
-just three variables, and we'll adopt a convention here 
-that variables are written in lower case.
-TEXT. -/
+Our next step toward formalizing abstract mathematics for software 
+engineering, we will specify the syntax and semantics of a simple 
+but important mathatical language, namely *propositional logic*.
 
--- QUOTE.
-inductive prop_var : Type
-| x
-| y 
-| z
+Propositional logic is isomorphic to (essentially the same thing 
+as) Boolean algebra. You already know about Boolean algebra from 
+writing conditions in if and loop commands in everyday programming 
+languages such as Java.
 
-open prop_var 
--- QUOTE.
+Our first task will be to see how to formalize the syntax and 
+semantics of this language in Lean. 
 
-/- TEXT:
+.. code-block:: lean
+
+  inductive prop_var : Type
+  | x
+  | y 
+  | z
+  
+  open prop_var 
+
 Next we'll define the set of expressions in our language,
 which we'll call *prop_expr*, the language of expressions
 in propositional logic.
-TEXT. -/
 
--- QUOTE:
-inductive prop_expr
-| var_expr (v : prop_var)
-| and_expr (e1 e2 : prop_expr)
+.. code-block:: lean
 
-open prop_expr
--- QUOTE.
+  inductive prop_expr
+  | var_expr (v : prop_var)
+  | and_expr (e1 e2 : prop_expr)
+  | or_expr (e1 e2 : prop_expr)
+  
+  open prop_expr
 
-/-
 We can now form both variable and operator
 expressions! Let's start with some variable
 expressions.
--/
--- QUOTE:
-def X : prop_expr := var_expr x
-def Y : prop_expr := var_expr y
-def Z : prop_expr := var_expr z
--- QUOTE.
 
-/- TEXT:
+.. code-block:: lean
+
+  def X : prop_expr := var_expr x
+  def Y : prop_expr := var_expr y
+  def Z : prop_expr := var_expr z
+
 We can also define operator expressions, which
 build larger expressions out of smaller ones.
-TEXT. -/
 
--- QUOTE:
-def XandY : prop_expr := and_expr X Y 
-def XandY_and_Z : prop_expr := and_expr XandY Z 
--- QUOTE.
+.. code-block:: lean
 
-/- TEXT:
+  def XandY : prop_expr := and_expr X Y 
+  def XandY_and_Z : prop_expr := and_expr XandY Z 
+
 
 Semantics of Propositional Logic
 --------------------------------
@@ -93,29 +81,36 @@ true as their meanings.  We can formalize this mapping
 from variables to truth values as a total function from
 terms of type *prop_var* to terms of type *bool* in Lean.
 
-TEXT. -/  
 
-def all_true : prop_var → bool
-| _ := tt   -- for any argument return true (tt in Lean)
+.. code-block:: lean
 
-/- TEXT:
+  def all_true : prop_var → bool
+  | _ := tt   -- for any argument return true (tt in Lean)
+
 Similarly here's an interpretation under which all variables
 are assigned the value, false.
-TEXT. -/
 
-def all_false : prop_var → bool
-| _ := ff   -- for any argument return true (tt in Lean)
+.. code-block:: lean
 
-/- TEXT:
-Finally, here's an interpretation under which x is assigned
-true, and the remaining variables (y and z) are assigned false.
--/
+  def all_false : prop_var → bool
+  | _ := ff   -- for any argument return true (tt in Lean)
 
-def mixed : prop_var → bool
-| x := tt
-| _ := ff
+Now here's an interpretation under which x is assigned true, 
+and the remaining variables (y and z) are assigned false.
 
-/-
+.. code-block:: lean
+
+  def mixed : prop_var → bool
+  | prop_var.x := tt
+  | _ := ff
+  
+  #reduce mixed z
+  
+  def another_interpretation : prop_var → bool
+  | x := tt
+  | y := ff
+  | z := tt
+
 Given one of these interpretations as additional data, we
 can now assign truth value semantic meanings to expressions
 such as XandY (and_expr X Y). We do this recursively. First
@@ -141,14 +136,14 @@ Here then is a semantic evaluation function that implements
 these two notions: one in the case where the expression to 
 be given a meaning is a variable expression, and one where
 it's an *and* expression.
-TEXT. -/
 
--- QUOTE.
-def prop_eval : prop_expr → (prop_var → bool) → bool 
-| (prop_expr.var_expr v) i := i v
-| (and_expr e1 e2) i := band (prop_eval e1 i) (prop_eval e2 i)
+.. code-block:: lean
 
-/- TEXT:
+  def prop_eval : prop_expr → (prop_var → bool) → bool 
+  | (var_expr v) i := i v
+  | (and_expr e1 e2) i := band (prop_eval e1 i) (prop_eval e2 i)
+  | (or_expr e1 e2) i := bor (prop_eval e1 i) (prop_eval e2 i)
+
 Now we can find the meaning of *any* expression in our
 initial subset of the language of propositional logic.
 To be more precise, we'd say that we've specified an
@@ -158,27 +153,28 @@ to define a corresponding *concrete* syntax, one that'll
 let us write expressions in our language as if we were
 using paper and pencil methods and standard syntax for
 propositional logic. 
-TEXT.
--/
 
--- QUOTE:
-#reduce prop_eval X all_true
-#reduce prop_eval Y all_true
-#reduce prop_eval Z all_true
+.. code-block:: lean
 
-#reduce prop_eval X all_false
-#reduce prop_eval Y all_false
-#reduce prop_eval Z all_false
+  
+  #check all_true 
+  
+  
+  #reduce prop_eval X all_true
+  #reduce prop_eval Y all_true
+  #reduce prop_eval Z all_true
+  
+  #reduce prop_eval X all_false
+  #reduce prop_eval Y all_false
+  #reduce prop_eval Z all_false
+  
+  #reduce prop_eval XandY all_true
+  #reduce prop_eval XandY all_false
+  #reduce prop_eval XandY mixed
+  
+  #reduce prop_eval (and_expr (and_expr X Y) (or_expr X Z)) mixed
 
-#reduce prop_eval XandY all_true
-#reduce prop_eval XandY all_false
-#reduce prop_eval XandY mixed
--- QUOTE.
-
-/- TEXT:
 So we now have is a specification of the syntax and 
 semantics of a subset of propositional logic. As an 
 in-class exercise, let's add some new logical operators:
 for not, or, implies, bi-implication, and exclusive or. 
-TEXT. -/
-

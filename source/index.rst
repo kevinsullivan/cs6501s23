@@ -8,8 +8,7 @@ A Predicate Logic
    :maxdepth: 2
 
    00_Introduction
-   01_Functions_and_Applications
-   02_Inference_Rules_and_Proofs
+   01_Propositional_Logic_Syntax_Semantics
    
 .. toctree::
    :hidden:
