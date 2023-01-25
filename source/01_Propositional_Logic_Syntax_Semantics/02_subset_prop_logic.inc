@@ -32,7 +32,7 @@ The syntax of propositional logic comprises
 * a language of propositional expressions (propositions)
   * constant expressions, *true* and *false*
   * variable expressions, such as X, Y, Z, TheSkyIsBlue, each such expression having an associated variable
-  *operator expressions, such as ¬X, X ∧ Y, and X ∨ Y
+  * operator expressions, such as ¬X, X ∧ Y, and X ∨ Y
 
 You can think of these operators as taking expressions
 as their arguments and returning longer expressions as 
