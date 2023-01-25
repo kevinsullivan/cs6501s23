@@ -123,8 +123,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'mathematics_in_lean.tex', 'Mathematics in Lean',
-     'Jeremy Avigad \\and Kevin Buzzard \\and Robert Y. Lewis \\and Patrick Massot', 'manual'),
+    (master_doc, 'cs6501s23.tex', 'Computing Foundations',
+     'Kevin Sullivan', 'manual'),
 ]
 
 

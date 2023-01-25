@@ -63,4 +63,4 @@ If you change the filter from Active to All, you will see all your recent worksp
 ## Contributing
 
 PRs and issues should be opened at the upstream
-[source repository](https://github.com/avigad/mathematics_in_lean_source).
+[source repository](https://github.com/sullivan/cs6501s23).
