@@ -5,18 +5,26 @@
 Propositional Logic
 *******************
 
+In this chapter, we'll present a first
+version of a syntax and semantic specification
+for a full language of propositional logic. As
+in the last chapter, we start by defining the
+syntax, then we present the semantics.
+
+Syntax
+------
+TEXT. -/
+
+namespace cs6501
+
+-- QUOTE:
+/-
 Propositional logic has an infinite supply of variables.
 We will represent each variable, then, as a term, var.mk
 with a natural-number-valued argument. This type defines
 an infinite set of terms of type *prop_var*, each *indexed* 
-by a natural number. You can think of these as var₀, var₁, 
-etc.  
-TEXT. -/
-
--- QUOTE:
-namespace cs6501
-
--- variables, indexed by natural numbers
+by a natural number.   
+-/
 inductive prop_var : Type
 | mk (n : ℕ)
 
@@ -73,7 +81,8 @@ def e6 := X ⊕ ¬X
 -- QUOTE.
 
 /- TEXT:
-SEMANTICS
+Semantics
+---------
 TEXT. -/
 
 -- QUOTE:

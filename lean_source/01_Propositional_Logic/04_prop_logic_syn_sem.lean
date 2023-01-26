@@ -25,6 +25,7 @@ inductive prop_var : Type
 def v₀ := prop_var.mk 0
 def v₁ := prop_var.mk 1
 def v₂ := prop_var.mk 2
+-- QUOTE. 
 
 /- TEXT:
 We will now refactor our definition of 
@@ -41,7 +42,7 @@ whose values are abstract syntax terms for binary
 operators/connectives in propositional logic.
 TEXT. -/
 
--- QUOTE.
+-- QUOTE:
 -- Syntactic terms for binary operators
 inductive binop
 | opAnd
@@ -109,7 +110,7 @@ def e6 := X ⊕ ¬X
 -- QUOTE.
 
 /- TEXT:
-SEMANTICS
+Semantics
 ---------
 
 A benefit of having made binary operators 

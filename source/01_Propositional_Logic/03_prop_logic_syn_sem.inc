@@ -3,18 +3,24 @@
 Propositional Logic
 *******************
 
-Propositional logic has an infinite supply of variables.
-We will represent each variable, then, as a term, var.mk
-with a natural-number-valued argument. This type defines
-an infinite set of terms of type *prop_var*, each *indexed* 
-by a natural number. You can think of these as var₀, var₁, 
-etc.  
+In this chapter, we'll present a first
+version of a syntax and semantic specification
+for a full language of propositional logic. As
+in the last chapter, we start by defining the
+syntax, then we present the semantics.
+
+Syntax
+------
 
 .. code-block:: lean
 
-  namespace cs6501
-  
-  -- variables, indexed by natural numbers
+  /-
+  Propositional logic has an infinite supply of variables.
+  We will represent each variable, then, as a term, var.mk
+  with a natural-number-valued argument. This type defines
+  an infinite set of terms of type *prop_var*, each *indexed* 
+  by a natural number.   
+  -/
   inductive prop_var : Type
   | mk (n : ℕ)
   
@@ -65,7 +71,8 @@ new *concrete* syntax.
   def e5 := e1 ↔ e1
   def e6 := X ⊕ ¬X
 
-SEMANTICS
+Semantics
+---------
 
 .. code-block:: lean
 
