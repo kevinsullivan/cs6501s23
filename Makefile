@@ -14,7 +14,7 @@ help:
 
 .PHONY: help Makefile
 
-# Setup from Gabriel Ebner (Ack: Thank you for sharing this code. --KS)
+# Gabriel Ebner (Ack: Thank you for sharing this code. --KS)
 VENVDIR := .venv
 export PATH := $(VENVDIR)/bin:$(PATH)
 
@@ -22,7 +22,6 @@ install-deps:
 	test -f $(VENVDIR)/bin/pip || python3.8 -m venv $(VENVDIR)
 	python3.8 -m pip install MarkupSafe>=2.0 sphinx
 .PHONY: help Makefile
-# python3.8 -m pip install 'wheel>=0.29' # needed for old ubuntu versions, https://github.com/pallets/markupsafe/issues/59
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
