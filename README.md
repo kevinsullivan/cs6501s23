@@ -45,3 +45,4 @@ arbitrary repository, set up to use the `gh-pages` branch
 to display the html. Specifically, we use the following:
 ./deploy.sh leanprover-community mathematics_in_lean
 
+TODO: pygmentize -S default -f html > style.css; replace "default" w/ style

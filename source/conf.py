@@ -21,7 +21,7 @@ copyright = '2023, Kevin Sullivan'
 author = 'Kevin Sullivan'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1'
+release = '1.2.2'
 
 # -- General configuration ------------------------------------------------
 
@@ -32,9 +32,11 @@ release = '0.1'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-# extensions = ['sphinx.ext.mathjax',
-#     'sphinx.ext.githubpages',
-#     'lean_sphinx']
+
+
+extensions = ['sphinx.ext.mathjax'
+            , 'sphinx.ext.githubpages'
+            , 'lean_sphinx']
 
 highlight_language = "lean"
 
@@ -133,7 +135,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'mathematics_in_lean', 'Mathematics in Lean',
+    (master_doc, 'computing_foundations', 'Computing Foundations',
      [author], 1)
 ]
 
@@ -143,7 +145,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'mathematics_in_lean', 'Mathematics in Lean',
-     author, 'mathematics_in_lean', 'A tutorial introduction to Lean and mathlib',
+    (master_doc, 'computing_foundations', 'Computing Foundations',
+     author, 'computing_foundations', 'Computing Foundations',
      'Miscellaneous'),
 ]

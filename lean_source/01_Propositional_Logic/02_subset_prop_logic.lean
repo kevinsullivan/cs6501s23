@@ -5,8 +5,6 @@ Simplified Propositional Logic
 ******************************
 
 
-
-/- TEXT:
 Our next step toward formalizing abstract mathematics for software 
 engineering, we will specify the syntax and semantics of a simple 
 but important mathatical language, namely *propositional logic*.

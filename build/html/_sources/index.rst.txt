@@ -8,7 +8,7 @@ CS6501, Spring 2023, Sullivan
    :maxdepth: 2
 
    00_Introduction
-   01_Propositional_Logic_Syntax_Semantics
+   01_Propositional_Logic
    
 .. toctree::
    :hidden:
