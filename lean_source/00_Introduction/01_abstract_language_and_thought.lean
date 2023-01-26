@@ -198,20 +198,20 @@ computations, and then move from there to *lightweight*
 code. 
 
 Our idea is different. we start with the observation
-that Domains have already developed the
-appropriate, often highly expressive, languages in which
-to specify their worlds -- states of affairs amongst given
-objects and relations that they care about. For example,
-the algebra of affine spaces is very well suited for the
-description of key elements in basic classical robotics,
-while descriptions of fundamental particles of physics 
+that Domains have already developed the appropriate, often 
+highly expressive, abstract mathematical languages in which
+to specify their worlds. For example, the abstract algebra 
+of affine spaces is well suited for the description of the 
+temporal and geometric spaces in which classical robots 
+operate. Descriptions of fundamental particles of physics 
 relies on the mathematics of tensor fields on topological
-manifolds. 
+manifolds.
 
-- formal languages
-- objects and their properties
-- imperative vs declarative languages
-- implementation vs specification
-- programming vs abstract mathematics
-- expressiveness vs tractability
+Linking such abstract mathematics to code has always been
+a manual processes. Now, however, with the automation of
+abstract mathemtics by parts of the mathematics community
+using constructive logic proof assistants and type theory,
+that has become possible. This course will teach you the
+basic concepts that you will need to start to make such
+connections.
 -/
