@@ -31,8 +31,10 @@
 		"amazonwebservices.aws-toolkit-vscode",
 		"mark-tucker.aws-cli-configure",
 		"redhat.vscode-yaml",
-		"DanielThielking.aws-cloudformation-yaml"
+		"DanielThielking.aws-cloudformation-yaml",
+		"donjayamanne.python-extension-pack",
+		"ms-vscode.makefile-tools"
 	],
 	"forwardPorts": [],
-	"postCreateCommand": "elan self update && leanpkg configure && leanproject get-mathlib-cache && make install-deps"
+	"postCreateCommand": "elan self update && leanpkg configure && leanproject get-mathlib-cache"
 }
