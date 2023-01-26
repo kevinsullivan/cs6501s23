@@ -1,4 +1,5 @@
- A semantics starts with a definition of what all
+/-
+A semantics starts with a definition of what all
 of the the relevant individual variables mean. In a language
 of arithmetic we will take them to mean integers values (from
 algebra itself). 
@@ -60,4 +61,4 @@ logic has a meaning in the form of a Boolean (true/false)
 value, provided that one is given a Boolean meaning for 
 each of the variables that can appear in the variable
 expressions in the language.
-
+-/
