@@ -3,7 +3,7 @@
 
 # You can set these variables from the command line.
 SPHINXOPTS    =
-SPHINXBUILD   = python3.8 -msphinx  # was: sphinx-build
+SPHINXBUILD   = python3.8 -m sphinx  # was: sphinx-build
 SPHINXPROJ    = cs6501s23
 SOURCEDIR     = source
 BUILDDIR      = build
@@ -14,14 +14,13 @@ help:
 
 .PHONY: help Makefile
 
-# Setup from Gabriel Ebner (Ack: Thank you for sharing this code. --KS)
+# Gabriel Ebner (Ack: Thank you for sharing this code. --KS)
 VENVDIR := .venv
 export PATH := $(VENVDIR)/bin:$(PATH)
 
 install-deps:
 	test -f $(VENVDIR)/bin/pip || python3.8 -m venv $(VENVDIR)
-	python3.8 -m pip install 'wheel>=0.29' # needed for old ubuntu versions, https://github.com/pallets/markupsafe/issues/59
-	python3.8 -m pip install sphinx
+	python3.8 -m pip install MarkupSafe>=2.0 sphinx
 .PHONY: help Makefile
 
 # Catch-all target: route all unknown targets to Sphinx using the new
