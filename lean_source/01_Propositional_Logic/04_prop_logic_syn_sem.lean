@@ -115,8 +115,8 @@ Semantics
 
 A benefit of having made binary operators 
 explicit as a set of syntactic terms is that
-we can both simplify and generalize our 
-semantics. 
+we can simultaneously simplify and generalize 
+our semantics. 
 TEXT. -/
 
 -- QUOTE:
@@ -159,14 +159,19 @@ one rule for *any* binary operator.
 -/
 def pEval : prop_expr → (prop_var → bool) → bool
 | (pLit b) i := b 
-| ([v]) i := i v
-| (¬ e) i := bnot (pEval e i)
-| (pBinOp op e1 e2) i := (pEval e1 i) && (pEval e2 i) 
+| ([v]) i := i v                -- our [] notation on the left
+| (¬e) i := bnot (pEval e i)    -- our ¬ notation; Lean's bnot
+| (pBinOp op e1 e2) i := (pEval e1 i) && (pEval e2 i) -- BUG!
 -- QUOTE.
 
 /- TEXT:
-I'll fill in explanatory text later, but for now wanted
-to get you the *code*.
+Here are a few exercises:
+  - identify and fix the bug in the last rule of pEval
+  - replace pNot with pUnOp ("unary operator"), as with pBinOp
+  - update the first rule in pEval to use the new concrete notation 
+  - add end-to-end support for nand (↑) and nor (↓) binary operators
+  - write some propositional logic expressions using concrete syntax
+  - define some interpretations and evaluate your expressions under each
 TEXT. -/
 
 end cs6501
