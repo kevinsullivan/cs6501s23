@@ -65,6 +65,17 @@
 <li class="toctree-l2"><a class="reference internal" href="#a-better-specification">2.4. A Better Specification</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id5">2.4.1. Syntax</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id6">2.4.2. Semantics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exploration">2.4.3. Exploration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#formal-validation">2.5. Formal Validation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#abstract-syntax">2.5.1. Abstract Syntax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#concrete-syntax-notation">2.5.2. Concrete Syntax / Notation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">2.5.3. Semantics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">2.5.4. Formal Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#testing-it-all-out">2.5.5. Testing it all out</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exercises">2.5.6. Exercises</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#solutions">2.5.7. Solutions</a></li>
 </ul>
 </li>
 </ul>
@@ -719,21 +730,31 @@ which now need to <em>desugar</em> to use the new expression
 constructors. We also define some shorthands for the
 two literal expressions in our language.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20True%20%3A%3D%20pLit%20tt%0Adef%20False%20%3A%3D%20pLit%20ff%0Anotation%20(name%20%3A%3D%20var_mk)%20%60%5B%60%20v%20%60%5D%60%20%3A%3D%20%20pVar%20v%0Anotation%20(name%20%3A%3D%20pAnd)%20e1%20%E2%88%A7%20e2%20%3A%3D%20%20pBinOp%20opAnd%20e1%20e2%0Anotation%20(name%20%3A%3D%20pOr)%20e1%20%E2%88%A8%20e2%20%3A%3D%20%20pBinOp%20opOr%20e1%20e2%0Anotation%20(name%20%3A%3D%20pNot)%20%C2%ACe%20%3A%3D%20pNot%20e%0Anotation%20(name%20%3A%3D%20pImp)%20e1%20%3D%3E%20e2%20%3A%3D%20pBinOp%20opImp%20e1%20e2%0Anotation%20(name%20%3A%3D%20pIff)%20e1%20%E2%86%94%20e2%20%3A%3D%20pBinOp%20opIff%20e1%20e2%0Anotation%20(name%20%3A%3D%20pXor)%20e1%20%E2%8A%95%20e2%20%3A%3D%20pBinOp%20opXor%20e1%20e2" target="_blank" tryitfile="../examples/01_Propositional_Logic/unnamed_72.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20True%20%3A%3D%20pLit%20tt%0Adef%20False%20%3A%3D%20pLit%20ff%0Anotation%20(name%20%3A%3D%20pVar)%20%60%5B%60%20v%20%60%5D%60%20%3A%3D%20%20pVar%20v%0Anotation%20(name%20%3A%3D%20pAnd)%20e1%20%E2%88%A7%20e2%20%3A%3D%20%20pBinOp%20opAnd%20e1%20e2%0Anotation%20(name%20%3A%3D%20pOr)%20e1%20%E2%88%A8%20e2%20%3A%3D%20%20pBinOp%20opOr%20e1%20e2%0Anotation%20(name%20%3A%3D%20pNot)%20%C2%ACe%20%3A%3D%20pNot%20e%0Anotation%20(name%20%3A%3D%20pImp)%20e1%20%3D%3E%20e2%20%3A%3D%20pBinOp%20opImp%20e1%20e2%0Anotation%20(name%20%3A%3D%20pIff)%20e1%20%E2%86%94%20e2%20%3A%3D%20pBinOp%20opIff%20e1%20e2%0Anotation%20(name%20%3A%3D%20pXor)%20e1%20%E2%8A%95%20e2%20%3A%3D%20pBinOp%20opXor%20e1%20e2%0A%0A--%20Precedence%20highest%20to%20lowest%20NOT%2C%20NAND%2C%20NOR%2C%20AND%2C%20OR%2C%20-%3E%2C%20%3D%3D%0A--%20%60%E2%86%93%60%3A37%20x%3A37%0Areserve%20notation%20%60%E2%86%93%60%3A37%20x%3A37%0Anotation%20(name%20%3A%3D%20pNor)%20e1%20%60%E2%86%93%60%20e2%20%3A%3D%20pBinOp%20opAnd%20e1%20e2%0A%0A%23print%20notation%20%C2%AC%0A%23print%20notation%20%E2%88%A7%0A%23print%20notation%20%E2%86%91%0A%23print%20notation%20%E2%86%93" target="_blank" tryitfile="../examples/01_Propositional_Logic/unnamed_72.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">True</span> <span class="o">:=</span> <span class="n">pLit</span> <span class="n">tt</span>
 <span class="kd">def</span> <span class="n">False</span> <span class="o">:=</span> <span class="n">pLit</span> <span class="n">ff</span>
-<span class="kd">notation</span> <span class="o">(</span><span class="n">name</span> <span class="o">:=</span> <span class="n">var_mk</span><span class="o">)</span> <span class="bp">`</span><span class="o">[</span><span class="bp">`</span> <span class="n">v</span> <span class="bp">`</span><span class="o">]</span><span class="bp">`</span> <span class="o">:=</span>  <span class="n">pVar</span> <span class="n">v</span>
+<span class="kd">notation</span> <span class="o">(</span><span class="n">name</span> <span class="o">:=</span> <span class="n">pVar</span><span class="o">)</span> <span class="bp">`</span><span class="o">[</span><span class="bp">`</span> <span class="n">v</span> <span class="bp">`</span><span class="o">]</span><span class="bp">`</span> <span class="o">:=</span>  <span class="n">pVar</span> <span class="n">v</span>
 <span class="kd">notation</span> <span class="o">(</span><span class="n">name</span> <span class="o">:=</span> <span class="n">pAnd</span><span class="o">)</span> <span class="n">e1</span> <span class="bp">&#8743;</span> <span class="n">e2</span> <span class="o">:=</span>  <span class="n">pBinOp</span> <span class="n">opAnd</span> <span class="n">e1</span> <span class="n">e2</span>
 <span class="kd">notation</span> <span class="o">(</span><span class="n">name</span> <span class="o">:=</span> <span class="n">pOr</span><span class="o">)</span> <span class="n">e1</span> <span class="bp">&#8744;</span> <span class="n">e2</span> <span class="o">:=</span>  <span class="n">pBinOp</span> <span class="n">opOr</span> <span class="n">e1</span> <span class="n">e2</span>
 <span class="kd">notation</span> <span class="o">(</span><span class="n">name</span> <span class="o">:=</span> <span class="n">pNot</span><span class="o">)</span> <span class="bp">&#172;</span><span class="n">e</span> <span class="o">:=</span> <span class="n">pNot</span> <span class="n">e</span>
 <span class="kd">notation</span> <span class="o">(</span><span class="n">name</span> <span class="o">:=</span> <span class="n">pImp</span><span class="o">)</span> <span class="n">e1</span> <span class="bp">=&gt;</span> <span class="n">e2</span> <span class="o">:=</span> <span class="n">pBinOp</span> <span class="n">opImp</span> <span class="n">e1</span> <span class="n">e2</span>
 <span class="kd">notation</span> <span class="o">(</span><span class="n">name</span> <span class="o">:=</span> <span class="n">pIff</span><span class="o">)</span> <span class="n">e1</span> <span class="bp">&#8596;</span> <span class="n">e2</span> <span class="o">:=</span> <span class="n">pBinOp</span> <span class="n">opIff</span> <span class="n">e1</span> <span class="n">e2</span>
 <span class="kd">notation</span> <span class="o">(</span><span class="n">name</span> <span class="o">:=</span> <span class="n">pXor</span><span class="o">)</span> <span class="n">e1</span> <span class="bp">&#8853;</span> <span class="n">e2</span> <span class="o">:=</span> <span class="n">pBinOp</span> <span class="n">opXor</span> <span class="n">e1</span> <span class="n">e2</span>
+
+<span class="c1">-- Precedence highest to lowest NOT, NAND, NOR, AND, OR, -&gt;, ==</span>
+<span class="c1">-- `&#8595;`:37 x:37</span>
+<span class="kd">reserve</span> <span class="kd">notation</span> <span class="bp">`&#8595;`</span><span class="o">:</span><span class="mi">37</span> <span class="n">x</span><span class="o">:</span><span class="mi">37</span>
+<span class="kd">notation</span> <span class="o">(</span><span class="n">name</span> <span class="o">:=</span> <span class="n">pNor</span><span class="o">)</span> <span class="n">e1</span> <span class="bp">`&#8595;`</span> <span class="n">e2</span> <span class="o">:=</span> <span class="n">pBinOp</span> <span class="n">opAnd</span> <span class="n">e1</span> <span class="n">e2</span>
+
+<span class="k">#print</span> <span class="kd">notation</span> <span class="bp">&#172;</span>
+<span class="k">#print</span> <span class="kd">notation</span> <span class="bp">&#8743;</span>
+<span class="k">#print</span> <span class="kd">notation</span> <span class="bp">&#8593;</span>
+<span class="k">#print</span> <span class="kd">notation</span> <span class="bp">&#8595;</span>
 </pre></div>
 </div>
 </div><p>Here are examples of expressions using our concrete syntax</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20variable%20expressions%20from%20variables%0Adef%20X%20%3A%3D%20%5Bv%E2%82%80%5D%0Adef%20Y%20%3A%3D%20%5Bv%E2%82%81%5D%0Adef%20Z%20%3A%3D%20%5Bv%E2%82%82%5D%0A%0A--%20operator%20expressions%0Adef%20e1%20%3A%3D%20X%20%E2%88%A7%20Y%0Adef%20e2%20%3A%3D%20X%20%E2%88%A8%20Y%0Adef%20e3%20%3A%3D%20%C2%ACZ%0Adef%20e4%20%3A%3D%20e1%20%3D%3E%20e2%0Adef%20e5%20%3A%3D%20e1%20%E2%86%94%20e1%0Adef%20e6%20%3A%3D%20X%20%E2%8A%95%20%C2%ACX" target="_blank" tryitfile="../examples/01_Propositional_Logic/unnamed_86.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20variable%20expressions%20from%20variables%0Adef%20X%20%3A%3D%20%5Bv%E2%82%80%5D%0Adef%20Y%20%3A%3D%20%5Bv%E2%82%81%5D%0Adef%20Z%20%3A%3D%20%5Bv%E2%82%82%5D%0A%0A--%20operator%20expressions%0Adef%20e1%20%3A%3D%20X%20%E2%88%A7%20Y%0Adef%20e2%20%3A%3D%20X%20%E2%88%A8%20Y%0Adef%20e3%20%3A%3D%20%C2%ACZ%0Adef%20e4%20%3A%3D%20e1%20%3D%3E%20e2%0Adef%20e5%20%3A%3D%20e1%20%E2%86%94%20e1%0Adef%20e6%20%3A%3D%20X%20%E2%8A%95%20%C2%ACX" target="_blank" tryitfile="../examples/01_Propositional_Logic/unnamed_97.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- variable expressions from variables</span>
 <span class="kd">def</span> <span class="n">X</span> <span class="o">:=</span> <span class="o">[</span><span class="n">v&#8320;</span><span class="o">]</span>
 <span class="kd">def</span> <span class="n">Y</span> <span class="o">:=</span> <span class="o">[</span><span class="n">v&#8321;</span><span class="o">]</span>
@@ -756,7 +777,7 @@ explicit as a set of syntactic terms is that
 we can simultaneously simplify and generalize
 our semantics.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20Helper%20functions%0Adef%20bimp%20%3A%20bool%20%E2%86%92%20bool%20%E2%86%92%20bool%0A%7C%20tt%20tt%20%3A%3D%20tt%0A%7C%20tt%20ff%20%3A%3D%20ff%0A%7C%20ff%20tt%20%3A%3D%20tt%0A%7C%20ff%20ff%20%3A%3D%20tt%0A%0Adef%20biff%20%3A%20bool%20%E2%86%92%20bool%20%E2%86%92%20bool%0A%7C%20tt%20tt%20%3A%3D%20tt%0A%7C%20tt%20ff%20%3A%3D%20ff%0A%7C%20ff%20tt%20%3A%3D%20ff%0A%7C%20ff%20ff%20%3A%3D%20tt%0A%0A%2F-%0AWe%20now%20define%20an%20*interpretation*%20for%20operator%20symbols!%0AEach%20binop%20(a%20syntactic%20object)%20has%20as%20its%20meaning%20some%0Acorresponding%20binary%20Boolean%20operator.%0A-%2F%0Adef%20op_sem%20%3A%20binop%20%E2%86%92%20(bool%20%E2%86%92%20bool%20%E2%86%92%20bool)%0A%7C%20opAnd%20%3A%3D%20band%0A%7C%20opOr%20%3A%3D%20bor%0A%7C%20opImp%20%3A%3D%20bimp%0A%7C%20opIff%20%3A%3D%20biff%0A%7C%20opXor%20%3A%3D%20bxor%0A%0A--%20A%20quick%20demo%0A%23reduce%20((op_sem%20opAnd)%20tt%20ff)%0A%23reduce%20(op_sem%20opOr%20tt%20ff)%20--%20recall%20left%20associativity%0A%0A%0A%2F-%0ANow%20here's%20a%20much%20improved%20semantic%20specification.%0AIn%20place%20of%20rules%20for%20pTrue%20and%20pFalse%20we%20just%20have%0Aone%20rule%20for%20pLit%20(literal%20expressions).%20Second%2C%20in%0Aplace%20of%20one%20rule%20for%20each%20binary%20operator%20we%20have%0Aone%20rule%20for%20*any*%20binary%20operator.%0A-%2F%0Adef%20pEval%20%3A%20prop_expr%20%E2%86%92%20(prop_var%20%E2%86%92%20bool)%20%E2%86%92%20bool%0A%7C%20(pLit%20b)%20i%20%3A%3D%20b%0A%7C%20(%5Bv%5D)%20i%20%3A%3D%20i%20v%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20our%20%5B%5D%20notation%20on%20the%20left%0A%7C%20(%C2%ACe)%20i%20%3A%3D%20bnot%20(pEval%20e%20i)%20%20%20%20--%20our%20%C2%AC%20notation%3B%20Lean's%20bnot%0A%7C%20(pBinOp%20op%20e1%20e2)%20i%20%3A%3D%20(pEval%20e1%20i)%20%26%26%20(pEval%20e2%20i)%20--%20BUG!" target="_blank" tryitfile="../examples/01_Propositional_Logic/unnamed_109.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20Helper%20functions%0Adef%20bimp%20%3A%20bool%20%E2%86%92%20bool%20%E2%86%92%20bool%0A%7C%20tt%20tt%20%3A%3D%20tt%0A%7C%20tt%20ff%20%3A%3D%20ff%0A%7C%20ff%20tt%20%3A%3D%20tt%0A%7C%20ff%20ff%20%3A%3D%20tt%0A%0Adef%20biff%20%3A%20bool%20%E2%86%92%20bool%20%E2%86%92%20bool%0A%7C%20tt%20tt%20%3A%3D%20tt%0A%7C%20tt%20ff%20%3A%3D%20ff%0A%7C%20ff%20tt%20%3A%3D%20ff%0A%7C%20ff%20ff%20%3A%3D%20tt" target="_blank" tryitfile="../examples/01_Propositional_Logic/unnamed_120.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Helper functions</span>
 <span class="kd">def</span> <span class="n">bimp</span> <span class="o">:</span> <span class="n">bool</span> <span class="bp">&#8594;</span> <span class="n">bool</span> <span class="bp">&#8594;</span> <span class="n">bool</span>
 <span class="bp">|</span> <span class="n">tt</span> <span class="n">tt</span> <span class="o">:=</span> <span class="n">tt</span>
@@ -769,15 +790,16 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <span class="bp">|</span> <span class="n">tt</span> <span class="n">ff</span> <span class="o">:=</span> <span class="n">ff</span>
 <span class="bp">|</span> <span class="n">ff</span> <span class="n">tt</span> <span class="o">:=</span> <span class="n">ff</span>
 <span class="bp">|</span> <span class="n">ff</span> <span class="n">ff</span> <span class="o">:=</span> <span class="n">tt</span>
-
-<span class="c">/-</span>
-<span class="cm">We now define an *interpretation* for operator symbols!</span>
-<span class="cm">Each binop (a syntactic object) has as its meaning some</span>
-<span class="cm">corresponding binary Boolean operator.</span>
-<span class="cm">-/</span>
-<span class="kd">def</span> <span class="n">op_sem</span> <span class="o">:</span> <span class="n">binop</span> <span class="bp">&#8594;</span> <span class="o">(</span><span class="n">bool</span> <span class="bp">&#8594;</span> <span class="n">bool</span> <span class="bp">&#8594;</span> <span class="n">bool</span><span class="o">)</span>
+</pre></div>
+</div>
+</div><p>We now define an <em>interpretation</em> for operator symbols!
+Each binop (a syntactic object) has as its meaning some
+corresponding binary Boolean operator.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20op_sem%20%3A%20binop%20%E2%86%92%20(bool%20%E2%86%92%20bool%20%E2%86%92%20bool)%0A%7C%20opAnd%20%3A%3D%20band%0A%7C%20opOr%20%20%3A%3D%20bor%0A%7C%20opImp%20%3A%3D%20bimp%0A%7C%20opIff%20%3A%3D%20biff%0A%7C%20opXor%20%3A%3D%20bxor%0A%0A--%20A%20quick%20demo%0A%23reduce%20((op_sem%20opAnd)%20tt%20ff)%0A%23reduce%20(op_sem%20opOr%20tt%20ff)%20--%20recall%20left%20associativity" target="_blank" tryitfile="../examples/01_Propositional_Logic/unnamed_139.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">op_sem</span> <span class="o">:</span> <span class="n">binop</span> <span class="bp">&#8594;</span> <span class="o">(</span><span class="n">bool</span> <span class="bp">&#8594;</span> <span class="n">bool</span> <span class="bp">&#8594;</span> <span class="n">bool</span><span class="o">)</span>
 <span class="bp">|</span> <span class="n">opAnd</span> <span class="o">:=</span> <span class="n">band</span>
-<span class="bp">|</span> <span class="n">opOr</span> <span class="o">:=</span> <span class="n">bor</span>
+<span class="bp">|</span> <span class="n">opOr</span>  <span class="o">:=</span> <span class="n">bor</span>
 <span class="bp">|</span> <span class="n">opImp</span> <span class="o">:=</span> <span class="n">bimp</span>
 <span class="bp">|</span> <span class="n">opIff</span> <span class="o">:=</span> <span class="n">biff</span>
 <span class="bp">|</span> <span class="n">opXor</span> <span class="o">:=</span> <span class="n">bxor</span>
@@ -785,34 +807,251 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <span class="c1">-- A quick demo</span>
 <span class="k">#reduce</span> <span class="o">((</span><span class="n">op_sem</span> <span class="n">opAnd</span><span class="o">)</span> <span class="n">tt</span> <span class="n">ff</span><span class="o">)</span>
 <span class="k">#reduce</span> <span class="o">(</span><span class="n">op_sem</span> <span class="n">opOr</span> <span class="n">tt</span> <span class="n">ff</span><span class="o">)</span> <span class="c1">-- recall left associativity</span>
-
-
-<span class="c">/-</span>
-<span class="cm">Now here&#39;s a much improved semantic specification.</span>
-<span class="cm">In place of rules for pTrue and pFalse we just have</span>
-<span class="cm">one rule for pLit (literal expressions). Second, in</span>
-<span class="cm">place of one rule for each binary operator we have</span>
-<span class="cm">one rule for *any* binary operator.</span>
-<span class="cm">-/</span>
-<span class="kd">def</span> <span class="n">pEval</span> <span class="o">:</span> <span class="n">prop_expr</span> <span class="bp">&#8594;</span> <span class="o">(</span><span class="n">prop_var</span> <span class="bp">&#8594;</span> <span class="n">bool</span><span class="o">)</span> <span class="bp">&#8594;</span> <span class="n">bool</span>
-<span class="bp">|</span> <span class="o">(</span><span class="n">pLit</span> <span class="n">b</span><span class="o">)</span> <span class="n">i</span> <span class="o">:=</span> <span class="n">b</span>
-<span class="bp">|</span> <span class="o">([</span><span class="n">v</span><span class="o">])</span> <span class="n">i</span> <span class="o">:=</span> <span class="n">i</span> <span class="n">v</span>                <span class="c1">-- our [] notation on the left</span>
-<span class="bp">|</span> <span class="o">(</span><span class="bp">&#172;</span><span class="n">e</span><span class="o">)</span> <span class="n">i</span> <span class="o">:=</span> <span class="n">bnot</span> <span class="o">(</span><span class="n">pEval</span> <span class="n">e</span> <span class="n">i</span><span class="o">)</span>    <span class="c1">-- our &#172; notation; Lean&#39;s bnot</span>
+</pre></div>
+</div>
+</div><p>Now here&#8217;s a much improved semantic specification.
+In place of rules for pTrue and pFalse we just have
+one rule for pLit (literal expressions). Second, in
+place of one rule for each binary operator we have
+one rule for <em>any</em> binary operator.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20pEval%20%3A%20prop_expr%20%E2%86%92%20(prop_var%20%E2%86%92%20bool)%20%E2%86%92%20bool%0A%7C%20(pLit%20b)%20%20%20%20%20%20%20%20%20%20i%20%3A%3D%20b%0A%7C%20(%5Bv%5D)%20%20%20%20%20%20%20%20%20%20%20%20%20i%20%3A%3D%20i%20v%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20our%20%5B%5D%20notation%20on%20the%20left%0A%7C%20(%C2%ACe)%20%20%20%20%20%20%20%20%20%20%20%20%20%20i%20%3A%3D%20bnot%20(pEval%20e%20i)%20%20%20%20%20--%20our%20%C2%AC%20notation%3B%20Lean's%20bnot%0A%7C%20(pBinOp%20op%20e1%20e2)%20i%20%3A%3D%20(pEval%20e1%20i)%20%26%26%20(pEval%20e2%20i)%20--%20BUG!" target="_blank" tryitfile="../examples/01_Propositional_Logic/unnamed_158.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">pEval</span> <span class="o">:</span> <span class="n">prop_expr</span> <span class="bp">&#8594;</span> <span class="o">(</span><span class="n">prop_var</span> <span class="bp">&#8594;</span> <span class="n">bool</span><span class="o">)</span> <span class="bp">&#8594;</span> <span class="n">bool</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">pLit</span> <span class="n">b</span><span class="o">)</span>          <span class="n">i</span> <span class="o">:=</span> <span class="n">b</span>
+<span class="bp">|</span> <span class="o">([</span><span class="n">v</span><span class="o">])</span>             <span class="n">i</span> <span class="o">:=</span> <span class="n">i</span> <span class="n">v</span>                  <span class="c1">-- our [] notation on the left</span>
+<span class="bp">|</span> <span class="o">(</span><span class="bp">&#172;</span><span class="n">e</span><span class="o">)</span>              <span class="n">i</span> <span class="o">:=</span> <span class="n">bnot</span> <span class="o">(</span><span class="n">pEval</span> <span class="n">e</span> <span class="n">i</span><span class="o">)</span>     <span class="c1">-- our &#172; notation; Lean&#39;s bnot</span>
 <span class="bp">|</span> <span class="o">(</span><span class="n">pBinOp</span> <span class="n">op</span> <span class="n">e1</span> <span class="n">e2</span><span class="o">)</span> <span class="n">i</span> <span class="o">:=</span> <span class="o">(</span><span class="n">pEval</span> <span class="n">e1</span> <span class="n">i</span><span class="o">)</span> <span class="bp">&amp;&amp;</span> <span class="o">(</span><span class="n">pEval</span> <span class="n">e2</span> <span class="n">i</span><span class="o">)</span> <span class="c1">-- BUG!</span>
 </pre></div>
 </div>
-</div><dl class="simple">
-<dt>Here are a few exercises:</dt><dd><ul class="simple">
-<li><p>identify and fix the bug in the last rule of pEval</p></li>
-<li><p>replace pNot with pUnOp (&#8220;unary operator&#8221;), as with pBinOp</p></li>
-<li><p>update the first rule in pEval to use the new concrete notation</p></li>
-<li><p>add end-to-end support for nand (&#8593;) and nor (&#8595;) binary operators</p></li>
-<li><p>write some propositional logic expressions using concrete syntax</p></li>
-<li><p>define some interpretations and evaluate your expressions under each</p></li>
+</div></section>
+<section id="exploration">
+<h3><span class="section-number">2.4.3. </span>Exploration<a class="headerlink" href="#exploration" title="Permalink to this heading">&#61633;</a></h3>
+<p>You&#8217;ve heard about Lean and seen in it action, but there&#8217;s no substitute for
+getting into it yourself. The goal of this exploration is for you to &#8220;connect
+all the dots&#8221; in what we&#8217;ve developed so far, and for you to start to develop
+&#8220;muscle memory&#8221; for some basic Lean programming.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Identify and fix the bug in the last rule of pEval</p></li>
+<li><p>Replace pNot with pUnOp (&#8220;unary operator&#8221;), as with pBinOp</p></li>
+<li><p>Add end-to-end support for logical <em>nand</em> (&#8593;) and <em>nor</em> (&#8595;) expression-building operators</p></li>
+<li><p>Define some examples of propositional logic expressions using concrete syntax</p></li>
+<li><p>Define several interpretations and evaluate each of your expressions under each one</p></li>
 </ul>
-</dd>
-</dl>
+</div></blockquote>
+<p>To avoid future git conflicts, make a copy of src/04_prop_logic_syn_sem.lean, and
+make changes to that file rather than to the original. Bring your completed work
+to our next class. Be prepared to share and/or turn in your work at the beginning
+of next class.</p>
 </section>
+</section>
+<section id="formal-validation">
+<h2><span class="section-number">2.5. </span>Formal Validation<a class="headerlink" href="#formal-validation" title="Permalink to this heading">&#61633;</a></h2>
+<p>So far we&#8217;ve defined (1) an abstract syntax for propositional
+logic, (2) a &#8220;big step&#8221; operational semantics for our syntax,
+and (3) a concrete syntax for it, in the form of prefix (&#172;) and
+infix (&#8743;, &#8744;, =&gt;, etc) operators.</p>
+<p>But how do we know that our <em>specification</em> is correct? Checking
+a specification for correctness is called <em>validating</em> it, or just
+validation. <em>Formal</em> validation is the use of mathematical logic
+to validate given specifications.</p>
+<p>In particular, one can formally validate a specification by
+proving that it has certain required properties. To illustrate
+the point, n this chapter we add a fourth section,(4): a formal
+proof of the proposition that in our syntax and semantics, &#8743; is
+commutative; that for <em>any</em> expressions in propositional logic,
+e1 and e2, and for <em>any</em> interpretation, the values of e1 &#8743; e2
+under i, and of e2 &#8743; e1 under i, are equal.</p>
+<p>Another way to look at this chapter is that it extends the set of
+elements of a good formalization of a mathematical concept from
+three above to four. Now the modular unit of definition specifies
+(1) the data (sometimes language syntax, sometimes not), (2) the
+operations on that data, (3) the available concrete notations,
+and now also (4) proofs that essential properties hold.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=namespace%20cs6501" target="_blank" tryitfile="../examples/01_Propositional_Logic/unnamed_31.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kn">namespace</span> <span class="n">cs6501</span>
+</pre></div>
+</div>
+</div><section id="abstract-syntax">
+<h3><span class="section-number">2.5.1. </span>Abstract Syntax<a class="headerlink" href="#abstract-syntax" title="Permalink to this heading">&#61633;</a></h3>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20variables%2C%20indexed%20by%20natural%20numbers%0Ainductive%20prop_var%20%3A%20Type%0A%7C%20mk%20(n%20%3A%20%E2%84%95)%0A%0A--%20Abstract%20syntactic%20terms%20for%20unary%20operators%0Ainductive%20unop%0A%7C%20opNot%0A%0A--%20Abstract%20syntactic%20terms%20for%20binary%20operators%0Ainductive%20binop%0A%7C%20opAnd%0A%7C%20opOr%0A%7C%20opImp%0A%7C%20opIff%0A%7C%20opXor%0A%0A--%20make%20constructor%20names%20globally%20visible%0Aopen%20unop%0Aopen%20binop%0A%0A--%20syntax%0Ainductive%20prop_expr%20%3A%20Type%0A%7C%20pLit%20(b%20%3A%20bool)%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20literal%20expressions%0A%7C%20pVar%20(v%3A%20prop_var)%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20variable%20expressions%0A--%20%7C%20pNot%20(e%20%3A%20prop_expr)%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20unary%20operator%20expression%0A%7C%20pUnOp%20(op%20%3Aunop)%20(e%20%3A%20prop_expr)%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20unary%20operator%20expression%0A%7C%20pBinOp%20(op%20%3A%20binop)%20(e1%20e2%20%3A%20prop_expr)%20--%20binary%20operator%20expressions%0A%0Aopen%20prop_expr" target="_blank" tryitfile="../examples/01_Propositional_Logic/unnamed_41.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- variables, indexed by natural numbers</span>
+<span class="kd">inductive</span> <span class="n">prop_var</span> <span class="o">:</span> <span class="kt">Type</span>
+<span class="bp">|</span> <span class="n">mk</span> <span class="o">(</span><span class="n">n</span> <span class="o">:</span> <span class="n">&#8469;</span><span class="o">)</span>
+
+<span class="c1">-- Abstract syntactic terms for unary operators</span>
+<span class="kd">inductive</span> <span class="n">unop</span>
+<span class="bp">|</span> <span class="n">opNot</span>
+
+<span class="c1">-- Abstract syntactic terms for binary operators</span>
+<span class="kd">inductive</span> <span class="n">binop</span>
+<span class="bp">|</span> <span class="n">opAnd</span>
+<span class="bp">|</span> <span class="n">opOr</span>
+<span class="bp">|</span> <span class="n">opImp</span>
+<span class="bp">|</span> <span class="n">opIff</span>
+<span class="bp">|</span> <span class="n">opXor</span>
+
+<span class="c1">-- make constructor names globally visible</span>
+<span class="kn">open</span> <span class="n">unop</span>
+<span class="kn">open</span> <span class="n">binop</span>
+
+<span class="c1">-- syntax</span>
+<span class="kd">inductive</span> <span class="n">prop_expr</span> <span class="o">:</span> <span class="kt">Type</span>
+<span class="bp">|</span> <span class="n">pLit</span> <span class="o">(</span><span class="n">b</span> <span class="o">:</span> <span class="n">bool</span><span class="o">)</span>                         <span class="c1">-- literal expressions</span>
+<span class="bp">|</span> <span class="n">pVar</span> <span class="o">(</span><span class="n">v</span><span class="o">:</span> <span class="n">prop_var</span><span class="o">)</span>                      <span class="c1">-- variable expressions</span>
+<span class="c1">-- | pNot (e : prop_expr)                    -- unary operator expression</span>
+<span class="bp">|</span> <span class="n">pUnOp</span> <span class="o">(</span><span class="n">op</span> <span class="o">:</span><span class="n">unop</span><span class="o">)</span> <span class="o">(</span><span class="n">e</span> <span class="o">:</span> <span class="n">prop_expr</span><span class="o">)</span>                    <span class="c1">-- unary operator expression</span>
+<span class="bp">|</span> <span class="n">pBinOp</span> <span class="o">(</span><span class="n">op</span> <span class="o">:</span> <span class="n">binop</span><span class="o">)</span> <span class="o">(</span><span class="n">e1</span> <span class="n">e2</span> <span class="o">:</span> <span class="n">prop_expr</span><span class="o">)</span> <span class="c1">-- binary operator expressions</span>
+
+<span class="kn">open</span> <span class="n">prop_expr</span>
+</pre></div>
+</div>
+</div></section>
+<section id="concrete-syntax-notation">
+<h3><span class="section-number">2.5.2. </span>Concrete Syntax / Notation<a class="headerlink" href="#concrete-syntax-notation" title="Permalink to this heading">&#61633;</a></h3>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20notations%20(concrete%20syntax)%0Adef%20True%20%3A%3D%20pLit%20tt%0Adef%20False%20%3A%3D%20pLit%20ff%0Anotation%20(name%20%3A%3D%20pVar)%20%60%5B%60%20v%20%60%5D%60%20%3A%3D%20%20pVar%20v%0Anotation%20(name%20%3A%3D%20pNot)%20%C2%ACe%20%3A%3D%20pUnOp%20opNot%20e%0Anotation%20(name%20%3A%3D%20pAnd)%20e1%20%E2%88%A7%20e2%20%3A%3D%20%20pBinOp%20opAnd%20e1%20e2%0Anotation%20(name%20%3A%3D%20pOr)%20e1%20%E2%88%A8%20e2%20%3A%3D%20%20pBinOp%20opOr%20e1%20e2%0Anotation%20(name%20%3A%3D%20pImp)%20e1%20%3D%3E%20e2%20%3A%3D%20pBinOp%20opImp%20e1%20e2%0Anotation%20(name%20%3A%3D%20pIff)%20e1%20%E2%86%94%20e2%20%3A%3D%20pBinOp%20opIff%20e1%20e2%0Anotation%20(name%20%3A%3D%20pXor)%20e1%20%E2%8A%95%20e2%20%3A%3D%20pBinOp%20opXor%20e1%20e2%0A--%20Let's%20not%20bother%20with%20notations%20for%20nand%20and%20nor%20at%20this%20point" target="_blank" tryitfile="../examples/01_Propositional_Logic/unnamed_80.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- notations (concrete syntax)</span>
+<span class="kd">def</span> <span class="n">True</span> <span class="o">:=</span> <span class="n">pLit</span> <span class="n">tt</span>
+<span class="kd">def</span> <span class="n">False</span> <span class="o">:=</span> <span class="n">pLit</span> <span class="n">ff</span>
+<span class="kd">notation</span> <span class="o">(</span><span class="n">name</span> <span class="o">:=</span> <span class="n">pVar</span><span class="o">)</span> <span class="bp">`</span><span class="o">[</span><span class="bp">`</span> <span class="n">v</span> <span class="bp">`</span><span class="o">]</span><span class="bp">`</span> <span class="o">:=</span>  <span class="n">pVar</span> <span class="n">v</span>
+<span class="kd">notation</span> <span class="o">(</span><span class="n">name</span> <span class="o">:=</span> <span class="n">pNot</span><span class="o">)</span> <span class="bp">&#172;</span><span class="n">e</span> <span class="o">:=</span> <span class="n">pUnOp</span> <span class="n">opNot</span> <span class="n">e</span>
+<span class="kd">notation</span> <span class="o">(</span><span class="n">name</span> <span class="o">:=</span> <span class="n">pAnd</span><span class="o">)</span> <span class="n">e1</span> <span class="bp">&#8743;</span> <span class="n">e2</span> <span class="o">:=</span>  <span class="n">pBinOp</span> <span class="n">opAnd</span> <span class="n">e1</span> <span class="n">e2</span>
+<span class="kd">notation</span> <span class="o">(</span><span class="n">name</span> <span class="o">:=</span> <span class="n">pOr</span><span class="o">)</span> <span class="n">e1</span> <span class="bp">&#8744;</span> <span class="n">e2</span> <span class="o">:=</span>  <span class="n">pBinOp</span> <span class="n">opOr</span> <span class="n">e1</span> <span class="n">e2</span>
+<span class="kd">notation</span> <span class="o">(</span><span class="n">name</span> <span class="o">:=</span> <span class="n">pImp</span><span class="o">)</span> <span class="n">e1</span> <span class="bp">=&gt;</span> <span class="n">e2</span> <span class="o">:=</span> <span class="n">pBinOp</span> <span class="n">opImp</span> <span class="n">e1</span> <span class="n">e2</span>
+<span class="kd">notation</span> <span class="o">(</span><span class="n">name</span> <span class="o">:=</span> <span class="n">pIff</span><span class="o">)</span> <span class="n">e1</span> <span class="bp">&#8596;</span> <span class="n">e2</span> <span class="o">:=</span> <span class="n">pBinOp</span> <span class="n">opIff</span> <span class="n">e1</span> <span class="n">e2</span>
+<span class="kd">notation</span> <span class="o">(</span><span class="n">name</span> <span class="o">:=</span> <span class="n">pXor</span><span class="o">)</span> <span class="n">e1</span> <span class="bp">&#8853;</span> <span class="n">e2</span> <span class="o">:=</span> <span class="n">pBinOp</span> <span class="n">opXor</span> <span class="n">e1</span> <span class="n">e2</span>
+<span class="c1">-- Let&#39;s not bother with notations for nand and nor at this point</span>
+</pre></div>
+</div>
+</div></section>
+<section id="id7">
+<h3><span class="section-number">2.5.3. </span>Semantics<a class="headerlink" href="#id7" title="Permalink to this heading">&#61633;</a></h3>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20Boolean%20implication%20operation%0Adef%20bimp%20%3A%20bool%20%E2%86%92%20bool%20%E2%86%92%20bool%0A%7C%20tt%20tt%20%3A%3D%20tt%0A%7C%20tt%20ff%20%3A%3D%20tt%0A%7C%20ff%20tt%20%3A%3D%20ff%0A%7C%20ff%20ff%20%3A%3D%20tt%0A%0A--%20Boolean%20biimplication%20operation%0Adef%20biff%20%3A%20bool%20%E2%86%92%20bool%20%E2%86%92%20bool%0A%7C%20tt%20tt%20%3A%3D%20tt%0A%7C%20tt%20ff%20%3A%3D%20ff%0A%7C%20ff%20tt%20%3A%3D%20ff%0A%7C%20ff%20ff%20%3A%3D%20tt%0A%0A--%20interpretations%20of%20binary%20operators%0Adef%20bin_op_sem%20%3A%20binop%20%E2%86%92%20(bool%20%E2%86%92%20bool%20%E2%86%92%20bool)%0A%7C%20opAnd%20%3A%3D%20band%0A%7C%20opOr%20%20%3A%3D%20bor%0A%7C%20opImp%20%3A%3D%20bimp%0A%7C%20opIff%20%3A%3D%20biff%0A%7C%20opXor%20%3A%3D%20bxor%0A%0A--%20interpretations%20of%20unary%20operators%0Adef%20un_op_sem%20%3A%20unop%20%E2%86%92%20(bool%20%E2%86%92%20bool)%0A%7C%20opNot%20%3A%3D%20bnot%0A%0A--%20semantic%20evaluation%20(meaning%20of%20expressions)%0Adef%20pEval%20%3A%20prop_expr%20%E2%86%92%20(prop_var%20%E2%86%92%20bool)%20%E2%86%92%20bool%0A%7C%20(pLit%20b)%20%20%20%20%20%20%20%20%20%20i%20%3A%3D%20b%0A%7C%20(%5Bv%5D)%20%20%20%20%20%20%20%20%20%20%20%20%20i%20%3A%3D%20i%20v%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20our%20%5B%5D%20notation%20on%20the%20left%0A%7C%20(pUnOp%20op%20e)%20%20%20%20%20%20i%20%3A%3D%20(un_op_sem%20op)%20(pEval%20e%20i)%20%20%20%20%20--%20our%20%C2%AC%20notation%3B%20Lean's%20bnot%0A%7C%20(pBinOp%20op%20e1%20e2)%20i%20%3A%3D%20(bin_op_sem%20op)%20(pEval%20e1%20i)%20(pEval%20e2%20i)%20--%20BUG%20FIXED%20%3A-)!" target="_blank" tryitfile="../examples/01_Propositional_Logic/unnamed_100.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Boolean implication operation</span>
+<span class="kd">def</span> <span class="n">bimp</span> <span class="o">:</span> <span class="n">bool</span> <span class="bp">&#8594;</span> <span class="n">bool</span> <span class="bp">&#8594;</span> <span class="n">bool</span>
+<span class="bp">|</span> <span class="n">tt</span> <span class="n">tt</span> <span class="o">:=</span> <span class="n">tt</span>
+<span class="bp">|</span> <span class="n">tt</span> <span class="n">ff</span> <span class="o">:=</span> <span class="n">tt</span>
+<span class="bp">|</span> <span class="n">ff</span> <span class="n">tt</span> <span class="o">:=</span> <span class="n">ff</span>
+<span class="bp">|</span> <span class="n">ff</span> <span class="n">ff</span> <span class="o">:=</span> <span class="n">tt</span>
+
+<span class="c1">-- Boolean biimplication operation</span>
+<span class="kd">def</span> <span class="n">biff</span> <span class="o">:</span> <span class="n">bool</span> <span class="bp">&#8594;</span> <span class="n">bool</span> <span class="bp">&#8594;</span> <span class="n">bool</span>
+<span class="bp">|</span> <span class="n">tt</span> <span class="n">tt</span> <span class="o">:=</span> <span class="n">tt</span>
+<span class="bp">|</span> <span class="n">tt</span> <span class="n">ff</span> <span class="o">:=</span> <span class="n">ff</span>
+<span class="bp">|</span> <span class="n">ff</span> <span class="n">tt</span> <span class="o">:=</span> <span class="n">ff</span>
+<span class="bp">|</span> <span class="n">ff</span> <span class="n">ff</span> <span class="o">:=</span> <span class="n">tt</span>
+
+<span class="c1">-- interpretations of binary operators</span>
+<span class="kd">def</span> <span class="n">bin_op_sem</span> <span class="o">:</span> <span class="n">binop</span> <span class="bp">&#8594;</span> <span class="o">(</span><span class="n">bool</span> <span class="bp">&#8594;</span> <span class="n">bool</span> <span class="bp">&#8594;</span> <span class="n">bool</span><span class="o">)</span>
+<span class="bp">|</span> <span class="n">opAnd</span> <span class="o">:=</span> <span class="n">band</span>
+<span class="bp">|</span> <span class="n">opOr</span>  <span class="o">:=</span> <span class="n">bor</span>
+<span class="bp">|</span> <span class="n">opImp</span> <span class="o">:=</span> <span class="n">bimp</span>
+<span class="bp">|</span> <span class="n">opIff</span> <span class="o">:=</span> <span class="n">biff</span>
+<span class="bp">|</span> <span class="n">opXor</span> <span class="o">:=</span> <span class="n">bxor</span>
+
+<span class="c1">-- interpretations of unary operators</span>
+<span class="kd">def</span> <span class="n">un_op_sem</span> <span class="o">:</span> <span class="n">unop</span> <span class="bp">&#8594;</span> <span class="o">(</span><span class="n">bool</span> <span class="bp">&#8594;</span> <span class="n">bool</span><span class="o">)</span>
+<span class="bp">|</span> <span class="n">opNot</span> <span class="o">:=</span> <span class="n">bnot</span>
+
+<span class="c1">-- semantic evaluation (meaning of expressions)</span>
+<span class="kd">def</span> <span class="n">pEval</span> <span class="o">:</span> <span class="n">prop_expr</span> <span class="bp">&#8594;</span> <span class="o">(</span><span class="n">prop_var</span> <span class="bp">&#8594;</span> <span class="n">bool</span><span class="o">)</span> <span class="bp">&#8594;</span> <span class="n">bool</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">pLit</span> <span class="n">b</span><span class="o">)</span>          <span class="n">i</span> <span class="o">:=</span> <span class="n">b</span>
+<span class="bp">|</span> <span class="o">([</span><span class="n">v</span><span class="o">])</span>             <span class="n">i</span> <span class="o">:=</span> <span class="n">i</span> <span class="n">v</span>                  <span class="c1">-- our [] notation on the left</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">pUnOp</span> <span class="n">op</span> <span class="n">e</span><span class="o">)</span>      <span class="n">i</span> <span class="o">:=</span> <span class="o">(</span><span class="n">un_op_sem</span> <span class="n">op</span><span class="o">)</span> <span class="o">(</span><span class="n">pEval</span> <span class="n">e</span> <span class="n">i</span><span class="o">)</span>     <span class="c1">-- our &#172; notation; Lean&#39;s bnot</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">pBinOp</span> <span class="n">op</span> <span class="n">e1</span> <span class="n">e2</span><span class="o">)</span> <span class="n">i</span> <span class="o">:=</span> <span class="o">(</span><span class="n">bin_op_sem</span> <span class="n">op</span><span class="o">)</span> <span class="o">(</span><span class="n">pEval</span> <span class="n">e1</span> <span class="n">i</span><span class="o">)</span> <span class="o">(</span><span class="n">pEval</span> <span class="n">e2</span> <span class="n">i</span><span class="o">)</span> <span class="c1">-- BUG FIXED :-)!</span>
+</pre></div>
+</div>
+</div></section>
+<section id="id8">
+<h3><span class="section-number">2.5.4. </span>Formal Validation<a class="headerlink" href="#id8" title="Permalink to this heading">&#61633;</a></h3>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20proof%20of%20one%20key%20property%3A%20%22commutativity%20of%20%E2%88%A7%22%20in%20the%20logic%20we've%20specified%2C%2C%20as%20required%0Adef%20and_commutes%20%3A%0A%20%20%E2%88%80%20(e1%20e2%20%3A%20prop_expr)%0A%20%20%20%20(i%20%3A%20prop_var%20%E2%86%92%20bool)%2C%0A%20%20%20%20(pEval%20(e1%20%E2%88%A7%20e2)%20i)%20%3D%20(pEval%20(e2%20%E2%88%A7%20e1)%20i)%20%3A%3D%0Abegin%0Aassume%20e1%20e2%20i%2C%0Aunfold%20pEval%2C%0Aunfold%20bin_op_sem%2C%0Acases%20(pEval%20e1%20i)%2C%0Acases%20(pEval%20e2%20i)%2C%0Aapply%20rfl%2C%0Aapply%20rfl%2C%0Acases%20(pEval%20e2%20i)%2C%0Aapply%20rfl%2C%0Aapply%20rfl%2C%0Aend" target="_blank" tryitfile="../examples/01_Propositional_Logic/unnamed_141.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- proof of one key property: &quot;commutativity of &#8743;&quot; in the logic we&#39;ve specified,, as required</span>
+<span class="kd">def</span> <span class="n">and_commutes</span> <span class="o">:</span>
+  <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">e1</span> <span class="n">e2</span> <span class="o">:</span> <span class="n">prop_expr</span><span class="o">)</span>
+    <span class="o">(</span><span class="n">i</span> <span class="o">:</span> <span class="n">prop_var</span> <span class="bp">&#8594;</span> <span class="n">bool</span><span class="o">),</span>
+    <span class="o">(</span><span class="n">pEval</span> <span class="o">(</span><span class="n">e1</span> <span class="bp">&#8743;</span> <span class="n">e2</span><span class="o">)</span> <span class="n">i</span><span class="o">)</span> <span class="bp">=</span> <span class="o">(</span><span class="n">pEval</span> <span class="o">(</span><span class="n">e2</span> <span class="bp">&#8743;</span> <span class="n">e1</span><span class="o">)</span> <span class="n">i</span><span class="o">)</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">assume</span> <span class="n">e1</span> <span class="n">e2</span> <span class="n">i</span><span class="o">,</span>
+<span class="n">unfold</span> <span class="n">pEval</span><span class="o">,</span>
+<span class="n">unfold</span> <span class="n">bin_op_sem</span><span class="o">,</span>
+<span class="n">cases</span> <span class="o">(</span><span class="n">pEval</span> <span class="n">e1</span> <span class="n">i</span><span class="o">),</span>
+<span class="n">cases</span> <span class="o">(</span><span class="n">pEval</span> <span class="n">e2</span> <span class="n">i</span><span class="o">),</span>
+<span class="n">apply</span> <span class="n">rfl</span><span class="o">,</span>
+<span class="n">apply</span> <span class="n">rfl</span><span class="o">,</span>
+<span class="n">cases</span> <span class="o">(</span><span class="n">pEval</span> <span class="n">e2</span> <span class="n">i</span><span class="o">),</span>
+<span class="n">apply</span> <span class="n">rfl</span><span class="o">,</span>
+<span class="n">apply</span> <span class="n">rfl</span><span class="o">,</span>
+<span class="kd">end</span>
+</pre></div>
+</div>
+</div></section>
+<section id="testing-it-all-out">
+<h3><span class="section-number">2.5.5. </span>Testing it all out<a class="headerlink" href="#testing-it-all-out" title="Permalink to this heading">&#61633;</a></h3>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20tell%20Lean%20to%20explain%20given%20notations%0A%23print%20notation%20%C2%AC%0A%23print%20notation%20%E2%88%A7%0A%23print%20notation%20%E2%86%91%0A%0A--%20variables%0Adef%20v%E2%82%80%20%3A%3D%20prop_var.mk%200%0Adef%20v%E2%82%81%20%3A%3D%20prop_var.mk%201%0Adef%20v%E2%82%82%20%3A%3D%20prop_var.mk%202%0A%0A--%20variable%20expressions%0Adef%20X%20%3A%3D%20%5Bv%E2%82%80%5D%0Adef%20Y%20%3A%3D%20%5Bv%E2%82%81%5D%0Adef%20Z%20%3A%3D%20%5Bv%E2%82%82%5D%0A%0A--%20operator%20expressions%0Adef%20e1%20%3A%3D%20X%20%E2%88%A7%20Y%0Adef%20e2%20%3A%3D%20X%20%E2%88%A8%20Y%0Adef%20e3%20%3A%3D%20%C2%ACZ%0Adef%20e4%20%3A%3D%20e1%20%3D%3E%20e2%0Adef%20e5%20%3A%3D%20e1%20%E2%86%94%20e1%0Adef%20e6%20%3A%3D%20X%20%E2%8A%95%20%C2%ACX%0A%0A--%20an%20interpretation%0Adef%20an_interp%20%3A%20prop_var%20%E2%86%92%20bool%0A%7C%20(prop_var.mk%200)%20%3A%3D%20tt%20--%20X%0A%7C%20(prop_var.mk%201)%20%3A%3D%20ff%20--%20Y%0A%7C%20(prop_var.mk%202)%20%3A%3D%20tt%20--%20Z%0A%7C%20_%20%3A%3D%20ff%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20any%20other%20variable%0A%0A--%20evaluation%0A%23reduce%20pEval%20X%20an_interp%20%20--%20expect%20false%0A%23reduce%20pEval%20Y%20an_interp%20%20--%20expect%20false%0A%23reduce%20pEval%20e1%20an_interp%20%20--%20expect%20false%0A%0A--%20applying%20theorem!%0A%23reduce%20and_commutes%20X%20Y%20an_interp%0A--%20result%20is%20a%20proof%20that%20ff%20%3D%20ff" target="_blank" tryitfile="../examples/01_Propositional_Logic/unnamed_166.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- tell Lean to explain given notations</span>
+<span class="k">#print</span> <span class="kd">notation</span> <span class="bp">&#172;</span>
+<span class="k">#print</span> <span class="kd">notation</span> <span class="bp">&#8743;</span>
+<span class="k">#print</span> <span class="kd">notation</span> <span class="bp">&#8593;</span>
+
+<span class="c1">-- variables</span>
+<span class="kd">def</span> <span class="n">v&#8320;</span> <span class="o">:=</span> <span class="n">prop_var.mk</span> <span class="mi">0</span>
+<span class="kd">def</span> <span class="n">v&#8321;</span> <span class="o">:=</span> <span class="n">prop_var.mk</span> <span class="mi">1</span>
+<span class="kd">def</span> <span class="n">v&#8322;</span> <span class="o">:=</span> <span class="n">prop_var.mk</span> <span class="mi">2</span>
+
+<span class="c1">-- variable expressions</span>
+<span class="kd">def</span> <span class="n">X</span> <span class="o">:=</span> <span class="o">[</span><span class="n">v&#8320;</span><span class="o">]</span>
+<span class="kd">def</span> <span class="n">Y</span> <span class="o">:=</span> <span class="o">[</span><span class="n">v&#8321;</span><span class="o">]</span>
+<span class="kd">def</span> <span class="n">Z</span> <span class="o">:=</span> <span class="o">[</span><span class="n">v&#8322;</span><span class="o">]</span>
+
+<span class="c1">-- operator expressions</span>
+<span class="kd">def</span> <span class="n">e1</span> <span class="o">:=</span> <span class="n">X</span> <span class="bp">&#8743;</span> <span class="n">Y</span>
+<span class="kd">def</span> <span class="n">e2</span> <span class="o">:=</span> <span class="n">X</span> <span class="bp">&#8744;</span> <span class="n">Y</span>
+<span class="kd">def</span> <span class="n">e3</span> <span class="o">:=</span> <span class="bp">&#172;</span><span class="n">Z</span>
+<span class="kd">def</span> <span class="n">e4</span> <span class="o">:=</span> <span class="n">e1</span> <span class="bp">=&gt;</span> <span class="n">e2</span>
+<span class="kd">def</span> <span class="n">e5</span> <span class="o">:=</span> <span class="n">e1</span> <span class="bp">&#8596;</span> <span class="n">e1</span>
+<span class="kd">def</span> <span class="n">e6</span> <span class="o">:=</span> <span class="n">X</span> <span class="bp">&#8853;</span> <span class="bp">&#172;</span><span class="n">X</span>
+
+<span class="c1">-- an interpretation</span>
+<span class="kd">def</span> <span class="n">an_interp</span> <span class="o">:</span> <span class="n">prop_var</span> <span class="bp">&#8594;</span> <span class="n">bool</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">prop_var.mk</span> <span class="mi">0</span><span class="o">)</span> <span class="o">:=</span> <span class="n">tt</span> <span class="c1">-- X</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">prop_var.mk</span> <span class="mi">1</span><span class="o">)</span> <span class="o">:=</span> <span class="n">ff</span> <span class="c1">-- Y</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">prop_var.mk</span> <span class="mi">2</span><span class="o">)</span> <span class="o">:=</span> <span class="n">tt</span> <span class="c1">-- Z</span>
+<span class="bp">|</span> <span class="n">_</span> <span class="o">:=</span> <span class="n">ff</span>               <span class="c1">-- any other variable</span>
+
+<span class="c1">-- evaluation</span>
+<span class="k">#reduce</span> <span class="n">pEval</span> <span class="n">X</span> <span class="n">an_interp</span>  <span class="c1">-- expect false</span>
+<span class="k">#reduce</span> <span class="n">pEval</span> <span class="n">Y</span> <span class="n">an_interp</span>  <span class="c1">-- expect false</span>
+<span class="k">#reduce</span> <span class="n">pEval</span> <span class="n">e1</span> <span class="n">an_interp</span>  <span class="c1">-- expect false</span>
+
+<span class="c1">-- applying theorem!</span>
+<span class="k">#reduce</span> <span class="n">and_commutes</span> <span class="n">X</span> <span class="n">Y</span> <span class="n">an_interp</span>
+<span class="c1">-- result is a proof that ff = ff</span>
+</pre></div>
+</div>
+</div></section>
+<section id="exercises">
+<h3><span class="section-number">2.5.6. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">&#61633;</a></h3>
+<ol class="arabic simple">
+<li><p>Formally state and prove that in our language, or (&#8744;) is commutative (1 minute!)</p></li>
+<li><p>Formally state and prove that in our language, not (&#172;) is involutive (a few minutes).
+Hints: Put parens around (&#172;&#172;e). Open the Lean infoview with CTRL/CMD-SHIFT-RETURN/ENTER.
+If you get hung up on Lean syntax, ask a friend (or instructor) for help to get unstuck.</p></li>
+</ol>
+</section>
+<section id="solutions">
+<h3><span class="section-number">2.5.7. </span>Solutions<a class="headerlink" href="#solutions" title="Permalink to this heading">&#61633;</a></h3>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=end%20cs6501" target="_blank" tryitfile="../examples/01_Propositional_Logic/unnamed_221.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">end</span> <span class="n">cs6501</span>
+</pre></div>
+</div>
+</div></section>
 </section>
 </section>
 

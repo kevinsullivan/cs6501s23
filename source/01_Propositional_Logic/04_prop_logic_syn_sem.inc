@@ -73,13 +73,24 @@ two literal expressions in our language.
 
   def True := pLit tt
   def False := pLit ff
-  notation (name := var_mk) `[` v `]` :=  pVar v
+  notation (name := pVar) `[` v `]` :=  pVar v
   notation (name := pAnd) e1 ∧ e2 :=  pBinOp opAnd e1 e2
   notation (name := pOr) e1 ∨ e2 :=  pBinOp opOr e1 e2
   notation (name := pNot) ¬e := pNot e
   notation (name := pImp) e1 => e2 := pBinOp opImp e1 e2
   notation (name := pIff) e1 ↔ e2 := pBinOp opIff e1 e2
   notation (name := pXor) e1 ⊕ e2 := pBinOp opXor e1 e2
+  
+  -- Precedence highest to lowest NOT, NAND, NOR, AND, OR, ->, ==
+  -- `↓`:37 x:37
+  reserve notation `↓`:37 x:37
+  notation (name := pNor) e1 `↓` e2 := pBinOp opAnd e1 e2
+  
+  #print notation ¬ 
+  #print notation ∧ 
+  #print notation ↑
+  #print notation ↓ 
+  
 
 Here are examples of expressions using our concrete syntax
 
@@ -120,15 +131,16 @@ our semantics.
   | tt ff := ff
   | ff tt := ff
   | ff ff := tt
-  
-  /-
-  We now define an *interpretation* for operator symbols!
-  Each binop (a syntactic object) has as its meaning some
-  corresponding binary Boolean operator.
-  -/
+
+We now define an *interpretation* for operator symbols!
+Each binop (a syntactic object) has as its meaning some
+corresponding binary Boolean operator.
+
+.. code-block:: lean
+
   def op_sem : binop → (bool → bool → bool)
   | opAnd := band 
-  | opOr := bor
+  | opOr  := bor
   | opImp := bimp
   | opIff := biff
   | opXor := bxor
@@ -136,25 +148,38 @@ our semantics.
   -- A quick demo
   #reduce ((op_sem opAnd) tt ff)
   #reduce (op_sem opOr tt ff) -- recall left associativity
-  
-  
-  /-
-  Now here's a much improved semantic specification.
-  In place of rules for pTrue and pFalse we just have
-  one rule for pLit (literal expressions). Second, in
-  place of one rule for each binary operator we have
-  one rule for *any* binary operator. 
-  -/
+
+Now here's a much improved semantic specification.
+In place of rules for pTrue and pFalse we just have
+one rule for pLit (literal expressions). Second, in
+place of one rule for each binary operator we have
+one rule for *any* binary operator. 
+
+.. code-block:: lean
+
   def pEval : prop_expr → (prop_var → bool) → bool
-  | (pLit b) i := b 
-  | ([v]) i := i v                -- our [] notation on the left
-  | (¬e) i := bnot (pEval e i)    -- our ¬ notation; Lean's bnot
+  | (pLit b)          i := b 
+  | ([v])             i := i v                  -- our [] notation on the left
+  | (¬e)              i := bnot (pEval e i)     -- our ¬ notation; Lean's bnot
   | (pBinOp op e1 e2) i := (pEval e1 i) && (pEval e2 i) -- BUG!
 
-Here are a few exercises:
-  - identify and fix the bug in the last rule of pEval
-  - replace pNot with pUnOp ("unary operator"), as with pBinOp
-  - update the first rule in pEval to use the new concrete notation 
-  - add end-to-end support for nand (↑) and nor (↓) binary operators
-  - write some propositional logic expressions using concrete syntax
-  - define some interpretations and evaluate your expressions under each
+
+Exploration
+-----------
+
+You've heard about Lean and seen in it action, but there's no substitute for
+getting into it yourself. The goal of this exploration is for you to "connect 
+all the dots" in what we've developed so far, and for you to start to develop 
+"muscle memory" for some basic Lean programming. 
+
+  - Identify and fix the bug in the last rule of pEval
+  - Replace pNot with pUnOp ("unary operator"), as with pBinOp
+  - Add end-to-end support for logical *nand* (↑) and *nor* (↓) expression-building operators
+  - Define some examples of propositional logic expressions using concrete syntax
+  - Define several interpretations and evaluate each of your expressions under each one
+
+To avoid future git conflicts, make a copy of src/04_prop_logic_syn_sem.lean, and 
+make changes to that file rather than to the original. Bring your completed work 
+to our next class. Be prepared to share and/or turn in your work at the beginning
+of next class.
+
