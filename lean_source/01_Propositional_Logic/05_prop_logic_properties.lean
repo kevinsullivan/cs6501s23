@@ -78,16 +78,13 @@ open prop_expr
 
 -- QUOTE.
 
-
 /- TEXT:
-
 Concrete Syntax / Notation
 --------------------------
-
 TEXT. -/
 
--- QUOTE:
 
+-- QUOTE:
 -- notations (concrete syntax)
 def True := pLit tt
 def False := pLit ff
@@ -101,16 +98,14 @@ notation (name := pXor) e1 ⊕ e2 := pBinOp opXor e1 e2
 -- Let's not bother with notations for nand and nor at this point
 -- QUOTE.
 
-/- TEXT: 
 
+/- TEXT: 
 Semantics
 ---------
-
 TEXT. -/
 
 
 -- QUOTE:
-
 -- Boolean implication operation 
 def bimp : bool → bool → bool
 | tt tt := tt
@@ -147,32 +142,47 @@ def pEval : prop_expr → (prop_var → bool) → bool
 
 
 /- TEXT:
-
 Formal Validation
 ----------------- 
-
 TEXT. -/
 
 -- QUOTE:
-
 -- proof of one key property: "commutativity of ∧" in the logic we've specified,, as required
 def and_commutes : 
   ∀ (e1 e2 : prop_expr) 
     (i : prop_var → bool),
     (pEval (e1 ∧ e2) i) = (pEval (e2 ∧ e1) i) :=
 begin
+-- assume that e1 e2 and i are arbitrary
 assume e1 e2 i,
-unfold pEval,
-unfold bin_op_sem,
-cases (pEval e1 i),
-cases (pEval e2 i),
-apply rfl,
-apply rfl,
-cases (pEval e2 i),
-apply rfl,
-apply rfl,
-end 
 
+-- unfold definition of pEval for given arguments
+unfold pEval,
+
+-- unfold definition of bin_op_sem
+unfold bin_op_sem,
+
+-- case analysis on Boolean value (pEval e1 i)
+cases (pEval e1 i),
+
+-- within first case, nested case analysis on (pEval e2 i)
+cases (pEval e2 i),
+
+-- goal proved by reflexivity of equality
+apply rfl,
+
+-- second case for (pEval e2 i) within first case for  (pEval e1 i)
+apply rfl,
+
+-- onto second case for (pEval e1 i)
+-- again nested case analysis on (pEval e2 i)
+cases (pEval e2 i),
+
+-- and both cases are again true by reflexivity of equality 
+apply rfl,
+apply rfl,
+-- QED
+end 
 -- QUOTE.
 
 /- TEXT:
@@ -181,7 +191,6 @@ Testing it all out
 TEXT. -/
 
 -- QUOTE:
-
 -- tell Lean to explain given notations
 #print notation ¬ 
 #print notation ∧ 
@@ -216,10 +225,21 @@ def an_interp : prop_var → bool
 #reduce pEval X an_interp  -- expect false
 #reduce pEval Y an_interp  -- expect false
 #reduce pEval e1 an_interp  -- expect false
+#reduce pEval (X => Y) an_interp
 
 -- applying theorem!
 #reduce and_commutes X Y an_interp
 -- result is a proof that ff = ff
+
+def x : Prop := (pEval (e1 => e2) an_interp) = ff
+
+theorem imp_trans : 
+  ∀ (e1 e2 e3 : prop_expr) (i : prop_var → bool),
+    (pEval (e1 => e2) i) = tt :=
+begin
+intros,
+end
+
 
 -- QUOTE.
 
@@ -234,41 +254,7 @@ Exercises
 
 Solutions
 ---------
-
 TEXT. -/
-
-/- Solutions
-
-def or_commutes : 
-  ∀ (e1 e2 : prop_expr) 
-    (i : prop_var → bool),
-    (pEval (e1 ∨ e2) i) = (pEval (e2 ∨ e1) i) :=
-begin
-assume e1 e2 i,
-unfold pEval,
-unfold bin_op_sem,
-cases (pEval e1 i),
-cases (pEval e2 i),
-apply rfl,
-apply rfl,
-cases (pEval e2 i),
-apply rfl,
-apply rfl,
-end
-
-def not_involutive :
-  ∀ (e : prop_expr) 
-    (i : prop_var → bool),
-    (pEval (¬¬e) i) = (pEval e i) :=
-begin
-assume e i,
-unfold pEval,
-unfold un_op_sem,
-cases (pEval e i),
-apply rfl,
-apply rfl,
-end 
--/
 
 -- QUOTE:
 end cs6501
