@@ -147,16 +147,36 @@ Formal Validation
       (i : prop_var → bool),
       (pEval (e1 ∧ e2) i) = (pEval (e2 ∧ e1) i) :=
   begin
+  -- assume that e1 e2 and i are arbitrary
   assume e1 e2 i,
+  
+  -- unfold definition of pEval for given arguments
   unfold pEval,
+  
+  -- unfold definition of bin_op_sem
   unfold bin_op_sem,
+  
+  -- case analysis on Boolean value (pEval e1 i)
   cases (pEval e1 i),
+  
+  -- within first case, nested case analysis on (pEval e2 i)
   cases (pEval e2 i),
+  
+  -- goal proved by reflexivity of equality
   apply rfl,
+  
+  -- second case for (pEval e2 i) within first case for  (pEval e1 i)
   apply rfl,
+  
+  -- onto second case for (pEval e1 i)
+  -- again nested case analysis on (pEval e2 i)
   cases (pEval e2 i),
+  
+  -- and both cases are again true by reflexivity of equality 
   apply rfl,
   apply rfl,
+  
+  -- QED
   end 
   
 

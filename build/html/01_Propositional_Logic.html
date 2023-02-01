@@ -969,23 +969,43 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <section id="id8">
 <h3><span class="section-number">2.5.4. </span>Formal Validation<a class="headerlink" href="#id8" title="Permalink to this heading">&#61633;</a></h3>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20proof%20of%20one%20key%20property%3A%20%22commutativity%20of%20%E2%88%A7%22%20in%20the%20logic%20we've%20specified%2C%2C%20as%20required%0Adef%20and_commutes%20%3A%0A%20%20%E2%88%80%20(e1%20e2%20%3A%20prop_expr)%0A%20%20%20%20(i%20%3A%20prop_var%20%E2%86%92%20bool)%2C%0A%20%20%20%20(pEval%20(e1%20%E2%88%A7%20e2)%20i)%20%3D%20(pEval%20(e2%20%E2%88%A7%20e1)%20i)%20%3A%3D%0Abegin%0Aassume%20e1%20e2%20i%2C%0Aunfold%20pEval%2C%0Aunfold%20bin_op_sem%2C%0Acases%20(pEval%20e1%20i)%2C%0Acases%20(pEval%20e2%20i)%2C%0Aapply%20rfl%2C%0Aapply%20rfl%2C%0Acases%20(pEval%20e2%20i)%2C%0Aapply%20rfl%2C%0Aapply%20rfl%2C%0Aend" target="_blank" tryitfile="../examples/01_Propositional_Logic/unnamed_141.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20proof%20of%20one%20key%20property%3A%20%22commutativity%20of%20%E2%88%A7%22%20in%20the%20logic%20we've%20specified%2C%2C%20as%20required%0Adef%20and_commutes%20%3A%0A%20%20%E2%88%80%20(e1%20e2%20%3A%20prop_expr)%0A%20%20%20%20(i%20%3A%20prop_var%20%E2%86%92%20bool)%2C%0A%20%20%20%20(pEval%20(e1%20%E2%88%A7%20e2)%20i)%20%3D%20(pEval%20(e2%20%E2%88%A7%20e1)%20i)%20%3A%3D%0Abegin%0A--%20assume%20that%20e1%20e2%20and%20i%20are%20arbitrary%0Aassume%20e1%20e2%20i%2C%0A%0A--%20unfold%20definition%20of%20pEval%20for%20given%20arguments%0Aunfold%20pEval%2C%0A%0A--%20unfold%20definition%20of%20bin_op_sem%0Aunfold%20bin_op_sem%2C%0A%0A--%20case%20analysis%20on%20Boolean%20value%20(pEval%20e1%20i)%0Acases%20(pEval%20e1%20i)%2C%0A%0A--%20within%20first%20case%2C%20nested%20case%20analysis%20on%20(pEval%20e2%20i)%0Acases%20(pEval%20e2%20i)%2C%0A%0A--%20goal%20proved%20by%20reflexivity%20of%20equality%0Aapply%20rfl%2C%0A%0A--%20second%20case%20for%20(pEval%20e2%20i)%20within%20first%20case%20for%20%20(pEval%20e1%20i)%0Aapply%20rfl%2C%0A%0A--%20onto%20second%20case%20for%20(pEval%20e1%20i)%0A--%20again%20nested%20case%20analysis%20on%20(pEval%20e2%20i)%0Acases%20(pEval%20e2%20i)%2C%0A%0A--%20and%20both%20cases%20are%20again%20true%20by%20reflexivity%20of%20equality%0Aapply%20rfl%2C%0Aapply%20rfl%2C%0A%0A--%20QED%0Aend" target="_blank" tryitfile="../examples/01_Propositional_Logic/unnamed_141.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- proof of one key property: &quot;commutativity of &#8743;&quot; in the logic we&#39;ve specified,, as required</span>
 <span class="kd">def</span> <span class="n">and_commutes</span> <span class="o">:</span>
   <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">e1</span> <span class="n">e2</span> <span class="o">:</span> <span class="n">prop_expr</span><span class="o">)</span>
     <span class="o">(</span><span class="n">i</span> <span class="o">:</span> <span class="n">prop_var</span> <span class="bp">&#8594;</span> <span class="n">bool</span><span class="o">),</span>
     <span class="o">(</span><span class="n">pEval</span> <span class="o">(</span><span class="n">e1</span> <span class="bp">&#8743;</span> <span class="n">e2</span><span class="o">)</span> <span class="n">i</span><span class="o">)</span> <span class="bp">=</span> <span class="o">(</span><span class="n">pEval</span> <span class="o">(</span><span class="n">e2</span> <span class="bp">&#8743;</span> <span class="n">e1</span><span class="o">)</span> <span class="n">i</span><span class="o">)</span> <span class="o">:=</span>
 <span class="kd">begin</span>
+<span class="c1">-- assume that e1 e2 and i are arbitrary</span>
 <span class="k">assume</span> <span class="n">e1</span> <span class="n">e2</span> <span class="n">i</span><span class="o">,</span>
+
+<span class="c1">-- unfold definition of pEval for given arguments</span>
 <span class="n">unfold</span> <span class="n">pEval</span><span class="o">,</span>
+
+<span class="c1">-- unfold definition of bin_op_sem</span>
 <span class="n">unfold</span> <span class="n">bin_op_sem</span><span class="o">,</span>
+
+<span class="c1">-- case analysis on Boolean value (pEval e1 i)</span>
 <span class="n">cases</span> <span class="o">(</span><span class="n">pEval</span> <span class="n">e1</span> <span class="n">i</span><span class="o">),</span>
+
+<span class="c1">-- within first case, nested case analysis on (pEval e2 i)</span>
 <span class="n">cases</span> <span class="o">(</span><span class="n">pEval</span> <span class="n">e2</span> <span class="n">i</span><span class="o">),</span>
+
+<span class="c1">-- goal proved by reflexivity of equality</span>
 <span class="n">apply</span> <span class="n">rfl</span><span class="o">,</span>
+
+<span class="c1">-- second case for (pEval e2 i) within first case for  (pEval e1 i)</span>
 <span class="n">apply</span> <span class="n">rfl</span><span class="o">,</span>
+
+<span class="c1">-- onto second case for (pEval e1 i)</span>
+<span class="c1">-- again nested case analysis on (pEval e2 i)</span>
 <span class="n">cases</span> <span class="o">(</span><span class="n">pEval</span> <span class="n">e2</span> <span class="n">i</span><span class="o">),</span>
+
+<span class="c1">-- and both cases are again true by reflexivity of equality</span>
 <span class="n">apply</span> <span class="n">rfl</span><span class="o">,</span>
 <span class="n">apply</span> <span class="n">rfl</span><span class="o">,</span>
+
+<span class="c1">-- QED</span>
 <span class="kd">end</span>
 </pre></div>
 </div>
@@ -993,7 +1013,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <section id="testing-it-all-out">
 <h3><span class="section-number">2.5.5. </span>Testing it all out<a class="headerlink" href="#testing-it-all-out" title="Permalink to this heading">&#61633;</a></h3>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20tell%20Lean%20to%20explain%20given%20notations%0A%23print%20notation%20%C2%AC%0A%23print%20notation%20%E2%88%A7%0A%23print%20notation%20%E2%86%91%0A%0A--%20variables%0Adef%20v%E2%82%80%20%3A%3D%20prop_var.mk%200%0Adef%20v%E2%82%81%20%3A%3D%20prop_var.mk%201%0Adef%20v%E2%82%82%20%3A%3D%20prop_var.mk%202%0A%0A--%20variable%20expressions%0Adef%20X%20%3A%3D%20%5Bv%E2%82%80%5D%0Adef%20Y%20%3A%3D%20%5Bv%E2%82%81%5D%0Adef%20Z%20%3A%3D%20%5Bv%E2%82%82%5D%0A%0A--%20operator%20expressions%0Adef%20e1%20%3A%3D%20X%20%E2%88%A7%20Y%0Adef%20e2%20%3A%3D%20X%20%E2%88%A8%20Y%0Adef%20e3%20%3A%3D%20%C2%ACZ%0Adef%20e4%20%3A%3D%20e1%20%3D%3E%20e2%0Adef%20e5%20%3A%3D%20e1%20%E2%86%94%20e1%0Adef%20e6%20%3A%3D%20X%20%E2%8A%95%20%C2%ACX%0A%0A--%20an%20interpretation%0Adef%20an_interp%20%3A%20prop_var%20%E2%86%92%20bool%0A%7C%20(prop_var.mk%200)%20%3A%3D%20tt%20--%20X%0A%7C%20(prop_var.mk%201)%20%3A%3D%20ff%20--%20Y%0A%7C%20(prop_var.mk%202)%20%3A%3D%20tt%20--%20Z%0A%7C%20_%20%3A%3D%20ff%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20any%20other%20variable%0A%0A--%20evaluation%0A%23reduce%20pEval%20X%20an_interp%20%20--%20expect%20false%0A%23reduce%20pEval%20Y%20an_interp%20%20--%20expect%20false%0A%23reduce%20pEval%20e1%20an_interp%20%20--%20expect%20false%0A%0A--%20applying%20theorem!%0A%23reduce%20and_commutes%20X%20Y%20an_interp%0A--%20result%20is%20a%20proof%20that%20ff%20%3D%20ff" target="_blank" tryitfile="../examples/01_Propositional_Logic/unnamed_166.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20tell%20Lean%20to%20explain%20given%20notations%0A%23print%20notation%20%C2%AC%0A%23print%20notation%20%E2%88%A7%0A%23print%20notation%20%E2%86%91%0A%0A--%20variables%0Adef%20v%E2%82%80%20%3A%3D%20prop_var.mk%200%0Adef%20v%E2%82%81%20%3A%3D%20prop_var.mk%201%0Adef%20v%E2%82%82%20%3A%3D%20prop_var.mk%202%0A%0A--%20variable%20expressions%0Adef%20X%20%3A%3D%20%5Bv%E2%82%80%5D%0Adef%20Y%20%3A%3D%20%5Bv%E2%82%81%5D%0Adef%20Z%20%3A%3D%20%5Bv%E2%82%82%5D%0A%0A--%20operator%20expressions%0Adef%20e1%20%3A%3D%20X%20%E2%88%A7%20Y%0Adef%20e2%20%3A%3D%20X%20%E2%88%A8%20Y%0Adef%20e3%20%3A%3D%20%C2%ACZ%0Adef%20e4%20%3A%3D%20e1%20%3D%3E%20e2%0Adef%20e5%20%3A%3D%20e1%20%E2%86%94%20e1%0Adef%20e6%20%3A%3D%20X%20%E2%8A%95%20%C2%ACX%0A%0A--%20an%20interpretation%0Adef%20an_interp%20%3A%20prop_var%20%E2%86%92%20bool%0A%7C%20(prop_var.mk%200)%20%3A%3D%20tt%20--%20X%0A%7C%20(prop_var.mk%201)%20%3A%3D%20ff%20--%20Y%0A%7C%20(prop_var.mk%202)%20%3A%3D%20tt%20--%20Z%0A%7C%20_%20%3A%3D%20ff%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20any%20other%20variable%0A%0A--%20evaluation%0A%23reduce%20pEval%20X%20an_interp%20%20--%20expect%20false%0A%23reduce%20pEval%20Y%20an_interp%20%20--%20expect%20false%0A%23reduce%20pEval%20e1%20an_interp%20%20--%20expect%20false%0A%0A--%20applying%20theorem!%0A%23reduce%20and_commutes%20X%20Y%20an_interp%0A--%20result%20is%20a%20proof%20that%20ff%20%3D%20ff" target="_blank" tryitfile="../examples/01_Propositional_Logic/unnamed_186.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- tell Lean to explain given notations</span>
 <span class="k">#print</span> <span class="kd">notation</span> <span class="bp">&#172;</span>
 <span class="k">#print</span> <span class="kd">notation</span> <span class="bp">&#8743;</span>
@@ -1047,7 +1067,7 @@ If you get hung up on Lean syntax, ask a friend (or instructor) for help to get 
 <section id="solutions">
 <h3><span class="section-number">2.5.7. </span>Solutions<a class="headerlink" href="#solutions" title="Permalink to this heading">&#61633;</a></h3>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=end%20cs6501" target="_blank" tryitfile="../examples/01_Propositional_Logic/unnamed_221.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=end%20cs6501" target="_blank" tryitfile="../examples/01_Propositional_Logic/unnamed_241.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">end</span> <span class="n">cs6501</span>
 </pre></div>
 </div>
