@@ -1,4 +1,6 @@
 
+#check tt = tt
+
 /- TEXT:
 
 *****************
@@ -36,6 +38,7 @@ TEXT. -/
 
 namespace cs6501
 -- QUOTE.
+
 
 /- TEXT:
 
@@ -83,16 +86,24 @@ Concrete Syntax / Notation
 --------------------------
 TEXT. -/
 
+#check tt = tt
 
 -- QUOTE:
 -- notations (concrete syntax)
 def True := pLit tt
+
+#check tt = tt
+
 def False := pLit ff
+
+#check tt = tt
+
 notation (name := pVar) `[` v `]` :=  pVar v
 notation (name := pNot) ¬e := pUnOp opNot e
 notation (name := pAnd) e1 ∧ e2 :=  pBinOp opAnd e1 e2
 notation (name := pOr) e1 ∨ e2 :=  pBinOp opOr e1 e2
-notation (name := pImp) e1 => e2 := pBinOp opImp e1 e2
+precedence ` => `: 50                                      -- add operator precedence
+notation (name := pImp) e1 `=>`  e2 := pBinOp opImp e1 e2  -- bug fixed; add back quotes
 notation (name := pIff) e1 ↔ e2 := pBinOp opIff e1 e2
 notation (name := pXor) e1 ⊕ e2 := pBinOp opXor e1 e2
 -- Let's not bother with notations for nand and nor at this point
@@ -102,11 +113,30 @@ notation (name := pXor) e1 ⊕ e2 := pBinOp opXor e1 e2
 /- TEXT: 
 Semantics
 ---------
+
+The *semantic domain* for our language is not only the
+Boolean values, but also the Boolean operations. We map
+variables to Boolean values (via an interpretation) and
+we define a fixed mapping of logical connectives (¬, ∧, 
+∨, etc.) to Boolean operations (bnot, band, bor, etc.)
+With these elementary semantic mappings in place we can
+finally map *any* propositional logical expression to 
+its (Boolean) meaning in a *compositional* manner, where
+the meaning of any compound expression is composed from
+the meanings of its parts, which we compute recursively,
+down to individual variables and connectives.
+
+The Lean standard libraries define some but not all 
+binary Boolean operations. We will thus start off in 
+this section by augmenting Lean's definitions of the
+Boolean operations with two more: for implication (we
+follow Lean naming conventions and call this bimp) and
+bi-implication (biff).
 TEXT. -/
 
 
 -- QUOTE:
--- Boolean implication operation 
+-- Boolean implication operation (buggy!)
 def bimp : bool → bool → bool
 | tt tt := tt
 | tt ff := tt
@@ -119,6 +149,22 @@ def biff : bool → bool → bool
 | tt ff := ff
 | ff tt := ff
 | ff ff := tt
+-- QUOTE.
+
+/- TEXT:
+Next we define a fixed interpretation for our
+syntactic logical connectives, first unary and
+then binary. We give these mappings in the form
+of functions from unary and binary operators
+(which act to compose logical expressions into
+new expressions), to Boolean operations (which 
+compose Boolean values into Boolean results). 
+-/
+
+-- QUOTE:
+-- interpretations of unary operators
+def un_op_sem : unop → (bool → bool)
+| opNot := bnot 
 
 -- interpretations of binary operators
 def bin_op_sem : binop → (bool → bool → bool)
@@ -127,10 +173,15 @@ def bin_op_sem : binop → (bool → bool → bool)
 | opImp := bimp
 | opIff := biff
 | opXor := bxor
+-- QUOTE.
 
--- interpretations of unary operators
-def un_op_sem : unop → (bool → bool)
-| opNot := bnot 
+/- TEXT:
+And now here's our overal expression semantic evaluation
+function. It works as described, computing the value of 
+sub-expressions and composing the Boolean results into
+final Boolean meanings for any given expression under any
+give interpretation.
+-/
 
 -- semantic evaluation (meaning of expressions)
 def pEval : prop_expr → (prop_var → bool) → bool
@@ -186,8 +237,8 @@ end
 -- QUOTE.
 
 /- TEXT:
-Testing it all out
-------------------
+Examples
+--------
 TEXT. -/
 
 -- QUOTE:
@@ -225,21 +276,11 @@ def an_interp : prop_var → bool
 #reduce pEval X an_interp  -- expect false
 #reduce pEval Y an_interp  -- expect false
 #reduce pEval e1 an_interp  -- expect false
-#reduce pEval (X => Y) an_interp
+#reduce pEval (X => Y) an_interp  -- oops
 
 -- applying theorem!
 #reduce and_commutes X Y an_interp
 -- result is a proof that ff = ff
-
-def x : Prop := (pEval (e1 => e2) an_interp) = ff
-
-theorem imp_trans : 
-  ∀ (e1 e2 e3 : prop_expr) (i : prop_var → bool),
-    (pEval (e1 => e2) i) = tt :=
-begin
-intros,
-end
-
 
 -- QUOTE.
 
@@ -256,7 +297,103 @@ Solutions
 ---------
 TEXT. -/
 
+
 -- QUOTE:
+
+-- The proof that ∨ is commutative is basically identical to that for ∧
+def or_commutes : 
+  ∀ (e1 e2 : prop_expr) 
+    (i : prop_var → bool),
+    (pEval (e1 ∨ e2) i) = (pEval (e2 ∨ e1) i) :=
+begin
+-- Suppose e1 e2 and i are arbitrary expressions and interpretation
+assume e1 e2 i,
+-- unfold definitions of pEval and bin_op_sem applied to their arguments
+unfold pEval,
+unfold bin_op_sem,
+-- proof by simple case analysis on possible results of evaluating e1 and e2 under i
+cases (pEval e1 i),
+cases (pEval e2 i),
+apply rfl,
+apply rfl,
+cases (pEval e2 i),
+apply rfl,
+apply rfl,
+-- QED: By showing it's true for arbitrary e1/e2/i we've shown it's true for *all* 
+end 
+
+-- Prove not is involutive
+
+theorem not_involutive: ∀ e i, (pEval e i) = (pEval (¬ ¬ e) i) :=
+begin
+assume e i,
+unfold pEval,
+unfold un_op_sem,
+cases (pEval e i),
+repeat { apply rfl },
+end
+
+theorem or_involutive : ∀ e i, (pEval e i) = (pEval (¬¬e) i) :=
+begin
+assume e i,
+unfold pEval un_op_sem,
+cases (pEval e i),
+exact rfl,
+exact rfl,
+end 
+
+theorem imp_trans : 
+  ∀ (e1 e2 e3 : prop_expr) (i : prop_var → bool),
+    (pEval (e1 => e2) i) = tt → 
+    (pEval (e2 => e3) i) = tt →
+    (pEval (e1 => e3) i) = tt :=
+begin
+unfold pEval,
+unfold bin_op_sem,
+assume e1 e2 e3 i h12 h23,
+cases (pEval e1 i),
+cases (pEval e2 i),
+cases (pEval e3 i),
+-- first 4 cases for e1
+assumption, --"exact rfl" will also work
+assumption,
+cases (pEval e3 i),
+assumption,
+assumption,
+-- second four cases for e1
+cases (pEval e2 i),
+cases (pEval e3 i),
+assumption,
+assumption,
+cases (pEval e3 i),
+assumption,
+assumption,
+end
+
+theorem contrapos : ∀ (e1 e2 : prop_expr) (i : prop_var → bool),
+    (pEval (e1 => e2) i) = tt → 
+    (pEval (¬e2 => ¬e1)) i = tt :=
+begin
+assume e1 e2 i,
+unfold pEval,
+unfold un_op_sem bin_op_sem,    
+cases (pEval e1 i),
+cases (pEval e2 i),
+unfold bnot bimp,
+assume h,
+assumption,
+unfold bnot bimp,
+assume h,
+assumption,
+cases (pEval e2 i),
+unfold bnot bimp,
+assume h,
+assumption,
+unfold bnot bimp,
+assume h,
+assumption,
+end
+
 end cs6501
 -- QUOTE.
 
