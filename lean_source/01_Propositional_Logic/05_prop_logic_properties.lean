@@ -1,6 +1,3 @@
-
-#check tt = tt
-
 /- TEXT:
 
 *****************
@@ -34,20 +31,13 @@ and now also (4) proofs that essential properties hold.
 TEXT. -/
 
 
--- QUOTE: 
-
-namespace cs6501
--- QUOTE.
-
-
 /- TEXT:
-
 Abstract Syntax
 ---------------
-
 TEXT. -/
 
--- QUOTE:
+-- QUOTE: 
+namespace cs6501
 
 -- variables, indexed by natural numbers
 inductive prop_var : Type
@@ -78,32 +68,24 @@ inductive prop_expr : Type
 | pBinOp (op : binop) (e1 e2 : prop_expr) -- binary operator expressions
 
 open prop_expr
-
 -- QUOTE.
+
 
 /- TEXT:
 Concrete Syntax / Notation
 --------------------------
 TEXT. -/
 
-#check tt = tt
-
 -- QUOTE:
 -- notations (concrete syntax)
 def True := pLit tt
-
-#check tt = tt
-
 def False := pLit ff
-
-#check tt = tt
-
 notation (name := pVar) `[` v `]` :=  pVar v
 notation (name := pNot) ¬e := pUnOp opNot e
 notation (name := pAnd) e1 ∧ e2 :=  pBinOp opAnd e1 e2
 notation (name := pOr) e1 ∨ e2 :=  pBinOp opOr e1 e2
 precedence ` => `: 50                                      -- add operator precedence
-notation (name := pImp) e1 `=>`  e2 := pBinOp opImp e1 e2  -- bug fixed; add back quotes
+notation (name := pImp) e1 ` => `  e2 := pBinOp opImp e1 e2  -- bug fixed; add back quotes
 notation (name := pIff) e1 ↔ e2 := pBinOp opIff e1 e2
 notation (name := pXor) e1 ⊕ e2 := pBinOp opXor e1 e2
 -- Let's not bother with notations for nand and nor at this point
@@ -159,7 +141,7 @@ of functions from unary and binary operators
 (which act to compose logical expressions into
 new expressions), to Boolean operations (which 
 compose Boolean values into Boolean results). 
--/
+TEXT. -/
 
 -- QUOTE:
 -- interpretations of unary operators
@@ -181,8 +163,9 @@ function. It works as described, computing the value of
 sub-expressions and composing the Boolean results into
 final Boolean meanings for any given expression under any
 give interpretation.
--/
+TEXT. -/
 
+-- QUOTE:
 -- semantic evaluation (meaning of expressions)
 def pEval : prop_expr → (prop_var → bool) → bool
 | (pLit b)          i := b 
@@ -323,75 +306,13 @@ apply rfl,
 end 
 
 -- Prove not is involutive
-
-theorem not_involutive: ∀ e i, (pEval e i) = (pEval (¬ ¬ e) i) :=
+theorem not_involutive: ∀ e i, (pEval e i) = (pEval (¬¬e) i) :=
 begin
 assume e i,
 unfold pEval,
 unfold un_op_sem,
 cases (pEval e i),
 repeat { apply rfl },
-end
-
-theorem or_involutive : ∀ e i, (pEval e i) = (pEval (¬¬e) i) :=
-begin
-assume e i,
-unfold pEval un_op_sem,
-cases (pEval e i),
-exact rfl,
-exact rfl,
-end 
-
-theorem imp_trans : 
-  ∀ (e1 e2 e3 : prop_expr) (i : prop_var → bool),
-    (pEval (e1 => e2) i) = tt → 
-    (pEval (e2 => e3) i) = tt →
-    (pEval (e1 => e3) i) = tt :=
-begin
-unfold pEval,
-unfold bin_op_sem,
-assume e1 e2 e3 i h12 h23,
-cases (pEval e1 i),
-cases (pEval e2 i),
-cases (pEval e3 i),
--- first 4 cases for e1
-assumption, --"exact rfl" will also work
-assumption,
-cases (pEval e3 i),
-assumption,
-assumption,
--- second four cases for e1
-cases (pEval e2 i),
-cases (pEval e3 i),
-assumption,
-assumption,
-cases (pEval e3 i),
-assumption,
-assumption,
-end
-
-theorem contrapos : ∀ (e1 e2 : prop_expr) (i : prop_var → bool),
-    (pEval (e1 => e2) i) = tt → 
-    (pEval (¬e2 => ¬e1)) i = tt :=
-begin
-assume e1 e2 i,
-unfold pEval,
-unfold un_op_sem bin_op_sem,    
-cases (pEval e1 i),
-cases (pEval e2 i),
-unfold bnot bimp,
-assume h,
-assumption,
-unfold bnot bimp,
-assume h,
-assumption,
-cases (pEval e2 i),
-unfold bnot bimp,
-assume h,
-assumption,
-unfold bnot bimp,
-assume h,
-assumption,
 end
 
 end cs6501

@@ -8,4 +8,6 @@ lean_source/mkdoc.py 01_Propositional_Logic 02_subset_prop_logic
 lean_source/mkdoc.py 01_Propositional_Logic 03_prop_logic_syn_sem
 lean_source/mkdoc.py 01_Propositional_Logic 04_prop_logic_syn_sem
 lean_source/mkdoc.py 01_Propositional_Logic 05_prop_logic_properties
+lean_source/mkdoc.py 01_Propositional_Logic 06_prop_logic_validation
+
 
