@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json.schemastore.org/vsls",
+    "gitignore": "none",
+    "excludeFiles":[
+        "/root",
+        "/root/.aws",
+        "/root/.aws/credentials",
+        "credentials",
+        "*.p12",
+        "*.cer",
+        "token",
+        ".gitignore",
+        ".vscode",
+        "settings.json",
+        ".vscode/settings.json",
+        ".vscode"
+    ],
+    "hideFiles": [
+        "bin",
+        "obj"
+    ]
+}

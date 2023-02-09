@@ -1,0 +1,65 @@
+\select@language {english}
+\contentsline {chapter}{\numberline {1}CS6501 Spring 2023}{1}{chapter.1}
+\contentsline {section}{\numberline {1.1}To Think Abstractly}{1}{section.1.1}
+\contentsline {subsection}{\numberline {1.1.1}Abstract Mathematics}{1}{subsection.1.1.1}
+\contentsline {subsection}{\numberline {1.1.2}Costs of Concreteness}{1}{subsection.1.1.2}
+\contentsline {subsection}{\numberline {1.1.3}A Path Forward}{2}{subsection.1.1.3}
+\contentsline {subsection}{\numberline {1.1.4}The Vision}{2}{subsection.1.1.4}
+\contentsline {subsection}{\numberline {1.1.5}This Class}{3}{subsection.1.1.5}
+\contentsline {section}{\numberline {1.2}Welcome. Overview.}{3}{section.1.2}
+\contentsline {subsection}{\numberline {1.2.1}What does \sphinxstyleemphasis {abstract} mean here?}{3}{subsection.1.2.1}
+\contentsline {subsection}{\numberline {1.2.2}Why \sphinxstyleemphasis {abstract} mathematics?}{3}{subsection.1.2.2}
+\contentsline {subsection}{\numberline {1.2.3}What is the point?}{3}{subsection.1.2.3}
+\contentsline {subsection}{\numberline {1.2.4}This class}{4}{subsection.1.2.4}
+\contentsline {chapter}{\numberline {2}Formal Languages}{5}{chapter.2}
+\contentsline {section}{\numberline {2.1}Balanced Parentheses}{5}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}Formal languages}{5}{subsection.2.1.1}
+\contentsline {subsection}{\numberline {2.1.2}Paper \& Pencil Syntax}{6}{subsection.2.1.2}
+\contentsline {subsection}{\numberline {2.1.3}Formal Syntax}{6}{subsection.2.1.3}
+\contentsline {subsection}{\numberline {2.1.4}Inductive Datatype Definitions}{8}{subsection.2.1.4}
+\contentsline {subsection}{\numberline {2.1.5}Semantics}{8}{subsection.2.1.5}
+\contentsline {section}{\numberline {2.2}Simplified Propositional Logic}{8}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}Syntax}{9}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {2.2.2}Semantics}{10}{subsection.2.2.2}
+\contentsline {section}{\numberline {2.3}Propositional Logic}{11}{section.2.3}
+\contentsline {subsection}{\numberline {2.3.1}Syntax}{11}{subsection.2.3.1}
+\contentsline {subsection}{\numberline {2.3.2}Semantics}{12}{subsection.2.3.2}
+\contentsline {section}{\numberline {2.4}A Better Specification}{13}{section.2.4}
+\contentsline {subsection}{\numberline {2.4.1}Syntax}{13}{subsection.2.4.1}
+\contentsline {subsection}{\numberline {2.4.2}Semantics}{14}{subsection.2.4.2}
+\contentsline {subsection}{\numberline {2.4.3}Exploration}{15}{subsection.2.4.3}
+\contentsline {section}{\numberline {2.5}Formal Validation}{15}{section.2.5}
+\contentsline {subsection}{\numberline {2.5.1}Concrete Syntax / Notation}{16}{subsection.2.5.1}
+\contentsline {subsection}{\numberline {2.5.2}Semantics}{17}{subsection.2.5.2}
+\contentsline {subsection}{\numberline {2.5.3}Formal Validation}{18}{subsection.2.5.3}
+\contentsline {subsection}{\numberline {2.5.4}Examples}{18}{subsection.2.5.4}
+\contentsline {subsection}{\numberline {2.5.5}Exercises}{19}{subsection.2.5.5}
+\contentsline {subsection}{\numberline {2.5.6}Solutions}{19}{subsection.2.5.6}
+\contentsline {section}{\numberline {2.6}Algebraic Axioms}{20}{section.2.6}
+\contentsline {subsection}{\numberline {2.6.1}Commutativity}{21}{subsection.2.6.1}
+\contentsline {subsection}{\numberline {2.6.2}Another Notation}{21}{subsection.2.6.2}
+\contentsline {subsection}{\numberline {2.6.3}Variable Declarations}{21}{subsection.2.6.3}
+\contentsline {subsection}{\numberline {2.6.4}Specialization of Generalizations}{22}{subsection.2.6.4}
+\contentsline {subsection}{\numberline {2.6.5}Associativity}{22}{subsection.2.6.5}
+\contentsline {subsection}{\numberline {2.6.6}Distributivity}{22}{subsection.2.6.6}
+\contentsline {subsection}{\numberline {2.6.7}DeMorgan’s Laws}{23}{subsection.2.6.7}
+\contentsline {subsection}{\numberline {2.6.8}Negation}{23}{subsection.2.6.8}
+\contentsline {subsection}{\numberline {2.6.9}Excluded Middle}{23}{subsection.2.6.9}
+\contentsline {subsection}{\numberline {2.6.10}No Contradiction}{23}{subsection.2.6.10}
+\contentsline {subsection}{\numberline {2.6.11}Implication}{23}{subsection.2.6.11}
+\contentsline {subsection}{\numberline {2.6.12}And Simplification}{23}{subsection.2.6.12}
+\contentsline {subsection}{\numberline {2.6.13}Or Simplification}{23}{subsection.2.6.13}
+\contentsline {subsection}{\numberline {2.6.14}Homework}{24}{subsection.2.6.14}
+\contentsline {section}{\numberline {2.7}Algebraic Axioms}{24}{section.2.7}
+\contentsline {subsection}{\numberline {2.7.1}Commutativity}{25}{subsection.2.7.1}
+\contentsline {subsection}{\numberline {2.7.2}Associativity}{26}{subsection.2.7.2}
+\contentsline {subsection}{\numberline {2.7.3}Distributivity}{26}{subsection.2.7.3}
+\contentsline {subsection}{\numberline {2.7.4}DeMorgan’s Laws}{26}{subsection.2.7.4}
+\contentsline {subsection}{\numberline {2.7.5}Negation}{26}{subsection.2.7.5}
+\contentsline {subsection}{\numberline {2.7.6}Excluded Middle}{26}{subsection.2.7.6}
+\contentsline {subsection}{\numberline {2.7.7}No Contradiction}{27}{subsection.2.7.7}
+\contentsline {subsection}{\numberline {2.7.8}Implication}{27}{subsection.2.7.8}
+\contentsline {subsection}{\numberline {2.7.9}And Simplification}{27}{subsection.2.7.9}
+\contentsline {subsection}{\numberline {2.7.10}Or Simplification}{27}{subsection.2.7.10}
+\contentsline {subsubsection}{Inference Rules}{27}{subsubsection*.3}
+\contentsline {chapter}{\numberline {3}Index}{29}{chapter.3}
