@@ -1,230 +1,53 @@
 
-****************
-Algebraic Axioms
-****************
+***************
+Inference Rules
+***************
 
-We've now seen that it's not enough to prove a few 
-theorems about a construction (here our syntax and 
-semantics for propositional logic). 
+In this chapter we will present another approach 
+to validating our model of propositional logic: by 
+verifying that it satisifies the *inference rules* 
+of this logic.
 
-So how will we confirm *for sure* that our model (or
-implementation) of propositional logic is completely
-valid? 
+An inference rule is basically a function that takes 
+zero or more arguments, usually including what we call
+*truth judgements* or *proofs* of certain propositions,
+and that returns truth judgments or proofs of other
+propositions, which are said to be *derived* or to be
+*deduced* from the arguments. 
 
-In this class we'll distinguish two different methods.
-First, we can prove that our specification satisfies
-the *algebraic axioms* of propositional logic. Second,
-we can prove that all of the *inference rules* of the
-logic are valid in our model of propositional logic.
+For example, in both propositional and *first-order
+predicate* logic, we have a rule, *and introduction*,
+that takes as arguments, or *premises*, truth judgments 
+for any two arbitrary propositions, *X* and *Y*, and 
+that returns a truth judgment for *X ∧ Y*. 
 
-Along the way we'll take the opportunity to see more
-of what Lean can do for us:
-- Scott/semantic bracket notation for *meaning-of*
-- declare automatically introduced variables
-- use of implicit arguments to further improve notation
-- universally quantified variables are function arguments 
-- "sorry" to bail out of a proof and accept proposition as axiom
+A truth judgment is a determination that a proposition,
+say *X*, is logically true, and can be written (in paper
+and pencil logic as) *X : true*. The *and introduction*
+rule thus states that *X : True, Y : True ⊢ X ∧ Y : True.*
 
-To avoid duplication of code from the last chapter,
-we'll import all of the definitions in its Lean file
-for use here.
+This is usually shortened to *X, Y ⊢ X ∧ Y* based on the
+assumption that everything to the left of the turnstile
+is assumed to have already been judged to be true. Such
+a rule can be pronounced as follows: in a context in which
+you have already judged X and Y to be true you can always
+conclude that X ∧ Y is true.
+
+What's different is that these rules are syntactic and
+don't presume that we have an algorithm for determining
+truth. We do for propositional logic, but not predicate 
+logic. Learning the basic inference rules of the logic
+is thus essential for reasoning about the truth of given 
+propositions expressed in predicate logic.
+
 
 .. code-block:: lean
 
-  import .A_05_prop_logic_properties
+  import .A_06_prop_logic_algebraic_axioms 
   namespace cs6501
 
-Algebraic Properties
-====================
-
-First, a propositional logic can be understood as an algebra over
-Boolean-valued terms, variables, and constants. Constants and variables
-are are terms, but terms can also be constructed from smaller terms using
-connectives: ∧, ∨, ¬, and so on. The axioms of propopsitiona logic impose
-constraints on how these operations behave, on their own and combined. 
-
-The constraints are algebraic, just as the axioms are algebraic that
-impose the standard ring structure on the natural numbers. These are 
-the *usual* commutativity and associativity properties of natural number
-addition and multiplication, the distributivity of multiplication over 
-addition, and so forth. As we go through the required properties for 
-propositional logic, note the common underlying algebraic structure.  
-
-
-Commutativity
--------------
-
-The first two axioms that that the and and or operators 
-(∧, ∨) are commutative. One will often see these rules
-written as follows:
-
-- (p ∧ q) = (q ∧ p)
-- (p ∨ q) = (q ∨ p)
-
-To be completely formal, we need to be a more careful. 
-First, we need to define variables such as p and q as 
-being universally quantified. Second, we need to make clear 
-that the quantities that are equal are not the propositions
-themselves (they are not equal) but their *meanings* under 
-all interpretations. Thus in the last chapter we defined
-the commutativity of ∧ like this:
-
-.. code-block:: lean
-
-  example : 
-  ∀ (p q : prop_expr) (i : prop_var → bool),
-    pEval (p ∧ q) i = pEval (q ∧ p) i :=
-  and_commutes  -- proof from last chapter
-
-As we've seen, mathematical theories are often
-augmented with concrete syntax / notations that 
-make it practical for people to read and write 
-such mathemantics. 
-
-A standard notation for a "meaning-of-expression" 
-operator is a pair of *denotation* or *Scoot* 
-brackets. So *⟦ e ⟧* can be read as "the meaning
-of *e*." To resolve meaning, an interpretation, 
-*i*. We'll thus write *⟦ e ⟧ i* to mean the meaning
-of e under the interpretation i: *pEval e i*. 
-
-.. code-block:: lean
-
-  
-  notation (name := pEval) ` ⟦ ` p ` ⟧ `  :=  pEval p
-  
-  /-
-  We can declare a set of variables to be used across
-  multiple definitions within a section. 
-  -/
-  section prop_logic_axioms
-  
-  -- Let p, q, r, and i be arbitrary expressions and an interpretation
-  variables (p q r : prop_expr) (i : prop_var → bool)
-  
-  -- now we can write expressions with these variables without explicitly introducing them by ∀ 
-  -- we add prime marks just to avoid naming conflicts, the primes have no special meaning here
-  def and_commutes' := ⟦(p ∧ q)⟧ i = ⟦(q ∧ p)⟧ i 
-  def or_commutes' :=  ⟦(p ∧ q)⟧ i = ⟦(q ∧ p)⟧ i
-  
-  /-
-  Comparing the types of our initial proof that and 
-  commutes with our new definition shows that they are
-  same if you understand that ∀-quantified variables
-  to be the same as function arguments. 
-  -/
-  #check and_commutes
-  #check and_commutes'
-  
-  /-
-  Observe: We can *apply* these theorems
-  to particular objects to specalize the
-  generalized statement to the particular
-  objects.
-  -/
-  
-  variables (a b : prop_expr)
-  #reduce and_commutes' p q i
-  #reduce and_commutes' a b i
-  
-  
-  -- re-doing proof with new notation
-  example : and_commutes' p q i := 
-  begin
-  -- expand definitions
-  unfold and_commutes',
-  unfold pEval bin_op_sem,
-  -- rest by case analysis as usual
-  sorry,
-  end 
-
-Associativity
--------------
-
-.. code-block:: lean
-
-  def and_associative_axiom :=  ⟦(p ∧ q) ∧ r⟧ i = ⟦(p ∧ (q ∧ r))⟧ i
-  def or_associative_axiom :=   ⟦(p ∨ q) ∨ r⟧ i = ⟦(p ∨ (q ∨ r))⟧ i
-
-Distributivity
---------------
-
-.. code-block:: lean
-
-  def or_dist_and_axiom := ⟦p ∨ (q ∧ r)⟧ i = ⟦(p ∨ q) ∧ (p ∨ r)⟧ i
-  def and_dist_or_axiom := ⟦p ∧ (q ∨ r)⟧ i = ⟦(p ∧ q) ∨ (p ∧ r)⟧ i
-
-DeMorgan's Laws
----------------
-
-.. code-block:: lean
-
-  def demorgan_not_over_and_axiom := ⟦¬(p ∧ q)⟧ i = ⟦¬p ∨ ¬q⟧ i
-  def demorgan_not_over_or_axiom :=  ⟦¬(p ∨ q)⟧ i = ⟦¬p ∧ ¬q⟧ i
-
-Negation
---------
-
-.. code-block:: lean
-
-  def negation_elimination_axiom := ⟦¬¬p⟧ i = ⟦p⟧ i
-
-Excluded Middle
----------------
-
-.. code-block:: lean
-
-  def excluded_middle_axiom := ⟦p ∨ ¬p⟧ i = ⟦⊤⟧ i   -- or just tt
-
-No Contradiction
-----------------
-
-.. code-block:: lean
-
-  def no_contradiction_axiom := ⟦p ∧ ¬p⟧ i = ⟦⊥⟧ i   -- or just tt
-
-Implication
------------
-
-.. code-block:: lean
-
-  def implication_axiom := ⟦(p => q)⟧ i = ⟦¬p ∨ q⟧ i  -- notation issue
-  
-  
-  example : implication_axiom a b i := 
-  begin
-  unfold implication_axiom pEval bin_op_sem un_op_sem,
-  cases ⟦ a ⟧ i,
-  cases ⟦ b ⟧ i,
-  apply rfl,
-  
-  -- = bnot ( ⟦ a ⟧ i) || ⟦ b ⟧ i
-  end
-  
-  
-
-And Simplification
-------------------
-
-Homework: Formalize
-
-p ∧ p = p
-p ∧ T = p
-p ∧ F = F
-p ∧ (p ∨ q) = p
-
-Or Simplification
-------------------
-
-Homework: Formalize
-
-p ∨ p = p
-p ∨ T = T
-p ∨ F = p
-p ∨ (p ∧ q) = p
-
 Inference Rules
-===============
+---------------
 
 Key idea: These are rules for reasoning about evidence.
 What *evidence* do you need to derive a given conclusion?
@@ -247,9 +70,9 @@ rules of the logic.
   -- 8. X ∨ Y, X → Z, Y → Z ⊢ Z -- or elimination
   
   -- 9. ¬¬X ⊢ X                 -- negation elimination
-  -- 10. X → ⊥ ⊢ ¬X              -- negation introduction
+  -- 10. X → ⊥ ⊢ ¬X             -- negation introduction
   
-  -- 11. (X ⊢ Y) → (X → Y)      -- a little complicated
+  -- 11. (X ⊢ Y) ⊢ (X → Y)      -- a little complicated
   -- 12. X → Y, X ⊢ Y           -- arrow elimination
   
   -- 13. X → Y, Y → X ⊢ X ↔ Y    -- iff introduction
@@ -257,37 +80,94 @@ rules of the logic.
   -- 15. X ↔ Y ⊢ Y → X          -- iff elimination right
   
 
-In the style we've developed, formally state and prove 
-that our logic and semantics has each of the properties, 
-1, 2, 4, 5, 6, 8, 9, 10, 12, and 15. Identify any rules 
-that fail to be provable due to the injected bug in bimp.
-
-Use Lean's *theorem* directive to give names to proofs. 
-as names for your proofs, use the names in the comments
-after each rule (adding missing underscores as needed).
-
-To do this part of the assignment, make a copy of this
-file from the class repo and add the statement and proof
-of each theorem below. You will turn in the file with these
-proofs included in the given order at the end of the file.
-
-This isn't a comprehensive list of properties. We lack
-rules for ⊤ and ⊥ (formerly True, False; still terms 
-that invariably evaluate to true (tt) and false (ff).
-There are rules that explain, for example, that ⊤ ∧ e 
-is equivalent to e; ⊥ ∧ e is invariably false; ⊥ or e 
-is equivalent to e; and ⊤ ∨ e is invariably true. Go 
-ahead and prove these propositions as well if you just
-can't stop proving! (optional :-).
-
-Try to do all or at least most of this assignment on 
-your own. Feel free to ask for or give help on minor
-matters, e.g., of Lean syntax, or if some concept isn't
-yet clear enough. Discussing such issues is constructive. 
-I skipped over properties whose proofs look almost just
-like those for closely related properties.
 
 .. code-block:: lean
 
+  open cs6501 
+  
+  theorem and_intro_valid : ∀ (X Y : prop_expr) (i : prop_var → bool), 
+      (⟦X⟧ i = tt) → (⟦Y⟧ i = tt) → (⟦(X ∧ Y)⟧ i = tt) :=
+  begin
+  assume X Y i,
+  assume X_true Y_true,
+  unfold pEval bin_op_sem, -- axioms of eq
+  rw X_true,
+  rw Y_true,
+  apply rfl,
+  end 
+  
+  theorem and_elim_left_valid : 
+  ∀ (X Y : prop_expr) (i : prop_var → bool),
+  (⟦(X ∧ Y)⟧ i = tt) → (⟦X⟧ i = tt) :=
+  begin
+  unfold pEval bin_op_sem,
+  assume X Y i,
+  assume h_and,
+  cases ⟦ X ⟧ i,
+  cases ⟦ Y ⟧ i,
+  cases h_and,
+  cases h_and,
+  cases ⟦ Y ⟧ i,
+  cases h_and,
+  apply rfl,
+  end 
+  
+  theorem or_intro_left_valid : 
+  ∀ (X Y : prop_expr) (i : prop_var → bool),
+  (⟦(X)⟧ i = tt) → (⟦X ∨ Y⟧ i = tt) :=
+  begin
+  unfold pEval bin_op_sem,
+  assume X Y i,
+  assume X_true,
+  rw X_true,
+  apply rfl,
+  end
+  
+  theorem or_elim_valid : ∀ (X Y Z : prop_expr) (i : prop_var → bool),
+  (⟦ (X ∨ Y) ⟧ i = tt) → 
+  (⟦ (X => Z) ⟧ i = tt) → 
+  (⟦ (Y => Z) ⟧ i = tt) → 
+  (⟦ Z ⟧ i = tt) :=
+  begin
+  -- expand definitions as assume premises
+  unfold pEval bin_op_sem,
+  assume X Y Z i,
+  assume h_xory h_xz h_yz,
+  
+  -- the rest is by nested case analysis
+  -- this script is refined from my original 
+  cases (⟦ X ⟧ i), -- case analysis on bool (⟦ X ⟧ i) 
+  repeat {
+    repeat {      --  case analysis on bool (⟦ Y ⟧ i)
+      cases ⟦ Y ⟧ i,
+      repeat {    -- case analysis on bool (⟦ Z ⟧ i)
+        cases ⟦ Z ⟧ i,
+        /-
+        If there's an outright contradiction in your
+        context, this tactic will apply false elimination
+        to ignore/dismiss this "case that cannot happen."
+        -/
+        contradiction, 
+        apply rfl,
+      },
+    },
+  },
+  end  
+
+Practice
+--------
+In the style of the preceding examples, formally state,
+name, and prove that each of the remaining inference are
+also valid in our logic. Identify any rules that fail to be
+provable in the presence of the bug we injected in bimp.
+You can do this by completing the proofs and seeing how
+they break when bugs are added to our definitions.
+
+.. code-block:: lean
+
+  -- Write your formal propositions and proofs here: 
+  
+  
+  
   end cs6501
 

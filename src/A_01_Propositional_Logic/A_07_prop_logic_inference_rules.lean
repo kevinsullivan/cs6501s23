@@ -1,110 +1,6 @@
 
-import .A_05_prop_logic_properties
+import .A_06_prop_logic_algebraic_axioms 
 namespace cs6501
-
-
-example : 
-∀ (p q : prop_expr) (i : prop_var → bool),
-  pEval (p ∧ q) i = pEval (q ∧ p) i :=
-and_commutes  -- proof from last chapter
-
-
-
-notation (name := pEval) ` ⟦ ` p ` ⟧ `  :=  pEval p
-
-/-
-We can declare a set of variables to be used across
-multiple definitions within a section. 
--/
-section prop_logic_axioms
-
--- Let p, q, r, and i be arbitrary expressions and an interpretation
-variables (p q r : prop_expr) (i : prop_var → bool)
-
--- now we can write expressions with these variables without explicitly introducing them by ∀ 
--- we add prime marks just to avoid naming conflicts, the primes have no special meaning here
-def and_commutes' := ⟦(p ∧ q)⟧ i = ⟦(q ∧ p)⟧ i 
-def or_commutes' :=  ⟦(p ∧ q)⟧ i = ⟦(q ∧ p)⟧ i
-
-/-
-Comparing the types of our initial proof that and 
-commutes with our new definition shows that they are
-same if you understand that ∀-quantified variables
-to be the same as function arguments. 
--/
-#check and_commutes
-#check and_commutes'
-
-/-
-Observe: We can *apply* these theorems
-to particular objects to specalize the
-generalized statement to the particular
-objects.
--/
-
-variables (a b : prop_expr)
-#reduce and_commutes' p q i
-#reduce and_commutes' a b i
-
-
--- re-doing proof with new notation
-example : and_commutes' p q i := 
-begin
--- expand definitions
-unfold and_commutes',
-unfold pEval bin_op_sem,
--- rest by case analysis as usual
-sorry,
-end 
-
-
-def and_associative_axiom :=  ⟦(p ∧ q) ∧ r⟧ i = ⟦(p ∧ (q ∧ r))⟧ i
-def or_associative_axiom :=   ⟦(p ∨ q) ∨ r⟧ i = ⟦(p ∨ (q ∨ r))⟧ i
-
-
-def or_dist_and_axiom := ⟦p ∨ (q ∧ r)⟧ i = ⟦(p ∨ q) ∧ (p ∨ r)⟧ i
-def and_dist_or_axiom := ⟦p ∧ (q ∨ r)⟧ i = ⟦(p ∧ q) ∨ (p ∧ r)⟧ i
-
--- Homework
-
-
-def demorgan_not_over_and_axiom := ⟦¬(p ∧ q)⟧ i = ⟦¬p ∨ ¬q⟧ i
-def demorgan_not_over_or_axiom :=  ⟦¬(p ∨ q)⟧ i = ⟦¬p ∧ ¬q⟧ i
-
--- Homework
-
-
-def negation_elimination_axiom := ⟦¬¬p⟧ i = ⟦p⟧ i
-
-
-
-def excluded_middle_axiom := ⟦p ∨ ¬p⟧ i = ⟦⊤⟧ i   -- or just tt
-
-
-
-def no_contradiction_axiom := ⟦p ∧ ¬p⟧ i = ⟦⊥⟧ i   -- or just tt
-
-
-
-def implication_axiom := ⟦(p => q)⟧ i = ⟦¬p ∨ q⟧ i  -- notation issue
-
-
-example : implication_axiom a b i := 
-begin
-unfold implication_axiom pEval bin_op_sem un_op_sem,
-cases ⟦ a ⟧ i,
-cases ⟦ b ⟧ i,
-apply rfl,
-
--- = bnot ( ⟦ a ⟧ i) || ⟦ b ⟧ i
-end
-
-
-
-
-
-
-
 
 
 -- 1. ⊢ ⊤                     -- true introduction
@@ -119,14 +15,112 @@ end
 -- 8. X ∨ Y, X → Z, Y → Z ⊢ Z -- or elimination
 
 -- 9. ¬¬X ⊢ X                 -- negation elimination
--- 10. X → ⊥ ⊢ ¬X              -- negation introduction
+-- 10. X → ⊥ ⊢ ¬X             -- negation introduction
 
--- 11. (X ⊢ Y) → (X → Y)      -- a little complicated
+-- 11. (X ⊢ Y) ⊢ (X → Y)      -- a little complicated
 -- 12. X → Y, X ⊢ Y           -- arrow elimination
 
 -- 13. X → Y, Y → X ⊢ X ↔ Y    -- iff introduction
 -- 14. X ↔ Y ⊢ X → Y          -- iff elimination left
 -- 15. X ↔ Y ⊢ Y → X          -- iff elimination right
+
+
+
+/- TITLE:
+Our next task is to formalize statements of these
+informally stated inference rules and to prove using
+Lean that these rules are logically *valid* in our 
+representation of propositional logic. Doing this
+will also serve as a warmup for understanding how
+essentially the same inference rules are the rules
+of reasoning in predicate logic. 
+
+We first present examples, and use them to introduce
+and get some practice with key ideas in Lean. Then we
+leave the rest for you to prove.
+
+Examples
+--------
+TEXT: -/
+
+open cs6501 
+
+theorem and_intro_valid : ∀ (X Y : prop_expr) (i : prop_var → bool), 
+    (⟦X⟧ i = tt) → (⟦Y⟧ i = tt) → (⟦(X ∧ Y)⟧ i = tt) :=
+begin
+assume X Y i,
+assume X_true Y_true,
+unfold pEval bin_op_sem, -- axioms of eq
+rw X_true,
+rw Y_true,
+apply rfl,
+end 
+
+theorem and_elim_left_valid : 
+∀ (X Y : prop_expr) (i : prop_var → bool),
+(⟦(X ∧ Y)⟧ i = tt) → (⟦X⟧ i = tt) :=
+begin
+unfold pEval bin_op_sem,
+assume X Y i,
+assume h_and,
+cases ⟦ X ⟧ i,
+cases ⟦ Y ⟧ i,
+cases h_and,
+cases h_and,
+cases ⟦ Y ⟧ i,
+cases h_and,
+apply rfl,
+end 
+
+theorem or_intro_left_valid : 
+∀ (X Y : prop_expr) (i : prop_var → bool),
+(⟦(X)⟧ i = tt) → (⟦X ∨ Y⟧ i = tt) :=
+begin
+unfold pEval bin_op_sem,
+assume X Y i,
+assume X_true,
+rw X_true,
+apply rfl,
+end
+
+theorem or_elim_valid : ∀ (X Y Z : prop_expr) (i : prop_var → bool),
+(⟦ (X ∨ Y) ⟧ i = tt) → 
+(⟦ (X => Z) ⟧ i = tt) → 
+(⟦ (Y => Z) ⟧ i = tt) → 
+(⟦ Z ⟧ i = tt) :=
+begin
+-- expand definitions as assume premises
+unfold pEval bin_op_sem,
+assume X Y Z i,
+assume h_xory h_xz h_yz,
+
+-- the rest is by nested case analysis
+-- this script is refined from my original 
+cases (⟦ X ⟧ i), -- case analysis on bool (⟦ X ⟧ i) 
+repeat {
+  repeat {      --  case analysis on bool (⟦ Y ⟧ i)
+    cases ⟦ Y ⟧ i,
+    repeat {    -- case analysis on bool (⟦ Z ⟧ i)
+      cases ⟦ Z ⟧ i,
+      /-
+      If there's an outright contradiction in your
+      context, this tactic will apply false elimination
+      to ignore/dismiss this "case that cannot happen."
+      -/
+      contradiction, 
+      apply rfl,
+    },
+  },
+},
+end  
+
+
+
+
+
+
+-- Write your formal propositions and proofs here: 
+
 
 
 end cs6501

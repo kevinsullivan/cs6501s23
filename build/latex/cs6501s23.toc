@@ -50,16 +50,7 @@
 \contentsline {subsection}{\numberline {2.6.12}And Simplification}{23}{subsection.2.6.12}
 \contentsline {subsection}{\numberline {2.6.13}Or Simplification}{23}{subsection.2.6.13}
 \contentsline {subsection}{\numberline {2.6.14}Homework}{24}{subsection.2.6.14}
-\contentsline {section}{\numberline {2.7}Algebraic Axioms}{24}{section.2.7}
-\contentsline {subsection}{\numberline {2.7.1}Commutativity}{25}{subsection.2.7.1}
-\contentsline {subsection}{\numberline {2.7.2}Associativity}{26}{subsection.2.7.2}
-\contentsline {subsection}{\numberline {2.7.3}Distributivity}{26}{subsection.2.7.3}
-\contentsline {subsection}{\numberline {2.7.4}DeMorgan’s Laws}{26}{subsection.2.7.4}
-\contentsline {subsection}{\numberline {2.7.5}Negation}{26}{subsection.2.7.5}
-\contentsline {subsection}{\numberline {2.7.6}Excluded Middle}{26}{subsection.2.7.6}
-\contentsline {subsection}{\numberline {2.7.7}No Contradiction}{27}{subsection.2.7.7}
-\contentsline {subsection}{\numberline {2.7.8}Implication}{27}{subsection.2.7.8}
-\contentsline {subsection}{\numberline {2.7.9}And Simplification}{27}{subsection.2.7.9}
-\contentsline {subsection}{\numberline {2.7.10}Or Simplification}{27}{subsection.2.7.10}
-\contentsline {subsubsection}{Inference Rules}{27}{subsubsection*.3}
-\contentsline {chapter}{\numberline {3}Index}{29}{chapter.3}
+\contentsline {section}{\numberline {2.7}Inference Rules}{24}{section.2.7}
+\contentsline {subsection}{\numberline {2.7.1}Inference Rules}{25}{subsection.2.7.1}
+\contentsline {subsection}{\numberline {2.7.2}Practice}{26}{subsection.2.7.2}
+\contentsline {chapter}{\numberline {3}Index}{27}{chapter.3}

@@ -36,8 +36,10 @@ conclude that X ∧ Y is true.
 
 What's different is that these rules are syntactic and
 don't presume that we have an algorithm for determining
-truth, as we do with propositional logic, but not for
-predicate logic. 
+truth. We do for propositional logic, but not predicate 
+logic. Learning the basic inference rules of the logic
+is thus essential for reasoning about the truth of given 
+propositions expressed in predicate logic.
 
 TEXT. -/
 
@@ -71,9 +73,9 @@ TEXT. -/
 -- 8. X ∨ Y, X → Z, Y → Z ⊢ Z -- or elimination
 
 -- 9. ¬¬X ⊢ X                 -- negation elimination
--- 10. X → ⊥ ⊢ ¬X              -- negation introduction
+-- 10. X → ⊥ ⊢ ¬X             -- negation introduction
 
--- 11. (X ⊢ Y) → (X → Y)      -- a little complicated
+-- 11. (X ⊢ Y) ⊢ (X → Y)      -- a little complicated
 -- 12. X → Y, X ⊢ Y           -- arrow elimination
 
 -- 13. X → Y, Y → X ⊢ X ↔ Y    -- iff introduction
@@ -82,6 +84,25 @@ TEXT. -/
 
 -- QUOTE.
 
+
+/- TITLE:
+Our next task is to formalize statements of these
+informally stated inference rules and to prove using
+Lean that these rules are logically *valid* in our 
+representation of propositional logic. Doing this
+will also serve as a warmup for understanding how
+essentially the same inference rules are the rules
+of reasoning in predicate logic. 
+
+We first present examples, and use them to introduce
+and get some practice with key ideas in Lean. Then we
+leave the rest for you to prove.
+
+Examples
+--------
+TEXT: -/
+
+-- QUOTE:
 open cs6501 
 
 theorem and_intro_valid : ∀ (X Y : prop_expr) (i : prop_var → bool), 
@@ -128,48 +149,51 @@ theorem or_elim_valid : ∀ (X Y Z : prop_expr) (i : prop_var → bool),
 (⟦ (Y => Z) ⟧ i = tt) → 
 (⟦ Z ⟧ i = tt) :=
 begin
+-- expand definitions as assume premises
 unfold pEval bin_op_sem,
 assume X Y Z i,
 assume h_xory h_xz h_yz,
--- case analysis
--- you do the rest!
+
+-- the rest is by nested case analysis
+-- this script is refined from my original 
+cases (⟦ X ⟧ i), -- case analysis on bool (⟦ X ⟧ i) 
+repeat {
+  repeat {      --  case analysis on bool (⟦ Y ⟧ i)
+    cases ⟦ Y ⟧ i,
+    repeat {    -- case analysis on bool (⟦ Z ⟧ i)
+      cases ⟦ Z ⟧ i,
+      /-
+      If there's an outright contradiction in your
+      context, this tactic will apply false elimination
+      to ignore/dismiss this "case that cannot happen."
+      -/
+      contradiction, 
+      apply rfl,
+    },
+  },
+},
 end  
+-- QUOTE.
+
+
 
 /- TEXT:
-
 Practice
 --------
-
-In the style we've developed, formally state and prove 
-that our logic and semantics has each of the properties, 
-1, 2, 4, 5, 6, 8, 9, 10, 12, and 15. Identify any rules 
-that fail to be provable due to the injected bug in bimp.
-
-Use Lean's *theorem* directive to give names to proofs. 
-as names for your proofs, use the names in the comments
-after each rule (adding missing underscores as needed).
-
-To do this part of the assignment, make a copy of this
-file from the class repo and add the statement and proof
-of each theorem below. You will turn in the file with these
-proofs included in the given order at the end of the file.
-
-This isn't a comprehensive list of properties. We lack
-rules for ⊤ and ⊥ (formerly True, False; still terms 
-that invariably evaluate to true (tt) and false (ff).
-There are rules that explain, for example, that ⊤ ∧ e 
-is equivalent to e; ⊥ ∧ e is invariably false; ⊥ or e 
-is equivalent to e; and ⊤ ∨ e is invariably true. Go 
-ahead and prove these propositions as well if you just
-can't stop proving! (optional :-).
-
-Try to do all or at least most of this assignment on 
-your own. Feel free to ask for or give help on minor
-matters, e.g., of Lean syntax, or if some concept isn't
-yet clear enough. Discussing such issues is constructive. 
-I skipped over properties whose proofs look almost just
-like those for closely related properties.
+In the style of the preceding examples, formally state,
+name, and prove that each of the remaining inference are
+also valid in our logic. Identify any rules that fail to be
+provable in the presence of the bug we injected in bimp.
+You can do this by completing the proofs and seeing how
+they break when bugs are added to our definitions.
 TEXT. -/
+
+
+
 -- QUOTE:
+-- Write your formal propositions and proofs here: 
+
+
+
 end cs6501
 -- QUOTE.

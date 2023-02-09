@@ -1910,246 +1910,59 @@ some helpful examples
 \end{itemize}
 
 
-\section{Algebraic Axioms}
-\label{\detokenize{A_01_Propositional_Logic:id9}}
+\section{Inference Rules}
+\label{\detokenize{A_01_Propositional_Logic:inference-rules}}
 \sphinxAtStartPar
-We’ve now seen that it’s not enough to prove a few
-theorems about a construction (here our syntax and
-semantics for propositional logic).
+In this chapter we will present another approach
+to validating our model of propositional logic: by
+verifying that it satisifies the \sphinxstyleemphasis{inference rules}
+of this logic.
 
 \sphinxAtStartPar
-So how will we confirm \sphinxstyleemphasis{for sure} that our model (or
-implementation) of propositional logic is completely
-valid?
+An inference rule is basically a function that takes
+zero or more arguments, usually including what we call
+\sphinxstyleemphasis{truth judgements} or \sphinxstyleemphasis{proofs} of certain propositions,
+and that returns truth judgments or proofs of other
+propositions, which are said to be \sphinxstyleemphasis{derived} or to be
+\sphinxstyleemphasis{deduced} from the arguments.
 
 \sphinxAtStartPar
-In this class we’ll distinguish two different methods.
-First, we can prove that our specification satisfies
-the \sphinxstyleemphasis{algebraic axioms} of propositional logic. Second,
-we can prove that all of the \sphinxstyleemphasis{inference rules} of the
-logic are valid in our model of propositional logic.
+For example, in both propositional and \sphinxstyleemphasis{first\sphinxhyphen{}order
+predicate} logic, we have a rule, \sphinxstyleemphasis{and introduction},
+that takes as arguments, or \sphinxstyleemphasis{premises}, truth judgments
+for any two arbitrary propositions, \sphinxstyleemphasis{X} and \sphinxstyleemphasis{Y}, and
+that returns a truth judgment for \sphinxstyleemphasis{X ∧ Y}.
 
 \sphinxAtStartPar
-Along the way we’ll take the opportunity to see more
-of what Lean can do for us:
-\sphinxhyphen{} Scott/semantic bracket notation for \sphinxstyleemphasis{meaning\sphinxhyphen{}of}
-\sphinxhyphen{} declare automatically introduced variables
-\sphinxhyphen{} use of implicit arguments to further improve notation
-\sphinxhyphen{} universally quantified variables are function arguments
-\sphinxhyphen{} “sorry” to bail out of a proof and accept proposition as axiom
+A truth judgment is a determination that a proposition,
+say \sphinxstyleemphasis{X}, is logically true, and can be written (in paper
+and pencil logic as) \sphinxstyleemphasis{X : true}. The \sphinxstyleemphasis{and introduction}
+rule thus states that \sphinxstyleemphasis{X : True, Y : True ⊢ X ∧ Y : True.}
 
 \sphinxAtStartPar
-To avoid duplication of code from the last chapter,
-we’ll import all of the definitions in its Lean file
-for use here.
+This is usually shortened to \sphinxstyleemphasis{X, Y ⊢ X ∧ Y} based on the
+assumption that everything to the left of the turnstile
+is assumed to have already been judged to be true. Such
+a rule can be pronounced as follows: in a context in which
+you have already judged X and Y to be true you can always
+conclude that X ∧ Y is true.
+
+\sphinxAtStartPar
+What’s different is that these rules are syntactic and
+don’t presume that we have an algorithm for determining
+truth. We do for propositional logic, but not predicate
+logic. Learning the basic inference rules of the logic
+is thus essential for reasoning about the truth of given
+propositions expressed in predicate logic.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{k+kn}{import} \PYG{n+nb+bp}{.}\PYG{n}{A\PYGZus{}05\PYGZus{}prop\PYGZus{}logic\PYGZus{}properties}
+\PYG{k+kn}{import} \PYG{n+nb+bp}{.}\PYG{n}{A\PYGZus{}06\PYGZus{}prop\PYGZus{}logic\PYGZus{}algebraic\PYGZus{}axioms}
 \PYG{k+kn}{namespace} \PYG{n}{cs6501}
 \end{sphinxVerbatim}
 
-\sphinxAtStartPar
-First, a propositional logic can be understood as an algebra over
-Boolean\sphinxhyphen{}valued terms, variables, and constants. Constants and variables
-are are terms, but terms can also be constructed from smaller terms using
-connectives: ∧, ∨, ¬, and so on. The axioms of propopsitiona logic impose
-constraints on how these operations behave, on their own and combined.
 
-\sphinxAtStartPar
-The constraints are algebraic, just as the axioms are algebraic that
-impose the standard ring structure on the natural numbers. These are
-the \sphinxstyleemphasis{usual} commutativity and associativity properties of natural number
-addition and multiplication, the distributivity of multiplication over
-addition, and so forth. As we go through the required properties for
-propositional logic, note the common underlying algebraic structure.
-
-
-\subsection{Commutativity}
-\label{\detokenize{A_01_Propositional_Logic:id10}}
-\sphinxAtStartPar
-The first two axioms that that the and and or operators
-(∧, ∨) are commutative. One will often see these rules
-written as follows:
-\begin{itemize}
-\item {} 
-\sphinxAtStartPar
-(p ∧ q) = (q ∧ p)
-
-\item {} 
-\sphinxAtStartPar
-(p ∨ q) = (q ∨ p)
-
-\end{itemize}
-
-\sphinxAtStartPar
-To be completely formal, we need to be a more careful.
-First, we need to define variables such as p and q as
-being universally quantified. Second, we need to make clear
-that the quantities that are equal are not the propositions
-themselves (they are not equal) but their \sphinxstyleemphasis{meanings} under
-all interpretations. Thus in the last chapter we defined
-the commutativity of ∧ like this:
-
-\begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{k+kd}{example} \PYG{o}{:}
-\PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{p} \PYG{n}{q} \PYG{o}{:} \PYG{n}{prop\PYGZus{}expr}\PYG{o}{)} \PYG{o}{(}\PYG{n}{i} \PYG{o}{:} \PYG{n}{prop\PYGZus{}var} \PYG{n+nb+bp}{→} \PYG{n}{bool}\PYG{o}{)}\PYG{o}{,}
-  \PYG{n}{pEval} \PYG{o}{(}\PYG{n}{p} \PYG{n+nb+bp}{∧} \PYG{n}{q}\PYG{o}{)} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{pEval} \PYG{o}{(}\PYG{n}{q} \PYG{n+nb+bp}{∧} \PYG{n}{p}\PYG{o}{)} \PYG{n}{i} \PYG{o}{:=}
-\PYG{n}{and\PYGZus{}commutes}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} proof from last chapter}
-\end{sphinxVerbatim}
-
-\sphinxAtStartPar
-As we’ve seen, mathematical theories are often
-augmented with concrete syntax / notations that
-make it practical for people to read and write
-such mathemantics.
-
-\sphinxAtStartPar
-A standard notation for a “meaning\sphinxhyphen{}of\sphinxhyphen{}expression”
-operator is a pair of \sphinxstyleemphasis{denotation} or \sphinxstyleemphasis{Scoot}
-brackets. So \sphinxstyleemphasis{⟦ e ⟧} can be read as “the meaning
-of \sphinxstyleemphasis{e}.” To resolve meaning, an interpretation,
-\sphinxstyleemphasis{i}. We’ll thus write \sphinxstyleemphasis{⟦ e ⟧ i} to mean the meaning
-of e under the interpretation i: \sphinxstyleemphasis{pEval e i}.
-
-\begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{k+kd}{notation} \PYG{o}{(}\PYG{n}{name} \PYG{o}{:=} \PYG{n}{pEval}\PYG{o}{)} \PYG{n+nb+bp}{`} \PYG{n+nb+bp}{⟦} \PYG{n+nb+bp}{`} \PYG{n}{p} \PYG{n+nb+bp}{`} \PYG{n+nb+bp}{⟧} \PYG{n+nb+bp}{`}  \PYG{o}{:=}  \PYG{n}{pEval} \PYG{n}{p}
-
-\PYG{c}{/\PYGZhy{}}
-\PYG{c+cm}{W}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{l}\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{v}\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{i}\PYG{c+cm}{a}\PYG{c+cm}{b}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{u}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{c}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{s}\PYG{c+cm}{s}
-\PYG{c+cm}{m}\PYG{c+cm}{u}\PYG{c+cm}{l}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{p}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{f}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{.}
-\PYG{c+cm}{\PYGZhy{}/}
-\PYG{k+kn}{section} \PYG{n}{prop\PYGZus{}logic\PYGZus{}axioms}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Let p, q, r, and i be arbitrary expressions and an interpretation}
-\PYG{k+kd}{variables} \PYG{o}{(}\PYG{n}{p} \PYG{n}{q} \PYG{n}{r} \PYG{o}{:} \PYG{n}{prop\PYGZus{}expr}\PYG{o}{)} \PYG{o}{(}\PYG{n}{i} \PYG{o}{:} \PYG{n}{prop\PYGZus{}var} \PYG{n+nb+bp}{→} \PYG{n}{bool}\PYG{o}{)}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} now we can write expressions with these variables without explicitly introducing them by ∀}
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} we add prime marks just to avoid naming conflicts, the primes have no special meaning here}
-\PYG{k+kd}{def} \PYG{n}{and\PYGZus{}commutes\PYGZsq{}} \PYG{o}{:=} \PYG{n+nb+bp}{⟦}\PYG{o}{(}\PYG{n}{p} \PYG{n+nb+bp}{∧} \PYG{n}{q}\PYG{o}{)}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n+nb+bp}{⟦}\PYG{o}{(}\PYG{n}{q} \PYG{n+nb+bp}{∧} \PYG{n}{p}\PYG{o}{)}\PYG{n+nb+bp}{⟧} \PYG{n}{i}
-\PYG{k+kd}{def} \PYG{n}{or\PYGZus{}commutes\PYGZsq{}} \PYG{o}{:=}  \PYG{n+nb+bp}{⟦}\PYG{o}{(}\PYG{n}{p} \PYG{n+nb+bp}{∧} \PYG{n}{q}\PYG{o}{)}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n+nb+bp}{⟦}\PYG{o}{(}\PYG{n}{q} \PYG{n+nb+bp}{∧} \PYG{n}{p}\PYG{o}{)}\PYG{n+nb+bp}{⟧} \PYG{n}{i}
-
-\PYG{c}{/\PYGZhy{}}
-\PYG{c+cm}{C}\PYG{c+cm}{o}\PYG{c+cm}{m}\PYG{c+cm}{p}\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{d}
-\PYG{c+cm}{c}\PYG{c+cm}{o}\PYG{c+cm}{m}\PYG{c+cm}{m}\PYG{c+cm}{u}\PYG{c+cm}{t}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{w}\PYG{c+cm}{ }\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{f}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{h}\PYG{c+cm}{o}\PYG{c+cm}{w}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{e}
-\PYG{c+cm}{s}\PYG{c+cm}{a}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{y}\PYG{c+cm}{o}\PYG{c+cm}{u}\PYG{c+cm}{ }\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{∀}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{q}\PYG{c+cm}{u}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{f}\PYG{c+cm}{i}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{v}\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{i}\PYG{c+cm}{a}\PYG{c+cm}{b}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{s}
-\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{a}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{g}\PYG{c+cm}{u}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{s}\PYG{c+cm}{.}
-\PYG{c+cm}{\PYGZhy{}/}
-\PYG{k}{\PYGZsh{}check} \PYG{n}{and\PYGZus{}commutes}
-\PYG{k}{\PYGZsh{}check} \PYG{n}{and\PYGZus{}commutes\PYGZsq{}}
-
-\PYG{c}{/\PYGZhy{}}
-\PYG{c+cm}{O}\PYG{c+cm}{b}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{W}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{*}\PYG{c+cm}{a}\PYG{c+cm}{p}\PYG{c+cm}{p}\PYG{c+cm}{l}\PYG{c+cm}{y}\PYG{c+cm}{*}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{m}\PYG{c+cm}{s}
-\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{c}\PYG{c+cm}{u}\PYG{c+cm}{l}\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{b}\PYG{c+cm}{j}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{z}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}
-\PYG{c+cm}{g}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{z}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{e}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{c}\PYG{c+cm}{u}\PYG{c+cm}{l}\PYG{c+cm}{a}\PYG{c+cm}{r}
-\PYG{c+cm}{o}\PYG{c+cm}{b}\PYG{c+cm}{j}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{s}\PYG{c+cm}{.}
-\PYG{c+cm}{\PYGZhy{}/}
-
-\PYG{k+kd}{variables} \PYG{o}{(}\PYG{n}{a} \PYG{n}{b} \PYG{o}{:} \PYG{n}{prop\PYGZus{}expr}\PYG{o}{)}
-\PYG{k}{\PYGZsh{}reduce} \PYG{n}{and\PYGZus{}commutes\PYGZsq{}} \PYG{n}{p} \PYG{n}{q} \PYG{n}{i}
-\PYG{k}{\PYGZsh{}reduce} \PYG{n}{and\PYGZus{}commutes\PYGZsq{}} \PYG{n}{a} \PYG{n}{b} \PYG{n}{i}
-
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} re\PYGZhy{}doing proof with new notation}
-\PYG{k+kd}{example} \PYG{o}{:} \PYG{n}{and\PYGZus{}commutes\PYGZsq{}} \PYG{n}{p} \PYG{n}{q} \PYG{n}{i} \PYG{o}{:=}
-\PYG{k+kd}{begin}
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} expand definitions}
-\PYG{n}{unfold} \PYG{n}{and\PYGZus{}commutes\PYGZsq{}}\PYG{o}{,}
-\PYG{n}{unfold} \PYG{n}{pEval} \PYG{n}{bin\PYGZus{}op\PYGZus{}sem}\PYG{o}{,}
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} rest by case analysis as usual}
-\PYG{g+gr}{sorry}\PYG{o}{,}
-\PYG{k+kd}{end}
-\end{sphinxVerbatim}
-
-
-\subsection{Associativity}
-\label{\detokenize{A_01_Propositional_Logic:id11}}
-\begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{k+kd}{def} \PYG{n}{and\PYGZus{}associative\PYGZus{}axiom} \PYG{o}{:=}  \PYG{n+nb+bp}{⟦}\PYG{o}{(}\PYG{n}{p} \PYG{n+nb+bp}{∧} \PYG{n}{q}\PYG{o}{)} \PYG{n+nb+bp}{∧} \PYG{n}{r}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n+nb+bp}{⟦}\PYG{o}{(}\PYG{n}{p} \PYG{n+nb+bp}{∧} \PYG{o}{(}\PYG{n}{q} \PYG{n+nb+bp}{∧} \PYG{n}{r}\PYG{o}{)}\PYG{o}{)}\PYG{n+nb+bp}{⟧} \PYG{n}{i}
-\PYG{k+kd}{def} \PYG{n}{or\PYGZus{}associative\PYGZus{}axiom} \PYG{o}{:=}   \PYG{n+nb+bp}{⟦}\PYG{o}{(}\PYG{n}{p} \PYG{n+nb+bp}{∨} \PYG{n}{q}\PYG{o}{)} \PYG{n+nb+bp}{∨} \PYG{n}{r}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n+nb+bp}{⟦}\PYG{o}{(}\PYG{n}{p} \PYG{n+nb+bp}{∨} \PYG{o}{(}\PYG{n}{q} \PYG{n+nb+bp}{∨} \PYG{n}{r}\PYG{o}{)}\PYG{o}{)}\PYG{n+nb+bp}{⟧} \PYG{n}{i}
-\end{sphinxVerbatim}
-
-
-\subsection{Distributivity}
-\label{\detokenize{A_01_Propositional_Logic:id12}}
-\begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{k+kd}{def} \PYG{n}{or\PYGZus{}dist\PYGZus{}and\PYGZus{}axiom} \PYG{o}{:=} \PYG{n+nb+bp}{⟦}\PYG{n}{p} \PYG{n+nb+bp}{∨} \PYG{o}{(}\PYG{n}{q} \PYG{n+nb+bp}{∧} \PYG{n}{r}\PYG{o}{)}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n+nb+bp}{⟦}\PYG{o}{(}\PYG{n}{p} \PYG{n+nb+bp}{∨} \PYG{n}{q}\PYG{o}{)} \PYG{n+nb+bp}{∧} \PYG{o}{(}\PYG{n}{p} \PYG{n+nb+bp}{∨} \PYG{n}{r}\PYG{o}{)}\PYG{n+nb+bp}{⟧} \PYG{n}{i}
-\PYG{k+kd}{def} \PYG{n}{and\PYGZus{}dist\PYGZus{}or\PYGZus{}axiom} \PYG{o}{:=} \PYG{n+nb+bp}{⟦}\PYG{n}{p} \PYG{n+nb+bp}{∧} \PYG{o}{(}\PYG{n}{q} \PYG{n+nb+bp}{∨} \PYG{n}{r}\PYG{o}{)}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n+nb+bp}{⟦}\PYG{o}{(}\PYG{n}{p} \PYG{n+nb+bp}{∧} \PYG{n}{q}\PYG{o}{)} \PYG{n+nb+bp}{∨} \PYG{o}{(}\PYG{n}{p} \PYG{n+nb+bp}{∧} \PYG{n}{r}\PYG{o}{)}\PYG{n+nb+bp}{⟧} \PYG{n}{i}
-\end{sphinxVerbatim}
-
-
-\subsection{DeMorgan’s Laws}
-\label{\detokenize{A_01_Propositional_Logic:id13}}
-\begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{k+kd}{def} \PYG{n}{demorgan\PYGZus{}not\PYGZus{}over\PYGZus{}and\PYGZus{}axiom} \PYG{o}{:=} \PYG{n+nb+bp}{⟦}\PYG{n+nb+bp}{¬}\PYG{o}{(}\PYG{n}{p} \PYG{n+nb+bp}{∧} \PYG{n}{q}\PYG{o}{)}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n+nb+bp}{⟦}\PYG{n+nb+bp}{¬}\PYG{n}{p} \PYG{n+nb+bp}{∨} \PYG{n+nb+bp}{¬}\PYG{n}{q}\PYG{n+nb+bp}{⟧} \PYG{n}{i}
-\PYG{k+kd}{def} \PYG{n}{demorgan\PYGZus{}not\PYGZus{}over\PYGZus{}or\PYGZus{}axiom} \PYG{o}{:=}  \PYG{n+nb+bp}{⟦}\PYG{n+nb+bp}{¬}\PYG{o}{(}\PYG{n}{p} \PYG{n+nb+bp}{∨} \PYG{n}{q}\PYG{o}{)}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n+nb+bp}{⟦}\PYG{n+nb+bp}{¬}\PYG{n}{p} \PYG{n+nb+bp}{∧} \PYG{n+nb+bp}{¬}\PYG{n}{q}\PYG{n+nb+bp}{⟧} \PYG{n}{i}
-\end{sphinxVerbatim}
-
-
-\subsection{Negation}
-\label{\detokenize{A_01_Propositional_Logic:id14}}
-\begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{k+kd}{def} \PYG{n}{negation\PYGZus{}elimination\PYGZus{}axiom} \PYG{o}{:=} \PYG{n+nb+bp}{⟦}\PYG{n+nb+bp}{¬}\PYG{n+nb+bp}{¬}\PYG{n}{p}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n+nb+bp}{⟦}\PYG{n}{p}\PYG{n+nb+bp}{⟧} \PYG{n}{i}
-\end{sphinxVerbatim}
-
-
-\subsection{Excluded Middle}
-\label{\detokenize{A_01_Propositional_Logic:id15}}
-\begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{k+kd}{def} \PYG{n}{excluded\PYGZus{}middle\PYGZus{}axiom} \PYG{o}{:=} \PYG{n+nb+bp}{⟦}\PYG{n}{p} \PYG{n+nb+bp}{∨} \PYG{n+nb+bp}{¬}\PYG{n}{p}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n+nb+bp}{⟦}\PYG{n+nb+bp}{⊤}\PYG{n+nb+bp}{⟧} \PYG{n}{i}   \PYG{c+c1}{\PYGZhy{}\PYGZhy{} or just tt}
-\end{sphinxVerbatim}
-
-
-\subsection{No Contradiction}
-\label{\detokenize{A_01_Propositional_Logic:id16}}
-\begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{k+kd}{def} \PYG{n}{no\PYGZus{}contradiction\PYGZus{}axiom} \PYG{o}{:=} \PYG{n+nb+bp}{⟦}\PYG{n}{p} \PYG{n+nb+bp}{∧} \PYG{n+nb+bp}{¬}\PYG{n}{p}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n+nb+bp}{⟦}\PYG{n+nb+bp}{⊥}\PYG{n+nb+bp}{⟧} \PYG{n}{i}   \PYG{c+c1}{\PYGZhy{}\PYGZhy{} or just tt}
-\end{sphinxVerbatim}
-
-
-\subsection{Implication}
-\label{\detokenize{A_01_Propositional_Logic:id17}}
-\begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{k+kd}{def} \PYG{n}{implication\PYGZus{}axiom} \PYG{o}{:=} \PYG{n+nb+bp}{⟦}\PYG{o}{(}\PYG{n}{p} \PYG{n+nb+bp}{=}\PYG{n+nb+bp}{\PYGZgt{}} \PYG{n}{q}\PYG{o}{)}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n+nb+bp}{⟦}\PYG{n+nb+bp}{¬}\PYG{n}{p} \PYG{n+nb+bp}{∨} \PYG{n}{q}\PYG{n+nb+bp}{⟧} \PYG{n}{i}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} notation issue}
-
-
-\PYG{k+kd}{example} \PYG{o}{:} \PYG{n}{implication\PYGZus{}axiom} \PYG{n}{a} \PYG{n}{b} \PYG{n}{i} \PYG{o}{:=}
-\PYG{k+kd}{begin}
-\PYG{n}{unfold} \PYG{n}{implication\PYGZus{}axiom} \PYG{n}{pEval} \PYG{n}{bin\PYGZus{}op\PYGZus{}sem} \PYG{n}{un\PYGZus{}op\PYGZus{}sem}\PYG{o}{,}
-\PYG{n}{cases} \PYG{n+nb+bp}{⟦} \PYG{n}{a} \PYG{n+nb+bp}{⟧} \PYG{n}{i}\PYG{o}{,}
-\PYG{n}{cases} \PYG{n+nb+bp}{⟦} \PYG{n}{b} \PYG{n+nb+bp}{⟧} \PYG{n}{i}\PYG{o}{,}
-\PYG{n}{apply} \PYG{n}{rfl}\PYG{o}{,}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} = bnot ( ⟦ a ⟧ i) || ⟦ b ⟧ i}
-\PYG{k+kd}{end}
-\end{sphinxVerbatim}
-
-
-\subsection{And Simplification}
-\label{\detokenize{A_01_Propositional_Logic:id18}}
-\sphinxAtStartPar
-Homework: Formalize
-
-\sphinxAtStartPar
-p ∧ p = p
-p ∧ T = p
-p ∧ F = F
-p ∧ (p ∨ q) = p
-
-
-\subsection{Or Simplification}
-\label{\detokenize{A_01_Propositional_Logic:id19}}
-\sphinxAtStartPar
-Homework: Formalize
-
-\sphinxAtStartPar
-p ∨ p = p
-p ∨ T = T
-p ∨ F = p
-p ∨ (p ∧ q) = p
-
-
-\subsubsection{Inference Rules}
-\label{\detokenize{A_01_Propositional_Logic:inference-rules}}
+\subsection{Inference Rules}
+\label{\detokenize{A_01_Propositional_Logic:id9}}
 \sphinxAtStartPar
 Key idea: These are rules for reasoning about evidence.
 What \sphinxstyleemphasis{evidence} do you need to derive a given conclusion?
@@ -2171,9 +1984,9 @@ rules of the logic.
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} 8. X ∨ Y, X → Z, Y → Z ⊢ Z \PYGZhy{}\PYGZhy{} or elimination}
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} 9. ¬¬X ⊢ X                 \PYGZhy{}\PYGZhy{} negation elimination}
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 10. X → ⊥ ⊢ ¬X              \PYGZhy{}\PYGZhy{} negation introduction}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 10. X → ⊥ ⊢ ¬X             \PYGZhy{}\PYGZhy{} negation introduction}
 
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 11. (X ⊢ Y) → (X → Y)      \PYGZhy{}\PYGZhy{} a little complicated}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 11. (X ⊢ Y) ⊢ (X → Y)      \PYGZhy{}\PYGZhy{} a little complicated}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} 12. X → Y, X ⊢ Y           \PYGZhy{}\PYGZhy{} arrow elimination}
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} 13. X → Y, Y → X ⊢ X ↔ Y    \PYGZhy{}\PYGZhy{} iff introduction}
@@ -2181,42 +1994,95 @@ rules of the logic.
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} 15. X ↔ Y ⊢ Y → X          \PYGZhy{}\PYGZhy{} iff elimination right}
 \end{sphinxVerbatim}
 
-\sphinxAtStartPar
-In the style we’ve developed, formally state and prove
-that our logic and semantics has each of the properties,
-1, 2, 4, 5, 6, 8, 9, 10, 12, and 15. Identify any rules
-that fail to be provable due to the injected bug in bimp.
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{open} \PYG{n}{cs6501}
 
-\sphinxAtStartPar
-Use Lean’s \sphinxstyleemphasis{theorem} directive to give names to proofs.
-as names for your proofs, use the names in the comments
-after each rule (adding missing underscores as needed).
+\PYG{k+kd}{theorem} \PYG{n}{and\PYGZus{}intro\PYGZus{}valid} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{X} \PYG{n}{Y} \PYG{o}{:} \PYG{n}{prop\PYGZus{}expr}\PYG{o}{)} \PYG{o}{(}\PYG{n}{i} \PYG{o}{:} \PYG{n}{prop\PYGZus{}var} \PYG{n+nb+bp}{→} \PYG{n}{bool}\PYG{o}{)}\PYG{o}{,}
+    \PYG{o}{(}\PYG{n+nb+bp}{⟦}\PYG{n}{X}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{o}{(}\PYG{n+nb+bp}{⟦}\PYG{n}{Y}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{o}{(}\PYG{n+nb+bp}{⟦}\PYG{o}{(}\PYG{n}{X} \PYG{n+nb+bp}{∧} \PYG{n}{Y}\PYG{o}{)}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt}\PYG{o}{)} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{X} \PYG{n}{Y} \PYG{n}{i}\PYG{o}{,}
+\PYG{k}{assume} \PYG{n}{X\PYGZus{}true} \PYG{n}{Y\PYGZus{}true}\PYG{o}{,}
+\PYG{n}{unfold} \PYG{n}{pEval} \PYG{n}{bin\PYGZus{}op\PYGZus{}sem}\PYG{o}{,} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} axioms of eq}
+\PYG{n}{rw} \PYG{n}{X\PYGZus{}true}\PYG{o}{,}
+\PYG{n}{rw} \PYG{n}{Y\PYGZus{}true}\PYG{o}{,}
+\PYG{n}{apply} \PYG{n}{rfl}\PYG{o}{,}
+\PYG{k+kd}{end}
 
-\sphinxAtStartPar
-To do this part of the assignment, make a copy of this
-file from the class repo and add the statement and proof
-of each theorem below. You will turn in the file with these
-proofs included in the given order at the end of the file.
+\PYG{k+kd}{theorem} \PYG{n}{and\PYGZus{}elim\PYGZus{}left\PYGZus{}valid} \PYG{o}{:}
+\PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{X} \PYG{n}{Y} \PYG{o}{:} \PYG{n}{prop\PYGZus{}expr}\PYG{o}{)} \PYG{o}{(}\PYG{n}{i} \PYG{o}{:} \PYG{n}{prop\PYGZus{}var} \PYG{n+nb+bp}{→} \PYG{n}{bool}\PYG{o}{)}\PYG{o}{,}
+\PYG{o}{(}\PYG{n+nb+bp}{⟦}\PYG{o}{(}\PYG{n}{X} \PYG{n+nb+bp}{∧} \PYG{n}{Y}\PYG{o}{)}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{o}{(}\PYG{n+nb+bp}{⟦}\PYG{n}{X}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt}\PYG{o}{)} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{n}{unfold} \PYG{n}{pEval} \PYG{n}{bin\PYGZus{}op\PYGZus{}sem}\PYG{o}{,}
+\PYG{k}{assume} \PYG{n}{X} \PYG{n}{Y} \PYG{n}{i}\PYG{o}{,}
+\PYG{k}{assume} \PYG{n}{h\PYGZus{}and}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n+nb+bp}{⟦} \PYG{n}{X} \PYG{n+nb+bp}{⟧} \PYG{n}{i}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n+nb+bp}{⟦} \PYG{n}{Y} \PYG{n+nb+bp}{⟧} \PYG{n}{i}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{h\PYGZus{}and}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{h\PYGZus{}and}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n+nb+bp}{⟦} \PYG{n}{Y} \PYG{n+nb+bp}{⟧} \PYG{n}{i}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{h\PYGZus{}and}\PYG{o}{,}
+\PYG{n}{apply} \PYG{n}{rfl}\PYG{o}{,}
+\PYG{k+kd}{end}
 
-\sphinxAtStartPar
-This isn’t a comprehensive list of properties. We lack
-rules for ⊤ and ⊥ (formerly True, False; still terms
-that invariably evaluate to true (tt) and false (ff).
-There are rules that explain, for example, that ⊤ ∧ e
-is equivalent to e; ⊥ ∧ e is invariably false; ⊥ or e
-is equivalent to e; and ⊤ ∨ e is invariably true. Go
-ahead and prove these propositions as well if you just
-can’t stop proving! (optional :\sphinxhyphen{}).
+\PYG{k+kd}{theorem} \PYG{n}{or\PYGZus{}intro\PYGZus{}left\PYGZus{}valid} \PYG{o}{:}
+\PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{X} \PYG{n}{Y} \PYG{o}{:} \PYG{n}{prop\PYGZus{}expr}\PYG{o}{)} \PYG{o}{(}\PYG{n}{i} \PYG{o}{:} \PYG{n}{prop\PYGZus{}var} \PYG{n+nb+bp}{→} \PYG{n}{bool}\PYG{o}{)}\PYG{o}{,}
+\PYG{o}{(}\PYG{n+nb+bp}{⟦}\PYG{o}{(}\PYG{n}{X}\PYG{o}{)}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{o}{(}\PYG{n+nb+bp}{⟦}\PYG{n}{X} \PYG{n+nb+bp}{∨} \PYG{n}{Y}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt}\PYG{o}{)} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{n}{unfold} \PYG{n}{pEval} \PYG{n}{bin\PYGZus{}op\PYGZus{}sem}\PYG{o}{,}
+\PYG{k}{assume} \PYG{n}{X} \PYG{n}{Y} \PYG{n}{i}\PYG{o}{,}
+\PYG{k}{assume} \PYG{n}{X\PYGZus{}true}\PYG{o}{,}
+\PYG{n}{rw} \PYG{n}{X\PYGZus{}true}\PYG{o}{,}
+\PYG{n}{apply} \PYG{n}{rfl}\PYG{o}{,}
+\PYG{k+kd}{end}
 
+\PYG{k+kd}{theorem} \PYG{n}{or\PYGZus{}elim\PYGZus{}valid} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{X} \PYG{n}{Y} \PYG{n}{Z} \PYG{o}{:} \PYG{n}{prop\PYGZus{}expr}\PYG{o}{)} \PYG{o}{(}\PYG{n}{i} \PYG{o}{:} \PYG{n}{prop\PYGZus{}var} \PYG{n+nb+bp}{→} \PYG{n}{bool}\PYG{o}{)}\PYG{o}{,}
+\PYG{o}{(}\PYG{n+nb+bp}{⟦} \PYG{o}{(}\PYG{n}{X} \PYG{n+nb+bp}{∨} \PYG{n}{Y}\PYG{o}{)} \PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt}\PYG{o}{)} \PYG{n+nb+bp}{→}
+\PYG{o}{(}\PYG{n+nb+bp}{⟦} \PYG{o}{(}\PYG{n}{X} \PYG{n+nb+bp}{=}\PYG{n+nb+bp}{\PYGZgt{}} \PYG{n}{Z}\PYG{o}{)} \PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt}\PYG{o}{)} \PYG{n+nb+bp}{→}
+\PYG{o}{(}\PYG{n+nb+bp}{⟦} \PYG{o}{(}\PYG{n}{Y} \PYG{n+nb+bp}{=}\PYG{n+nb+bp}{\PYGZgt{}} \PYG{n}{Z}\PYG{o}{)} \PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt}\PYG{o}{)} \PYG{n+nb+bp}{→}
+\PYG{o}{(}\PYG{n+nb+bp}{⟦} \PYG{n}{Z} \PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt}\PYG{o}{)} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} expand definitions as assume premises}
+\PYG{n}{unfold} \PYG{n}{pEval} \PYG{n}{bin\PYGZus{}op\PYGZus{}sem}\PYG{o}{,}
+\PYG{k}{assume} \PYG{n}{X} \PYG{n}{Y} \PYG{n}{Z} \PYG{n}{i}\PYG{o}{,}
+\PYG{k}{assume} \PYG{n}{h\PYGZus{}xory} \PYG{n}{h\PYGZus{}xz} \PYG{n}{h\PYGZus{}yz}\PYG{o}{,}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} the rest is by nested case analysis}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} this script is refined from my original}
+\PYG{n}{cases} \PYG{o}{(}\PYG{n+nb+bp}{⟦} \PYG{n}{X} \PYG{n+nb+bp}{⟧} \PYG{n}{i}\PYG{o}{)}\PYG{o}{,} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} case analysis on bool (⟦ X ⟧ i)}
+\PYG{n}{repeat} \PYG{o}{\PYGZob{}}
+  \PYG{n}{repeat} \PYG{o}{\PYGZob{}}      \PYG{c+c1}{\PYGZhy{}\PYGZhy{}  case analysis on bool (⟦ Y ⟧ i)}
+    \PYG{n}{cases} \PYG{n+nb+bp}{⟦} \PYG{n}{Y} \PYG{n+nb+bp}{⟧} \PYG{n}{i}\PYG{o}{,}
+    \PYG{n}{repeat} \PYG{o}{\PYGZob{}}    \PYG{c+c1}{\PYGZhy{}\PYGZhy{} case analysis on bool (⟦ Z ⟧ i)}
+      \PYG{n}{cases} \PYG{n+nb+bp}{⟦} \PYG{n}{Z} \PYG{n+nb+bp}{⟧} \PYG{n}{i}\PYG{o}{,}
+      \PYG{c}{/\PYGZhy{}}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{I}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{u}\PYG{c+cm}{t}\PYG{c+cm}{r}\PYG{c+cm}{i}\PYG{c+cm}{g}\PYG{c+cm}{h}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{r}\PYG{c+cm}{a}\PYG{c+cm}{d}\PYG{c+cm}{i}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{y}\PYG{c+cm}{o}\PYG{c+cm}{u}\PYG{c+cm}{r}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{e}\PYG{c+cm}{x}\PYG{c+cm}{t}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{a}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{c}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{i}\PYG{c+cm}{l}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{p}\PYG{c+cm}{p}\PYG{c+cm}{l}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{m}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{g}\PYG{c+cm}{n}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{/}\PYG{c+cm}{d}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{m}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{\PYGZdq{}}\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{n}\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{p}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{.}\PYG{c+cm}{\PYGZdq{}}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}/}
+      \PYG{n}{contradiction}\PYG{o}{,}
+      \PYG{n}{apply} \PYG{n}{rfl}\PYG{o}{,}
+    \PYG{o}{\PYGZcb{}}\PYG{o}{,}
+  \PYG{o}{\PYGZcb{}}\PYG{o}{,}
+\PYG{o}{\PYGZcb{}}\PYG{o}{,}
+\PYG{k+kd}{end}
+\end{sphinxVerbatim}
+
+
+\subsection{Practice}
+\label{\detokenize{A_01_Propositional_Logic:practice}}
 \sphinxAtStartPar
-Try to do all or at least most of this assignment on
-your own. Feel free to ask for or give help on minor
-matters, e.g., of Lean syntax, or if some concept isn’t
-yet clear enough. Discussing such issues is constructive.
-I skipped over properties whose proofs look almost just
-like those for closely related properties.
+In the style of the preceding examples, formally state,
+name, and prove that each of the remaining inference are
+also valid in our logic. Identify any rules that fail to be
+provable in the presence of the bug we injected in bimp.
+You can do this by completing the proofs and seeing how
+they break when bugs are added to our definitions.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Write your formal propositions and proofs here:}
+
+
+
 \PYG{k+kd}{end} \PYG{n}{cs6501}
 \end{sphinxVerbatim}
 
