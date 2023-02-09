@@ -42,7 +42,7 @@ predicate logic.
 TEXT. -/
 
 -- QUOTE:
-import .A_05_prop_logic_properties
+import .A_06_prop_logic_algebraic_axioms 
 namespace cs6501
 -- QUOTE.
 
@@ -81,6 +81,59 @@ TEXT. -/
 -- 15. X ↔ Y ⊢ Y → X          -- iff elimination right
 
 -- QUOTE.
+
+open cs6501 
+
+theorem and_intro_valid : ∀ (X Y : prop_expr) (i : prop_var → bool), 
+    (⟦X⟧ i = tt) → (⟦Y⟧ i = tt) → (⟦(X ∧ Y)⟧ i = tt) :=
+begin
+assume X Y i,
+assume X_true Y_true,
+unfold pEval bin_op_sem, -- axioms of eq
+rw X_true,
+rw Y_true,
+apply rfl,
+end 
+
+theorem and_elim_left_valid : 
+∀ (X Y : prop_expr) (i : prop_var → bool),
+(⟦(X ∧ Y)⟧ i = tt) → (⟦X⟧ i = tt) :=
+begin
+unfold pEval bin_op_sem,
+assume X Y i,
+assume h_and,
+cases ⟦ X ⟧ i,
+cases ⟦ Y ⟧ i,
+cases h_and,
+cases h_and,
+cases ⟦ Y ⟧ i,
+cases h_and,
+apply rfl,
+end 
+
+theorem or_intro_left_valid : 
+∀ (X Y : prop_expr) (i : prop_var → bool),
+(⟦(X)⟧ i = tt) → (⟦X ∨ Y⟧ i = tt) :=
+begin
+unfold pEval bin_op_sem,
+assume X Y i,
+assume X_true,
+rw X_true,
+apply rfl,
+end
+
+theorem or_elim_valid : ∀ (X Y Z : prop_expr) (i : prop_var → bool),
+(⟦ (X ∨ Y) ⟧ i = tt) → 
+(⟦ (X => Z) ⟧ i = tt) → 
+(⟦ (Y => Z) ⟧ i = tt) → 
+(⟦ Z ⟧ i = tt) :=
+begin
+unfold pEval bin_op_sem,
+assume X Y Z i,
+assume h_xory h_xz h_yz,
+-- case analysis
+-- you do the rest!
+end  
 
 /- TEXT:
 

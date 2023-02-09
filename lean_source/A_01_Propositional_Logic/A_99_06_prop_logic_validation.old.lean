@@ -23,7 +23,7 @@ logic are valid in our representation of the logic.
 
 Along the way we'll take the opportunity to see more
 of what Lean can do for us:
-- A ccott/semantic bracket notation for *pEval*
+- A Scott/semantic bracket notation for *pEval*
 - declare automatically introduced variables in sections
 - using implicit arguments to further improve readability
 
