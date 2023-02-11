@@ -53,4 +53,7 @@
 \contentsline {section}{\numberline {2.7}Inference Rules}{24}{section.2.7}
 \contentsline {subsection}{\numberline {2.7.1}Inference Rules}{25}{subsection.2.7.1}
 \contentsline {subsection}{\numberline {2.7.2}Practice}{26}{subsection.2.7.2}
-\contentsline {chapter}{\numberline {3}Index}{27}{chapter.3}
+\contentsline {section}{\numberline {2.8}Inference Rules Validation}{27}{section.2.8}
+\contentsline {subsection}{\numberline {2.8.1}Inference Rule Statements}{27}{subsection.2.8.1}
+\contentsline {subsection}{\numberline {2.8.2}Proofs}{29}{subsection.2.8.2}
+\contentsline {chapter}{\numberline {3}Index}{31}{chapter.3}

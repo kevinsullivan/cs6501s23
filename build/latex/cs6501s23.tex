@@ -81,7 +81,7 @@
 
 
 \title{Computing Foundations}
-\date{Feb 09, 2023}
+\date{Feb 10, 2023}
 \release{1.2.2}
 \author{Kevin Sullivan}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -2084,6 +2084,190 @@ they break when bugs are added to our definitions.
 
 
 \PYG{k+kd}{end} \PYG{n}{cs6501}
+\end{sphinxVerbatim}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import} \PYG{n+nb+bp}{.}\PYG{n}{A\PYGZus{}06\PYGZus{}prop\PYGZus{}logic\PYGZus{}algebraic\PYGZus{}axioms}
+\PYG{k+kn}{namespace} \PYG{n}{cs6501}
+\end{sphinxVerbatim}
+
+
+\section{Inference Rules Validation}
+\label{\detokenize{A_01_Propositional_Logic:inference-rules-validation}}
+\sphinxAtStartPar
+This chapter pulls together in one place a formal
+validation of the claim that our model of propositional
+logic satisfies all of the =inference rules of that logic.
+
+\sphinxAtStartPar
+The first section of this chapter refactors the partial
+solution we developed in class, grouping definitions of
+the propositions that represent them, and separately a
+proof that each rule expresses in our model is valid.
+These sections also afford opportunities to intruduce
+a few more concepts in type theory and Lean.
+
+\sphinxAtStartPar
+To begin we import some definitions and declare a set
+of variables available for use in this file.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{section} \PYG{n}{rule\PYGZus{}validation}
+\PYG{k+kd}{variables}
+  \PYG{o}{(}\PYG{n}{X} \PYG{n}{Y} \PYG{n}{Z}\PYG{o}{:} \PYG{n}{prop\PYGZus{}expr}\PYG{o}{)}
+  \PYG{o}{(}\PYG{n}{i} \PYG{o}{:} \PYG{n}{prop\PYGZus{}var} \PYG{n+nb+bp}{→} \PYG{n}{bool}\PYG{o}{)}
+\end{sphinxVerbatim}
+
+
+\subsection{Inference Rule Statements}
+\label{\detokenize{A_01_Propositional_Logic:inference-rule-statements}}
+\sphinxAtStartPar
+We start with a refactoring of the results of the last
+chapter, into formal statements of the inference rules
+and formal proofs that these rules are valid (truth\sphinxhyphen{}
+preserving under all interpretations) in our model of
+propositional logic.
+
+\sphinxAtStartPar
+Key idea: These are rules for reasoning about evidence.
+What \sphinxstyleemphasis{evidence} do you need to derive a given conclusion?
+These are the “introduction” rules. From a given piece of
+evidence (and possibly with additional evidence) what new
+forms of evidence can you derive? These are “elimination”
+rules of the logic.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} remember, we can now use X, Y, Z, i}
+
+\PYG{k+kd}{def} \PYG{n}{true\PYGZus{}intro\PYGZus{}rule} \PYG{o}{:=} \PYG{n+nb+bp}{⟦} \PYG{n+nb+bp}{⊤} \PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt}
+\PYG{k+kd}{def} \PYG{n}{false\PYGZus{}elim\PYGZus{}rule} \PYG{o}{:=} \PYG{n+nb+bp}{⟦}\PYG{n+nb+bp}{⊥}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt} \PYG{n+nb+bp}{→} \PYG{n+nb+bp}{⟦}\PYG{n}{X}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} X is any proposition}
+\PYG{k+kd}{def} \PYG{n}{and\PYGZus{}intro\PYGZus{}rule} \PYG{o}{:=} \PYG{n+nb+bp}{⟦} \PYG{n}{X} \PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt} \PYG{n+nb+bp}{→} \PYG{n+nb+bp}{⟦} \PYG{n}{Y} \PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt} \PYG{n+nb+bp}{→} \PYG{n+nb+bp}{⟦}\PYG{o}{(}\PYG{n}{X} \PYG{n+nb+bp}{∧} \PYG{n}{Y}\PYG{o}{)}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt}
+\PYG{k+kd}{def} \PYG{n}{and\PYGZus{}elim\PYGZus{}left\PYGZus{}rule} \PYG{o}{:=} \PYG{o}{(}\PYG{n+nb+bp}{⟦}\PYG{o}{(}\PYG{n}{X} \PYG{n+nb+bp}{∧} \PYG{n}{Y}\PYG{o}{)}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{o}{(}\PYG{n+nb+bp}{⟦}\PYG{n}{X}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt}\PYG{o}{)}
+\PYG{k+kd}{def} \PYG{n}{and\PYGZus{}elim\PYGZus{}right\PYGZus{}rule} \PYG{o}{:=} \PYG{o}{(}\PYG{n+nb+bp}{⟦}\PYG{o}{(}\PYG{n}{X} \PYG{n+nb+bp}{∧} \PYG{n}{Y}\PYG{o}{)}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{o}{(}\PYG{n+nb+bp}{⟦}\PYG{n}{Y}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt}\PYG{o}{)}
+\PYG{k+kd}{def} \PYG{n}{or\PYGZus{}intro\PYGZus{}left\PYGZus{}rule} \PYG{o}{:=} \PYG{o}{(}\PYG{n+nb+bp}{⟦}\PYG{n}{X}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{o}{(}\PYG{n+nb+bp}{⟦}\PYG{o}{(}\PYG{n}{X} \PYG{n+nb+bp}{∨} \PYG{n}{Y}\PYG{o}{)}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt}\PYG{o}{)}
+\PYG{k+kd}{def} \PYG{n}{or\PYGZus{}intro\PYGZus{}right\PYGZus{}rule} \PYG{o}{:=} \PYG{o}{(}\PYG{n+nb+bp}{⟦}\PYG{n}{Y}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{o}{(}\PYG{n+nb+bp}{⟦}\PYG{o}{(}\PYG{n}{X} \PYG{n+nb+bp}{∨} \PYG{n}{Y}\PYG{o}{)}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt}\PYG{o}{)}
+\PYG{k+kd}{def} \PYG{n}{or\PYGZus{}elim\PYGZus{}rule} \PYG{o}{:=}   \PYG{o}{(}\PYG{n+nb+bp}{⟦}\PYG{o}{(}\PYG{n}{X} \PYG{n+nb+bp}{∨} \PYG{n}{Y}\PYG{o}{)}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt}\PYG{o}{)} \PYG{n+nb+bp}{→}
+                      \PYG{o}{(}\PYG{n+nb+bp}{⟦}\PYG{o}{(}\PYG{n}{X} \PYG{n+nb+bp}{=}\PYG{n+nb+bp}{\PYGZgt{}} \PYG{n}{Z}\PYG{o}{)}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt}\PYG{o}{)} \PYG{n+nb+bp}{→}
+                      \PYG{o}{(}\PYG{n+nb+bp}{⟦}\PYG{o}{(}\PYG{n}{Y} \PYG{n+nb+bp}{=}\PYG{n+nb+bp}{\PYGZgt{}} \PYG{n}{Z}\PYG{o}{)}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt}\PYG{o}{)} \PYG{n+nb+bp}{→}
+                      \PYG{o}{(}\PYG{n+nb+bp}{⟦}\PYG{o}{(}\PYG{n}{Z}\PYG{o}{)}\PYG{n+nb+bp}{⟧} \PYG{n}{i} \PYG{n+nb+bp}{=} \PYG{n}{tt}\PYG{o}{)}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} formalize the rest}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 9. ¬¬X ⊢ X                 \PYGZhy{}\PYGZhy{} negation elimination}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 10. X → ⊥ ⊢ ¬X             \PYGZhy{}\PYGZhy{} negation introduction}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 11. (X ⊢ Y) ⊢ (X → Y)      \PYGZhy{}\PYGZhy{} a little complicated}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 12. X → Y, X ⊢ Y           \PYGZhy{}\PYGZhy{} arrow elimination}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 13. X → Y, Y → X ⊢ X ↔ Y    \PYGZhy{}\PYGZhy{} iff introduction}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 14. X ↔ Y ⊢ X → Y          \PYGZhy{}\PYGZhy{} iff elimination left}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 15. X ↔ Y ⊢ Y → X          \PYGZhy{}\PYGZhy{} iff elimination right}
+\end{sphinxVerbatim}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{open} \PYG{n}{cs6501}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} note:}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{and\PYGZus{}intro\PYGZus{}rule} \PYG{n}{e1} \PYG{n}{e2} \PYG{n}{i}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} prove it}
+\PYG{k+kd}{theorem} \PYG{n}{and\PYGZus{}intro} \PYG{o}{:} \PYG{n}{and\PYGZus{}intro\PYGZus{}rule} \PYG{n}{e1} \PYG{n}{e2} \PYG{n}{i} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{X\PYGZus{}true} \PYG{n}{Y\PYGZus{}true}\PYG{o}{,}
+\PYG{n}{unfold} \PYG{n}{pEval} \PYG{n}{bin\PYGZus{}op\PYGZus{}sem}\PYG{o}{,} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} axioms of eq}
+\PYG{n}{rw} \PYG{n}{X\PYGZus{}true}\PYG{o}{,}
+\PYG{n}{rw} \PYG{n}{Y\PYGZus{}true}\PYG{o}{,}
+\PYG{n}{apply} \PYG{n}{rfl}\PYG{o}{,}
+\PYG{k+kd}{end}
+
+\PYG{k+kd}{theorem} \PYG{n}{and\PYGZus{}elim\PYGZus{}left} \PYG{o}{:} \PYG{n}{and\PYGZus{}elim\PYGZus{}left\PYGZus{}rule} \PYG{n}{X} \PYG{n}{Y} \PYG{n}{i} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{n}{unfold} \PYG{n}{and\PYGZus{}elim\PYGZus{}left\PYGZus{}rule} \PYG{n}{pEval} \PYG{n}{bin\PYGZus{}op\PYGZus{}sem}\PYG{o}{,}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} case analysis}
+\PYG{k}{assume} \PYG{n}{h\PYGZus{}and}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n+nb+bp}{⟦} \PYG{n}{X} \PYG{n+nb+bp}{⟧} \PYG{n}{i}\PYG{o}{,}    \PYG{c+c1}{\PYGZhy{}\PYGZhy{} cases analysis on X}
+\PYG{o}{\PYGZob{}} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} case X (evaluates to) false}
+  \PYG{n}{cases} \PYG{n+nb+bp}{⟦} \PYG{n}{Y} \PYG{n+nb+bp}{⟧} \PYG{n}{i}\PYG{o}{,}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} nested case analysis on Y}
+    \PYG{n}{cases} \PYG{n}{h\PYGZus{}and}\PYG{o}{,}   \PYG{c+c1}{\PYGZhy{}\PYGZhy{} contradiction}
+    \PYG{n}{cases} \PYG{n}{h\PYGZus{}and}\PYG{o}{,}   \PYG{c+c1}{\PYGZhy{}\PYGZhy{} contradiction}
+\PYG{o}{\PYGZcb{}}\PYG{o}{,}
+\PYG{o}{\PYGZob{}} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} case X (evaluates to) true}
+  \PYG{n}{cases} \PYG{n+nb+bp}{⟦} \PYG{n}{Y} \PYG{n+nb+bp}{⟧} \PYG{n}{i}\PYG{o}{,} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} nested case analysis on Y}
+  \PYG{n}{cases} \PYG{n}{h\PYGZus{}and}\PYG{o}{,}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} contradiction}
+  \PYG{n}{apply} \PYG{n}{rfl}\PYG{o}{,}    \PYG{c+c1}{\PYGZhy{}\PYGZhy{} ahh, equality}
+\PYG{o}{\PYGZcb{}}\PYG{o}{,}
+\PYG{k+kd}{end}
+
+\PYG{k+kd}{theorem} \PYG{n}{or\PYGZus{}intro\PYGZus{}left} \PYG{o}{:} \PYG{n}{or\PYGZus{}intro\PYGZus{}left\PYGZus{}rule} \PYG{n}{X} \PYG{n}{Y} \PYG{n}{i}
+\PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{n}{unfold} \PYG{n}{or\PYGZus{}intro\PYGZus{}left\PYGZus{}rule} \PYG{n}{pEval} \PYG{n}{bin\PYGZus{}op\PYGZus{}sem}\PYG{o}{,}
+\PYG{k}{assume} \PYG{n}{X\PYGZus{}true}\PYG{o}{,}
+\PYG{n}{rw} \PYG{n}{X\PYGZus{}true}\PYG{o}{,}
+\PYG{n}{apply} \PYG{n}{rfl}\PYG{o}{,}
+\PYG{k+kd}{end}
+
+\PYG{k+kd}{theorem} \PYG{n}{or\PYGZus{}elim} \PYG{o}{:} \PYG{n}{or\PYGZus{}elim\PYGZus{}rule} \PYG{n}{X} \PYG{n}{Y} \PYG{n}{Z} \PYG{n}{i} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} expand definitions as assume premises}
+\PYG{n}{unfold} \PYG{n}{or\PYGZus{}elim\PYGZus{}rule} \PYG{n}{pEval} \PYG{n}{bin\PYGZus{}op\PYGZus{}sem}\PYG{o}{,}
+\PYG{k}{assume} \PYG{n}{h\PYGZus{}xory} \PYG{n}{h\PYGZus{}xz} \PYG{n}{h\PYGZus{}yz}\PYG{o}{,}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} the rest is by nested case analysis}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} this script is refined from my original}
+\PYG{n}{cases} \PYG{o}{(}\PYG{n+nb+bp}{⟦} \PYG{n}{X} \PYG{n+nb+bp}{⟧} \PYG{n}{i}\PYG{o}{)}\PYG{o}{,} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} case analysis on bool (⟦ X ⟧ i)}
+\PYG{n}{repeat} \PYG{o}{\PYGZob{}}
+  \PYG{n}{repeat} \PYG{o}{\PYGZob{}}      \PYG{c+c1}{\PYGZhy{}\PYGZhy{}  case analysis on bool (⟦ Y ⟧ i)}
+    \PYG{n}{cases} \PYG{n+nb+bp}{⟦} \PYG{n}{Y} \PYG{n+nb+bp}{⟧} \PYG{n}{i}\PYG{o}{,}
+    \PYG{n}{repeat} \PYG{o}{\PYGZob{}}    \PYG{c+c1}{\PYGZhy{}\PYGZhy{} case analysis on bool (⟦ Z ⟧ i)}
+      \PYG{n}{cases} \PYG{n+nb+bp}{⟦} \PYG{n}{Z} \PYG{n+nb+bp}{⟧} \PYG{n}{i}\PYG{o}{,}
+      \PYG{c}{/\PYGZhy{}}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{I}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{u}\PYG{c+cm}{t}\PYG{c+cm}{r}\PYG{c+cm}{i}\PYG{c+cm}{g}\PYG{c+cm}{h}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{r}\PYG{c+cm}{a}\PYG{c+cm}{d}\PYG{c+cm}{i}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{y}\PYG{c+cm}{o}\PYG{c+cm}{u}\PYG{c+cm}{r}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{e}\PYG{c+cm}{x}\PYG{c+cm}{t}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{a}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{c}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{i}\PYG{c+cm}{l}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{p}\PYG{c+cm}{p}\PYG{c+cm}{l}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{m}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{g}\PYG{c+cm}{n}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{/}\PYG{c+cm}{d}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{m}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{\PYGZdq{}}\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{n}\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{p}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{.}\PYG{c+cm}{\PYGZdq{}}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}/}
+      \PYG{n}{contradiction}\PYG{o}{,}
+      \PYG{n}{apply} \PYG{n}{rfl}\PYG{o}{,}
+    \PYG{o}{\PYGZcb{}}\PYG{o}{,}
+  \PYG{o}{\PYGZcb{}}\PYG{o}{,}
+\PYG{o}{\PYGZcb{}}\PYG{o}{,}
+\PYG{k+kd}{end}
+\end{sphinxVerbatim}
+
+
+\subsection{Proofs}
+\label{\detokenize{A_01_Propositional_Logic:proofs}}
+\sphinxAtStartPar
+In the style of the preceding examples, give formal proofs
+of that the remaining inference rules are valid in our own
+model of propositional logic.
+
+\sphinxAtStartPar
+Identify any rules that fail to be provably valid in the
+presence of the bug we’d injected in bimp. Which rule
+validation proofs break when you re\sphinxhyphen{}activate that bug?
+
+\sphinxAtStartPar
+To get you started, the following proof shosws that the
+false elimination inference rule is valid in our logic.
+For any proposition, e, and interpretation, i, in
+our logic, if ⊥ implies e, so from the truth of
+⊥, the truth of any expression follows. But ⊥
+can’t ever be (evaluate to) true, because we’ve
+defined the logic otherwise. But wait, is there
+another way to formalize the axiom? If so, are
+the two ways equivalent?
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{theorem} \PYG{n}{false\PYGZus{}elim} \PYG{o}{:} \PYG{n}{false\PYGZus{}elim\PYGZus{}rule} \PYG{n}{X} \PYG{n}{i} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{n}{unfold} \PYG{n}{false\PYGZus{}elim\PYGZus{}rule} \PYG{n}{pEval}\PYG{o}{,}
+\PYG{k}{assume} \PYG{n}{h}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{h}\PYG{o}{,}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} contradiction, can\PYGZsq{}t hppen, no cases!}
+          \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Lean determines tt = ff is impossible}
+\PYG{k+kd}{end}
+
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Define the remaning propositions and proofs here:}
+
+
+\PYG{k+kd}{end} \PYG{n}{rule\PYGZus{}validation} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} section}
+\PYG{k+kd}{end} \PYG{n}{cs6501}          \PYG{c+c1}{\PYGZhy{}\PYGZhy{} namepsace}
 \end{sphinxVerbatim}
 
 \sphinxstepscope
