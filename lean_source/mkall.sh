@@ -10,5 +10,6 @@ lean_source/mkdoc.py A_01_Propositional_Logic A_04_prop_logic_syn_sem
 lean_source/mkdoc.py A_01_Propositional_Logic A_05_prop_logic_properties
 lean_source/mkdoc.py A_01_Propositional_Logic A_06_prop_logic_algebraic_axioms
 lean_source/mkdoc.py A_01_Propositional_Logic A_07_prop_logic_inference_rules
+lean_source/mkdoc.py A_01_Propositional_Logic A_08_prop_logic_inference_rules_validation
 
 
