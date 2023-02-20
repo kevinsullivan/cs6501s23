@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2. Formal Languages &mdash; CS6501 Spring 2023 1.2.2 documentation</title>
+  <title>2. Propositional Logic &mdash; CS6501 Spring 2023 1.2.2 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
@@ -22,7 +22,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Index" href="genindex.html" />
+    <link rel="next" title="3. Predicate Logic" href="A_02_Predicate_Logic.html" />
     <link rel="prev" title="1. CS6501 Spring 2023" href="A_00_Introduction.html" /> 
 </head>
 
@@ -43,9 +43,9 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="A_00_Introduction.html">1. CS6501 Spring 2023</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">2. Formal Languages</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. Propositional Logic</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#balanced-parentheses">2.1. Balanced Parentheses</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id1">2.1.1. Formal languages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#formal-languages">2.1.1. Formal languages</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#paper-pencil-syntax">2.1.2. Paper &amp; Pencil Syntax</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#formal-syntax">2.1.3. Formal Syntax</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#inductive-datatype-definitions">2.1.4. Inductive Datatype Definitions</a></li>
@@ -54,10 +54,10 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#simplified-propositional-logic">2.2. Simplified Propositional Logic</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#syntax">2.2.1. Syntax</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id2">2.2.2. Semantics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">2.2.2. Semantics</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#propositional-logic">2.3. Propositional Logic</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">2.3. Propositional Logic</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id3">2.3.1. Syntax</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id4">2.3.2. Semantics</a></li>
 </ul>
@@ -106,6 +106,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="A_02_Predicate_Logic.html">3. Predicate Logic</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
@@ -125,7 +126,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">2. </span>Formal Languages</li>
+      <li class="breadcrumb-item active"><span class="section-number">2. </span>Propositional Logic</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/A_01_Propositional_Logic.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -135,8 +136,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="formal-languages">
-<span id="introduction"></span><h1><span class="section-number">2. </span>Formal Languages<a class="headerlink" href="#formal-languages" title="Permalink to this heading">&#61633;</a></h1>
+  <section id="propositional-logic">
+<span id="introduction"></span><h1><span class="section-number">2. </span>Propositional Logic<a class="headerlink" href="#propositional-logic" title="Permalink to this heading">&#61633;</a></h1>
 <section id="balanced-parentheses">
 <h2><span class="section-number">2.1. </span>Balanced Parentheses<a class="headerlink" href="#balanced-parentheses" title="Permalink to this heading">&#61633;</a></h2>
 <p>As a warmup, and to put some basic
@@ -144,8 +145,8 @@ concepts into play, we&#8217;ll begin by specifying the syntax
 and semantics of a simple formal language: the language of
 strings of balanced parentheses. Before we do that, we&#8217;ll
 better explain wht it all menas. So let&#8217;s get started.</p>
-<section id="id1">
-<h3><span class="section-number">2.1.1. </span>Formal languages<a class="headerlink" href="#id1" title="Permalink to this heading">&#61633;</a></h3>
+<section id="formal-languages">
+<h3><span class="section-number">2.1.1. </span>Formal languages<a class="headerlink" href="#formal-languages" title="Permalink to this heading">&#61633;</a></h3>
 <p>The syntax of a <em>formal language</em> defines a (possibly
 infinite) set of strings. Strings are sequences of symbols
 from some <em>alphabet</em> of symbols. The formal language of basic
@@ -472,8 +473,8 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </pre></div>
 </div>
 </div></section>
-<section id="id2">
-<h3><span class="section-number">2.2.2. </span>Semantics<a class="headerlink" href="#id2" title="Permalink to this heading">&#61633;</a></h3>
+<section id="id1">
+<h3><span class="section-number">2.2.2. </span>Semantics<a class="headerlink" href="#id1" title="Permalink to this heading">&#61633;</a></h3>
 <p>The semantics of propositional logic assigns a Boolean
 truth value to each expression in the language, but to
 do this, an additional piece of data is required: one
@@ -586,8 +587,8 @@ in-class exercise, let&#8217;s add some new logical operators:
 for not, or, implies, bi-implication, and exclusive or.</p>
 </section>
 </section>
-<section id="propositional-logic">
-<h2><span class="section-number">2.3. </span>Propositional Logic<a class="headerlink" href="#propositional-logic" title="Permalink to this heading">&#61633;</a></h2>
+<section id="id2">
+<h2><span class="section-number">2.3. </span>Propositional Logic<a class="headerlink" href="#id2" title="Permalink to this heading">&#61633;</a></h2>
 <p>In this chapter, we&#8217;ll present a first
 version of a syntax and semantic specification
 for a full language of propositional logic. As
@@ -1810,7 +1811,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="A_00_Introduction.html" class="btn btn-neutral float-left" title="1. CS6501 Spring 2023" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="genindex.html" class="btn btn-neutral float-right" title="Index" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="A_02_Predicate_Logic.html" class="btn btn-neutral float-right" title="3. Predicate Logic" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

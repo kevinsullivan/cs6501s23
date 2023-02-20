@@ -1,5 +1,5 @@
 /- TEXT:
-================
-Formal Languages
-================
+===================
+Propositional Logic
+===================
 TEXT. -/

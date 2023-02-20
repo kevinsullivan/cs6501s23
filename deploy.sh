@@ -9,6 +9,7 @@
 # fi
 
 # Build
+lean_source/mkall.sh
 make clean html latexpdf
 
 # 3. Deploy

@@ -81,7 +81,7 @@
 
 
 \title{Computing Foundations}
-\date{Feb 10, 2023}
+\date{Feb 14, 2023}
 \release{1.2.2}
 \author{Kevin Sullivan}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -383,8 +383,8 @@ carried along for computational possibly and oher purposes.
 \sphinxstepscope
 
 
-\chapter{Formal Languages}
-\label{\detokenize{A_01_Propositional_Logic:formal-languages}}\label{\detokenize{A_01_Propositional_Logic:introduction}}\label{\detokenize{A_01_Propositional_Logic::doc}}
+\chapter{Propositional Logic}
+\label{\detokenize{A_01_Propositional_Logic:propositional-logic}}\label{\detokenize{A_01_Propositional_Logic:introduction}}\label{\detokenize{A_01_Propositional_Logic::doc}}
 
 \section{Balanced Parentheses}
 \label{\detokenize{A_01_Propositional_Logic:balanced-parentheses}}
@@ -397,7 +397,7 @@ better explain wht it all menas. So let’s get started.
 
 
 \subsection{Formal languages}
-\label{\detokenize{A_01_Propositional_Logic:id1}}
+\label{\detokenize{A_01_Propositional_Logic:formal-languages}}
 \sphinxAtStartPar
 The syntax of a \sphinxstyleemphasis{formal language} defines a (possibly
 infinite) set of strings. Strings are sequences of symbols
@@ -795,7 +795,7 @@ build larger expressions out of smaller ones.
 
 
 \subsection{Semantics}
-\label{\detokenize{A_01_Propositional_Logic:id2}}
+\label{\detokenize{A_01_Propositional_Logic:id1}}
 \sphinxAtStartPar
 The semantics of propositional logic assigns a Boolean
 truth value to each expression in the language, but to
@@ -925,7 +925,7 @@ for not, or, implies, bi\sphinxhyphen{}implication, and exclusive or.
 
 
 \section{Propositional Logic}
-\label{\detokenize{A_01_Propositional_Logic:propositional-logic}}
+\label{\detokenize{A_01_Propositional_Logic:id2}}
 \sphinxAtStartPar
 In this chapter, we’ll present a first
 version of a syntax and semantic specification
@@ -2268,6 +2268,55 @@ the two ways equivalent?
 
 \PYG{k+kd}{end} \PYG{n}{rule\PYGZus{}validation} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} section}
 \PYG{k+kd}{end} \PYG{n}{cs6501}          \PYG{c+c1}{\PYGZhy{}\PYGZhy{} namepsace}
+\end{sphinxVerbatim}
+
+\sphinxstepscope
+
+
+\chapter{Predicate Logic}
+\label{\detokenize{A_02_Predicate_Logic:predicate-logic}}\label{\detokenize{A_02_Predicate_Logic:introduction}}\label{\detokenize{A_02_Predicate_Logic::doc}}
+
+\section{Propositions are Types}
+\label{\detokenize{A_02_Predicate_Logic:propositions-are-types}}
+
+\section{From Truth to Proof}
+\label{\detokenize{A_02_Predicate_Logic:from-truth-to-proof}}
+
+\section{Functions}
+\label{\detokenize{A_02_Predicate_Logic:functions}}
+
+\section{Predicates}
+\label{\detokenize{A_02_Predicate_Logic:predicates}}
+
+\section{Connectives}
+\label{\detokenize{A_02_Predicate_Logic:connectives}}
+\sphinxAtStartPar
+We get them all from predicate logic, with meanings
+defined by inference rules that straightforwardly
+generalize those from propositonal logic.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{def} \PYG{n}{x} \PYG{o}{:=} \PYG{l+m+mi}{5}
+\end{sphinxVerbatim}
+
+
+\section{Quantifiers}
+\label{\detokenize{A_02_Predicate_Logic:quantifiers}}
+\sphinxAtStartPar
+Among which are quantifiers over types giving rise to
+parametric polymorphism, where the type of element that
+is handled by an operation can vary with no changes in
+the definition of the operation itself.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{def} \PYG{n}{y} \PYG{o}{:=} \PYG{l+m+mi}{5}
+\end{sphinxVerbatim}
+
+
+\section{Inference Rules}
+\label{\detokenize{A_02_Predicate_Logic:inference-rules}}
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{def} \PYG{n}{z} \PYG{o}{:=} \PYG{l+m+mi}{5}
 \end{sphinxVerbatim}
 
 \sphinxstepscope

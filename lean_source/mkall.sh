@@ -12,4 +12,6 @@ lean_source/mkdoc.py A_01_Propositional_Logic A_06_prop_logic_algebraic_axioms
 lean_source/mkdoc.py A_01_Propositional_Logic A_07_prop_logic_inference_rules
 lean_source/mkdoc.py A_01_Propositional_Logic A_08_prop_logic_inference_rules_validation
 
+lean_source/mkdoc.py A_02_Higher_Order_Predicate_Logic A_00_unit_title
+
 
