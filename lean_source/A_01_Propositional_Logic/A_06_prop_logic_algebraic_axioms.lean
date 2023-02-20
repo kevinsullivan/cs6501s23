@@ -9,13 +9,11 @@ namespace cs6501
 Algebraic Axioms
 ****************
 
-We've now seen that it's not enough to prove a few 
+We've seen that it's not enough to prove just a few 
 theorems about a construction (here our syntax and 
-semantics for propositional logic). 
-
-So how will we confirm *for sure* that our model (or
-implementation) of propositional logic is completely
-valid? 
+semantics for propositional logic). So how will we
+confirm *for sure* that our model (implementation) 
+of propositional logic is completely valid? 
 
 We'll offer two different methods. First, in this 
 chapter, we'll prove that our specification satisfies
@@ -34,25 +32,38 @@ of what Lean can do for us:
 To avoid duplication of code from the last chapter,
 we'll import all of the definitions in its Lean file
 for use here.
-TEXT. -/
 
-/- TEXT:
-Algebraic Properties
---------------------
+Algebraic Axioms
+----------------
 
-First, a propositional logic can be understood as an *algebra* with
-Boolean-valued (as opposed to numeric) terms, variables, and constants. 
-Constants and variables are are terms, but terms are also  constructed
-from smaller terms using connectives: ∧, ∨, ¬, and so on. The axioms of 
-propopsitions define how these operations work, on their own and when 
-combined. 
+First, then, we will formalize propositional logic as an 
+*algebra,* with Boolean-valued (as opposed to numeric) terms
+and operations, and then we will show that our operations and 
+terms satisfy the axioms of propositional logic. For example,
+we will have to show that our specifications of ∧ and ∨ are
+both commutative and associative. 
 
-These algebraic properties of propositional logic are very much akin
-to the usual commutativity, associativity, distributivity, identity,
-and other such properties of the natural numbers and the addition and 
-multiplication operations on them. As we go through the analogous 
-properties for propositional logic, note the common properties of both 
-algebras.  
+These properties are analogous to the usual commutativity, 
+associativity, distributivity, and other such properties of 
+the natural numbers and the usual algebra on them. As we go
+through the analogous properties for propositional logic, 
+take note of the common properties of both algebras. 
+
+In the rest of this chapter we will formally state and 
+prove that our Lean model of propositional logic satisfies
+all of the axioms/properties required to be a correct model
+of the logic: 
+
+- commutativity  
+- associativity  
+- distributivity
+- DeMorgan's laws
+- double negation elimination
+- excluded middle
+- no contradiction
+- implication
+- and simplification
+- or simplification
 
 
 Commutativity
@@ -81,9 +92,7 @@ possible interpretations.
 
 We have already seen, in the last chapter, how to do this.
 For example, we defined the commutative property of ∧ as
-follows. In mathematical natural language we can read this
-as "for any expressions, p and q, the meaning of *p ∧ q* 
-is equal to that of *q ∧ p* under all interpretations." 
+follows. 
 TEXT. -/  
 
 -- QUOTE:
@@ -95,9 +104,12 @@ and_commutes  -- proof from last chapter
 
 
 /- TEXT:
+We can read this as "for any expressions, p and q, the 
+meaning of *p ∧ q* is equal to that of *q ∧ p* under all
+interpretations." 
 
 Another Notation
-----------------
+~~~~~~~~~~~~~~~~
 
 As we've seen, mathematical theories are often
 augmented with concrete syntactic notations that 
@@ -143,7 +155,7 @@ notation (name := pEval) ` ⟦ ` p ` ⟧ `  :=  pEval p
 
 /- TEXT:
 Variable Declarations
----------------------
+~~~~~~~~~~~~~~~~~~~~~
 
 It's common when specifying multiple of properties of a
 given object or collection of objects to introduce the
@@ -181,12 +193,8 @@ def or_commutes' :=  ⟦(p ∧ q)⟧ i = ⟦(q ∧ p)⟧ i
 -- QUOTE.
 
 /- TEXT:
-
-TEXT. -/
-
-/- TEXT:
 Specialization of Generalizations
----------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Observe: We can *apply* these theorems
 to particular objects to specalize the
@@ -304,23 +312,26 @@ involving ∧ and ∨.
 
 And Simplification
 ------------------
-
-p ∧ p = p
-p ∧ T = p
-p ∧ F = F
-p ∧ (p ∨ q) = p
-
-
-Or Simplification
-------------------
-
-p ∨ p = p
-p ∨ T = T
-p ∨ F = p
-p ∨ (p ∧ q) = p
 TEXT. -/
 
 -- QUOTE:
+-- p ∧ p = p
+-- p ∧ T = p
+-- p ∧ F = F
+-- p ∧ (p ∨ q) = p
+-- QUOTE.
+
+/- TEXT: 
+Or Simplification
+------------------
+TEXT. -/
+
+-- QUOTE:
+-- p ∨ p = p
+-- p ∨ T = T
+-- p ∨ F = p
+-- p ∨ (p ∧ q) = p
+
 end prop_logic_axioms
 end cs6501
 -- QUOTE.
@@ -356,3 +367,4 @@ what criteria, deciderata, needs, objectives?
 - some helpful examples
 
 TEXT. -/
+

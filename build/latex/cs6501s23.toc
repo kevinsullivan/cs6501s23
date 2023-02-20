@@ -36,32 +36,43 @@
 \contentsline {subsection}{\numberline {2.5.5}Exercises}{19}{subsection.2.5.5}
 \contentsline {subsection}{\numberline {2.5.6}Solutions}{19}{subsection.2.5.6}
 \contentsline {section}{\numberline {2.6}Algebraic Axioms}{20}{section.2.6}
-\contentsline {subsection}{\numberline {2.6.1}Commutativity}{21}{subsection.2.6.1}
-\contentsline {subsection}{\numberline {2.6.2}Another Notation}{21}{subsection.2.6.2}
-\contentsline {subsection}{\numberline {2.6.3}Variable Declarations}{21}{subsection.2.6.3}
-\contentsline {subsection}{\numberline {2.6.4}Specialization of Generalizations}{22}{subsection.2.6.4}
-\contentsline {subsection}{\numberline {2.6.5}Associativity}{22}{subsection.2.6.5}
-\contentsline {subsection}{\numberline {2.6.6}Distributivity}{22}{subsection.2.6.6}
-\contentsline {subsection}{\numberline {2.6.7}DeMorgan’s Laws}{23}{subsection.2.6.7}
-\contentsline {subsection}{\numberline {2.6.8}Negation}{23}{subsection.2.6.8}
-\contentsline {subsection}{\numberline {2.6.9}Excluded Middle}{23}{subsection.2.6.9}
-\contentsline {subsection}{\numberline {2.6.10}No Contradiction}{23}{subsection.2.6.10}
-\contentsline {subsection}{\numberline {2.6.11}Implication}{23}{subsection.2.6.11}
-\contentsline {subsection}{\numberline {2.6.12}And Simplification}{23}{subsection.2.6.12}
-\contentsline {subsection}{\numberline {2.6.13}Or Simplification}{23}{subsection.2.6.13}
-\contentsline {subsection}{\numberline {2.6.14}Homework}{24}{subsection.2.6.14}
+\contentsline {subsection}{\numberline {2.6.1}Algebraic Axioms}{20}{subsection.2.6.1}
+\contentsline {subsection}{\numberline {2.6.2}Commutativity}{21}{subsection.2.6.2}
+\contentsline {subsubsection}{Another Notation}{21}{subsubsection*.3}
+\contentsline {subsubsection}{Variable Declarations}{22}{subsubsection*.4}
+\contentsline {subsubsection}{Specialization of Generalizations}{22}{subsubsection*.5}
+\contentsline {subsection}{\numberline {2.6.3}Associativity}{22}{subsection.2.6.3}
+\contentsline {subsection}{\numberline {2.6.4}Distributivity}{23}{subsection.2.6.4}
+\contentsline {subsection}{\numberline {2.6.5}DeMorgan’s Laws}{23}{subsection.2.6.5}
+\contentsline {subsection}{\numberline {2.6.6}Negation}{23}{subsection.2.6.6}
+\contentsline {subsection}{\numberline {2.6.7}Excluded Middle}{23}{subsection.2.6.7}
+\contentsline {subsection}{\numberline {2.6.8}No Contradiction}{23}{subsection.2.6.8}
+\contentsline {subsection}{\numberline {2.6.9}Implication}{23}{subsection.2.6.9}
+\contentsline {subsection}{\numberline {2.6.10}And Simplification}{23}{subsection.2.6.10}
+\contentsline {subsection}{\numberline {2.6.11}Or Simplification}{24}{subsection.2.6.11}
+\contentsline {subsection}{\numberline {2.6.12}Homework}{24}{subsection.2.6.12}
 \contentsline {section}{\numberline {2.7}Inference Rules}{24}{section.2.7}
 \contentsline {subsection}{\numberline {2.7.1}Inference Rules}{25}{subsection.2.7.1}
-\contentsline {subsection}{\numberline {2.7.2}Practice}{26}{subsection.2.7.2}
+\contentsline {subsection}{\numberline {2.7.2}Practice}{27}{subsection.2.7.2}
 \contentsline {section}{\numberline {2.8}Inference Rules Validation}{27}{section.2.8}
 \contentsline {subsection}{\numberline {2.8.1}Inference Rule Statements}{27}{subsection.2.8.1}
 \contentsline {subsection}{\numberline {2.8.2}Proofs}{29}{subsection.2.8.2}
 \contentsline {chapter}{\numberline {3}Predicate Logic}{31}{chapter.3}
-\contentsline {section}{\numberline {3.1}Propositions are Types}{31}{section.3.1}
-\contentsline {section}{\numberline {3.2}From Truth to Proof}{31}{section.3.2}
-\contentsline {section}{\numberline {3.3}Functions}{31}{section.3.3}
-\contentsline {section}{\numberline {3.4}Predicates}{31}{section.3.4}
-\contentsline {section}{\numberline {3.5}Connectives}{31}{section.3.5}
-\contentsline {section}{\numberline {3.6}Quantifiers}{31}{section.3.6}
-\contentsline {section}{\numberline {3.7}Inference Rules}{31}{section.3.7}
-\contentsline {chapter}{\numberline {4}Index}{33}{chapter.4}
+\contentsline {section}{\numberline {3.1}Higher\sphinxhyphen {}Order Predicate Logic}{31}{section.3.1}
+\contentsline {section}{\numberline {3.2}Propositions as Types}{31}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Computational Types}{32}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}Logical Types (Propositions)}{32}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.2.3}Type Universe Levels}{33}{subsection.3.2.3}
+\contentsline {subsection}{\numberline {3.2.4}Implicit Arguments}{34}{subsection.3.2.4}
+\contentsline {section}{\numberline {3.3}From Truth to Proof}{34}{section.3.3}
+\contentsline {subsection}{\numberline {3.3.1}Practice Example}{36}{subsection.3.3.1}
+\contentsline {section}{\numberline {3.4}Inference Rules}{36}{section.3.4}
+\contentsline {subsection}{\numberline {3.4.1}true (⊤)}{37}{subsection.3.4.1}
+\contentsline {subsection}{\numberline {3.4.2}and ∧}{38}{subsection.3.4.2}
+\contentsline {subsubsection}{Proposition Builders}{38}{subsubsection*.6}
+\contentsline {subsubsection}{Introduction: Proof Constructors}{38}{subsubsection*.7}
+\contentsline {subsubsection}{Elimination: Case Analysis}{39}{subsubsection*.8}
+\contentsline {subsection}{\numberline {3.4.3}or ∧}{39}{subsection.3.4.3}
+\contentsline {subsubsection}{Introduction Rules}{40}{subsubsection*.9}
+\contentsline {subsubsection}{Elimination Rules}{40}{subsubsection*.10}
+\contentsline {chapter}{\numberline {4}Index}{41}{chapter.4}

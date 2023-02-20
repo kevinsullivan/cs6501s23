@@ -78,24 +78,27 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#algebraic-axioms">2.6. Algebraic Axioms</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#commutativity">2.6.1. Commutativity</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#another-notation">2.6.2. Another Notation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#variable-declarations">2.6.3. Variable Declarations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#specialization-of-generalizations">2.6.4. Specialization of Generalizations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#associativity">2.6.5. Associativity</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#distributivity">2.6.6. Distributivity</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#demorgan-s-laws">2.6.7. DeMorgan&#8217;s Laws</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#negation">2.6.8. Negation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#excluded-middle">2.6.9. Excluded Middle</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#no-contradiction">2.6.10. No Contradiction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#implication">2.6.11. Implication</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#and-simplification">2.6.12. And Simplification</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#or-simplification">2.6.13. Or Simplification</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#homework">2.6.14. Homework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">2.6.1. Algebraic Axioms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#commutativity">2.6.2. Commutativity</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#another-notation">2.6.2.1. Another Notation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#variable-declarations">2.6.2.2. Variable Declarations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#specialization-of-generalizations">2.6.2.3. Specialization of Generalizations</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#associativity">2.6.3. Associativity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#distributivity">2.6.4. Distributivity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#demorgan-s-laws">2.6.5. DeMorgan&#8217;s Laws</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#negation">2.6.6. Negation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#excluded-middle">2.6.7. Excluded Middle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#no-contradiction">2.6.8. No Contradiction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#implication">2.6.9. Implication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#and-simplification">2.6.10. And Simplification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#or-simplification">2.6.11. Or Simplification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#homework">2.6.12. Homework</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#inference-rules">2.7. Inference Rules</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id9">2.7.1. Inference Rules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">2.7.1. Inference Rules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#practice">2.7.2. Practice</a></li>
 </ul>
 </li>
@@ -1178,12 +1181,11 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </section>
 <section id="algebraic-axioms">
 <h2><span class="section-number">2.6. </span>Algebraic Axioms<a class="headerlink" href="#algebraic-axioms" title="Permalink to this heading">&#61633;</a></h2>
-<p>We&#8217;ve now seen that it&#8217;s not enough to prove a few
+<p>We&#8217;ve seen that it&#8217;s not enough to prove just a few
 theorems about a construction (here our syntax and
-semantics for propositional logic).</p>
-<p>So how will we confirm <em>for sure</em> that our model (or
-implementation) of propositional logic is completely
-valid?</p>
+semantics for propositional logic). So how will we
+confirm <em>for sure</em> that our model (implementation)
+of propositional logic is completely valid?</p>
 <p>We&#8217;ll offer two different methods. First, in this
 chapter, we&#8217;ll prove that our specification satisfies
 the <em>algebraic axioms</em> of propositional logic. Second,
@@ -1198,23 +1200,39 @@ of what Lean can do for us:
 - &#8220;sorry&#8221; to bail out of a proof and accept proposition as axiom</p>
 <p>To avoid duplication of code from the last chapter,
 we&#8217;ll import all of the definitions in its Lean file
-for use here.
-Algebraic Properties
-&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8211;</p>
-<p>First, a propositional logic can be understood as an <em>algebra</em> with
-Boolean-valued (as opposed to numeric) terms, variables, and constants.
-Constants and variables are are terms, but terms are also  constructed
-from smaller terms using connectives: &#8743;, &#8744;, &#172;, and so on. The axioms of
-propopsitions define how these operations work, on their own and when
-combined.</p>
-<p>These algebraic properties of propositional logic are very much akin
-to the usual commutativity, associativity, distributivity, identity,
-and other such properties of the natural numbers and the addition and
-multiplication operations on them. As we go through the analogous
-properties for propositional logic, note the common properties of both
-algebras.</p>
+for use here.</p>
+<section id="id9">
+<h3><span class="section-number">2.6.1. </span>Algebraic Axioms<a class="headerlink" href="#id9" title="Permalink to this heading">&#61633;</a></h3>
+<p>First, then, we will formalize propositional logic as an
+<em>algebra,</em> with Boolean-valued (as opposed to numeric) terms
+and operations, and then we will show that our operations and
+terms satisfy the axioms of propositional logic. For example,
+we will have to show that our specifications of &#8743; and &#8744; are
+both commutative and associative.</p>
+<p>These properties are analogous to the usual commutativity,
+associativity, distributivity, and other such properties of
+the natural numbers and the usual algebra on them. As we go
+through the analogous properties for propositional logic,
+take note of the common properties of both algebras.</p>
+<p>In the rest of this chapter we will formally state and
+prove that our Lean model of propositional logic satisfies
+all of the axioms/properties required to be a correct model
+of the logic:</p>
+<ul class="simple">
+<li><p>commutativity</p></li>
+<li><p>associativity</p></li>
+<li><p>distributivity</p></li>
+<li><p>DeMorgan&#8217;s laws</p></li>
+<li><p>double negation elimination</p></li>
+<li><p>excluded middle</p></li>
+<li><p>no contradiction</p></li>
+<li><p>implication</p></li>
+<li><p>and simplification</p></li>
+<li><p>or simplification</p></li>
+</ul>
+</section>
 <section id="commutativity">
-<h3><span class="section-number">2.6.1. </span>Commutativity<a class="headerlink" href="#commutativity" title="Permalink to this heading">&#61633;</a></h3>
+<h3><span class="section-number">2.6.2. </span>Commutativity<a class="headerlink" href="#commutativity" title="Permalink to this heading">&#61633;</a></h3>
 <p>The first two axioms that that the and and or operators
 (&#8743;, &#8744;) are commutative. One will often see these rules
 written in textbooks and tutorials as follows:</p>
@@ -1236,20 +1254,20 @@ propositions themselves but their <em>meanings</em> under all
 possible interpretations.</p>
 <p>We have already seen, in the last chapter, how to do this.
 For example, we defined the commutative property of &#8743; as
-follows. In mathematical natural language we can read this
-as &#8220;for any expressions, p and q, the meaning of <em>p &#8743; q</em>
-is equal to that of <em>q &#8743; p</em> under all interpretations.&#8221;</p>
+follows.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=example%20%3A%0A%E2%88%80%20(p%20q%20%3A%20prop_expr)%20(i%20%3A%20prop_var%20%E2%86%92%20bool)%2C%0A%20%20pEval%20(p%20%E2%88%A7%20q)%20i%20%3D%20pEval%20(q%20%E2%88%A7%20p)%20i%20%3A%3D%0Aand_commutes%20%20--%20proof%20from%20last%20chapter" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_84.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=example%20%3A%0A%E2%88%80%20(p%20q%20%3A%20prop_expr)%20(i%20%3A%20prop_var%20%E2%86%92%20bool)%2C%0A%20%20pEval%20(p%20%E2%88%A7%20q)%20i%20%3D%20pEval%20(q%20%E2%88%A7%20p)%20i%20%3A%3D%0Aand_commutes%20%20--%20proof%20from%20last%20chapter" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_96.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">example</span> <span class="o">:</span>
 <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">p</span> <span class="n">q</span> <span class="o">:</span> <span class="n">prop_expr</span><span class="o">)</span> <span class="o">(</span><span class="n">i</span> <span class="o">:</span> <span class="n">prop_var</span> <span class="bp">&#8594;</span> <span class="n">bool</span><span class="o">),</span>
   <span class="n">pEval</span> <span class="o">(</span><span class="n">p</span> <span class="bp">&#8743;</span> <span class="n">q</span><span class="o">)</span> <span class="n">i</span> <span class="bp">=</span> <span class="n">pEval</span> <span class="o">(</span><span class="n">q</span> <span class="bp">&#8743;</span> <span class="n">p</span><span class="o">)</span> <span class="n">i</span> <span class="o">:=</span>
 <span class="n">and_commutes</span>  <span class="c1">-- proof from last chapter</span>
 </pre></div>
 </div>
-</div></section>
+</div><p>We can read this as &#8220;for any expressions, p and q, the
+meaning of <em>p &#8743; q</em> is equal to that of <em>q &#8743; p</em> under all
+interpretations.&#8221;</p>
 <section id="another-notation">
-<h3><span class="section-number">2.6.2. </span>Another Notation<a class="headerlink" href="#another-notation" title="Permalink to this heading">&#61633;</a></h3>
+<h4><span class="section-number">2.6.2.1. </span>Another Notation<a class="headerlink" href="#another-notation" title="Permalink to this heading">&#61633;</a></h4>
 <p>As we&#8217;ve seen, mathematical theories are often
 augmented with concrete syntactic notations that
 make it easier for people to read and write such
@@ -1279,13 +1297,13 @@ Here&#8217;s the notation definition. When an operation,
 such as pEval is represented by tokens on either side
 of an argument, we call this an outfix notation.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=notation%20(name%20%3A%3D%20pEval)%20%60%20%E2%9F%A6%20%60%20p%20%60%20%E2%9F%A7%20%60%20%20%3A%3D%20%20pEval%20p" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_127.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=notation%20(name%20%3A%3D%20pEval)%20%60%20%E2%9F%A6%20%60%20p%20%60%20%E2%9F%A7%20%60%20%20%3A%3D%20%20pEval%20p" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_142.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">notation</span> <span class="o">(</span><span class="n">name</span> <span class="o">:=</span> <span class="n">pEval</span><span class="o">)</span> <span class="bp">`</span> <span class="bp">&#10214;</span> <span class="bp">`</span> <span class="n">p</span> <span class="bp">`</span> <span class="bp">&#10215;</span> <span class="bp">`</span>  <span class="o">:=</span>  <span class="n">pEval</span> <span class="n">p</span>
 </pre></div>
 </div>
 </div></section>
 <section id="variable-declarations">
-<h3><span class="section-number">2.6.3. </span>Variable Declarations<a class="headerlink" href="#variable-declarations" title="Permalink to this heading">&#61633;</a></h3>
+<h4><span class="section-number">2.6.2.2. </span>Variable Declarations<a class="headerlink" href="#variable-declarations" title="Permalink to this heading">&#61633;</a></h4>
 <p>It&#8217;s common when specifying multiple of properties of a
 given object or collection of objects to introduce the
 same variables at the beginning of each definition. For
@@ -1297,7 +1315,7 @@ and then to use them in multiple definitions without
 the need for redundant introductions. Let&#8217;s see how it
 works.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20start%20a%20section%0Asection%20prop_logic_axioms%0A%0A--%20Let%20p%2C%20q%2C%20r%2C%20and%20i%20be%20arbitrary%20expressions%20and%20an%0A--%20interpretation%0Avariables%20(p%20q%20r%20%3A%20prop_expr)%20(i%20%3A%20prop_var%20%E2%86%92%20bool)" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_145.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20start%20a%20section%0Asection%20prop_logic_axioms%0A%0A--%20Let%20p%2C%20q%2C%20r%2C%20and%20i%20be%20arbitrary%20expressions%20and%20an%0A--%20interpretation%0Avariables%20(p%20q%20r%20%3A%20prop_expr)%20(i%20%3A%20prop_var%20%E2%86%92%20bool)" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_160.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- start a section</span>
 <span class="kn">section</span> <span class="n">prop_logic_axioms</span>
 
@@ -1312,20 +1330,20 @@ this example, we add prime marks to the names used in
 imported chapter to avoid conflicts with names used in
 that file.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20and_commutes'%20%3A%3D%20(%E2%9F%A6(p%20%E2%88%A7%20q)%E2%9F%A7%20i)%20%3D%20(%E2%9F%A6(q%20%E2%88%A7%20p)%E2%9F%A7%20i)%0Adef%20or_commutes'%20%3A%3D%20%20%E2%9F%A6(p%20%E2%88%A7%20q)%E2%9F%A7%20i%20%3D%20%E2%9F%A6(q%20%E2%88%A7%20p)%E2%9F%A7%20i" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_160.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20and_commutes'%20%3A%3D%20(%E2%9F%A6(p%20%E2%88%A7%20q)%E2%9F%A7%20i)%20%3D%20(%E2%9F%A6(q%20%E2%88%A7%20p)%E2%9F%A7%20i)%0Adef%20or_commutes'%20%3A%3D%20%20%E2%9F%A6(p%20%E2%88%A7%20q)%E2%9F%A7%20i%20%3D%20%E2%9F%A6(q%20%E2%88%A7%20p)%E2%9F%A7%20i" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_175.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">and_commutes&#39;</span> <span class="o">:=</span> <span class="o">(</span><span class="bp">&#10214;</span><span class="o">(</span><span class="n">p</span> <span class="bp">&#8743;</span> <span class="n">q</span><span class="o">)</span><span class="bp">&#10215;</span> <span class="n">i</span><span class="o">)</span> <span class="bp">=</span> <span class="o">(</span><span class="bp">&#10214;</span><span class="o">(</span><span class="n">q</span> <span class="bp">&#8743;</span> <span class="n">p</span><span class="o">)</span><span class="bp">&#10215;</span> <span class="n">i</span><span class="o">)</span>
 <span class="kd">def</span> <span class="n">or_commutes&#39;</span> <span class="o">:=</span>  <span class="bp">&#10214;</span><span class="o">(</span><span class="n">p</span> <span class="bp">&#8743;</span> <span class="n">q</span><span class="o">)</span><span class="bp">&#10215;</span> <span class="n">i</span> <span class="bp">=</span> <span class="bp">&#10214;</span><span class="o">(</span><span class="n">q</span> <span class="bp">&#8743;</span> <span class="n">p</span><span class="o">)</span><span class="bp">&#10215;</span> <span class="n">i</span>
 </pre></div>
 </div>
 </div></section>
 <section id="specialization-of-generalizations">
-<h3><span class="section-number">2.6.4. </span>Specialization of Generalizations<a class="headerlink" href="#specialization-of-generalizations" title="Permalink to this heading">&#61633;</a></h3>
+<h4><span class="section-number">2.6.2.3. </span>Specialization of Generalizations<a class="headerlink" href="#specialization-of-generalizations" title="Permalink to this heading">&#61633;</a></h4>
 <p>Observe: We can <em>apply</em> these theorems
 to particular objects to specalize the
 generalized statement to the particular
 objects.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23reduce%20and_commutes'%20p%20q%20i" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_174.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23reduce%20and_commutes'%20p%20q%20i" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_188.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#reduce</span> <span class="n">and_commutes&#39;</span> <span class="n">p</span> <span class="n">q</span> <span class="n">i</span>
 </pre></div>
 </div>
@@ -1340,7 +1358,7 @@ Second we can use <em>repeat</em> to repeated apply a
 tactic until it fails to apply. The result
 can be a nicely compacted proof script.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20by%20unfolding%20definitions%20and%20case%20analysis%0Aexample%20%3A%20and_commutes'%20p%20q%20i%20%3A%3D%0Abegin%0Aunfold%20and_commutes'%20pEval%20bin_op_sem%2C%0Acases%20%E2%9F%A6%20p%20%E2%9F%A7%20i%2C%0Arepeat%20%7B%20cases%20%E2%9F%A6%20q%20%E2%9F%A7%20i%3B%20repeat%20%7B%20apply%20rfl%20%7D%20%7D%2C%0Aend" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_189.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20by%20unfolding%20definitions%20and%20case%20analysis%0Aexample%20%3A%20and_commutes'%20p%20q%20i%20%3A%3D%0Abegin%0Aunfold%20and_commutes'%20pEval%20bin_op_sem%2C%0Acases%20%E2%9F%A6%20p%20%E2%9F%A7%20i%2C%0Arepeat%20%7B%20cases%20%E2%9F%A6%20q%20%E2%9F%A7%20i%3B%20repeat%20%7B%20apply%20rfl%20%7D%20%7D%2C%0Aend" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_203.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- by unfolding definitions and case analysis</span>
 <span class="kd">example</span> <span class="o">:</span> <span class="n">and_commutes&#39;</span> <span class="n">p</span> <span class="n">q</span> <span class="n">i</span> <span class="o">:=</span>
 <span class="kd">begin</span>
@@ -1351,61 +1369,62 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </pre></div>
 </div>
 </div></section>
+</section>
 <section id="associativity">
-<h3><span class="section-number">2.6.5. </span>Associativity<a class="headerlink" href="#associativity" title="Permalink to this heading">&#61633;</a></h3>
+<h3><span class="section-number">2.6.3. </span>Associativity<a class="headerlink" href="#associativity" title="Permalink to this heading">&#61633;</a></h3>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20and_associative_axiom%20%3A%3D%20%20%E2%9F%A6(p%20%E2%88%A7%20q)%20%E2%88%A7%20r%E2%9F%A7%20i%20%3D%20%E2%9F%A6(p%20%E2%88%A7%20(q%20%E2%88%A7%20r))%E2%9F%A7%20i%0Adef%20or_associative_axiom%20%3A%3D%20%20%20%E2%9F%A6(p%20%E2%88%A8%20q)%20%E2%88%A8%20r%E2%9F%A7%20i%20%3D%20%E2%9F%A6(p%20%E2%88%A8%20(q%20%E2%88%A8%20r))%E2%9F%A7%20i" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_202.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20and_associative_axiom%20%3A%3D%20%20%E2%9F%A6(p%20%E2%88%A7%20q)%20%E2%88%A7%20r%E2%9F%A7%20i%20%3D%20%E2%9F%A6(p%20%E2%88%A7%20(q%20%E2%88%A7%20r))%E2%9F%A7%20i%0Adef%20or_associative_axiom%20%3A%3D%20%20%20%E2%9F%A6(p%20%E2%88%A8%20q)%20%E2%88%A8%20r%E2%9F%A7%20i%20%3D%20%E2%9F%A6(p%20%E2%88%A8%20(q%20%E2%88%A8%20r))%E2%9F%A7%20i" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_216.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">and_associative_axiom</span> <span class="o">:=</span>  <span class="bp">&#10214;</span><span class="o">(</span><span class="n">p</span> <span class="bp">&#8743;</span> <span class="n">q</span><span class="o">)</span> <span class="bp">&#8743;</span> <span class="n">r</span><span class="bp">&#10215;</span> <span class="n">i</span> <span class="bp">=</span> <span class="bp">&#10214;</span><span class="o">(</span><span class="n">p</span> <span class="bp">&#8743;</span> <span class="o">(</span><span class="n">q</span> <span class="bp">&#8743;</span> <span class="n">r</span><span class="o">))</span><span class="bp">&#10215;</span> <span class="n">i</span>
 <span class="kd">def</span> <span class="n">or_associative_axiom</span> <span class="o">:=</span>   <span class="bp">&#10214;</span><span class="o">(</span><span class="n">p</span> <span class="bp">&#8744;</span> <span class="n">q</span><span class="o">)</span> <span class="bp">&#8744;</span> <span class="n">r</span><span class="bp">&#10215;</span> <span class="n">i</span> <span class="bp">=</span> <span class="bp">&#10214;</span><span class="o">(</span><span class="n">p</span> <span class="bp">&#8744;</span> <span class="o">(</span><span class="n">q</span> <span class="bp">&#8744;</span> <span class="n">r</span><span class="o">))</span><span class="bp">&#10215;</span> <span class="n">i</span>
 </pre></div>
 </div>
 </div></section>
 <section id="distributivity">
-<h3><span class="section-number">2.6.6. </span>Distributivity<a class="headerlink" href="#distributivity" title="Permalink to this heading">&#61633;</a></h3>
+<h3><span class="section-number">2.6.4. </span>Distributivity<a class="headerlink" href="#distributivity" title="Permalink to this heading">&#61633;</a></h3>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20or_dist_and_axiom%20%3A%3D%20%E2%9F%A6p%20%E2%88%A8%20(q%20%E2%88%A7%20r)%E2%9F%A7%20i%20%3D%20%E2%9F%A6(p%20%E2%88%A8%20q)%20%E2%88%A7%20(p%20%E2%88%A8%20r)%E2%9F%A7%20i%0Adef%20and_dist_or_axiom%20%3A%3D%20%E2%9F%A6p%20%E2%88%A7%20(q%20%E2%88%A8%20r)%E2%9F%A7%20i%20%3D%20%E2%9F%A6(p%20%E2%88%A7%20q)%20%E2%88%A8%20(p%20%E2%88%A7%20r)%E2%9F%A7%20i" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_210.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20or_dist_and_axiom%20%3A%3D%20%E2%9F%A6p%20%E2%88%A8%20(q%20%E2%88%A7%20r)%E2%9F%A7%20i%20%3D%20%E2%9F%A6(p%20%E2%88%A8%20q)%20%E2%88%A7%20(p%20%E2%88%A8%20r)%E2%9F%A7%20i%0Adef%20and_dist_or_axiom%20%3A%3D%20%E2%9F%A6p%20%E2%88%A7%20(q%20%E2%88%A8%20r)%E2%9F%A7%20i%20%3D%20%E2%9F%A6(p%20%E2%88%A7%20q)%20%E2%88%A8%20(p%20%E2%88%A7%20r)%E2%9F%A7%20i" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_224.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">or_dist_and_axiom</span> <span class="o">:=</span> <span class="bp">&#10214;</span><span class="n">p</span> <span class="bp">&#8744;</span> <span class="o">(</span><span class="n">q</span> <span class="bp">&#8743;</span> <span class="n">r</span><span class="o">)</span><span class="bp">&#10215;</span> <span class="n">i</span> <span class="bp">=</span> <span class="bp">&#10214;</span><span class="o">(</span><span class="n">p</span> <span class="bp">&#8744;</span> <span class="n">q</span><span class="o">)</span> <span class="bp">&#8743;</span> <span class="o">(</span><span class="n">p</span> <span class="bp">&#8744;</span> <span class="n">r</span><span class="o">)</span><span class="bp">&#10215;</span> <span class="n">i</span>
 <span class="kd">def</span> <span class="n">and_dist_or_axiom</span> <span class="o">:=</span> <span class="bp">&#10214;</span><span class="n">p</span> <span class="bp">&#8743;</span> <span class="o">(</span><span class="n">q</span> <span class="bp">&#8744;</span> <span class="n">r</span><span class="o">)</span><span class="bp">&#10215;</span> <span class="n">i</span> <span class="bp">=</span> <span class="bp">&#10214;</span><span class="o">(</span><span class="n">p</span> <span class="bp">&#8743;</span> <span class="n">q</span><span class="o">)</span> <span class="bp">&#8744;</span> <span class="o">(</span><span class="n">p</span> <span class="bp">&#8743;</span> <span class="n">r</span><span class="o">)</span><span class="bp">&#10215;</span> <span class="n">i</span>
 </pre></div>
 </div>
 </div></section>
 <section id="demorgan-s-laws">
-<h3><span class="section-number">2.6.7. </span>DeMorgan&#8217;s Laws<a class="headerlink" href="#demorgan-s-laws" title="Permalink to this heading">&#61633;</a></h3>
+<h3><span class="section-number">2.6.5. </span>DeMorgan&#8217;s Laws<a class="headerlink" href="#demorgan-s-laws" title="Permalink to this heading">&#61633;</a></h3>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20demorgan_not_over_and_axiom%20%3A%3D%20%E2%9F%A6%C2%AC(p%20%E2%88%A7%20q)%E2%9F%A7%20i%20%3D%20%E2%9F%A6%C2%ACp%20%E2%88%A8%20%C2%ACq%E2%9F%A7%20i%0Adef%20demorgan_not_over_or_axiom%20%3A%3D%20%20%E2%9F%A6%C2%AC(p%20%E2%88%A8%20q)%E2%9F%A7%20i%20%3D%20%E2%9F%A6%C2%ACp%20%E2%88%A7%20%C2%ACq%E2%9F%A7%20i" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_218.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20demorgan_not_over_and_axiom%20%3A%3D%20%E2%9F%A6%C2%AC(p%20%E2%88%A7%20q)%E2%9F%A7%20i%20%3D%20%E2%9F%A6%C2%ACp%20%E2%88%A8%20%C2%ACq%E2%9F%A7%20i%0Adef%20demorgan_not_over_or_axiom%20%3A%3D%20%20%E2%9F%A6%C2%AC(p%20%E2%88%A8%20q)%E2%9F%A7%20i%20%3D%20%E2%9F%A6%C2%ACp%20%E2%88%A7%20%C2%ACq%E2%9F%A7%20i" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_232.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">demorgan_not_over_and_axiom</span> <span class="o">:=</span> <span class="bp">&#10214;&#172;</span><span class="o">(</span><span class="n">p</span> <span class="bp">&#8743;</span> <span class="n">q</span><span class="o">)</span><span class="bp">&#10215;</span> <span class="n">i</span> <span class="bp">=</span> <span class="bp">&#10214;&#172;</span><span class="n">p</span> <span class="bp">&#8744;</span> <span class="bp">&#172;</span><span class="n">q</span><span class="bp">&#10215;</span> <span class="n">i</span>
 <span class="kd">def</span> <span class="n">demorgan_not_over_or_axiom</span> <span class="o">:=</span>  <span class="bp">&#10214;&#172;</span><span class="o">(</span><span class="n">p</span> <span class="bp">&#8744;</span> <span class="n">q</span><span class="o">)</span><span class="bp">&#10215;</span> <span class="n">i</span> <span class="bp">=</span> <span class="bp">&#10214;&#172;</span><span class="n">p</span> <span class="bp">&#8743;</span> <span class="bp">&#172;</span><span class="n">q</span><span class="bp">&#10215;</span> <span class="n">i</span>
 </pre></div>
 </div>
 </div></section>
 <section id="negation">
-<h3><span class="section-number">2.6.8. </span>Negation<a class="headerlink" href="#negation" title="Permalink to this heading">&#61633;</a></h3>
+<h3><span class="section-number">2.6.6. </span>Negation<a class="headerlink" href="#negation" title="Permalink to this heading">&#61633;</a></h3>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20negation_elimination_axiom%20%3A%3D%20%E2%9F%A6%C2%AC%C2%ACp%E2%9F%A7%20i%20%3D%20%E2%9F%A6p%E2%9F%A7%20i" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_226.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20negation_elimination_axiom%20%3A%3D%20%E2%9F%A6%C2%AC%C2%ACp%E2%9F%A7%20i%20%3D%20%E2%9F%A6p%E2%9F%A7%20i" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_240.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">negation_elimination_axiom</span> <span class="o">:=</span> <span class="bp">&#10214;&#172;&#172;</span><span class="n">p</span><span class="bp">&#10215;</span> <span class="n">i</span> <span class="bp">=</span> <span class="bp">&#10214;</span><span class="n">p</span><span class="bp">&#10215;</span> <span class="n">i</span>
 </pre></div>
 </div>
 </div></section>
 <section id="excluded-middle">
-<h3><span class="section-number">2.6.9. </span>Excluded Middle<a class="headerlink" href="#excluded-middle" title="Permalink to this heading">&#61633;</a></h3>
+<h3><span class="section-number">2.6.7. </span>Excluded Middle<a class="headerlink" href="#excluded-middle" title="Permalink to this heading">&#61633;</a></h3>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20excluded_middle_axiom%20%3A%3D%20%E2%9F%A6p%20%E2%88%A8%20%C2%ACp%E2%9F%A7%20i%20%3D%20%E2%9F%A6%E2%8A%A4%E2%9F%A7%20i%20%20%20--%20or%20just%20tt" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_233.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20excluded_middle_axiom%20%3A%3D%20%E2%9F%A6p%20%E2%88%A8%20%C2%ACp%E2%9F%A7%20i%20%3D%20%E2%9F%A6%E2%8A%A4%E2%9F%A7%20i%20%20%20--%20or%20just%20tt" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_247.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">excluded_middle_axiom</span> <span class="o">:=</span> <span class="bp">&#10214;</span><span class="n">p</span> <span class="bp">&#8744;</span> <span class="bp">&#172;</span><span class="n">p</span><span class="bp">&#10215;</span> <span class="n">i</span> <span class="bp">=</span> <span class="bp">&#10214;&#8868;&#10215;</span> <span class="n">i</span>   <span class="c1">-- or just tt</span>
 </pre></div>
 </div>
 </div></section>
 <section id="no-contradiction">
-<h3><span class="section-number">2.6.10. </span>No Contradiction<a class="headerlink" href="#no-contradiction" title="Permalink to this heading">&#61633;</a></h3>
+<h3><span class="section-number">2.6.8. </span>No Contradiction<a class="headerlink" href="#no-contradiction" title="Permalink to this heading">&#61633;</a></h3>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20no_contradiction_axiom%20%3A%3D%20%E2%9F%A6p%20%E2%88%A7%20%C2%ACp%E2%9F%A7%20i%20%3D%20%E2%9F%A6%E2%8A%A5%E2%9F%A7%20i%20%20%20--%20or%20just%20tt" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_240.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20no_contradiction_axiom%20%3A%3D%20%E2%9F%A6p%20%E2%88%A7%20%C2%ACp%E2%9F%A7%20i%20%3D%20%E2%9F%A6%E2%8A%A5%E2%9F%A7%20i%20%20%20--%20or%20just%20tt" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_254.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">no_contradiction_axiom</span> <span class="o">:=</span> <span class="bp">&#10214;</span><span class="n">p</span> <span class="bp">&#8743;</span> <span class="bp">&#172;</span><span class="n">p</span><span class="bp">&#10215;</span> <span class="n">i</span> <span class="bp">=</span> <span class="bp">&#10214;&#8869;&#10215;</span> <span class="n">i</span>   <span class="c1">-- or just tt</span>
 </pre></div>
 </div>
 </div></section>
 <section id="implication">
-<h3><span class="section-number">2.6.11. </span>Implication<a class="headerlink" href="#implication" title="Permalink to this heading">&#61633;</a></h3>
+<h3><span class="section-number">2.6.9. </span>Implication<a class="headerlink" href="#implication" title="Permalink to this heading">&#61633;</a></h3>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20implication_axiom%20%3A%3D%20%E2%9F%A6(p%20%3D%3E%20q)%E2%9F%A7%20i%20%3D%20%E2%9F%A6%C2%ACp%20%E2%88%A8%20q%E2%9F%A7%20i%20%20--%20notation%20issue%0A%0Aexample%20%3A%20implication_axiom%20p%20q%20i%20%3A%3D%0Abegin%0Aunfold%20implication_axiom%20pEval%20bin_op_sem%20un_op_sem%2C%0Acases%20%E2%9F%A6%20p%20%E2%9F%A7%20i%3B%20repeat%20%7B%20cases%20%E2%9F%A6%20q%20%E2%9F%A7%20i%3B%20repeat%20%7B%20apply%20rfl%20%7D%20%7D%2C%0Aend" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_247.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20implication_axiom%20%3A%3D%20%E2%9F%A6(p%20%3D%3E%20q)%E2%9F%A7%20i%20%3D%20%E2%9F%A6%C2%ACp%20%E2%88%A8%20q%E2%9F%A7%20i%20%20--%20notation%20issue%0A%0Aexample%20%3A%20implication_axiom%20p%20q%20i%20%3A%3D%0Abegin%0Aunfold%20implication_axiom%20pEval%20bin_op_sem%20un_op_sem%2C%0Acases%20%E2%9F%A6%20p%20%E2%9F%A7%20i%3B%20repeat%20%7B%20cases%20%E2%9F%A6%20q%20%E2%9F%A7%20i%3B%20repeat%20%7B%20apply%20rfl%20%7D%20%7D%2C%0Aend" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_261.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">implication_axiom</span> <span class="o">:=</span> <span class="bp">&#10214;</span><span class="o">(</span><span class="n">p</span> <span class="bp">=&gt;</span> <span class="n">q</span><span class="o">)</span><span class="bp">&#10215;</span> <span class="n">i</span> <span class="bp">=</span> <span class="bp">&#10214;&#172;</span><span class="n">p</span> <span class="bp">&#8744;</span> <span class="n">q</span><span class="bp">&#10215;</span> <span class="n">i</span>  <span class="c1">-- notation issue</span>
 
 <span class="kd">example</span> <span class="o">:</span> <span class="n">implication_axiom</span> <span class="n">p</span> <span class="n">q</span> <span class="n">i</span> <span class="o">:=</span>
@@ -1419,27 +1438,32 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 involving &#8743; and &#8744;.</p>
 </section>
 <section id="and-simplification">
-<h3><span class="section-number">2.6.12. </span>And Simplification<a class="headerlink" href="#and-simplification" title="Permalink to this heading">&#61633;</a></h3>
-<p>p &#8743; p = p
-p &#8743; T = p
-p &#8743; F = F
-p &#8743; (p &#8744; q) = p</p>
-</section>
-<section id="or-simplification">
-<h3><span class="section-number">2.6.13. </span>Or Simplification<a class="headerlink" href="#or-simplification" title="Permalink to this heading">&#61633;</a></h3>
-<p>p &#8744; p = p
-p &#8744; T = T
-p &#8744; F = p
-p &#8744; (p &#8743; q) = p</p>
+<h3><span class="section-number">2.6.10. </span>And Simplification<a class="headerlink" href="#and-simplification" title="Permalink to this heading">&#61633;</a></h3>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=end%20prop_logic_axioms%0Aend%20cs6501" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_277.lean">
-try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">end</span> <span class="n">prop_logic_axioms</span>
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20p%20%E2%88%A7%20p%20%3D%20p%0A--%20p%20%E2%88%A7%20T%20%3D%20p%0A--%20p%20%E2%88%A7%20F%20%3D%20F%0A--%20p%20%E2%88%A7%20(p%20%E2%88%A8%20q)%20%3D%20p" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_277.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- p &#8743; p = p</span>
+<span class="c1">-- p &#8743; T = p</span>
+<span class="c1">-- p &#8743; F = F</span>
+<span class="c1">-- p &#8743; (p &#8744; q) = p</span>
+</pre></div>
+</div>
+</div></section>
+<section id="or-simplification">
+<h3><span class="section-number">2.6.11. </span>Or Simplification<a class="headerlink" href="#or-simplification" title="Permalink to this heading">&#61633;</a></h3>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20p%20%E2%88%A8%20p%20%3D%20p%0A--%20p%20%E2%88%A8%20T%20%3D%20T%0A--%20p%20%E2%88%A8%20F%20%3D%20p%0A--%20p%20%E2%88%A8%20(p%20%E2%88%A7%20q)%20%3D%20p%0A%0Aend%20prop_logic_axioms%0Aend%20cs6501" target="_blank" tryitfile="../examples/A_01_Propositional_Logic/unnamed_287.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- p &#8744; p = p</span>
+<span class="c1">-- p &#8744; T = T</span>
+<span class="c1">-- p &#8744; F = p</span>
+<span class="c1">-- p &#8744; (p &#8743; q) = p</span>
+
+<span class="kd">end</span> <span class="n">prop_logic_axioms</span>
 <span class="kd">end</span> <span class="n">cs6501</span>
 </pre></div>
 </div>
 </div></section>
 <section id="homework">
-<h3><span class="section-number">2.6.14. </span>Homework<a class="headerlink" href="#homework" title="Permalink to this heading">&#61633;</a></h3>
+<h3><span class="section-number">2.6.12. </span>Homework<a class="headerlink" href="#homework" title="Permalink to this heading">&#61633;</a></h3>
 <ol class="arabic simple">
 <li><p>Formalize the and/or simplification rules.</p></li>
 </ol>
@@ -1505,8 +1529,8 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <span class="kn">namespace</span> <span class="n">cs6501</span>
 </pre></div>
 </div>
-</div><section id="id9">
-<h3><span class="section-number">2.7.1. </span>Inference Rules<a class="headerlink" href="#id9" title="Permalink to this heading">&#61633;</a></h3>
+</div><section id="id10">
+<h3><span class="section-number">2.7.1. </span>Inference Rules<a class="headerlink" href="#id10" title="Permalink to this heading">&#61633;</a></h3>
 <p>Key idea: These are rules for reasoning about evidence.
 What <em>evidence</em> do you need to derive a given conclusion?
 These are the &#8220;introduction&#8221; rules. From a given piece of

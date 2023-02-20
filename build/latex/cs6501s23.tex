@@ -81,7 +81,7 @@
 
 
 \title{Computing Foundations}
-\date{Feb 14, 2023}
+\date{Feb 19, 2023}
 \release{1.2.2}
 \author{Kevin Sullivan}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -1560,14 +1560,11 @@ If you get hung up on Lean syntax, ask a friend (or instructor) for help to get 
 \section{Algebraic Axioms}
 \label{\detokenize{A_01_Propositional_Logic:algebraic-axioms}}
 \sphinxAtStartPar
-We’ve now seen that it’s not enough to prove a few
+We’ve seen that it’s not enough to prove just a few
 theorems about a construction (here our syntax and
-semantics for propositional logic).
-
-\sphinxAtStartPar
-So how will we confirm \sphinxstyleemphasis{for sure} that our model (or
-implementation) of propositional logic is completely
-valid?
+semantics for propositional logic). So how will we
+confirm \sphinxstyleemphasis{for sure} that our model (implementation)
+of propositional logic is completely valid?
 
 \sphinxAtStartPar
 We’ll offer two different methods. First, in this
@@ -1589,24 +1586,72 @@ of what Lean can do for us:
 To avoid duplication of code from the last chapter,
 we’ll import all of the definitions in its Lean file
 for use here.
-Algebraic Properties
-——————–
+
+
+\subsection{Algebraic Axioms}
+\label{\detokenize{A_01_Propositional_Logic:id9}}
+\sphinxAtStartPar
+First, then, we will formalize propositional logic as an
+\sphinxstyleemphasis{algebra,} with Boolean\sphinxhyphen{}valued (as opposed to numeric) terms
+and operations, and then we will show that our operations and
+terms satisfy the axioms of propositional logic. For example,
+we will have to show that our specifications of ∧ and ∨ are
+both commutative and associative.
 
 \sphinxAtStartPar
-First, a propositional logic can be understood as an \sphinxstyleemphasis{algebra} with
-Boolean\sphinxhyphen{}valued (as opposed to numeric) terms, variables, and constants.
-Constants and variables are are terms, but terms are also  constructed
-from smaller terms using connectives: ∧, ∨, ¬, and so on. The axioms of
-propopsitions define how these operations work, on their own and when
-combined.
+These properties are analogous to the usual commutativity,
+associativity, distributivity, and other such properties of
+the natural numbers and the usual algebra on them. As we go
+through the analogous properties for propositional logic,
+take note of the common properties of both algebras.
 
 \sphinxAtStartPar
-These algebraic properties of propositional logic are very much akin
-to the usual commutativity, associativity, distributivity, identity,
-and other such properties of the natural numbers and the addition and
-multiplication operations on them. As we go through the analogous
-properties for propositional logic, note the common properties of both
-algebras.
+In the rest of this chapter we will formally state and
+prove that our Lean model of propositional logic satisfies
+all of the axioms/properties required to be a correct model
+of the logic:
+\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+commutativity
+
+\item {} 
+\sphinxAtStartPar
+associativity
+
+\item {} 
+\sphinxAtStartPar
+distributivity
+
+\item {} 
+\sphinxAtStartPar
+DeMorgan’s laws
+
+\item {} 
+\sphinxAtStartPar
+double negation elimination
+
+\item {} 
+\sphinxAtStartPar
+excluded middle
+
+\item {} 
+\sphinxAtStartPar
+no contradiction
+
+\item {} 
+\sphinxAtStartPar
+implication
+
+\item {} 
+\sphinxAtStartPar
+and simplification
+
+\item {} 
+\sphinxAtStartPar
+or simplification
+
+\end{itemize}
 
 
 \subsection{Commutativity}
@@ -1645,9 +1690,7 @@ possible interpretations.
 \sphinxAtStartPar
 We have already seen, in the last chapter, how to do this.
 For example, we defined the commutative property of ∧ as
-follows. In mathematical natural language we can read this
-as “for any expressions, p and q, the meaning of \sphinxstyleemphasis{p ∧ q}
-is equal to that of \sphinxstyleemphasis{q ∧ p} under all interpretations.”
+follows.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k+kd}{example} \PYG{o}{:}
@@ -1656,8 +1699,13 @@ is equal to that of \sphinxstyleemphasis{q ∧ p} under all interpretations.”
 \PYG{n}{and\PYGZus{}commutes}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} proof from last chapter}
 \end{sphinxVerbatim}
 
+\sphinxAtStartPar
+We can read this as “for any expressions, p and q, the
+meaning of \sphinxstyleemphasis{p ∧ q} is equal to that of \sphinxstyleemphasis{q ∧ p} under all
+interpretations.”
 
-\subsection{Another Notation}
+
+\subsubsection{Another Notation}
 \label{\detokenize{A_01_Propositional_Logic:another-notation}}
 \sphinxAtStartPar
 As we’ve seen, mathematical theories are often
@@ -1700,7 +1748,7 @@ of an argument, we call this an outfix notation.
 \end{sphinxVerbatim}
 
 
-\subsection{Variable Declarations}
+\subsubsection{Variable Declarations}
 \label{\detokenize{A_01_Propositional_Logic:variable-declarations}}
 \sphinxAtStartPar
 It’s common when specifying multiple of properties of a
@@ -1736,7 +1784,7 @@ that file.
 \end{sphinxVerbatim}
 
 
-\subsection{Specialization of Generalizations}
+\subsubsection{Specialization of Generalizations}
 \label{\detokenize{A_01_Propositional_Logic:specialization-of-generalizations}}
 \sphinxAtStartPar
 Observe: We can \sphinxstyleemphasis{apply} these theorems
@@ -1835,22 +1883,22 @@ involving ∧ and ∨.
 
 \subsection{And Simplification}
 \label{\detokenize{A_01_Propositional_Logic:and-simplification}}
-\sphinxAtStartPar
-p ∧ p = p
-p ∧ T = p
-p ∧ F = F
-p ∧ (p ∨ q) = p
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} p ∧ p = p}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} p ∧ T = p}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} p ∧ F = F}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} p ∧ (p ∨ q) = p}
+\end{sphinxVerbatim}
 
 
 \subsection{Or Simplification}
 \label{\detokenize{A_01_Propositional_Logic:or-simplification}}
-\sphinxAtStartPar
-p ∨ p = p
-p ∨ T = T
-p ∨ F = p
-p ∨ (p ∧ q) = p
-
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} p ∨ p = p}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} p ∨ T = T}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} p ∨ F = p}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} p ∨ (p ∧ q) = p}
+
 \PYG{k+kd}{end} \PYG{n}{prop\PYGZus{}logic\PYGZus{}axioms}
 \PYG{k+kd}{end} \PYG{n}{cs6501}
 \end{sphinxVerbatim}
@@ -1962,7 +2010,7 @@ propositions expressed in predicate logic.
 
 
 \subsection{Inference Rules}
-\label{\detokenize{A_01_Propositional_Logic:id9}}
+\label{\detokenize{A_01_Propositional_Logic:id10}}
 \sphinxAtStartPar
 Key idea: These are rules for reasoning about evidence.
 What \sphinxstyleemphasis{evidence} do you need to derive a given conclusion?
@@ -2276,47 +2324,787 @@ the two ways equivalent?
 \chapter{Predicate Logic}
 \label{\detokenize{A_02_Predicate_Logic:predicate-logic}}\label{\detokenize{A_02_Predicate_Logic:introduction}}\label{\detokenize{A_02_Predicate_Logic::doc}}
 
-\section{Propositions are Types}
-\label{\detokenize{A_02_Predicate_Logic:propositions-are-types}}
-
-\section{From Truth to Proof}
-\label{\detokenize{A_02_Predicate_Logic:from-truth-to-proof}}
-
-\section{Functions}
-\label{\detokenize{A_02_Predicate_Logic:functions}}
-
-\section{Predicates}
-\label{\detokenize{A_02_Predicate_Logic:predicates}}
-
-\section{Connectives}
-\label{\detokenize{A_02_Predicate_Logic:connectives}}
+\section{Higher\sphinxhyphen{}Order Predicate Logic}
+\label{\detokenize{A_02_Predicate_Logic:higher-order-predicate-logic}}
 \sphinxAtStartPar
-We get them all from predicate logic, with meanings
-defined by inference rules that straightforwardly
-generalize those from propositonal logic.
+The term, \sphinxstyleemphasis{predicate logic}, used informally, is usually taken to
+refer to first\sphinxhyphen{}order predicate logic (often extended with theories,
+e.g., of natural number arithmetic). However, in this course, you
+will learn higher\sphinxhyphen{}order constructive predicate logic. First\sphinxhyphen{}order
+logic is a special restricted case.
 
+\sphinxAtStartPar
+We’ve organized the course so far to prepare you to quickly pick
+up higher\sphinxhyphen{}order predicate logic as it’s \sphinxstyleemphasis{embedded} in the logic of
+the Lean prover, by definitions provided by \sphinxstyleemphasis{mathlib}, Lean’s main
+library of mathematical definitions.
+
+\sphinxAtStartPar
+Major similarities and changes include the following:
+\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+Propositions become types, not just logical expressions
+
+\item {} 
+\sphinxAtStartPar
+Truth judgments (⟦E⟧ i = tt) replaced by proof judgments (e : E)
+
+\item {} 
+\sphinxAtStartPar
+Functions and applications are essential parts of predicate logic
+
+\item {} 
+\sphinxAtStartPar
+Predicates are functions from values to propositions \sphinxstyleemphasis{about them}
+
+\item {} 
+\sphinxAtStartPar
+We adopt all of the usual propositional logic connectives
+
+\item {} 
+\sphinxAtStartPar
+We adopt generalized versions of the usual inference rules
+
+\item {} 
+\sphinxAtStartPar
+We gain two new ones: universal and existential quantifiers
+
+\item {} 
+\sphinxAtStartPar
+We gain new inference rules for the ∀ and ∃ quantifiers
+
+\item {} 
+\sphinxAtStartPar
+Generalizing (∀) over types gives us parametric polymorphism
+
+\end{itemize}
+
+
+\section{Propositions as Types}
+\label{\detokenize{A_02_Predicate_Logic:propositions-as-types}}
+\sphinxAtStartPar
+In the last section, we build on all of the ideas of
+the last chapter to gain an understanding of higher
+order predicate logic in Lean. Each section of this
+chapter focuses on a dimension in which the latter is
+different, often a powerful generalization, of ideas
+from the last chapter.
+
+\sphinxAtStartPar
+As an example, in the last chapter, we represented
+propositions as terms of our data type, \sphinxstyleemphasis{prop\_expr}.
+We  also saw that we could formulate inference rules of
+propositional logic to provide a way to reason about
+the truth of given propositions. In this chapter, we
+will represent propositions as types of a special kind,
+instead, and proofs as values of these types. We will
+then adopt exacty the same inference rules we saw in
+the last chapter, but generalized to this far more
+expressive logic.
+
+\sphinxAtStartPar
+To warm up for the idea that propositions are (represented as)
+types (in type theory), as an example we’ll first look at the
+types related to the natural number, 1. Then we’ll analyze the
+types of a few propositions, namely 1 = 1 and 0 = 1. The take
+away message will be that propositions are special types that
+live in their own \sphinxstyleemphasis{type universe} and values of such types (if
+there are any) serve as \sphinxstyleemphasis{proofs} of such propositions.
+
+
+\subsection{Computational Types}
+\label{\detokenize{A_02_Predicate_Logic:computational-types}}
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{k+kd}{def} \PYG{n}{x} \PYG{o}{:=} \PYG{l+m+mi}{5}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} The type of 1 is nat}
+\PYG{k}{\PYGZsh{}check} \PYG{l+m+mi}{1}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Type type of nat is *Type*}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{nat}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} The type of all basic computational types is *Type*}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{bool}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{string}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{list} \PYG{n}{bool}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} A natural question: What\PYGZsq{}s the type of Type, etc?}
+\PYG{k}{\PYGZsh{}check} \PYG{k+kt}{Type}
+\PYG{k}{\PYGZsh{}check} \PYG{k+kt}{Type} \PYG{l+m+mi}{0}   \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Type is shorthand for Type 0}
+\PYG{k}{\PYGZsh{}check} \PYG{k+kt}{Type} \PYG{l+m+mi}{1}   \PYG{c+c1}{\PYGZhy{}\PYGZhy{} It\PYGZsq{}s type universes all the way up}
+\PYG{k}{\PYGZsh{}check} \PYG{k+kt}{Type} \PYG{l+m+mi}{2}   \PYG{c+c1}{\PYGZhy{}\PYGZhy{} etc.}
+
+\PYG{c}{/\PYGZhy{}}
+\PYG{c+cm}{W}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{h}\PYG{c+cm}{i}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{c}\PYG{c+cm}{h}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{\PYGZdq{}}\PYG{c+cm}{c}\PYG{c+cm}{o}\PYG{c+cm}{m}\PYG{c+cm}{p}\PYG{c+cm}{u}\PYG{c+cm}{t}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{\PYGZdq{}}
+\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{k}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{:}
+
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{.}\PYG{c+cm}{.}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{h}\PYG{c+cm}{i}\PYG{c+cm}{g}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{s}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{|}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{T}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{b}\PYG{c+cm}{j}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{a}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{T}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{0}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{b}\PYG{c+cm}{j}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{s}\PYG{c+cm}{)}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{|}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{T}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{0}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{s}\PYG{c+cm}{e}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{|}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{|}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{v}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{u}\PYG{c+cm}{e}
+
+\PYG{c+cm}{T}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{U}\PYG{c+cm}{n}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{s}
+\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}
+\PYG{c+cm}{\PYGZhy{}/}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} What universes do various objects inhabit}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{nat}             \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Type 0}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{list} \PYG{n}{nat}        \PYG{c+c1}{\PYGZhy{}\PYGZhy{} list of nats : Type 0}
+
+\PYG{k+kd}{def} \PYG{n}{list\PYGZus{}of\PYGZus{}types} \PYG{o}{:} \PYG{n}{list} \PYG{k+kt}{Type} \PYG{o}{:=} \PYG{o}{[}\PYG{n}{nat}\PYG{o}{,} \PYG{n}{bool}\PYG{o}{,} \PYG{n}{string}\PYG{o}{]}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{list} \PYG{o}{(}\PYG{k+kt}{Type} \PYG{l+m+mi}{0}\PYG{o}{)}   \PYG{c+c1}{\PYGZhy{}\PYGZhy{} list of Type 0s : Type 1}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{list} \PYG{o}{(}\PYG{k+kt}{Type} \PYG{l+m+mi}{1}\PYG{o}{)}   \PYG{c+c1}{\PYGZhy{}\PYGZhy{} list of Type 1s : Type 2}
 \end{sphinxVerbatim}
 
 
-\section{Quantifiers}
-\label{\detokenize{A_02_Predicate_Logic:quantifiers}}
+\subsection{Logical Types (Propositions)}
+\label{\detokenize{A_02_Predicate_Logic:logical-types-propositions}}
 \sphinxAtStartPar
-Among which are quantifiers over types giving rise to
-parametric polymorphism, where the type of element that
-is handled by an operation can vary with no changes in
-the definition of the operation itself.
+Now we’ll turn to the idea that propositions are types of
+a logical kind. In Lean and related proof assistants and in
+type theory more generally, propositions are represented as
+\sphinxstyleemphasis{types} that inhabit a special type universe: in Lean, Prop.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{k+kd}{def} \PYG{n}{y} \PYG{o}{:=} \PYG{l+m+mi}{5}
+\PYG{k}{\PYGZsh{}check} \PYG{l+m+mi}{1} \PYG{n+nb+bp}{=} \PYG{l+m+mi}{1}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} 1 = 1 is a proposition, thus of type Prop}
+\PYG{k}{\PYGZsh{}check} \PYG{n+nb+bp}{∃} \PYG{o}{(}\PYG{n}{a} \PYG{n}{b} \PYG{n}{c} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{)}\PYG{o}{,} \PYG{n}{a}\PYG{n+nb+bp}{*}\PYG{n}{a} \PYG{n+nb+bp}{+} \PYG{n}{b}\PYG{n+nb+bp}{*}\PYG{n}{b} \PYG{n+nb+bp}{=} \PYG{n}{c}\PYG{n+nb+bp}{*}\PYG{n}{c} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} also of type Prop}
+\end{sphinxVerbatim}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Example: Here\PYGZsq{}s a proof of 1 = 1}
+\PYG{k+kd}{def} \PYG{n}{proof\PYGZus{}of\PYGZus{}1\PYGZus{}eq\PYGZus{}1} \PYG{o}{:=} \PYG{n}{eq.refl} \PYG{l+m+mi}{1}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} What is its type?}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{proof\PYGZus{}of\PYGZus{}1\PYGZus{}eq\PYGZus{}1}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+In Lean, types are terms, too, and so they have types, as we
+have already seen. So what is the type of \sphinxstyleemphasis{1 = 1}. It’s Prop.
+As we’ve said, logical types (propositions) inhabit the type
+universe, Prop, also known as Sort 0.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k}{\PYGZsh{}check} \PYG{l+m+mi}{1} \PYG{n+nb+bp}{=} \PYG{l+m+mi}{1}
+\PYG{k}{\PYGZsh{}check} \PYG{k+kt}{Prop}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+Now we can clearly see the type hierarchy. Each proposition
+is a type, and all such types are in turn of type, Prop. We we
+have the following picture of the type hierarchy for the
+terms we’ve just constructed.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} type is 1 = 1}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{proof\PYGZus{}of\PYGZus{}1\PYGZus{}eq\PYGZus{}1}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} type is Prop}
+\PYG{k}{\PYGZsh{}check} \PYG{l+m+mi}{1} \PYG{n+nb+bp}{=} \PYG{l+m+mi}{1}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+You might finally ask, what is the type of Prop? It’s Type!
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k}{\PYGZsh{}check} \PYG{k+kt}{Prop}
+
+\PYG{c}{/\PYGZhy{}}
+\PYG{c+cm}{W}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{d}\PYG{c+cm}{r}\PYG{c+cm}{a}\PYG{c+cm}{w}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{i}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{o}\PYG{c+cm}{w}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{h}\PYG{c+cm}{o}\PYG{c+cm}{w}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{k}\PYG{c+cm}{.}
+
+\PYG{c+cm}{P}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{p}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{S}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{0}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZgt{}}\PYG{c+cm}{ }\PYG{c+cm}{T}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{S}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{T}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{0}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZgt{}}\PYG{c+cm}{ }\PYG{c+cm}{T}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{S}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{2}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZgt{}}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{c}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{|}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{|}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{|}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{|}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{|}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{|}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{ }\PYG{c+cm}{=}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{T}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{|}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{|}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{|}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{|}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{|}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{|}
+\PYG{c+cm}{e}\PYG{c+cm}{q}\PYG{c+cm}{.}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{f}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{[}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{o}\PYG{c+cm}{o}\PYG{c+cm}{l}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{r}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{]}
+\PYG{c+cm}{\PYGZhy{}/}
+\end{sphinxVerbatim}
+
+
+\subsection{Type Universe Levels}
+\label{\detokenize{A_02_Predicate_Logic:type-universe-levels}}
+\sphinxAtStartPar
+In the top row we have a hierarchy of type universes, starting
+with Sort 0 and extending up. Prop is the common name in Lean for
+Sort 0, and Type is the common name for Sort 1. In the second row
+are examples of types that inhabit each of the universes. \sphinxstyleemphasis{1 = 1}
+for example is a logical type (a proposition) in Prop, while nat
+is a computational type in Type. Finally, \sphinxstyleemphasis{list Type} is the type
+of lists of terms each of type Type, i.e., lists of computational
+types. The bottom row gives examples of values of each of the types
+above: \sphinxstyleemphasis{eq.refl 1} is a proof/value of (type) \sphinxstyleemphasis{1 = 1}; 1 is a value
+of type \sphinxstyleemphasis{nat}; and \sphinxstyleemphasis{{[}nat, bool, string{]}}, because it contains as
+elements values of type Type 0 is itself a value of type Type 1.
+
+\sphinxAtStartPar
+As a final comment, Lean allows one to generalize over these
+type universes. To do so you declare one or more \sphinxstyleemphasis{universe
+variable} which you can then use in decaring types. Lean can
+also infer universe levels.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} declare two possible different type Universe levels}
+\PYG{k+kd}{universes} \PYG{n}{u} \PYG{n}{v}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}}
+\PYG{k}{\PYGZsh{}check} \PYG{n+nb+bp}{@}\PYG{n}{prod.mk}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Here\PYGZsq{}s a function that takes two types in arbitrary universes}
+\PYG{k+kd}{def} \PYG{n}{mk\PYGZus{}pair} \PYG{o}{(}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Sort} \PYG{n}{u}\PYG{o}{)} \PYG{o}{(}\PYG{n}{β} \PYG{o}{:} \PYG{k+kt}{Sort} \PYG{n}{v}\PYG{o}{)} \PYG{o}{:=} \PYG{o}{(}\PYG{n}{α}\PYG{o}{,} \PYG{n}{β}\PYG{o}{)}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Here are examples of type pairs we can form.}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{mk\PYGZus{}pair} \PYG{n}{nat} \PYG{n}{bool}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{mk\PYGZus{}pair} \PYG{o}{(}\PYG{l+m+mi}{1}\PYG{n+nb+bp}{=}\PYG{l+m+mi}{1}\PYG{o}{)} \PYG{o}{(}\PYG{l+m+mi}{2}\PYG{n+nb+bp}{=}\PYG{l+m+mi}{1}\PYG{o}{)}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{mk\PYGZus{}pair} \PYG{o}{(}\PYG{l+m+mi}{1}\PYG{n+nb+bp}{=}\PYG{l+m+mi}{1}\PYG{o}{)} \PYG{o}{(}\PYG{n}{list} \PYG{k+kt}{Type}\PYG{o}{)}
+
+\PYG{c}{/\PYGZhy{}}
+\PYG{c+cm}{A}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{x}\PYG{c+cm}{a}\PYG{c+cm}{m}\PYG{c+cm}{p}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{u}\PYG{c+cm}{g}\PYG{c+cm}{h}\PYG{c+cm}{l}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{o}\PYG{c+cm}{l}\PYG{c+cm}{y}\PYG{c+cm}{m}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{p}\PYG{c+cm}{h}\PYG{c+cm}{i}\PYG{c+cm}{c}\PYG{c+cm}{ }\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{s}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}
+\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{G}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{g}\PYG{c+cm}{u}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{a}\PYG{c+cm}{k}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{a}
+\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{v}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{u}\PYG{c+cm}{e}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{*}\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{v}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{u}\PYG{c+cm}{s}\PYG{c+cm}{l}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{g}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{*}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{n}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{.}
+\PYG{c+cm}{\PYGZhy{}/}
+
+\PYG{k+kd}{def} \PYG{n}{my\PYGZus{}id} \PYG{o}{(}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Sort} \PYG{n}{u}\PYG{o}{)} \PYG{o}{(}\PYG{n}{a} \PYG{o}{:} \PYG{n}{α}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{a}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} applications to objects of various types}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{my\PYGZus{}id} \PYG{k+kt}{Prop} \PYG{o}{(}\PYG{l+m+mi}{1}\PYG{n+nb+bp}{=}\PYG{l+m+mi}{1}\PYG{o}{)}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{my\PYGZus{}id} \PYG{n}{nat} \PYG{l+m+mi}{1}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{my\PYGZus{}id} \PYG{o}{(}\PYG{n}{list} \PYG{k+kt}{Type}\PYG{o}{)} \PYG{o}{[}\PYG{n}{nat}\PYG{o}{,}\PYG{n}{nat}\PYG{o}{,}\PYG{n}{bool}\PYG{o}{]}
+\end{sphinxVerbatim}
+
+
+\subsection{Implicit Arguments}
+\label{\detokenize{A_02_Predicate_Logic:implicit-arguments}}
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} With \PYGZob{}\PYGZcb{} we tell Lean that α should be inferred automatically}
+\PYG{k+kd}{def} \PYG{n}{my\PYGZus{}id\PYGZsq{}} \PYG{o}{\PYGZob{}} \PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Sort} \PYG{n}{u} \PYG{o}{\PYGZcb{}} \PYG{o}{(}\PYG{n}{a} \PYG{o}{:} \PYG{n}{α}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{a}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Now we don\PYGZsq{}t provide the type arguments explicitly}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{my\PYGZus{}id\PYGZsq{}} \PYG{o}{(}\PYG{l+m+mi}{1}\PYG{n+nb+bp}{=}\PYG{l+m+mi}{1}\PYG{o}{)}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{my\PYGZus{}id\PYGZsq{}} \PYG{l+m+mi}{1}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{my\PYGZus{}id\PYGZsq{}} \PYG{o}{[}\PYG{n}{nat}\PYG{o}{,}\PYG{n}{nat}\PYG{o}{,}\PYG{n}{bool}\PYG{o}{]}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} If necessary through, we can turn off implicit inference using @}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n+nb+bp}{@}\PYG{n}{my\PYGZus{}id\PYGZsq{}} \PYG{k+kt}{Prop} \PYG{o}{(}\PYG{l+m+mi}{1}\PYG{n+nb+bp}{=}\PYG{l+m+mi}{1}\PYG{o}{)}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n+nb+bp}{@}\PYG{n}{my\PYGZus{}id\PYGZsq{}} \PYG{n}{nat} \PYG{l+m+mi}{1}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n+nb+bp}{@}\PYG{n}{my\PYGZus{}id\PYGZsq{}} \PYG{o}{(}\PYG{n}{list} \PYG{k+kt}{Type}\PYG{o}{)} \PYG{o}{[}\PYG{n}{nat}\PYG{o}{,}\PYG{n}{nat}\PYG{o}{,}\PYG{n}{bool}\PYG{o}{]}
+\end{sphinxVerbatim}
+
+
+\section{From Truth to Proof}
+\label{\detokenize{A_02_Predicate_Logic:from-truth-to-proof}}
+\sphinxAtStartPar
+In both propositional and first order predicate logic,
+inference rules are defined in terms of \sphinxstyleemphasis{truth judgments}.
+For example, in our propositional logic, we defined the
+\sphinxstyleemphasis{and elimination left} rule as (⟦ P ∧ Q ⟧ i == tt) →
+⟦ P ⟧ i = tt. You can read it as saying, if we’ve judged
+that P ∧ Q is true under some interpretation, i, then it
+must be that P is also true under that interpretation.
+
+\sphinxAtStartPar
+In the logic of Lean, by contrast, inference rules are
+defined in terms of \sphinxstyleemphasis{proof} judgments. In Lean, if \sphinxstyleemphasis{P}
+is a proposition, then to express the idea that p is a
+proof of P, we write (p : P). We can also read this proof
+judgement as a type judgment: that p is a value of type P.
+The and elimination left rule thus changes to the following:
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{def} \PYG{n}{and\PYGZus{}elim\PYGZus{}left\PYGZus{}rule\PYGZsq{}} \PYG{o}{:=} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{P} \PYG{n}{Q} \PYG{o}{:} \PYG{k+kt}{Prop}\PYG{o}{)}\PYG{o}{,} \PYG{n}{P} \PYG{n+nb+bp}{∧} \PYG{n}{Q} \PYG{n+nb+bp}{→} \PYG{n}{P}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+You can read the proposition as saying the following:
+if P and Q are arbitrary propositions, then if you are
+given a \sphinxstyleemphasis{proof} (value) of (type) P ∧ Q, then you can
+derive a proof (value) of (type) P.
+
+\sphinxAtStartPar
+Written in the typical inference rule styles you will
+find in the literature, we’d see something like this:
+\sphinxstyleemphasis{(P Q : Prop) (p : P) (q : P) ⊢ ⟨p,q⟩ : P ∧ Q}.
+
+\sphinxAtStartPar
+In a textbook, it’d often be assumed or implicit that
+\sphinxstyleemphasis{P} and \sphinxstyleemphasis{Q} are propositions, in which case this rule
+would be shortened to \sphinxstyleemphasis{P, Q ⊢ P ∧ Q}.
+
+\sphinxAtStartPar
+Using Lean’s \sphinxstyleemphasis{variables} declaration, we can achieve
+the same clarity with complete formality.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Let P, Q, and R be arbitrary propositions}
+\PYG{k+kd}{variables} \PYG{o}{(}\PYG{n}{P} \PYG{n}{Q} \PYG{n}{R} \PYG{o}{:} \PYG{k+kt}{Prop}\PYG{o}{)}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Now we can write the rule without the forall}
+\PYG{k+kd}{def} \PYG{n}{and\PYGZus{}elim\PYGZus{}left\PYGZus{}rule} \PYG{o}{:=} \PYG{n}{P} \PYG{n+nb+bp}{∧} \PYG{n}{Q} \PYG{n+nb+bp}{→} \PYG{n}{P}
+
+\PYG{c}{/\PYGZhy{}}
+\PYG{c+cm}{L}\PYG{c+cm}{e}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{d}\PYG{c+cm}{o}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{n}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{w}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{s}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{x}\PYG{c+cm}{a}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{l}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}
+\PYG{c+cm}{s}\PYG{c+cm}{a}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{T}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{\PYGZus{}}\PYG{c+cm}{e}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{m}\PYG{c+cm}{\PYGZus{}}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{f}\PYG{c+cm}{t}\PYG{c+cm}{\PYGZus{}}\PYG{c+cm}{r}\PYG{c+cm}{u}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{o}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{s}\PYG{c+cm}{e}
+\PYG{c+cm}{j}\PYG{c+cm}{u}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{P}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{p}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{u}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{p}\PYG{c+cm}{o}\PYG{c+cm}{s}\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{H}\PYG{c+cm}{o}\PYG{c+cm}{w}\PYG{c+cm}{e}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{,}
+\PYG{c+cm}{b}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{u}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{e}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{l}\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{*}\PYG{c+cm}{P}\PYG{c+cm}{*}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{*}\PYG{c+cm}{Q}\PYG{c+cm}{*}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{g}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{a}\PYG{c+cm}{l}
+\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{v}\PYG{c+cm}{i}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{o}\PYG{c+cm}{d}
+\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{g}\PYG{c+cm}{u}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{s}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{l}\PYG{c+cm}{o}\PYG{c+cm}{w}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{\PYGZus{}}\PYG{c+cm}{e}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{m}\PYG{c+cm}{\PYGZus{}}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{f}\PYG{c+cm}{t}\PYG{c+cm}{\PYGZus{}}\PYG{c+cm}{r}\PYG{c+cm}{u}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{e}
+\PYG{c+cm}{*}\PYG{c+cm}{a}\PYG{c+cm}{p}\PYG{c+cm}{p}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{*}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{w}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{p}\PYG{c+cm}{o}\PYG{c+cm}{s}\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{g}\PYG{c+cm}{u}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{s}
+\PYG{c+cm}{(}\PYG{c+cm}{s}\PYG{c+cm}{a}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{P}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{Q}\PYG{c+cm}{)}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{y}\PYG{c+cm}{i}\PYG{c+cm}{e}\PYG{c+cm}{l}\PYG{c+cm}{d}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{i}\PYG{c+cm}{f}\PYG{c+cm}{i}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{p}\PYG{c+cm}{o}\PYG{c+cm}{s}\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{s}
+\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{u}\PYG{c+cm}{l}\PYG{c+cm}{t}\PYG{c+cm}{.}
+\PYG{c+cm}{\PYGZhy{}/}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{and\PYGZus{}elim\PYGZus{}left\PYGZus{}rule\PYGZsq{}}   \PYG{c+c1}{\PYGZhy{}\PYGZhy{} just a proposition}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{and\PYGZus{}elim\PYGZus{}left\PYGZus{}rule}    \PYG{c+c1}{\PYGZhy{}\PYGZhy{} function to proposition}
+
+\PYG{k}{\PYGZsh{}check} \PYG{n}{and\PYGZus{}elim\PYGZus{}left\PYGZus{}rule}         \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Prop → Prop → Prop}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{and\PYGZus{}elim\PYGZus{}left\PYGZus{}rule}        \PYG{c+c1}{\PYGZhy{}\PYGZhy{} A proposition}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{and\PYGZus{}elim\PYGZus{}left\PYGZus{}rule} \PYG{n}{P} \PYG{n}{Q}    \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Namely, P ∧ Q → P}
+
+\PYG{k}{\PYGZsh{}check} \PYG{n}{and\PYGZus{}elim\PYGZus{}left\PYGZus{}rule\PYGZsq{}}       \PYG{c+c1}{\PYGZhy{}\PYGZhy{} just Prop}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{and\PYGZus{}elim\PYGZus{}left\PYGZus{}rule\PYGZsq{}} \PYG{n}{P} \PYG{n}{Q}   \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Can\PYGZsq{}t be applied}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} and\PYGZus{}elim\PYGZus{}left\PYGZus{}rule applies to *any* propositions}
+\PYG{k+kd}{variables} \PYG{o}{(}\PYG{n}{A} \PYG{n}{B} \PYG{o}{:} \PYG{k+kt}{Prop}\PYG{o}{)}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{and\PYGZus{}elim\PYGZus{}left\PYGZus{}rule} \PYG{n}{A} \PYG{n}{B}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{and\PYGZus{}elim\PYGZus{}left\PYGZus{}rule} \PYG{n}{A} \PYG{n}{B}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+We can now assert the validity of this rule, and prove
+it. Of course the proof in this case will be nothing
+but the application of Lean’s version, and.elim\_left.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{theorem} \PYG{n}{and\PYGZus{}elim\PYGZus{}left\PYGZus{}valid} \PYG{o}{:} \PYG{n}{and\PYGZus{}elim\PYGZus{}left\PYGZus{}rule} \PYG{n}{P} \PYG{n}{Q} \PYG{o}{:=}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} assume h is a proof of P → Q, show P}
+\PYG{k+kd}{begin}
+\PYG{n}{unfold} \PYG{n}{and\PYGZus{}elim\PYGZus{}left\PYGZus{}rule}\PYG{o}{,}
+\PYG{n}{intro} \PYG{n}{h}\PYG{o}{,}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} apply and.elim\PYGZus{}left h}
+\PYG{n}{exact} \PYG{n}{h.left}\PYG{o}{,}
+\PYG{k+kd}{end}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} The theorem now applies generally to any propositions}
+
+\PYG{k+kd}{theorem} \PYG{n}{and\PYGZus{}elim\PYGZus{}left\PYGZus{}valid\PYGZus{}2} \PYG{o}{:} \PYG{n}{and\PYGZus{}elim\PYGZus{}left\PYGZus{}rule} \PYG{n}{A} \PYG{n}{B} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{n}{apply} \PYG{n}{and\PYGZus{}elim\PYGZus{}left\PYGZus{}valid}\PYG{o}{,}
+\PYG{k+kd}{end}
+\end{sphinxVerbatim}
+
+
+\subsection{Practice Example}
+\label{\detokenize{A_02_Predicate_Logic:practice-example}}
+\sphinxAtStartPar
+Exercise: Define two propositions (types in Prop) with
+made up names, each having two proof constructors also
+with made up names. Recall that we define types with an
+\sphinxstyleemphasis{inductive} definition. Here’s the exact definition of
+the bool type, for example.
+
+\sphinxAtStartPar
+inductive bool : Type
+| tt
+| ff
+
+\sphinxAtStartPar
+The big difference now is that we want to represent
+logical propositions, so we will define types not in
+the universe, Type, but in Prop, the universe that all
+logical propositions inhabit. Now it’s easy as the next
+example shows. We define two propositions, each with
+two “proofs,” and show that we can construct a proof
+of the the conjunction of the two propositions.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} A proposition called KevinIsFromCville with two proofs}
+\PYG{k+kd}{inductive} \PYG{n}{KevinIsFromCville} \PYG{o}{:} \PYG{k+kt}{Prop}
+\PYG{n+nb+bp}{|} \PYG{n}{DL}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} driver\PYGZsq{}s license}
+\PYG{n+nb+bp}{|} \PYG{n}{EB}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} electric bill}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Another similar proposition}
+\PYG{k+kd}{inductive} \PYG{n}{NickIsFromNewHampshire} \PYG{o}{:} \PYG{k+kt}{Prop}
+\PYG{n+nb+bp}{|} \PYG{n}{DL}      \PYG{c+c1}{\PYGZhy{}\PYGZhy{} driver\PYGZsq{}s license}
+\PYG{n+nb+bp}{|} \PYG{n}{EB}      \PYG{c+c1}{\PYGZhy{}\PYGZhy{} electric bill}
+\PYG{n+nb+bp}{|} \PYG{n}{LFODLP}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} secret code}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Because we can prove each one we can prove the conjunction}
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{n}{KevinIsFromCville} \PYG{n+nb+bp}{∧}  \PYG{n}{NickIsFromNewHampshire} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{n}{apply} \PYG{n}{and.intro} \PYG{n}{\PYGZus{}} \PYG{n}{\PYGZus{}}\PYG{o}{,}
+\PYG{n}{exact} \PYG{n}{KevinIsFromCville.EB}\PYG{o}{,}
+\PYG{n}{exact} \PYG{n}{NickIsFromNewHampshire.LFODLP}\PYG{o}{,}
+\PYG{k+kd}{end}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Similarly, from a proof of a conjunctions we can prove each}
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{n}{KevinIsFromCville} \PYG{n+nb+bp}{∧}  \PYG{n}{NickIsFromNewHampshire} \PYG{n+nb+bp}{→} \PYG{n}{KevinIsFromCville} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{h}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{h}\PYG{o}{,}
+\PYG{n}{assumption}\PYG{o}{,}
+\PYG{k+kd}{end}
 \end{sphinxVerbatim}
 
 
 \section{Inference Rules}
 \label{\detokenize{A_02_Predicate_Logic:inference-rules}}
+\sphinxAtStartPar
+Next we’ll see that most of the inference rules
+of propositional logic have analogues in constructive
+predicate logic, provided to us by \sphinxstyleemphasis{mathlib}, Lean’s
+library of mathematical definitions.
+
+\sphinxAtStartPar
+Your next major task is to know and understand these
+inference rules. For each connective, learn its related
+introduction (proof constructing) and elimination (proof
+consuming) rules. Grasp the sense of each rule clerly.
+And learn how to to compose them, e.g., in proof scripts,
+to produce proofs of more complex propositions.
+
+\sphinxAtStartPar
+This new inference rule is just an “upgraded”
+version of the and\sphinxhyphen{}elimination\sphinxhyphen{}left inference rule from
+from the last chapter. The major task in the rest of this
+chapter is to “lift” your established understanding of all
+of the inference rules of propositional logic to the level
+of higher\sphinxhyphen{}order constructive logic. Along the way we’ll see
+a few places where the “classical” rules don’t work.
+We now go through each rule from propositional logic and
+give its analog in the predicate logic of the Lean prover.
+
+
+\subsection{true (⊤)}
+\label{\detokenize{A_02_Predicate_Logic:true}}
+\sphinxAtStartPar
+In propositional logic, we had the rule that ⊤, always
+evaluates to true (tt in Lean). The definition said this:
+\sphinxstyleemphasis{true\_intro\_rule := ⟦ ⊤ ⟧ i = tt}.
+
+\sphinxAtStartPar
+In Lean, by contrast, there is a proposition, \sphinxstyleemphasis{true}, that
+has proof, called \sphinxstyleemphasis{intro}. We write \sphinxstyleemphasis{true.intro} to refer
+to it in its namespace.
+
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{k+kd}{def} \PYG{n}{z} \PYG{o}{:=} \PYG{l+m+mi}{5}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{true}                   \PYG{c+c1}{\PYGZhy{}\PYGZhy{} a proposition}
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{n}{true} \PYG{o}{:=} \PYG{n}{true.intro}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} a proof of it}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+Now we’ll see exactly how the proposition, true, with
+true.intro as a proof, how it is all defined. It’s simple.
+Propositions are types, so true is a type, but one that
+inhabits Prop; and it has one constant constructor and
+that’s the one and only proof, \sphinxstyleemphasis{intro}.That’s it!
+
+\sphinxAtStartPar
+inductive true : Prop
+| intro : true
+
+\sphinxAtStartPar
+Sadly, a proof of true is pretty useless. A value of this type
+doesn’t even provide one bit of information, as a Boolean value
+would. There’s no interesting elimination rule for true.
+false
+—–
+
+\sphinxAtStartPar
+In propositional logic, we had the propositional expression
+(prop\_expr), ⊥, for \sphinxstyleemphasis{false}. In Lean, by contrast, \sphinxstyleemphasis{false} is
+a \sphinxstyleemphasis{proposition}, which is to say, a type, called \sphinxstyleemphasis{false}.
+Because we want this proposition never to be true, we define
+it as a type with no values/proofs at all–as an uninhabited
+type.
+
+\sphinxAtStartPar
+inductive false : Prop
+
+\sphinxAtStartPar
+There is no way ever to produce a proof of \sphinxstyleemphasis{false} because
+the type has no value constructors. There is no introduction
+rule false.
+
+\sphinxAtStartPar
+In propositional logic, the false elimination rule said that
+if an expression evaluates to ff, then it follows (implication)
+that any other expression evaluates to tt. The rule in Lean is
+called false.elim. It says that from a proof of false, a proof
+(or value) of \sphinxstyleemphasis{any} type in any type universe can be produced:
+not only proofs of other propositions but values of any types.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k}{\PYGZsh{}check} \PYG{n}{false}
+\PYG{k}{\PYGZsh{}check} \PYG{n+nb+bp}{@}\PYG{n}{false.elim}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} false.elim : Π \PYGZob{}C : Sort u\PYGZus{}1\PYGZcb{}, false → C}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} explicit application of Lean\PYGZsq{}s false.elim rule}
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{n}{false} \PYG{n+nb+bp}{→} \PYG{l+m+mi}{0} \PYG{n+nb+bp}{=} \PYG{l+m+mi}{1} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{f}\PYG{o}{,}
+\PYG{n}{exact} \PYG{n}{false.elim} \PYG{n}{f}\PYG{o}{,}       \PYG{c+c1}{\PYGZhy{}\PYGZhy{} So what is C (\PYGZus{})? It\PYGZsq{}s the goal, 0 = 1.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} exact @false.elim \PYGZus{} f,    \PYGZhy{}\PYGZhy{} Note that C is an implicit argument!}
+\PYG{k+kd}{end}
+
+\PYG{c}{/\PYGZhy{}}
+\PYG{c+cm}{W}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{s}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{d}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{y}\PYG{c+cm}{s}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{W}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{i}\PYG{c+cm}{l}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{g}\PYG{c+cm}{e}\PYG{c+cm}{t}
+\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{a}\PYG{c+cm}{c}\PYG{c+cm}{h}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{o}\PYG{c+cm}{s}\PYG{c+cm}{s}\PYG{c+cm}{i}\PYG{c+cm}{b}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{m}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{A}\PYG{c+cm}{s}
+\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{t}
+\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{l}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{o}\PYG{c+cm}{m}\PYG{c+cm}{p}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{.}
+\PYG{c+cm}{\PYGZhy{}/}
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{n}{false} \PYG{n+nb+bp}{→} \PYG{l+m+mi}{0} \PYG{n+nb+bp}{=} \PYG{l+m+mi}{1} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{f}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{f}\PYG{o}{,}
+\PYG{k+kd}{end}
+
+\PYG{c}{/\PYGZhy{}}
+\PYG{c+cm}{F}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{m}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{k}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{\PYGZdq{}}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{\PYGZdq{}}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{y}
+\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{W}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{g}\PYG{c+cm}{u}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{s}
+\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{P}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{p}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{d}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{m}\PYG{c+cm}{p}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{.}
+\PYG{c+cm}{\PYGZhy{}/}
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{n}{false} \PYG{n+nb+bp}{→} \PYG{n}{nat} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{f}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{f}\PYG{o}{,}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} contradiction,  \PYGZhy{}\PYGZhy{} this tactic works here, too}
+\PYG{k+kd}{end}
+\end{sphinxVerbatim}
+
+
+\subsection{and ∧}
+\label{\detokenize{A_02_Predicate_Logic:and}}
+\sphinxAtStartPar
+From propositional logic we had three inference rules defining
+the meaning of \sphinxstyleemphasis{and}, one introduction and two elimination rules.
+These rules re\sphinxhyphen{}appear in both first\sphinxhyphen{}order predicate logic and in
+the higher\sphinxhyphen{}order logic of Lean, but now in a much richer logic.
+In this chapter we’ll see how this is done, using \sphinxstyleemphasis{and} as an
+easy example.
+\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+and\_intro\_rule := ⟦ X ⟧ i = tt → ⟦ Y ⟧ i = tt → ⟦(X ∧ Y)⟧ i = tt
+
+\item {} 
+\sphinxAtStartPar
+and\_elim\_left\_rule := (⟦(X ∧ Y)⟧ i = tt) → (⟦X⟧ i = tt)
+
+\item {} 
+\sphinxAtStartPar
+and\_elim\_right\_rule := (⟦(X ∧ Y)⟧ i = tt) → (⟦Y⟧ i = tt)
+
+\end{itemize}
+
+
+\subsubsection{Proposition Builders}
+\label{\detokenize{A_02_Predicate_Logic:proposition-builders}}
+\sphinxAtStartPar
+A key idea in Lean’s definitions is that \sphinxstyleemphasis{and} is a \sphinxstyleemphasis{polymorphic}
+data type. That is to say, its akin to a function takes any two
+propositions (types in Prop) as arguments and yields a new Type.
+This new type encodes the proposition that is the conjunction of
+the given proposition arguments. Let’s see how \sphinxstyleemphasis{and} is defined.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{structure} \PYG{n}{and} \PYG{o}{(}\PYG{n}{A} \PYG{n}{B} \PYG{o}{:} \PYG{k+kt}{Prop}\PYG{o}{)} \PYG{o}{:} \PYG{k+kt}{Prop} \PYG{o}{:=}
+\PYG{n}{intro} \PYG{o}{:}\PYG{o}{:} \PYG{o}{(}\PYG{n}{left} \PYG{o}{:} \PYG{n}{A}\PYG{o}{)} \PYG{o}{(}\PYG{n}{right} \PYG{o}{:} \PYG{n}{B}\PYG{o}{)}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+The \sphinxstyleemphasis{structure} keyword is shorthand for \sphinxstyleemphasis{inductive} and can be
+used (only) when a type has just one constructor. The name of the
+constructor here is \sphinxstyleemphasis{intro}. It takes two arguments, \sphinxstyleemphasis{left}, a
+proof (value) of (type) \sphinxstyleemphasis{A}, and \sphinxstyleemphasis{right}, a proof of \sphinxstyleemphasis{B}.
+
+\sphinxAtStartPar
+A benefit of using the \sphinxstyleemphasis{structure} keyword is that Lean generates
+field access functions with the given field names. For example, if
+\sphinxstyleemphasis{(h : A ∧ B)}, then \sphinxstyleemphasis{(h.left : A)} and \sphinxstyleemphasis{(h.right : B)}.
+
+
+\subsubsection{Introduction: Proof Constructors}
+\label{\detokenize{A_02_Predicate_Logic:introduction-proof-constructors}}
+\sphinxAtStartPar
+The second key idea is that the constructors of a logical type
+define what terms count as proofs, i.e., values of the type.
+
+\sphinxAtStartPar
+In the case of a conjunction, there is just one constructor,
+namely \sphinxstyleemphasis{intro,} takes two proof values as arguments and yielding
+a proof of the conjunction of the propositions that they prove.
+
+\sphinxAtStartPar
+Note: It’s important to distinguish clearly between \sphinxstyleemphasis{and} and
+\sphinxstyleemphasis{intro} in your mind. The \sphinxstyleemphasis{and} connective (∧) is a proposition
+builder, a type builder. It takes two \sphinxstyleemphasis{propositions} (types),
+\sphinxstyleemphasis{(A B : Prop)} as its arguments and yields a new proposition
+(type) as a result, namely \sphinxstyleemphasis{(and A B),} also written as \sphinxstyleemphasis{A ∧ B}.
+
+\sphinxAtStartPar
+On the other hand, \sphinxstyleemphasis{and.intro} is a \sphinxstyleemphasis{proof/value constructor.}
+It takes two \sphinxstyleemphasis{proof values, (a : A)} and \sphinxstyleemphasis{(b : B)} as arguments,
+and yields a new proof/value/term, \sphinxstyleemphasis{⟨ a, b ⟩ : A ∧ B}. There is
+no other way to construct a proof of a conjunction, \sphinxstyleemphasis{A ∧ B,} than
+to use this constructor.
+
+
+\subsubsection{Elimination: Case Analysis}
+\label{\detokenize{A_02_Predicate_Logic:elimination-case-analysis}}
+\sphinxAtStartPar
+Now that we’ve seen how to (1) construct a conjunction from two
+given propositions, and (2) construct a proof of one, we turn to
+the question, what can we \sphinxstyleemphasis{do} with such a proof if we have one.
+
+\sphinxAtStartPar
+The answer, in general, is that we can analyze how it could have
+been built, with an aim to show that a given proof goal follows
+in every case. If we can show that, then we’ve proved it always
+holds.
+
+\sphinxAtStartPar
+An already familiar example is our earlier case analysis of values
+of type bool. When we do case analysis on an arbitrary bool value,
+we have to consider the two ways (constructors) that a bool can be
+constructed: using the \sphinxstyleemphasis{tt} constructor or the \sphinxstyleemphasis{ff} constructor. A
+proof by case analysis on a bool, b, thus requires two sub\sphinxhyphen{}proofs:
+one that shows a given goal follows if \sphinxstyleemphasis{b} is \sphinxstyleemphasis{tt} and another that
+shows it follows if \sphinxstyleemphasis{b} is \sphinxstyleemphasis{ff}.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{example} \PYG{o}{(}\PYG{n}{b} \PYG{o}{:} \PYG{n}{bool}\PYG{o}{)} \PYG{o}{:}  \PYG{n}{bnot} \PYG{o}{(}\PYG{n}{bnot} \PYG{n}{b}\PYG{o}{)} \PYG{n+nb+bp}{=} \PYG{n}{b} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{n}{cases} \PYG{n}{b}\PYG{o}{,}              \PYG{c+c1}{\PYGZhy{}\PYGZhy{} NB: one case per constructor}
+\PYG{n}{repeat} \PYG{o}{\PYGZob{}} \PYG{n}{apply} \PYG{n}{rfl} \PYG{o}{\PYGZcb{}}\PYG{o}{,} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} prove goal *in each case*}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} QED.               \PYGZhy{}\PYGZhy{} thus proving it in *all* cases}
+\PYG{k+kd}{end}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+Turning to a proof of a conjunction, \sphinxstyleemphasis{A ∧ B}, only two
+small details change. First, there \sphinxstyleemphasis{and} has just one
+constructor. So when we do case analysis, we’ll get only
+one case to consider. Second, the constructor now takes
+two arguments, rather than zero as with tt and ff. So,
+in that one case, we’ll be entitled to assume that the
+two proof arguments must have been given. These will be
+the \sphinxstyleemphasis{left} and \sphinxstyleemphasis{right} proofs of \sphinxstyleemphasis{A} and \sphinxstyleemphasis{B} separately.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Case analysis on *proof* values}
+\PYG{k+kd}{example} \PYG{o}{(}\PYG{n}{X} \PYG{n}{Y}\PYG{o}{:} \PYG{k+kt}{Prop}\PYG{o}{)} \PYG{o}{:} \PYG{n}{X} \PYG{n+nb+bp}{∧} \PYG{n}{Y} \PYG{n+nb+bp}{→} \PYG{n}{X} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{h}\PYG{o}{,}           \PYG{c+c1}{\PYGZhy{}\PYGZhy{} a proof we can *use*}
+\PYG{n}{cases} \PYG{n}{h} \PYG{k}{with} \PYG{n}{x} \PYG{n}{y}\PYG{o}{,}   \PYG{c+c1}{\PYGZhy{}\PYGZhy{} analyze each possible case}
+\PYG{n}{exact} \PYG{n}{x}\PYG{o}{,}            \PYG{c+c1}{\PYGZhy{}\PYGZhy{} also known as destructuring}
+\PYG{k+kd}{end}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} We can even use \PYGZdq{}case analysis\PYGZdq{} programming notation!}
+\PYG{k+kd}{example} \PYG{o}{(}\PYG{n}{X} \PYG{n}{Y}\PYG{o}{:} \PYG{k+kt}{Prop}\PYG{o}{)} \PYG{o}{:} \PYG{n}{X} \PYG{n+nb+bp}{∧} \PYG{n}{Y} \PYG{n+nb+bp}{→} \PYG{n}{X}
+\PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{and.intro} \PYG{n}{a} \PYG{n}{b}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{a}
+\end{sphinxVerbatim}
+
+
+\subsection{or ∧}
+\label{\detokenize{A_02_Predicate_Logic:or}}\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+def or\_intro\_left\_rule := (⟦X⟧ i = tt) → (⟦(X ∨ Y)⟧ i = tt)
+
+\item {} 
+\sphinxAtStartPar
+def or\_intro\_right\_rule := (⟦Y⟧ i = tt) → (⟦(X ∨ Y)⟧ i = tt)
+
+\item {} 
+\sphinxAtStartPar
+def or\_elim\_rule :=   (⟦(X ∨ Y)⟧ i = tt) → (⟦(X => Z)⟧ i = tt) → (⟦(Y => Z)⟧ i = tt) → (⟦(Z)⟧ i = tt)
+
+\end{itemize}
+
+\sphinxAtStartPar
+Just as with ∧, the ∨ connective in Lean is represented as
+a logical type, polymorphic in two propositional arguments.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{inductive} \PYG{n}{or} \PYG{o}{(}\PYG{n}{A} \PYG{n}{B} \PYG{o}{:} \PYG{k+kt}{Prop}\PYG{o}{)} \PYG{o}{:} \PYG{k+kt}{Prop}
+\PYG{n+nb+bp}{|} \PYG{n}{inl} \PYG{o}{(}\PYG{n}{h} \PYG{o}{:} \PYG{n}{A}\PYG{o}{)} \PYG{o}{:} \PYG{n}{or}
+\PYG{n+nb+bp}{|} \PYG{n}{inr} \PYG{o}{(}\PYG{n}{h} \PYG{o}{:} \PYG{n}{B}\PYG{o}{)} \PYG{o}{:} \PYG{n}{or}
+\PYG{k+kd}{end} \PYG{n}{hidden}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+But whereas the intended meaning of ∧ is that each of two
+given propositions has a proof, the intended meaning of ∨
+is that \sphinxstyleemphasis{at least one of} the propositions has a proof. This
+difference shows up in how proofs of disjunctions are created
+and used.
+
+
+\subsubsection{Introduction Rules}
+\label{\detokenize{A_02_Predicate_Logic:introduction-rules}}
+\sphinxAtStartPar
+We now have two constructors. The first, \sphinxstyleemphasis{or.inl}, constructs
+a proof of \sphinxstyleemphasis{A ∨ B} from a proof, (a : A). The second, \sphinxstyleemphasis{or.inr},
+constructs a proof of \sphinxstyleemphasis{A ∨ B} from a proof of \sphinxstyleemphasis{B}.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Example using a lambda expression. Be sure you understand it.}
+\PYG{k+kd}{example} \PYG{o}{(}\PYG{n}{A} \PYG{n}{B} \PYG{o}{:} \PYG{k+kt}{Prop}\PYG{o}{)} \PYG{o}{:} \PYG{n}{A} \PYG{n+nb+bp}{→} \PYG{n}{A} \PYG{n+nb+bp}{∨} \PYG{n}{B} \PYG{o}{:=} \PYG{k}{fun} \PYG{o}{(}\PYG{n}{a} \PYG{o}{:} \PYG{n}{A}\PYG{o}{)}\PYG{o}{,} \PYG{n}{or.inl} \PYG{n}{a}
+\PYG{c}{/\PYGZhy{}}
+\PYG{c+cm}{O}\PYG{c+cm}{k}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{y}\PYG{c+cm}{o}\PYG{c+cm}{u}\PYG{c+cm}{ }\PYG{c+cm}{m}\PYG{c+cm}{i}\PYG{c+cm}{g}\PYG{c+cm}{h}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{c}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{I}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{e}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{l}\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{o}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{d}
+\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{g}\PYG{c+cm}{u}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{f}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{g}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{m}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{s}
+\PYG{c+cm}{w}\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{ }\PYG{c+cm}{∀}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{i}\PYG{c+cm}{g}\PYG{c+cm}{h}\PYG{c+cm}{t}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{ }\PYG{c+cm}{y}\PYG{c+cm}{o}\PYG{c+cm}{u}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{d}\PYG{c+cm}{o}\PYG{c+cm}{.}
+\PYG{c+cm}{A}\PYG{c+cm}{l}\PYG{c+cm}{s}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{*}\PYG{c+cm}{d}\PYG{c+cm}{o}\PYG{c+cm}{*}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{*}\PYG{c+cm}{a}\PYG{c+cm}{*}\PYG{c+cm}{m}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{s}\PYG{c+cm}{u}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{o}\PYG{c+cm}{f}
+\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{*}\PYG{c+cm}{A}\PYG{c+cm}{*}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{h}\PYG{c+cm}{i}\PYG{c+cm}{c}\PYG{c+cm}{h}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{u}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{u}\PYG{c+cm}{i}\PYG{c+cm}{l}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{*}\PYG{c+cm}{A}\PYG{c+cm}{ }\PYG{c+cm}{∨}\PYG{c+cm}{ }\PYG{c+cm}{B}\PYG{c+cm}{*}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{T}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{s}
+\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{.}
+\PYG{c+cm}{\PYGZhy{}/}
+\end{sphinxVerbatim}
+
+
+\subsubsection{Elimination Rules}
+\label{\detokenize{A_02_Predicate_Logic:elimination-rules}}
+\sphinxAtStartPar
+How do we use a proof of a conjunction, \sphinxstyleemphasis{A ∨ B}? In general,
+what you’ll want to show is that if you have a proof, h, of
+\sphinxstyleemphasis{A ∨ B}  then you can obtain a proof of a goal proposition,
+let’s call it C.
+
+\sphinxAtStartPar
+The proof is constructed by case analysis on h. As \sphinxstyleemphasis{(h : A ∨ B)}
+(read that as \sphinxstyleemphasis{h is a proof of A ∨ B}), there are two cases that
+we have to consider: \sphinxstyleemphasis{h} could be \sphinxstyleemphasis{or.inl a}, where \sphinxstyleemphasis{(a : A)}, or
+\sphinxstyleemphasis{h} could be \sphinxstyleemphasis{or.inr b}, where \sphinxstyleemphasis{(b : B).}
+
+\sphinxAtStartPar
+But that’s not yet enough to prove \sphinxstyleemphasis{C}. In addition, we’ll need
+proofs that \sphinxstyleemphasis{A → C} and \sphinxstyleemphasis{B → C}. In other words, to show that
+\sphinxstyleemphasis{A ∨ B → C}, we need to show that that true \sphinxstyleemphasis{in either case} in
+a case analysis of a proof of \sphinxstyleemphasis{A ∨ B}. The elimination rule for
+∨ is thus akin to what we saw in propositional logic.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} or.elim : ∀ \PYGZob{}a b c : Prop\PYGZcb{}, a ∨ b → (a → c) → (b → c) → c}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} deduce c from proofs of a ∨ b, a → c, and b → c,}
+\PYG{k}{\PYGZsh{}check} \PYG{n+nb+bp}{@}\PYG{n}{or.elim}
+
+\PYG{k+kd}{example} \PYG{o}{(}\PYG{n}{P} \PYG{n}{Q} \PYG{n}{R} \PYG{o}{:} \PYG{k+kt}{Prop}\PYG{o}{)} \PYG{o}{:} \PYG{n}{P} \PYG{n+nb+bp}{∨} \PYG{n}{Q} \PYG{n+nb+bp}{→} \PYG{o}{(}\PYG{n}{P} \PYG{n+nb+bp}{→} \PYG{n}{R}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{o}{(}\PYG{n}{Q} \PYG{n+nb+bp}{→} \PYG{n}{R}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{n}{R}
+\PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{or.inl} \PYG{n}{p}\PYG{o}{)} \PYG{n}{pr} \PYG{n}{qr} \PYG{o}{:=} \PYG{n}{pr} \PYG{n}{p}
+\PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{or.inr} \PYG{n}{q}\PYG{o}{)} \PYG{n}{pr} \PYG{n}{qr} \PYG{o}{:=} \PYG{n}{qr} \PYG{n}{q}
+\end{sphinxVerbatim}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c}{/\PYGZhy{}}
+\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{m}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{z}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{t}
+\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{9}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{¬}\PYG{c+cm}{¬}\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{⊢}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{g}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{m}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}
+\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{0}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{⊥}\PYG{c+cm}{ }\PYG{c+cm}{⊢}\PYG{c+cm}{ }\PYG{c+cm}{¬}\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{g}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{d}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}
+\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{1}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{⊢}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{⊢}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{t}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{o}\PYG{c+cm}{m}\PYG{c+cm}{p}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{e}\PYG{c+cm}{d}
+\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{2}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{⊢}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{w}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{m}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}
+\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{3}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{⊢}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{↔}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{f}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{d}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}
+\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{4}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{↔}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{ }\PYG{c+cm}{⊢}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{f}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{m}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{f}\PYG{c+cm}{t}
+\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{5}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{↔}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{ }\PYG{c+cm}{⊢}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{f}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{m}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{i}\PYG{c+cm}{g}\PYG{c+cm}{h}\PYG{c+cm}{t}
 \end{sphinxVerbatim}
 
 \sphinxstepscope

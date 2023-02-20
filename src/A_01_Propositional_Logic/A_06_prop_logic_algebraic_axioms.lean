@@ -3,7 +3,6 @@ namespace cs6501
 
 
 
-
 example : 
 ∀ (p q : prop_expr) (i : prop_var → bool),
   pEval (p ∧ q) i = pEval (q ∧ p) i :=
@@ -28,7 +27,6 @@ variables (p q r : prop_expr) (i : prop_var → bool)
 
 def and_commutes' := (⟦(p ∧ q)⟧ i) = (⟦(q ∧ p)⟧ i) 
 def or_commutes' :=  ⟦(p ∧ q)⟧ i = ⟦(q ∧ p)⟧ i
-
 
 
 #reduce and_commutes' p q i
@@ -78,6 +76,18 @@ end
 
 
 
+-- p ∧ p = p
+-- p ∧ T = p
+-- p ∧ F = F
+-- p ∧ (p ∨ q) = p
+
+
+-- p ∨ p = p
+-- p ∨ T = T
+-- p ∨ F = p
+-- p ∨ (p ∧ q) = p
+
 end prop_logic_axioms
 end cs6501
+
 

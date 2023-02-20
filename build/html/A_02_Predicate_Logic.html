@@ -45,13 +45,33 @@
 <li class="toctree-l1"><a class="reference internal" href="A_00_Introduction.html">1. CS6501 Spring 2023</a></li>
 <li class="toctree-l1"><a class="reference internal" href="A_01_Propositional_Logic.html">2. Propositional Logic</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">3. Predicate Logic</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#propositions-are-types">3.1. Propositions are Types</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#from-truth-to-proof">3.2. From Truth to Proof</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#functions">3.3. Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#predicates">3.4. Predicates</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#connectives">3.5. Connectives</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#quantifiers">3.6. Quantifiers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#inference-rules">3.7. Inference Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#higher-order-predicate-logic">3.1. Higher-Order Predicate Logic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#propositions-as-types">3.2. Propositions as Types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#computational-types">3.2.1. Computational Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#logical-types-propositions">3.2.2. Logical Types (Propositions)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#type-universe-levels">3.2.3. Type Universe Levels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#implicit-arguments">3.2.4. Implicit Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#from-truth-to-proof">3.3. From Truth to Proof</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#practice-example">3.3.1. Practice Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#inference-rules">3.4. Inference Rules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#true">3.4.1. true (&#8868;)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#and">3.4.2. and &#8743;</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#proposition-builders">3.4.2.1. Proposition Builders</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#introduction-proof-constructors">3.4.2.2. Introduction: Proof Constructors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#elimination-case-analysis">3.4.2.3. Elimination: Case Analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#or">3.4.3. or &#8743;</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction-rules">3.4.3.1. Introduction Rules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#elimination-rules">3.4.3.2. Elimination Rules</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -85,49 +105,662 @@
              
   <section id="predicate-logic">
 <span id="introduction"></span><h1><span class="section-number">3. </span>Predicate Logic<a class="headerlink" href="#predicate-logic" title="Permalink to this heading">&#61633;</a></h1>
-<section id="propositions-are-types">
-<h2><span class="section-number">3.1. </span>Propositions are Types<a class="headerlink" href="#propositions-are-types" title="Permalink to this heading">&#61633;</a></h2>
+<section id="higher-order-predicate-logic">
+<h2><span class="section-number">3.1. </span>Higher-Order Predicate Logic<a class="headerlink" href="#higher-order-predicate-logic" title="Permalink to this heading">&#61633;</a></h2>
+<p>The term, <em>predicate logic</em>, used informally, is usually taken to
+refer to first-order predicate logic (often extended with theories,
+e.g., of natural number arithmetic). However, in this course, you
+will learn higher-order constructive predicate logic. First-order
+logic is a special restricted case.</p>
+<p>We&#8217;ve organized the course so far to prepare you to quickly pick
+up higher-order predicate logic as it&#8217;s <em>embedded</em> in the logic of
+the Lean prover, by definitions provided by <em>mathlib</em>, Lean&#8217;s main
+library of mathematical definitions.</p>
+<p>Major similarities and changes include the following:</p>
+<ul class="simple">
+<li><p>Propositions become types, not just logical expressions</p></li>
+<li><p>Truth judgments (&#10214;E&#10215; i = tt) replaced by proof judgments (e : E)</p></li>
+<li><p>Functions and applications are essential parts of predicate logic</p></li>
+<li><p>Predicates are functions from values to propositions <em>about them</em></p></li>
+<li><p>We adopt all of the usual propositional logic connectives</p></li>
+<li><p>We adopt generalized versions of the usual inference rules</p></li>
+<li><p>We gain two new ones: universal and existential quantifiers</p></li>
+<li><p>We gain new inference rules for the &#8704; and &#8707; quantifiers</p></li>
+<li><p>Generalizing (&#8704;) over types gives us parametric polymorphism</p></li>
+</ul>
+</section>
+<section id="propositions-as-types">
+<h2><span class="section-number">3.2. </span>Propositions as Types<a class="headerlink" href="#propositions-as-types" title="Permalink to this heading">&#61633;</a></h2>
+<p>In the last section, we build on all of the ideas of
+the last chapter to gain an understanding of higher
+order predicate logic in Lean. Each section of this
+chapter focuses on a dimension in which the latter is
+different, often a powerful generalization, of ideas
+from the last chapter.</p>
+<p>As an example, in the last chapter, we represented
+propositions as terms of our data type, <em>prop_expr</em>.
+We  also saw that we could formulate inference rules of
+propositional logic to provide a way to reason about
+the truth of given propositions. In this chapter, we
+will represent propositions as types of a special kind,
+instead, and proofs as values of these types. We will
+then adopt exacty the same inference rules we saw in
+the last chapter, but generalized to this far more
+expressive logic.</p>
+<p>To warm up for the idea that propositions are (represented as)
+types (in type theory), as an example we&#8217;ll first look at the
+types related to the natural number, 1. Then we&#8217;ll analyze the
+types of a few propositions, namely 1 = 1 and 0 = 1. The take
+away message will be that propositions are special types that
+live in their own <em>type universe</em> and values of such types (if
+there are any) serve as <em>proofs</em> of such propositions.</p>
+<section id="computational-types">
+<h3><span class="section-number">3.2.1. </span>Computational Types<a class="headerlink" href="#computational-types" title="Permalink to this heading">&#61633;</a></h3>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20The%20type%20of%201%20is%20nat%0A%23check%201%0A%0A--%20Type%20type%20of%20nat%20is%20*Type*%0A%23check%20nat%0A%0A--%20The%20type%20of%20all%20basic%20computational%20types%20is%20*Type*%0A%23check%20bool%0A%23check%20string%0A%23check%20list%20bool%0A%0A--%20A%20natural%20question%3A%20What's%20the%20type%20of%20Type%2C%20etc%3F%0A%23check%20Type%0A%23check%20Type%200%20%20%20--%20Type%20is%20shorthand%20for%20Type%200%0A%23check%20Type%201%20%20%20--%20It's%20type%20universes%20all%20the%20way%20up%0A%23check%20Type%202%20%20%20--%20etc.%0A%0A%2F-%0AWhat%20we%20have%20so%20far%20then%20is%20a%20hierarchy%20of%20%22computational%22%0Atypes%20like%20this%3A%0A%0A%20%20%20%20%20%20%20...%20%20%20%20%20%20%20%20higher%20type%20universes%0A%20%20%20%20%20%20%20%20%7C%0A%20%20%20%20%20%20Type%201%20(the%20type%20of%20objects%20that%20contains%20Type%200%20objects)%0A%20%20%20%20%20%20%20%20%7C%0A%20%20%20%20%20%20Type%200%20%20%20%20%20%20%20%20%20a%20type%20universe%0A%20%20%20%20%20%20%20%20%7C%0A%20%20%20%20%20%20%20nat%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20type%0A%20%20%20%20%20%20%20%20%7C%0A%20%20%20%20%20%20%20%201%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20value%0A%0AType%20Universes%0A--------------%0A-%2F%0A%0A--%20What%20universes%20do%20various%20objects%20inhabit%0A%23check%20nat%20%20%20%20%20%20%20%20%20%20%20%20%20--%20Type%200%0A%23check%20list%20nat%20%20%20%20%20%20%20%20--%20list%20of%20nats%20%3A%20Type%200%0A%0Adef%20list_of_types%20%3A%20list%20Type%20%3A%3D%20%5Bnat%2C%20bool%2C%20string%5D%0A%23check%20list%20(Type%200)%20%20%20--%20list%20of%20Type%200s%20%3A%20Type%201%0A%23check%20list%20(Type%201)%20%20%20--%20list%20of%20Type%201s%20%3A%20Type%202" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_34.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- The type of 1 is nat</span>
+<span class="k">#check</span> <span class="mi">1</span>
+
+<span class="c1">-- Type type of nat is *Type*</span>
+<span class="k">#check</span> <span class="n">nat</span>
+
+<span class="c1">-- The type of all basic computational types is *Type*</span>
+<span class="k">#check</span> <span class="n">bool</span>
+<span class="k">#check</span> <span class="n">string</span>
+<span class="k">#check</span> <span class="n">list</span> <span class="n">bool</span>
+
+<span class="c1">-- A natural question: What&#39;s the type of Type, etc?</span>
+<span class="k">#check</span> <span class="kt">Type</span>
+<span class="k">#check</span> <span class="kt">Type</span> <span class="mi">0</span>   <span class="c1">-- Type is shorthand for Type 0</span>
+<span class="k">#check</span> <span class="kt">Type</span> <span class="mi">1</span>   <span class="c1">-- It&#39;s type universes all the way up</span>
+<span class="k">#check</span> <span class="kt">Type</span> <span class="mi">2</span>   <span class="c1">-- etc.</span>
+
+<span class="c">/-</span>
+<span class="cm">What we have so far then is a hierarchy of &quot;computational&quot;</span>
+<span class="cm">types like this:</span>
+
+<span class="cm">       ...        higher type universes</span>
+<span class="cm">        |</span>
+<span class="cm">      Type 1 (the type of objects that contains Type 0 objects)</span>
+<span class="cm">        |</span>
+<span class="cm">      Type 0         a type universe</span>
+<span class="cm">        |</span>
+<span class="cm">       nat                type</span>
+<span class="cm">        |</span>
+<span class="cm">        1                value</span>
+
+<span class="cm">Type Universes</span>
+<span class="cm">--------------</span>
+<span class="cm">-/</span>
+
+<span class="c1">-- What universes do various objects inhabit</span>
+<span class="k">#check</span> <span class="n">nat</span>             <span class="c1">-- Type 0</span>
+<span class="k">#check</span> <span class="n">list</span> <span class="n">nat</span>        <span class="c1">-- list of nats : Type 0</span>
+
+<span class="kd">def</span> <span class="n">list_of_types</span> <span class="o">:</span> <span class="n">list</span> <span class="kt">Type</span> <span class="o">:=</span> <span class="o">[</span><span class="n">nat</span><span class="o">,</span> <span class="n">bool</span><span class="o">,</span> <span class="n">string</span><span class="o">]</span>
+<span class="k">#check</span> <span class="n">list</span> <span class="o">(</span><span class="kt">Type</span> <span class="mi">0</span><span class="o">)</span>   <span class="c1">-- list of Type 0s : Type 1</span>
+<span class="k">#check</span> <span class="n">list</span> <span class="o">(</span><span class="kt">Type</span> <span class="mi">1</span><span class="o">)</span>   <span class="c1">-- list of Type 1s : Type 2</span>
+</pre></div>
+</div>
+</div></section>
+<section id="logical-types-propositions">
+<h3><span class="section-number">3.2.2. </span>Logical Types (Propositions)<a class="headerlink" href="#logical-types-propositions" title="Permalink to this heading">&#61633;</a></h3>
+<p>Now we&#8217;ll turn to the idea that propositions are types of
+a logical kind. In Lean and related proof assistants and in
+type theory more generally, propositions are represented as
+<em>types</em> that inhabit a special type universe: in Lean, Prop.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%201%20%3D%201%20%20--%201%20%3D%201%20is%20a%20proposition%2C%20thus%20of%20type%20Prop%0A%23check%20%E2%88%83%20(a%20b%20c%20%3A%20%E2%84%95)%2C%20a*a%20%2B%20b*b%20%3D%20c*c%20--%20also%20of%20type%20Prop" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_88.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="mi">1</span> <span class="bp">=</span> <span class="mi">1</span>  <span class="c1">-- 1 = 1 is a proposition, thus of type Prop</span>
+<span class="k">#check</span> <span class="bp">&#8707;</span> <span class="o">(</span><span class="n">a</span> <span class="n">b</span> <span class="n">c</span> <span class="o">:</span> <span class="n">&#8469;</span><span class="o">),</span> <span class="n">a</span><span class="bp">*</span><span class="n">a</span> <span class="bp">+</span> <span class="n">b</span><span class="bp">*</span><span class="n">b</span> <span class="bp">=</span> <span class="n">c</span><span class="bp">*</span><span class="n">c</span> <span class="c1">-- also of type Prop</span>
+</pre></div>
+</div>
+</div><div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20Example%3A%20Here's%20a%20proof%20of%201%20%3D%201%0Adef%20proof_of_1_eq_1%20%3A%3D%20eq.refl%201%0A%0A--%20What%20is%20its%20type%3F%0A%23check%20proof_of_1_eq_1" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_94.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Example: Here&#39;s a proof of 1 = 1</span>
+<span class="kd">def</span> <span class="n">proof_of_1_eq_1</span> <span class="o">:=</span> <span class="n">eq.refl</span> <span class="mi">1</span>
+
+<span class="c1">-- What is its type?</span>
+<span class="k">#check</span> <span class="n">proof_of_1_eq_1</span>
+</pre></div>
+</div>
+</div><p>In Lean, types are terms, too, and so they have types, as we
+have already seen. So what is the type of <em>1 = 1</em>. It&#8217;s Prop.
+As we&#8217;ve said, logical types (propositions) inhabit the type
+universe, Prop, also known as Sort 0.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%201%20%3D%201%0A%23check%20Prop" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_107.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="mi">1</span> <span class="bp">=</span> <span class="mi">1</span>
+<span class="k">#check</span> <span class="kt">Prop</span>
+</pre></div>
+</div>
+</div><p>Now we can clearly see the type hierarchy. Each proposition
+is a type, and all such types are in turn of type, Prop. We we
+have the following picture of the type hierarchy for the
+terms we&#8217;ve just constructed.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20type%20is%201%20%3D%201%0A%23check%20proof_of_1_eq_1%0A%0A--%20type%20is%20Prop%0A%23check%201%20%3D%201" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_117.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- type is 1 = 1</span>
+<span class="k">#check</span> <span class="n">proof_of_1_eq_1</span>
+
+<span class="c1">-- type is Prop</span>
+<span class="k">#check</span> <span class="mi">1</span> <span class="bp">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div><p>You might finally ask, what is the type of Prop? It&#8217;s Type!</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20Prop%0A%0A%2F-%0AWe%20can%20draw%20a%20picture%20now%20to%20see%20how%20things%20work.%0A%0AProp%20(Sort%200)%20--%3E%20Type%20(Sort%201%2C%20Type%200)%20--%3E%20Type%201%20(Sort%202)%20--%3E%20etc%0A%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%0A%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%0A%20%201%20%3D%201%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20nat%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20list%20Type%0A%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%0A%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%0Aeq.refl%201%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%201%20%20%20%20%20%20%20%20%20%20%20%20%20%20%5Bnat%2C%20bool%2C%20string%5D%0A-%2F" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_127.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="kt">Prop</span>
+
+<span class="c">/-</span>
+<span class="cm">We can draw a picture now to see how things work.</span>
+
+<span class="cm">Prop (Sort 0) --&gt; Type (Sort 1, Type 0) --&gt; Type 1 (Sort 2) --&gt; etc</span>
+<span class="cm">    |                         |                     |</span>
+<span class="cm">    |                         |                     |</span>
+<span class="cm">  1 = 1                      nat                 list Type</span>
+<span class="cm">    |                         |                     |</span>
+<span class="cm">    |                         |                     |</span>
+<span class="cm">eq.refl 1                     1              [nat, bool, string]</span>
+<span class="cm">-/</span>
+</pre></div>
+</div>
+</div></section>
+<section id="type-universe-levels">
+<h3><span class="section-number">3.2.3. </span>Type Universe Levels<a class="headerlink" href="#type-universe-levels" title="Permalink to this heading">&#61633;</a></h3>
+<p>In the top row we have a hierarchy of type universes, starting
+with Sort 0 and extending up. Prop is the common name in Lean for
+Sort 0, and Type is the common name for Sort 1. In the second row
+are examples of types that inhabit each of the universes. <em>1 = 1</em>
+for example is a logical type (a proposition) in Prop, while nat
+is a computational type in Type. Finally, <em>list Type</em> is the type
+of lists of terms each of type Type, i.e., lists of computational
+types. The bottom row gives examples of values of each of the types
+above: <em>eq.refl 1</em> is a proof/value of (type) <em>1 = 1</em>; 1 is a value
+of type <em>nat</em>; and <em>[nat, bool, string]</em>, because it contains as
+elements values of type Type 0 is itself a value of type Type 1.</p>
+<p>As a final comment, Lean allows one to generalize over these
+type universes. To do so you declare one or more <em>universe
+variable</em> which you can then use in decaring types. Lean can
+also infer universe levels.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20declare%20two%20possible%20different%20type%20Universe%20levels%0Auniverses%20u%20v%0A%0A--%0A%23check%20%40prod.mk%0A%0A--%20Here's%20a%20function%20that%20takes%20two%20types%20in%20arbitrary%20universes%0Adef%20mk_pair%20(%CE%B1%20%3A%20Sort%20u)%20(%CE%B2%20%3A%20Sort%20v)%20%3A%3D%20(%CE%B1%2C%20%CE%B2)%0A%0A--%20Here%20are%20examples%20of%20type%20pairs%20we%20can%20form.%0A%23check%20mk_pair%20nat%20bool%0A%23check%20mk_pair%20(1%3D1)%20(2%3D1)%0A%23check%20mk_pair%20(1%3D1)%20(list%20Type)%0A%0A%2F-%0AAs%20another%20example%2C%20here's%20a%20thoroughly%20polymorphic%20version%20of%0Athe%20identity%20function.%20Given%20a%20type%20as%20an%20argument%2C%20it%20takes%20a%0Asecond%20value%2C%20a%2C%20*of%20that%20previously%20given%20type*%2C%20and%20returns%20it.%0A-%2F%0A%0Adef%20my_id%20(%CE%B1%20%3A%20Sort%20u)%20(a%20%3A%20%CE%B1)%20%3A%3D%20a%0A%0A--%20applications%20to%20objects%20of%20various%20types%0A%23reduce%20my_id%20Prop%20(1%3D1)%0A%23reduce%20my_id%20nat%201%0A%23reduce%20my_id%20(list%20Type)%20%5Bnat%2Cnat%2Cbool%5D" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_164.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- declare two possible different type Universe levels</span>
+<span class="kd">universes</span> <span class="n">u</span> <span class="n">v</span>
+
+<span class="c1">--</span>
+<span class="k">#check</span> <span class="bp">@</span><span class="n">prod.mk</span>
+
+<span class="c1">-- Here&#39;s a function that takes two types in arbitrary universes</span>
+<span class="kd">def</span> <span class="n">mk_pair</span> <span class="o">(</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Sort</span> <span class="n">u</span><span class="o">)</span> <span class="o">(</span><span class="n">&#946;</span> <span class="o">:</span> <span class="kt">Sort</span> <span class="n">v</span><span class="o">)</span> <span class="o">:=</span> <span class="o">(</span><span class="n">&#945;</span><span class="o">,</span> <span class="n">&#946;</span><span class="o">)</span>
+
+<span class="c1">-- Here are examples of type pairs we can form.</span>
+<span class="k">#check</span> <span class="n">mk_pair</span> <span class="n">nat</span> <span class="n">bool</span>
+<span class="k">#check</span> <span class="n">mk_pair</span> <span class="o">(</span><span class="mi">1</span><span class="bp">=</span><span class="mi">1</span><span class="o">)</span> <span class="o">(</span><span class="mi">2</span><span class="bp">=</span><span class="mi">1</span><span class="o">)</span>
+<span class="k">#check</span> <span class="n">mk_pair</span> <span class="o">(</span><span class="mi">1</span><span class="bp">=</span><span class="mi">1</span><span class="o">)</span> <span class="o">(</span><span class="n">list</span> <span class="kt">Type</span><span class="o">)</span>
+
+<span class="c">/-</span>
+<span class="cm">As another example, here&#39;s a thoroughly polymorphic version of</span>
+<span class="cm">the identity function. Given a type as an argument, it takes a</span>
+<span class="cm">second value, a, *of that previously given type*, and returns it.</span>
+<span class="cm">-/</span>
+
+<span class="kd">def</span> <span class="n">my_id</span> <span class="o">(</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Sort</span> <span class="n">u</span><span class="o">)</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="n">&#945;</span><span class="o">)</span> <span class="o">:=</span> <span class="n">a</span>
+
+<span class="c1">-- applications to objects of various types</span>
+<span class="k">#reduce</span> <span class="n">my_id</span> <span class="kt">Prop</span> <span class="o">(</span><span class="mi">1</span><span class="bp">=</span><span class="mi">1</span><span class="o">)</span>
+<span class="k">#reduce</span> <span class="n">my_id</span> <span class="n">nat</span> <span class="mi">1</span>
+<span class="k">#reduce</span> <span class="n">my_id</span> <span class="o">(</span><span class="n">list</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">[</span><span class="n">nat</span><span class="o">,</span><span class="n">nat</span><span class="o">,</span><span class="n">bool</span><span class="o">]</span>
+</pre></div>
+</div>
+</div></section>
+<section id="implicit-arguments">
+<h3><span class="section-number">3.2.4. </span>Implicit Arguments<a class="headerlink" href="#implicit-arguments" title="Permalink to this heading">&#61633;</a></h3>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20With%20%7B%7D%20we%20tell%20Lean%20that%20%CE%B1%20should%20be%20inferred%20automatically%0Adef%20my_id'%20%7B%20%CE%B1%20%3A%20Sort%20u%20%7D%20(a%20%3A%20%CE%B1)%20%3A%3D%20a%0A%0A--%20Now%20we%20don't%20provide%20the%20type%20arguments%20explicitly%0A%23reduce%20my_id'%20(1%3D1)%0A%23reduce%20my_id'%201%0A%23reduce%20my_id'%20%5Bnat%2Cnat%2Cbool%5D%0A%0A--%20If%20necessary%20through%2C%20we%20can%20turn%20off%20implicit%20inference%20using%20%40%0A%23reduce%20%40my_id'%20Prop%20(1%3D1)%0A%23reduce%20%40my_id'%20nat%201%0A%23reduce%20%40my_id'%20(list%20Type)%20%5Bnat%2Cnat%2Cbool%5D" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_196.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- With {} we tell Lean that &#945; should be inferred automatically</span>
+<span class="kd">def</span> <span class="n">my_id&#39;</span> <span class="o">{</span> <span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Sort</span> <span class="n">u</span> <span class="o">}</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="n">&#945;</span><span class="o">)</span> <span class="o">:=</span> <span class="n">a</span>
+
+<span class="c1">-- Now we don&#39;t provide the type arguments explicitly</span>
+<span class="k">#reduce</span> <span class="n">my_id&#39;</span> <span class="o">(</span><span class="mi">1</span><span class="bp">=</span><span class="mi">1</span><span class="o">)</span>
+<span class="k">#reduce</span> <span class="n">my_id&#39;</span> <span class="mi">1</span>
+<span class="k">#reduce</span> <span class="n">my_id&#39;</span> <span class="o">[</span><span class="n">nat</span><span class="o">,</span><span class="n">nat</span><span class="o">,</span><span class="n">bool</span><span class="o">]</span>
+
+<span class="c1">-- If necessary through, we can turn off implicit inference using @</span>
+<span class="k">#reduce</span> <span class="bp">@</span><span class="n">my_id&#39;</span> <span class="kt">Prop</span> <span class="o">(</span><span class="mi">1</span><span class="bp">=</span><span class="mi">1</span><span class="o">)</span>
+<span class="k">#reduce</span> <span class="bp">@</span><span class="n">my_id&#39;</span> <span class="n">nat</span> <span class="mi">1</span>
+<span class="k">#reduce</span> <span class="bp">@</span><span class="n">my_id&#39;</span> <span class="o">(</span><span class="n">list</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">[</span><span class="n">nat</span><span class="o">,</span><span class="n">nat</span><span class="o">,</span><span class="n">bool</span><span class="o">]</span>
+</pre></div>
+</div>
+</div></section>
 </section>
 <section id="from-truth-to-proof">
-<h2><span class="section-number">3.2. </span>From Truth to Proof<a class="headerlink" href="#from-truth-to-proof" title="Permalink to this heading">&#61633;</a></h2>
-</section>
-<section id="functions">
-<h2><span class="section-number">3.3. </span>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">&#61633;</a></h2>
-</section>
-<section id="predicates">
-<h2><span class="section-number">3.4. </span>Predicates<a class="headerlink" href="#predicates" title="Permalink to this heading">&#61633;</a></h2>
-</section>
-<section id="connectives">
-<h2><span class="section-number">3.5. </span>Connectives<a class="headerlink" href="#connectives" title="Permalink to this heading">&#61633;</a></h2>
-<p>We get them all from predicate logic, with meanings
-defined by inference rules that straightforwardly
-generalize those from propositonal logic.</p>
+<h2><span class="section-number">3.3. </span>From Truth to Proof<a class="headerlink" href="#from-truth-to-proof" title="Permalink to this heading">&#61633;</a></h2>
+<p>In both propositional and first order predicate logic,
+inference rules are defined in terms of <em>truth judgments</em>.
+For example, in our propositional logic, we defined the
+<em>and elimination left</em> rule as (&#10214; P &#8743; Q &#10215; i == tt) &#8594;
+&#10214; P &#10215; i = tt. You can read it as saying, if we&#8217;ve judged
+that P &#8743; Q is true under some interpretation, i, then it
+must be that P is also true under that interpretation.</p>
+<p>In the logic of Lean, by contrast, inference rules are
+defined in terms of <em>proof</em> judgments. In Lean, if <em>P</em>
+is a proposition, then to express the idea that p is a
+proof of P, we write (p : P). We can also read this proof
+judgement as a type judgment: that p is a value of type P.
+The and elimination left rule thus changes to the following:</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20x%20%3A%3D%205" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_24.lean">
-try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">x</span> <span class="o">:=</span> <span class="mi">5</span>
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20and_elim_left_rule'%20%3A%3D%20%E2%88%80%20(P%20Q%20%3A%20Prop)%2C%20P%20%E2%88%A7%20Q%20%E2%86%92%20P" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_20.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">and_elim_left_rule&#39;</span> <span class="o">:=</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">P</span> <span class="n">Q</span> <span class="o">:</span> <span class="kt">Prop</span><span class="o">),</span> <span class="n">P</span> <span class="bp">&#8743;</span> <span class="n">Q</span> <span class="bp">&#8594;</span> <span class="n">P</span>
+</pre></div>
+</div>
+</div><p>You can read the proposition as saying the following:
+if P and Q are arbitrary propositions, then if you are
+given a <em>proof</em> (value) of (type) P &#8743; Q, then you can
+derive a proof (value) of (type) P.</p>
+<p>Written in the typical inference rule styles you will
+find in the literature, we&#8217;d see something like this:
+<em>(P Q : Prop) (p : P) (q : P) &#8866; &#10216;p,q&#10217; : P &#8743; Q</em>.</p>
+<p>In a textbook, it&#8217;d often be assumed or implicit that
+<em>P</em> and <em>Q</em> are propositions, in which case this rule
+would be shortened to <em>P, Q &#8866; P &#8743; Q</em>.</p>
+<p>Using Lean&#8217;s <em>variables</em> declaration, we can achieve
+the same clarity with complete formality.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20Let%20P%2C%20Q%2C%20and%20R%20be%20arbitrary%20propositions%0Avariables%20(P%20Q%20R%20%3A%20Prop)%0A%0A--%20Now%20we%20can%20write%20the%20rule%20without%20the%20forall%0Adef%20and_elim_left_rule%20%3A%3D%20P%20%E2%88%A7%20Q%20%E2%86%92%20P%0A%0A%2F-%0ALean%20doesn't%20treat%20the%20two%20versions%20exactly%20the%0Asame.%20The%20type%20of%20and_elim_left_rule%20is%20of%20course%0Ajust%20Prop%2C%20because%20it's%20a%20proposition.%20However%2C%0Abecause%20we've%20declared%20*P*%20and%20*Q*%20to%20be%20general%0Ain%20the%20current%20environment%2C%20they%20are%20understood%0Aas%20arguments%2C%20allowing%20and_elim_left_rule%20to%20be%0A*applied*%20to%20any%20two%20propositions%20as%20arguments%0A(say%20P%2C%20Q)%2C%20yielding%20the%20specified%20proposition%20as%0Aa%20result.%0A-%2F%0A%23reduce%20and_elim_left_rule'%20%20%20--%20just%20a%20proposition%0A%23reduce%20and_elim_left_rule%20%20%20%20--%20function%20to%20proposition%0A%0A%23check%20and_elim_left_rule%20%20%20%20%20%20%20%20%20--%20Prop%20%E2%86%92%20Prop%20%E2%86%92%20Prop%0A%23reduce%20and_elim_left_rule%20%20%20%20%20%20%20%20--%20A%20proposition%0A%23reduce%20and_elim_left_rule%20P%20Q%20%20%20%20--%20Namely%2C%20P%20%E2%88%A7%20Q%20%E2%86%92%20P%0A%0A%23check%20and_elim_left_rule'%20%20%20%20%20%20%20--%20just%20Prop%0A%23check%20and_elim_left_rule'%20P%20Q%20%20%20--%20Can't%20be%20applied%0A%0A--%20and_elim_left_rule%20applies%20to%20*any*%20propositions%0Avariables%20(A%20B%20%3A%20Prop)%0A%23check%20and_elim_left_rule%20A%20B%0A%23reduce%20and_elim_left_rule%20A%20B" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_40.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Let P, Q, and R be arbitrary propositions</span>
+<span class="kd">variables</span> <span class="o">(</span><span class="n">P</span> <span class="n">Q</span> <span class="n">R</span> <span class="o">:</span> <span class="kt">Prop</span><span class="o">)</span>
+
+<span class="c1">-- Now we can write the rule without the forall</span>
+<span class="kd">def</span> <span class="n">and_elim_left_rule</span> <span class="o">:=</span> <span class="n">P</span> <span class="bp">&#8743;</span> <span class="n">Q</span> <span class="bp">&#8594;</span> <span class="n">P</span>
+
+<span class="c">/-</span>
+<span class="cm">Lean doesn&#39;t treat the two versions exactly the</span>
+<span class="cm">same. The type of and_elim_left_rule is of course</span>
+<span class="cm">just Prop, because it&#39;s a proposition. However,</span>
+<span class="cm">because we&#39;ve declared *P* and *Q* to be general</span>
+<span class="cm">in the current environment, they are understood</span>
+<span class="cm">as arguments, allowing and_elim_left_rule to be</span>
+<span class="cm">*applied* to any two propositions as arguments</span>
+<span class="cm">(say P, Q), yielding the specified proposition as</span>
+<span class="cm">a result.</span>
+<span class="cm">-/</span>
+<span class="k">#reduce</span> <span class="n">and_elim_left_rule&#39;</span>   <span class="c1">-- just a proposition</span>
+<span class="k">#reduce</span> <span class="n">and_elim_left_rule</span>    <span class="c1">-- function to proposition</span>
+
+<span class="k">#check</span> <span class="n">and_elim_left_rule</span>         <span class="c1">-- Prop &#8594; Prop &#8594; Prop</span>
+<span class="k">#reduce</span> <span class="n">and_elim_left_rule</span>        <span class="c1">-- A proposition</span>
+<span class="k">#reduce</span> <span class="n">and_elim_left_rule</span> <span class="n">P</span> <span class="n">Q</span>    <span class="c1">-- Namely, P &#8743; Q &#8594; P</span>
+
+<span class="k">#check</span> <span class="n">and_elim_left_rule&#39;</span>       <span class="c1">-- just Prop</span>
+<span class="k">#check</span> <span class="n">and_elim_left_rule&#39;</span> <span class="n">P</span> <span class="n">Q</span>   <span class="c1">-- Can&#39;t be applied</span>
+
+<span class="c1">-- and_elim_left_rule applies to *any* propositions</span>
+<span class="kd">variables</span> <span class="o">(</span><span class="n">A</span> <span class="n">B</span> <span class="o">:</span> <span class="kt">Prop</span><span class="o">)</span>
+<span class="k">#check</span> <span class="n">and_elim_left_rule</span> <span class="n">A</span> <span class="n">B</span>
+<span class="k">#reduce</span> <span class="n">and_elim_left_rule</span> <span class="n">A</span> <span class="n">B</span>
+</pre></div>
+</div>
+</div><p>We can now assert the validity of this rule, and prove
+it. Of course the proof in this case will be nothing
+but the application of Lean&#8217;s version, and.elim_left.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=theorem%20and_elim_left_valid%20%3A%20and_elim_left_rule%20P%20Q%20%3A%3D%0A--%20assume%20h%20is%20a%20proof%20of%20P%20%E2%86%92%20Q%2C%20show%20P%0Abegin%0Aunfold%20and_elim_left_rule%2C%0Aintro%20h%2C%0A--%20apply%20and.elim_left%20h%0Aexact%20h.left%2C%0Aend%0A%0A--%20The%20theorem%20now%20applies%20generally%20to%20any%20propositions%0A%0Atheorem%20and_elim_left_valid_2%20%3A%20and_elim_left_rule%20A%20B%20%3A%3D%0Abegin%0Aapply%20and_elim_left_valid%2C%0Aend" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_78.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">theorem</span> <span class="n">and_elim_left_valid</span> <span class="o">:</span> <span class="n">and_elim_left_rule</span> <span class="n">P</span> <span class="n">Q</span> <span class="o">:=</span>
+<span class="c1">-- assume h is a proof of P &#8594; Q, show P</span>
+<span class="kd">begin</span>
+<span class="n">unfold</span> <span class="n">and_elim_left_rule</span><span class="o">,</span>
+<span class="n">intro</span> <span class="n">h</span><span class="o">,</span>
+<span class="c1">-- apply and.elim_left h</span>
+<span class="n">exact</span> <span class="n">h.left</span><span class="o">,</span>
+<span class="kd">end</span>
+
+<span class="c1">-- The theorem now applies generally to any propositions</span>
+
+<span class="kd">theorem</span> <span class="n">and_elim_left_valid_2</span> <span class="o">:</span> <span class="n">and_elim_left_rule</span> <span class="n">A</span> <span class="n">B</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="n">apply</span> <span class="n">and_elim_left_valid</span><span class="o">,</span>
+<span class="kd">end</span>
+</pre></div>
+</div>
+</div><section id="practice-example">
+<h3><span class="section-number">3.3.1. </span>Practice Example<a class="headerlink" href="#practice-example" title="Permalink to this heading">&#61633;</a></h3>
+<p>Exercise: Define two propositions (types in Prop) with
+made up names, each having two proof constructors also
+with made up names. Recall that we define types with an
+<em>inductive</em> definition. Here&#8217;s the exact definition of
+the bool type, for example.</p>
+<p>inductive bool : Type
+| tt
+| ff</p>
+<p>The big difference now is that we want to represent
+logical propositions, so we will define types not in
+the universe, Type, but in Prop, the universe that all
+logical propositions inhabit. Now it&#8217;s easy as the next
+example shows. We define two propositions, each with
+two &#8220;proofs,&#8221; and show that we can construct a proof
+of the the conjunction of the two propositions.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20A%20proposition%20called%20KevinIsFromCville%20with%20two%20proofs%0Ainductive%20KevinIsFromCville%20%3A%20Prop%0A%7C%20DL%20%20--%20driver's%20license%0A%7C%20EB%20%20--%20electric%20bill%0A%0A--%20Another%20similar%20proposition%0Ainductive%20NickIsFromNewHampshire%20%3A%20Prop%0A%7C%20DL%20%20%20%20%20%20--%20driver's%20license%0A%7C%20EB%20%20%20%20%20%20--%20electric%20bill%0A%7C%20LFODLP%20%20--%20secret%20code%0A%0A--%20Because%20we%20can%20prove%20each%20one%20we%20can%20prove%20the%20conjunction%0Aexample%20%3A%20KevinIsFromCville%20%E2%88%A7%20%20NickIsFromNewHampshire%20%3A%3D%0Abegin%0Aapply%20and.intro%20_%20_%2C%0Aexact%20KevinIsFromCville.EB%2C%0Aexact%20NickIsFromNewHampshire.LFODLP%2C%0Aend%0A%0A--%20Similarly%2C%20from%20a%20proof%20of%20a%20conjunctions%20we%20can%20prove%20each%0Aexample%20%3A%20KevinIsFromCville%20%E2%88%A7%20%20NickIsFromNewHampshire%20%E2%86%92%20KevinIsFromCville%20%3A%3D%0Abegin%0Aassume%20h%2C%0Acases%20h%2C%0Aassumption%2C%0Aend" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_117.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- A proposition called KevinIsFromCville with two proofs</span>
+<span class="kd">inductive</span> <span class="n">KevinIsFromCville</span> <span class="o">:</span> <span class="kt">Prop</span>
+<span class="bp">|</span> <span class="n">DL</span>  <span class="c1">-- driver&#39;s license</span>
+<span class="bp">|</span> <span class="n">EB</span>  <span class="c1">-- electric bill</span>
+
+<span class="c1">-- Another similar proposition</span>
+<span class="kd">inductive</span> <span class="n">NickIsFromNewHampshire</span> <span class="o">:</span> <span class="kt">Prop</span>
+<span class="bp">|</span> <span class="n">DL</span>      <span class="c1">-- driver&#39;s license</span>
+<span class="bp">|</span> <span class="n">EB</span>      <span class="c1">-- electric bill</span>
+<span class="bp">|</span> <span class="n">LFODLP</span>  <span class="c1">-- secret code</span>
+
+<span class="c1">-- Because we can prove each one we can prove the conjunction</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">KevinIsFromCville</span> <span class="bp">&#8743;</span>  <span class="n">NickIsFromNewHampshire</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="n">apply</span> <span class="n">and.intro</span> <span class="n">_</span> <span class="n">_</span><span class="o">,</span>
+<span class="n">exact</span> <span class="n">KevinIsFromCville.EB</span><span class="o">,</span>
+<span class="n">exact</span> <span class="n">NickIsFromNewHampshire.LFODLP</span><span class="o">,</span>
+<span class="kd">end</span>
+
+<span class="c1">-- Similarly, from a proof of a conjunctions we can prove each</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">KevinIsFromCville</span> <span class="bp">&#8743;</span>  <span class="n">NickIsFromNewHampshire</span> <span class="bp">&#8594;</span> <span class="n">KevinIsFromCville</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">assume</span> <span class="n">h</span><span class="o">,</span>
+<span class="n">cases</span> <span class="n">h</span><span class="o">,</span>
+<span class="n">assumption</span><span class="o">,</span>
+<span class="kd">end</span>
 </pre></div>
 </div>
 </div></section>
-<section id="quantifiers">
-<h2><span class="section-number">3.6. </span>Quantifiers<a class="headerlink" href="#quantifiers" title="Permalink to this heading">&#61633;</a></h2>
-<p>Among which are quantifiers over types giving rise to
-parametric polymorphism, where the type of element that
-is handled by an operation can vary with no changes in
-the definition of the operation itself.</p>
-<div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20y%20%3A%3D%205" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_37.lean">
-try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">y</span> <span class="o">:=</span> <span class="mi">5</span>
-</pre></div>
-</div>
-</div></section>
+</section>
 <section id="inference-rules">
-<h2><span class="section-number">3.7. </span>Inference Rules<a class="headerlink" href="#inference-rules" title="Permalink to this heading">&#61633;</a></h2>
+<h2><span class="section-number">3.4. </span>Inference Rules<a class="headerlink" href="#inference-rules" title="Permalink to this heading">&#61633;</a></h2>
+<p>Next we&#8217;ll see that most of the inference rules
+of propositional logic have analogues in constructive
+predicate logic, provided to us by <em>mathlib</em>, Lean&#8217;s
+library of mathematical definitions.</p>
+<p>Your next major task is to know and understand these
+inference rules. For each connective, learn its related
+introduction (proof constructing) and elimination (proof
+consuming) rules. Grasp the sense of each rule clerly.
+And learn how to to compose them, e.g., in proof scripts,
+to produce proofs of more complex propositions.</p>
+<p>This new inference rule is just an &#8220;upgraded&#8221;
+version of the and-elimination-left inference rule from
+from the last chapter. The major task in the rest of this
+chapter is to &#8220;lift&#8221; your established understanding of all
+of the inference rules of propositional logic to the level
+of higher-order constructive logic. Along the way we&#8217;ll see
+a few places where the &#8220;classical&#8221; rules don&#8217;t work.
+We now go through each rule from propositional logic and
+give its analog in the predicate logic of the Lean prover.</p>
+<section id="true">
+<h3><span class="section-number">3.4.1. </span>true (&#8868;)<a class="headerlink" href="#true" title="Permalink to this heading">&#61633;</a></h3>
+<p>In propositional logic, we had the rule that &#8868;, always
+evaluates to true (tt in Lean). The definition said this:
+<em>true_intro_rule := &#10214; &#8868; &#10215; i = tt</em>.</p>
+<p>In Lean, by contrast, there is a proposition, <em>true</em>, that
+has proof, called <em>intro</em>. We write <em>true.intro</em> to refer
+to it in its namespace.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20z%20%3A%3D%205" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_45.lean">
-try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">z</span> <span class="o">:=</span> <span class="mi">5</span>
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20true%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20a%20proposition%0Aexample%20%3A%20true%20%3A%3D%20true.intro%20%20--%20a%20proof%20of%20it" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_38.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="n">true</span>                   <span class="c1">-- a proposition</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">true</span> <span class="o">:=</span> <span class="n">true.intro</span>  <span class="c1">-- a proof of it</span>
+</pre></div>
+</div>
+</div><p>Now we&#8217;ll see exactly how the proposition, true, with
+true.intro as a proof, how it is all defined. It&#8217;s simple.
+Propositions are types, so true is a type, but one that
+inhabits Prop; and it has one constant constructor and
+that&#8217;s the one and only proof, <em>intro</em>.That&#8217;s it!</p>
+<p>inductive true : Prop
+| intro : true</p>
+<p>Sadly, a proof of true is pretty useless. A value of this type
+doesn&#8217;t even provide one bit of information, as a Boolean value
+would. There&#8217;s no interesting elimination rule for true.
+false
+&#8212;&#8211;</p>
+<p>In propositional logic, we had the propositional expression
+(prop_expr), &#8869;, for <em>false</em>. In Lean, by contrast, <em>false</em> is
+a <em>proposition</em>, which is to say, a type, called <em>false</em>.
+Because we want this proposition never to be true, we define
+it as a type with no values/proofs at all&#8211;as an uninhabited
+type.</p>
+<p>inductive false : Prop</p>
+<p>There is no way ever to produce a proof of <em>false</em> because
+the type has no value constructors. There is no introduction
+rule false.</p>
+<p>In propositional logic, the false elimination rule said that
+if an expression evaluates to ff, then it follows (implication)
+that any other expression evaluates to tt. The rule in Lean is
+called false.elim. It says that from a proof of false, a proof
+(or value) of <em>any</em> type in any type universe can be produced:
+not only proofs of other propositions but values of any types.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20false%0A%23check%20%40false.elim%20%20--%20false.elim%20%3A%20%CE%A0%20%7BC%20%3A%20Sort%20u_1%7D%2C%20false%20%E2%86%92%20C%0A%0A--%20explicit%20application%20of%20Lean's%20false.elim%20rule%0Aexample%20%3A%20false%20%E2%86%92%200%20%3D%201%20%3A%3D%0Abegin%0Aassume%20f%2C%0Aexact%20false.elim%20f%2C%20%20%20%20%20%20%20--%20So%20what%20is%20C%20(_)%3F%20It's%20the%20goal%2C%200%20%3D%201.%0A--%20exact%20%40false.elim%20_%20f%2C%20%20%20%20--%20Note%20that%20C%20is%20an%20implicit%20argument!%0Aend%0A%0A%2F-%0AWe%20can%20also%20do%20case%20analysis%20on%20f.%20We%20will%20get%0Aone%20case%20for%20each%20possible%20form%20of%20proof%2C%20f.%20As%0Athere%20are%20no%20proofs%20of%20f%2C%20there%20are%20no%20cases%20at%0Aall%2C%20and%20the%20proof%20is%20completed.%0A-%2F%0Aexample%20%3A%20false%20%E2%86%92%200%20%3D%201%20%3A%3D%0Abegin%0Aassume%20f%2C%0Acases%20f%2C%0Aend%0A%0A%2F-%0AFalse%20eliminations%20works%20for%20%22return%20types%22%20in%20any%0Atype%20universe.%20When%20the%20argument%20and%20return%20types%0Aare%20both%20in%20Prop%2C%20one%20has%20an%20ordinary%20implication.%0A-%2F%0Aexample%20%3A%20false%20%E2%86%92%20nat%20%3A%3D%0Abegin%0Aassume%20f%2C%0Acases%20f%2C%0A--%20contradiction%2C%20%20--%20this%20tactic%20works%20here%2C%20too%0Aend" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_78.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="n">false</span>
+<span class="k">#check</span> <span class="bp">@</span><span class="n">false.elim</span>  <span class="c1">-- false.elim : &#928; {C : Sort u_1}, false &#8594; C</span>
+
+<span class="c1">-- explicit application of Lean&#39;s false.elim rule</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">false</span> <span class="bp">&#8594;</span> <span class="mi">0</span> <span class="bp">=</span> <span class="mi">1</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">assume</span> <span class="n">f</span><span class="o">,</span>
+<span class="n">exact</span> <span class="n">false.elim</span> <span class="n">f</span><span class="o">,</span>       <span class="c1">-- So what is C (_)? It&#39;s the goal, 0 = 1.</span>
+<span class="c1">-- exact @false.elim _ f,    -- Note that C is an implicit argument!</span>
+<span class="kd">end</span>
+
+<span class="c">/-</span>
+<span class="cm">We can also do case analysis on f. We will get</span>
+<span class="cm">one case for each possible form of proof, f. As</span>
+<span class="cm">there are no proofs of f, there are no cases at</span>
+<span class="cm">all, and the proof is completed.</span>
+<span class="cm">-/</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">false</span> <span class="bp">&#8594;</span> <span class="mi">0</span> <span class="bp">=</span> <span class="mi">1</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">assume</span> <span class="n">f</span><span class="o">,</span>
+<span class="n">cases</span> <span class="n">f</span><span class="o">,</span>
+<span class="kd">end</span>
+
+<span class="c">/-</span>
+<span class="cm">False eliminations works for &quot;return types&quot; in any</span>
+<span class="cm">type universe. When the argument and return types</span>
+<span class="cm">are both in Prop, one has an ordinary implication.</span>
+<span class="cm">-/</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">false</span> <span class="bp">&#8594;</span> <span class="n">nat</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">assume</span> <span class="n">f</span><span class="o">,</span>
+<span class="n">cases</span> <span class="n">f</span><span class="o">,</span>
+<span class="c1">-- contradiction,  -- this tactic works here, too</span>
+<span class="kd">end</span>
 </pre></div>
 </div>
 </div></section>
+<section id="and">
+<h3><span class="section-number">3.4.2. </span>and &#8743;<a class="headerlink" href="#and" title="Permalink to this heading">&#61633;</a></h3>
+<p>From propositional logic we had three inference rules defining
+the meaning of <em>and</em>, one introduction and two elimination rules.
+These rules re-appear in both first-order predicate logic and in
+the higher-order logic of Lean, but now in a much richer logic.
+In this chapter we&#8217;ll see how this is done, using <em>and</em> as an
+easy example.</p>
+<ul class="simple">
+<li><p>and_intro_rule := &#10214; X &#10215; i = tt &#8594; &#10214; Y &#10215; i = tt &#8594; &#10214;(X &#8743; Y)&#10215; i = tt</p></li>
+<li><p>and_elim_left_rule := (&#10214;(X &#8743; Y)&#10215; i = tt) &#8594; (&#10214;X&#10215; i = tt)</p></li>
+<li><p>and_elim_right_rule := (&#10214;(X &#8743; Y)&#10215; i = tt) &#8594; (&#10214;Y&#10215; i = tt)</p></li>
+</ul>
+<section id="proposition-builders">
+<h4><span class="section-number">3.4.2.1. </span>Proposition Builders<a class="headerlink" href="#proposition-builders" title="Permalink to this heading">&#61633;</a></h4>
+<p>A key idea in Lean&#8217;s definitions is that <em>and</em> is a <em>polymorphic</em>
+data type. That is to say, its akin to a function takes any two
+propositions (types in Prop) as arguments and yields a new Type.
+This new type encodes the proposition that is the conjunction of
+the given proposition arguments. Let&#8217;s see how <em>and</em> is defined.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=structure%20and%20(A%20B%20%3A%20Prop)%20%3A%20Prop%20%3A%3D%0Aintro%20%3A%3A%20(left%20%3A%20A)%20(right%20%3A%20B)" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_139.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">structure</span> <span class="n">and</span> <span class="o">(</span><span class="n">A</span> <span class="n">B</span> <span class="o">:</span> <span class="kt">Prop</span><span class="o">)</span> <span class="o">:</span> <span class="kt">Prop</span> <span class="o">:=</span>
+<span class="n">intro</span> <span class="o">::</span> <span class="o">(</span><span class="n">left</span> <span class="o">:</span> <span class="n">A</span><span class="o">)</span> <span class="o">(</span><span class="n">right</span> <span class="o">:</span> <span class="n">B</span><span class="o">)</span>
+</pre></div>
+</div>
+</div><p>The <em>structure</em> keyword is shorthand for <em>inductive</em> and can be
+used (only) when a type has just one constructor. The name of the
+constructor here is <em>intro</em>. It takes two arguments, <em>left</em>, a
+proof (value) of (type) <em>A</em>, and <em>right</em>, a proof of <em>B</em>.</p>
+<p>A benefit of using the <em>structure</em> keyword is that Lean generates
+field access functions with the given field names. For example, if
+<em>(h : A &#8743; B)</em>, then <em>(h.left : A)</em> and <em>(h.right : B)</em>.</p>
+</section>
+<section id="introduction-proof-constructors">
+<h4><span class="section-number">3.4.2.2. </span>Introduction: Proof Constructors<a class="headerlink" href="#introduction-proof-constructors" title="Permalink to this heading">&#61633;</a></h4>
+<p>The second key idea is that the constructors of a logical type
+define what terms count as proofs, i.e., values of the type.</p>
+<p>In the case of a conjunction, there is just one constructor,
+namely <em>intro,</em> takes two proof values as arguments and yielding
+a proof of the conjunction of the propositions that they prove.</p>
+<p>Note: It&#8217;s important to distinguish clearly between <em>and</em> and
+<em>intro</em> in your mind. The <em>and</em> connective (&#8743;) is a proposition
+builder, a type builder. It takes two <em>propositions</em> (types),
+<em>(A B : Prop)</em> as its arguments and yields a new proposition
+(type) as a result, namely <em>(and A B),</em> also written as <em>A &#8743; B</em>.</p>
+<p>On the other hand, <em>and.intro</em> is a <em>proof/value constructor.</em>
+It takes two <em>proof values, (a : A)</em> and <em>(b : B)</em> as arguments,
+and yields a new proof/value/term, <em>&#10216; a, b &#10217; : A &#8743; B</em>. There is
+no other way to construct a proof of a conjunction, <em>A &#8743; B,</em> than
+to use this constructor.</p>
+</section>
+<section id="elimination-case-analysis">
+<h4><span class="section-number">3.4.2.3. </span>Elimination: Case Analysis<a class="headerlink" href="#elimination-case-analysis" title="Permalink to this heading">&#61633;</a></h4>
+<p>Now that we&#8217;ve seen how to (1) construct a conjunction from two
+given propositions, and (2) construct a proof of one, we turn to
+the question, what can we <em>do</em> with such a proof if we have one.</p>
+<p>The answer, in general, is that we can analyze how it could have
+been built, with an aim to show that a given proof goal follows
+in every case. If we can show that, then we&#8217;ve proved it always
+holds.</p>
+<p>An already familiar example is our earlier case analysis of values
+of type bool. When we do case analysis on an arbitrary bool value,
+we have to consider the two ways (constructors) that a bool can be
+constructed: using the <em>tt</em> constructor or the <em>ff</em> constructor. A
+proof by case analysis on a bool, b, thus requires two sub-proofs:
+one that shows a given goal follows if <em>b</em> is <em>tt</em> and another that
+shows it follows if <em>b</em> is <em>ff</em>.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=example%20(b%20%3A%20bool)%20%3A%20%20bnot%20(bnot%20b)%20%3D%20b%20%3A%3D%0Abegin%0Acases%20b%2C%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20NB%3A%20one%20case%20per%20constructor%0Arepeat%20%7B%20apply%20rfl%20%7D%2C%20--%20prove%20goal%20*in%20each%20case*%0A--%20QED.%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20thus%20proving%20it%20in%20*all*%20cases%0Aend" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_195.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">example</span> <span class="o">(</span><span class="n">b</span> <span class="o">:</span> <span class="n">bool</span><span class="o">)</span> <span class="o">:</span>  <span class="n">bnot</span> <span class="o">(</span><span class="n">bnot</span> <span class="n">b</span><span class="o">)</span> <span class="bp">=</span> <span class="n">b</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="n">cases</span> <span class="n">b</span><span class="o">,</span>              <span class="c1">-- NB: one case per constructor</span>
+<span class="n">repeat</span> <span class="o">{</span> <span class="n">apply</span> <span class="n">rfl</span> <span class="o">},</span> <span class="c1">-- prove goal *in each case*</span>
+<span class="c1">-- QED.               -- thus proving it in *all* cases</span>
+<span class="kd">end</span>
+</pre></div>
+</div>
+</div><p>Turning to a proof of a conjunction, <em>A &#8743; B</em>, only two
+small details change. First, there <em>and</em> has just one
+constructor. So when we do case analysis, we&#8217;ll get only
+one case to consider. Second, the constructor now takes
+two arguments, rather than zero as with tt and ff. So,
+in that one case, we&#8217;ll be entitled to assume that the
+two proof arguments must have been given. These will be
+the <em>left</em> and <em>right</em> proofs of <em>A</em> and <em>B</em> separately.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20Case%20analysis%20on%20*proof*%20values%0Aexample%20(X%20Y%3A%20Prop)%20%3A%20X%20%E2%88%A7%20Y%20%E2%86%92%20X%20%3A%3D%0Abegin%0Aassume%20h%2C%20%20%20%20%20%20%20%20%20%20%20--%20a%20proof%20we%20can%20*use*%0Acases%20h%20with%20x%20y%2C%20%20%20--%20analyze%20each%20possible%20case%0Aexact%20x%2C%20%20%20%20%20%20%20%20%20%20%20%20--%20also%20known%20as%20destructuring%0Aend%0A%0A--%20We%20can%20even%20use%20%22case%20analysis%22%20programming%20notation!%0Aexample%20(X%20Y%3A%20Prop)%20%3A%20X%20%E2%88%A7%20Y%20%E2%86%92%20X%0A%7C%20(and.intro%20a%20b)%20%3A%3D%20a" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_213.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Case analysis on *proof* values</span>
+<span class="kd">example</span> <span class="o">(</span><span class="n">X</span> <span class="n">Y</span><span class="o">:</span> <span class="kt">Prop</span><span class="o">)</span> <span class="o">:</span> <span class="n">X</span> <span class="bp">&#8743;</span> <span class="n">Y</span> <span class="bp">&#8594;</span> <span class="n">X</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">assume</span> <span class="n">h</span><span class="o">,</span>           <span class="c1">-- a proof we can *use*</span>
+<span class="n">cases</span> <span class="n">h</span> <span class="k">with</span> <span class="n">x</span> <span class="n">y</span><span class="o">,</span>   <span class="c1">-- analyze each possible case</span>
+<span class="n">exact</span> <span class="n">x</span><span class="o">,</span>            <span class="c1">-- also known as destructuring</span>
+<span class="kd">end</span>
+
+<span class="c1">-- We can even use &quot;case analysis&quot; programming notation!</span>
+<span class="kd">example</span> <span class="o">(</span><span class="n">X</span> <span class="n">Y</span><span class="o">:</span> <span class="kt">Prop</span><span class="o">)</span> <span class="o">:</span> <span class="n">X</span> <span class="bp">&#8743;</span> <span class="n">Y</span> <span class="bp">&#8594;</span> <span class="n">X</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">and.intro</span> <span class="n">a</span> <span class="n">b</span><span class="o">)</span> <span class="o">:=</span> <span class="n">a</span>
+</pre></div>
+</div>
+</div></section>
+</section>
+<section id="or">
+<h3><span class="section-number">3.4.3. </span>or &#8743;<a class="headerlink" href="#or" title="Permalink to this heading">&#61633;</a></h3>
+<ul class="simple">
+<li><p>def or_intro_left_rule := (&#10214;X&#10215; i = tt) &#8594; (&#10214;(X &#8744; Y)&#10215; i = tt)</p></li>
+<li><p>def or_intro_right_rule := (&#10214;Y&#10215; i = tt) &#8594; (&#10214;(X &#8744; Y)&#10215; i = tt)</p></li>
+<li><p>def or_elim_rule :=   (&#10214;(X &#8744; Y)&#10215; i = tt) &#8594; (&#10214;(X =&gt; Z)&#10215; i = tt) &#8594; (&#10214;(Y =&gt; Z)&#10215; i = tt) &#8594; (&#10214;(Z)&#10215; i = tt)</p></li>
+</ul>
+<p>Just as with &#8743;, the &#8744; connective in Lean is represented as
+a logical type, polymorphic in two propositional arguments.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=inductive%20or%20(A%20B%20%3A%20Prop)%20%3A%20Prop%0A%7C%20inl%20(h%20%3A%20A)%20%3A%20or%0A%7C%20inr%20(h%20%3A%20B)%20%3A%20or%0Aend%20hidden" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_237.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">inductive</span> <span class="n">or</span> <span class="o">(</span><span class="n">A</span> <span class="n">B</span> <span class="o">:</span> <span class="kt">Prop</span><span class="o">)</span> <span class="o">:</span> <span class="kt">Prop</span>
+<span class="bp">|</span> <span class="n">inl</span> <span class="o">(</span><span class="n">h</span> <span class="o">:</span> <span class="n">A</span><span class="o">)</span> <span class="o">:</span> <span class="n">or</span>
+<span class="bp">|</span> <span class="n">inr</span> <span class="o">(</span><span class="n">h</span> <span class="o">:</span> <span class="n">B</span><span class="o">)</span> <span class="o">:</span> <span class="n">or</span>
+<span class="kd">end</span> <span class="n">hidden</span>
+</pre></div>
+</div>
+</div><p>But whereas the intended meaning of &#8743; is that each of two
+given propositions has a proof, the intended meaning of &#8744;
+is that <em>at least one of</em> the propositions has a proof. This
+difference shows up in how proofs of disjunctions are created
+and used.</p>
+<section id="introduction-rules">
+<h4><span class="section-number">3.4.3.1. </span>Introduction Rules<a class="headerlink" href="#introduction-rules" title="Permalink to this heading">&#61633;</a></h4>
+<p>We now have two constructors. The first, <em>or.inl</em>, constructs
+a proof of <em>A &#8744; B</em> from a proof, (a : A). The second, <em>or.inr</em>,
+constructs a proof of <em>A &#8744; B</em> from a proof of <em>B</em>.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20Example%20using%20a%20lambda%20expression.%20Be%20sure%20you%20understand%20it.%0Aexample%20(A%20B%20%3A%20Prop)%20%3A%20A%20%E2%86%92%20A%20%E2%88%A8%20B%20%3A%3D%20fun%20(a%20%3A%20A)%2C%20or.inl%20a%0A%2F-%0AOk%2C%20you%20might%20have%20notice%20that%20I've%20been%20declaring%20some%20named%0Aarguments%20to%20the%20left%20of%20the%20%3A%20rather%20than%20giving%20them%20names%0Awith%20%E2%88%80%20bindings%20to%20the%20right.%20Yes%2C%20that's%20a%20thing%20you%20can%20do.%0AAlso%20note%20that%20we%20*do*%20bind%20a%20name%2C%20*a*m%20to%20the%20assumed%20proof%0Aof%20*A*%2C%20which%20we%20then%20use%20to%20build%20a%20proof%20of%20*A%20%E2%88%A8%20B*.%20That's%0Aall%20there%20is%20to%20it.%0A-%2F" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_257.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Example using a lambda expression. Be sure you understand it.</span>
+<span class="kd">example</span> <span class="o">(</span><span class="n">A</span> <span class="n">B</span> <span class="o">:</span> <span class="kt">Prop</span><span class="o">)</span> <span class="o">:</span> <span class="n">A</span> <span class="bp">&#8594;</span> <span class="n">A</span> <span class="bp">&#8744;</span> <span class="n">B</span> <span class="o">:=</span> <span class="k">fun</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="n">A</span><span class="o">),</span> <span class="n">or.inl</span> <span class="n">a</span>
+<span class="c">/-</span>
+<span class="cm">Ok, you might have notice that I&#39;ve been declaring some named</span>
+<span class="cm">arguments to the left of the : rather than giving them names</span>
+<span class="cm">with &#8704; bindings to the right. Yes, that&#39;s a thing you can do.</span>
+<span class="cm">Also note that we *do* bind a name, *a*m to the assumed proof</span>
+<span class="cm">of *A*, which we then use to build a proof of *A &#8744; B*. That&#39;s</span>
+<span class="cm">all there is to it.</span>
+<span class="cm">-/</span>
+</pre></div>
+</div>
+</div></section>
+<section id="elimination-rules">
+<h4><span class="section-number">3.4.3.2. </span>Elimination Rules<a class="headerlink" href="#elimination-rules" title="Permalink to this heading">&#61633;</a></h4>
+<p>How do we use a proof of a conjunction, <em>A &#8744; B</em>? In general,
+what you&#8217;ll want to show is that if you have a proof, h, of
+<em>A &#8744; B</em>  then you can obtain a proof of a goal proposition,
+let&#8217;s call it C.</p>
+<p>The proof is constructed by case analysis on h. As <em>(h : A &#8744; B)</em>
+(read that as <em>h is a proof of A &#8744; B</em>), there are two cases that
+we have to consider: <em>h</em> could be <em>or.inl a</em>, where <em>(a : A)</em>, or
+<em>h</em> could be <em>or.inr b</em>, where <em>(b : B).</em></p>
+<p>But that&#8217;s not yet enough to prove <em>C</em>. In addition, we&#8217;ll need
+proofs that <em>A &#8594; C</em> and <em>B &#8594; C</em>. In other words, to show that
+<em>A &#8744; B &#8594; C</em>, we need to show that that true <em>in either case</em> in
+a case analysis of a proof of <em>A &#8744; B</em>. The elimination rule for
+&#8744; is thus akin to what we saw in propositional logic.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20or.elim%20%3A%20%E2%88%80%20%7Ba%20b%20c%20%3A%20Prop%7D%2C%20a%20%E2%88%A8%20b%20%E2%86%92%20(a%20%E2%86%92%20c)%20%E2%86%92%20(b%20%E2%86%92%20c)%20%E2%86%92%20c%0A--%20deduce%20c%20from%20proofs%20of%20a%20%E2%88%A8%20b%2C%20a%20%E2%86%92%20c%2C%20and%20b%20%E2%86%92%20c%2C%0A%23check%20%40or.elim%0A%0Aexample%20(P%20Q%20R%20%3A%20Prop)%20%3A%20P%20%E2%88%A8%20Q%20%E2%86%92%20(P%20%E2%86%92%20R)%20%E2%86%92%20(Q%20%E2%86%92%20R)%20%E2%86%92%20R%0A%7C%20(or.inl%20p)%20pr%20qr%20%3A%3D%20pr%20p%0A%7C%20(or.inr%20q)%20pr%20qr%20%3A%3D%20qr%20q" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_289.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- or.elim : &#8704; {a b c : Prop}, a &#8744; b &#8594; (a &#8594; c) &#8594; (b &#8594; c) &#8594; c</span>
+<span class="c1">-- deduce c from proofs of a &#8744; b, a &#8594; c, and b &#8594; c,</span>
+<span class="k">#check</span> <span class="bp">@</span><span class="n">or.elim</span>
+
+<span class="kd">example</span> <span class="o">(</span><span class="n">P</span> <span class="n">Q</span> <span class="n">R</span> <span class="o">:</span> <span class="kt">Prop</span><span class="o">)</span> <span class="o">:</span> <span class="n">P</span> <span class="bp">&#8744;</span> <span class="n">Q</span> <span class="bp">&#8594;</span> <span class="o">(</span><span class="n">P</span> <span class="bp">&#8594;</span> <span class="n">R</span><span class="o">)</span> <span class="bp">&#8594;</span> <span class="o">(</span><span class="n">Q</span> <span class="bp">&#8594;</span> <span class="n">R</span><span class="o">)</span> <span class="bp">&#8594;</span> <span class="n">R</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">or.inl</span> <span class="n">p</span><span class="o">)</span> <span class="n">pr</span> <span class="n">qr</span> <span class="o">:=</span> <span class="n">pr</span> <span class="n">p</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">or.inr</span> <span class="n">q</span><span class="o">)</span> <span class="n">pr</span> <span class="n">qr</span> <span class="o">:=</span> <span class="n">qr</span> <span class="n">q</span>
+</pre></div>
+</div>
+</div><div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%2F-%0A--%20formalize%20the%20rest%0A--%209.%20%C2%AC%C2%ACX%20%E2%8A%A2%20X%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20negation%20elimination%0A--%2010.%20X%20%E2%86%92%20%E2%8A%A5%20%E2%8A%A2%20%C2%ACX%20%20%20%20%20%20%20%20%20%20%20%20%20--%20negation%20introduction%0A--%2011.%20(X%20%E2%8A%A2%20Y)%20%E2%8A%A2%20(X%20%E2%86%92%20Y)%20%20%20%20%20%20--%20a%20little%20complicated%0A--%2012.%20X%20%E2%86%92%20Y%2C%20X%20%E2%8A%A2%20Y%20%20%20%20%20%20%20%20%20%20%20--%20arrow%20elimination%0A--%2013.%20X%20%E2%86%92%20Y%2C%20Y%20%E2%86%92%20X%20%E2%8A%A2%20X%20%E2%86%94%20Y%20%20%20%20--%20iff%20introduction%0A--%2014.%20X%20%E2%86%94%20Y%20%E2%8A%A2%20X%20%E2%86%92%20Y%20%20%20%20%20%20%20%20%20%20--%20iff%20elimination%20left%0A--%2015.%20X%20%E2%86%94%20Y%20%E2%8A%A2%20Y%20%E2%86%92%20X%20%20%20%20%20%20%20%20%20%20--%20iff%20elimination%20right" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_301.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c">/-</span>
+<span class="cm">-- formalize the rest</span>
+<span class="cm">-- 9. &#172;&#172;X &#8866; X                 -- negation elimination</span>
+<span class="cm">-- 10. X &#8594; &#8869; &#8866; &#172;X             -- negation introduction</span>
+<span class="cm">-- 11. (X &#8866; Y) &#8866; (X &#8594; Y)      -- a little complicated</span>
+<span class="cm">-- 12. X &#8594; Y, X &#8866; Y           -- arrow elimination</span>
+<span class="cm">-- 13. X &#8594; Y, Y &#8594; X &#8866; X &#8596; Y    -- iff introduction</span>
+<span class="cm">-- 14. X &#8596; Y &#8866; X &#8594; Y          -- iff elimination left</span>
+<span class="cm">-- 15. X &#8596; Y &#8866; Y &#8594; X          -- iff elimination right</span>
+</pre></div>
+</div>
+</div></section>
+</section>
+</section>
 </section>
 
 
