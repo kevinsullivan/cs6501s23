@@ -57,7 +57,7 @@
 \contentsline {section}{\numberline {2.8}Inference Rules Validation}{27}{section.2.8}
 \contentsline {subsection}{\numberline {2.8.1}Inference Rule Statements}{27}{subsection.2.8.1}
 \contentsline {subsection}{\numberline {2.8.2}Proofs}{29}{subsection.2.8.2}
-\contentsline {chapter}{\numberline {3}Predicate Logic}{31}{chapter.3}
+\contentsline {chapter}{\numberline {3}Constructive Logic}{31}{chapter.3}
 \contentsline {section}{\numberline {3.1}Higher\sphinxhyphen {}Order Predicate Logic}{31}{section.3.1}
 \contentsline {section}{\numberline {3.2}Propositions as Types}{31}{section.3.2}
 \contentsline {subsection}{\numberline {3.2.1}Computational Types}{32}{subsection.3.2.1}
@@ -68,11 +68,21 @@
 \contentsline {subsection}{\numberline {3.3.1}Practice Example}{36}{subsection.3.3.1}
 \contentsline {section}{\numberline {3.4}Inference Rules}{36}{section.3.4}
 \contentsline {subsection}{\numberline {3.4.1}true (⊤)}{37}{subsection.3.4.1}
-\contentsline {subsection}{\numberline {3.4.2}and ∧}{38}{subsection.3.4.2}
+\contentsline {subsection}{\numberline {3.4.2}false}{37}{subsection.3.4.2}
+\contentsline {subsection}{\numberline {3.4.3}and ∧}{38}{subsection.3.4.3}
 \contentsline {subsubsection}{Proposition Builders}{38}{subsubsection*.6}
 \contentsline {subsubsection}{Introduction: Proof Constructors}{38}{subsubsection*.7}
 \contentsline {subsubsection}{Elimination: Case Analysis}{39}{subsubsection*.8}
-\contentsline {subsection}{\numberline {3.4.3}or ∧}{39}{subsection.3.4.3}
+\contentsline {subsection}{\numberline {3.4.4}or ∨}{39}{subsection.3.4.4}
 \contentsline {subsubsection}{Introduction Rules}{40}{subsubsection*.9}
 \contentsline {subsubsection}{Elimination Rules}{40}{subsubsection*.10}
-\contentsline {chapter}{\numberline {4}Index}{41}{chapter.4}
+\contentsline {subsubsection}{Examples}{40}{subsubsection*.11}
+\contentsline {subsection}{\numberline {3.4.5}not (¬)}{41}{subsection.3.4.5}
+\contentsline {subsubsection}{Introduction}{41}{subsubsection*.12}
+\contentsline {subsubsection}{Elimination}{42}{subsubsection*.13}
+\contentsline {subsubsection}{Constructive vs. Classical}{42}{subsubsection*.14}
+\contentsline {subsubsection}{Excluded Middle}{43}{subsubsection*.15}
+\contentsline {subsubsection}{Exercise}{43}{subsubsection*.16}
+\contentsline {subsection}{\numberline {3.4.6}Coming Soon}{44}{subsection.3.4.6}
+\contentsline {chapter}{\numberline {4}Dependent Types}{45}{chapter.4}
+\contentsline {chapter}{\numberline {5}Index}{47}{chapter.5}

@@ -81,7 +81,7 @@
 
 
 \title{Computing Foundations}
-\date{Feb 19, 2023}
+\date{Feb 21, 2023}
 \release{1.2.2}
 \author{Kevin Sullivan}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -2321,11 +2321,11 @@ the two ways equivalent?
 \sphinxstepscope
 
 
-\chapter{Predicate Logic}
-\label{\detokenize{A_02_Predicate_Logic:predicate-logic}}\label{\detokenize{A_02_Predicate_Logic:introduction}}\label{\detokenize{A_02_Predicate_Logic::doc}}
+\chapter{Constructive Logic}
+\label{\detokenize{A_02_Constructive_Logic:constructive-logic}}\label{\detokenize{A_02_Constructive_Logic:introduction}}\label{\detokenize{A_02_Constructive_Logic::doc}}
 
 \section{Higher\sphinxhyphen{}Order Predicate Logic}
-\label{\detokenize{A_02_Predicate_Logic:higher-order-predicate-logic}}
+\label{\detokenize{A_02_Constructive_Logic:higher-order-predicate-logic}}
 \sphinxAtStartPar
 The term, \sphinxstyleemphasis{predicate logic}, used informally, is usually taken to
 refer to first\sphinxhyphen{}order predicate logic (often extended with theories,
@@ -2382,7 +2382,7 @@ Generalizing (∀) over types gives us parametric polymorphism
 
 
 \section{Propositions as Types}
-\label{\detokenize{A_02_Predicate_Logic:propositions-as-types}}
+\label{\detokenize{A_02_Constructive_Logic:propositions-as-types}}
 \sphinxAtStartPar
 In the last section, we build on all of the ideas of
 the last chapter to gain an understanding of higher
@@ -2414,7 +2414,7 @@ there are any) serve as \sphinxstyleemphasis{proofs} of such propositions.
 
 
 \subsection{Computational Types}
-\label{\detokenize{A_02_Predicate_Logic:computational-types}}
+\label{\detokenize{A_02_Constructive_Logic:computational-types}}
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} The type of 1 is nat}
 \PYG{k}{\PYGZsh{}check} \PYG{l+m+mi}{1}
@@ -2462,7 +2462,7 @@ there are any) serve as \sphinxstyleemphasis{proofs} of such propositions.
 
 
 \subsection{Logical Types (Propositions)}
-\label{\detokenize{A_02_Predicate_Logic:logical-types-propositions}}
+\label{\detokenize{A_02_Constructive_Logic:logical-types-propositions}}
 \sphinxAtStartPar
 Now we’ll turn to the idea that propositions are types of
 a logical kind. In Lean and related proof assistants and in
@@ -2528,7 +2528,7 @@ You might finally ask, what is the type of Prop? It’s Type!
 
 
 \subsection{Type Universe Levels}
-\label{\detokenize{A_02_Predicate_Logic:type-universe-levels}}
+\label{\detokenize{A_02_Constructive_Logic:type-universe-levels}}
 \sphinxAtStartPar
 In the top row we have a hierarchy of type universes, starting
 with Sort 0 and extending up. Prop is the common name in Lean for
@@ -2579,7 +2579,7 @@ also infer universe levels.
 
 
 \subsection{Implicit Arguments}
-\label{\detokenize{A_02_Predicate_Logic:implicit-arguments}}
+\label{\detokenize{A_02_Constructive_Logic:implicit-arguments}}
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} With \PYGZob{}\PYGZcb{} we tell Lean that α should be inferred automatically}
 \PYG{k+kd}{def} \PYG{n}{my\PYGZus{}id\PYGZsq{}} \PYG{o}{\PYGZob{}} \PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Sort} \PYG{n}{u} \PYG{o}{\PYGZcb{}} \PYG{o}{(}\PYG{n}{a} \PYG{o}{:} \PYG{n}{α}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{a}
@@ -2597,7 +2597,7 @@ also infer universe levels.
 
 
 \section{From Truth to Proof}
-\label{\detokenize{A_02_Predicate_Logic:from-truth-to-proof}}
+\label{\detokenize{A_02_Constructive_Logic:from-truth-to-proof}}
 \sphinxAtStartPar
 In both propositional and first order predicate logic,
 inference rules are defined in terms of \sphinxstyleemphasis{truth judgments}.
@@ -2698,7 +2698,7 @@ but the application of Lean’s version, and.elim\_left.
 
 
 \subsection{Practice Example}
-\label{\detokenize{A_02_Predicate_Logic:practice-example}}
+\label{\detokenize{A_02_Constructive_Logic:practice-example}}
 \sphinxAtStartPar
 Exercise: Define two propositions (types in Prop) with
 made up names, each having two proof constructors also
@@ -2751,7 +2751,7 @@ of the the conjunction of the two propositions.
 
 
 \section{Inference Rules}
-\label{\detokenize{A_02_Predicate_Logic:inference-rules}}
+\label{\detokenize{A_02_Constructive_Logic:inference-rules}}
 \sphinxAtStartPar
 Next we’ll see that most of the inference rules
 of propositional logic have analogues in constructive
@@ -2779,7 +2779,7 @@ give its analog in the predicate logic of the Lean prover.
 
 
 \subsection{true (⊤)}
-\label{\detokenize{A_02_Predicate_Logic:true}}
+\label{\detokenize{A_02_Constructive_Logic:true}}
 \sphinxAtStartPar
 In propositional logic, we had the rule that ⊤, always
 evaluates to true (tt in Lean). The definition said this:
@@ -2810,9 +2810,10 @@ inductive true : Prop
 Sadly, a proof of true is pretty useless. A value of this type
 doesn’t even provide one bit of information, as a Boolean value
 would. There’s no interesting elimination rule for true.
-false
-—–
 
+
+\subsection{false}
+\label{\detokenize{A_02_Constructive_Logic:false}}
 \sphinxAtStartPar
 In propositional logic, we had the propositional expression
 (prop\_expr), ⊥, for \sphinxstyleemphasis{false}. In Lean, by contrast, \sphinxstyleemphasis{false} is
@@ -2876,7 +2877,7 @@ not only proofs of other propositions but values of any types.
 
 
 \subsection{and ∧}
-\label{\detokenize{A_02_Predicate_Logic:and}}
+\label{\detokenize{A_02_Constructive_Logic:and}}
 \sphinxAtStartPar
 From propositional logic we had three inference rules defining
 the meaning of \sphinxstyleemphasis{and}, one introduction and two elimination rules.
@@ -2901,7 +2902,7 @@ and\_elim\_right\_rule := (⟦(X ∧ Y)⟧ i = tt) → (⟦Y⟧ i = tt)
 
 
 \subsubsection{Proposition Builders}
-\label{\detokenize{A_02_Predicate_Logic:proposition-builders}}
+\label{\detokenize{A_02_Constructive_Logic:proposition-builders}}
 \sphinxAtStartPar
 A key idea in Lean’s definitions is that \sphinxstyleemphasis{and} is a \sphinxstyleemphasis{polymorphic}
 data type. That is to say, its akin to a function takes any two
@@ -2927,7 +2928,7 @@ field access functions with the given field names. For example, if
 
 
 \subsubsection{Introduction: Proof Constructors}
-\label{\detokenize{A_02_Predicate_Logic:introduction-proof-constructors}}
+\label{\detokenize{A_02_Constructive_Logic:introduction-proof-constructors}}
 \sphinxAtStartPar
 The second key idea is that the constructors of a logical type
 define what terms count as proofs, i.e., values of the type.
@@ -2953,7 +2954,7 @@ to use this constructor.
 
 
 \subsubsection{Elimination: Case Analysis}
-\label{\detokenize{A_02_Predicate_Logic:elimination-case-analysis}}
+\label{\detokenize{A_02_Constructive_Logic:elimination-case-analysis}}
 \sphinxAtStartPar
 Now that we’ve seen how to (1) construct a conjunction from two
 given propositions, and (2) construct a proof of one, we turn to
@@ -3008,8 +3009,8 @@ the \sphinxstyleemphasis{left} and \sphinxstyleemphasis{right} proofs of \sphinx
 \end{sphinxVerbatim}
 
 
-\subsection{or ∧}
-\label{\detokenize{A_02_Predicate_Logic:or}}\begin{itemize}
+\subsection{or ∨}
+\label{\detokenize{A_02_Constructive_Logic:or}}\begin{itemize}
 \item {} 
 \sphinxAtStartPar
 def or\_intro\_left\_rule := (⟦X⟧ i = tt) → (⟦(X ∨ Y)⟧ i = tt)
@@ -3044,7 +3045,7 @@ and used.
 
 
 \subsubsection{Introduction Rules}
-\label{\detokenize{A_02_Predicate_Logic:introduction-rules}}
+\label{\detokenize{A_02_Constructive_Logic:introduction-rules}}
 \sphinxAtStartPar
 We now have two constructors. The first, \sphinxstyleemphasis{or.inl}, constructs
 a proof of \sphinxstyleemphasis{A ∨ B} from a proof, (a : A). The second, \sphinxstyleemphasis{or.inr},
@@ -3065,7 +3066,7 @@ constructs a proof of \sphinxstyleemphasis{A ∨ B} from a proof of \sphinxstyle
 
 
 \subsubsection{Elimination Rules}
-\label{\detokenize{A_02_Predicate_Logic:elimination-rules}}
+\label{\detokenize{A_02_Constructive_Logic:elimination-rules}}
 \sphinxAtStartPar
 How do we use a proof of a conjunction, \sphinxstyleemphasis{A ∨ B}? In general,
 what you’ll want to show is that if you have a proof, h, of
@@ -3095,18 +3096,312 @@ a case analysis of a proof of \sphinxstyleemphasis{A ∨ B}. The elimination rul
 \PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{or.inr} \PYG{n}{q}\PYG{o}{)} \PYG{n}{pr} \PYG{n}{qr} \PYG{o}{:=} \PYG{n}{qr} \PYG{n}{q}
 \end{sphinxVerbatim}
 
+
+\subsubsection{Examples}
+\label{\detokenize{A_02_Constructive_Logic:examples}}
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{n}{P} \PYG{n}{Q}\PYG{o}{,} \PYG{n}{P} \PYG{n+nb+bp}{∨} \PYG{n}{Q} \PYG{n+nb+bp}{→} \PYG{n}{Q} \PYG{n+nb+bp}{∨} \PYG{n}{P} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{P} \PYG{n}{Q} \PYG{n}{h}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{h} \PYG{k}{with} \PYG{n}{p} \PYG{n}{q}\PYG{o}{,}
+\PYG{n}{exact} \PYG{n}{or.inr} \PYG{n}{p}\PYG{o}{,}
+\PYG{n}{exact} \PYG{n}{or.inl} \PYG{n}{q}\PYG{o}{,}
+\PYG{k+kd}{end}
+
+
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{n}{P} \PYG{n}{Q} \PYG{n}{R}\PYG{o}{,} \PYG{n}{P} \PYG{n+nb+bp}{∨} \PYG{o}{(}\PYG{n}{Q} \PYG{n+nb+bp}{∨} \PYG{n}{R}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{o}{(}\PYG{n}{P} \PYG{n+nb+bp}{∨} \PYG{n}{Q}\PYG{o}{)} \PYG{n+nb+bp}{∨} \PYG{n}{R} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{P} \PYG{n}{Q} \PYG{n}{R} \PYG{n}{h}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{h} \PYG{k}{with} \PYG{n}{p} \PYG{n}{qr}\PYG{o}{,}
+\PYG{n}{left}\PYG{n+nb+bp}{;} \PYG{n}{left}\PYG{n+nb+bp}{;} \PYG{n}{assumption}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{qr} \PYG{k}{with} \PYG{n}{q} \PYG{n}{r}\PYG{o}{,}
+\PYG{n}{left}\PYG{n+nb+bp}{;} \PYG{n}{exact} \PYG{n}{or.inr} \PYG{n}{q}\PYG{o}{,}
+\PYG{n}{right}\PYG{n+nb+bp}{;} \PYG{n}{assumption}\PYG{o}{,}
+\PYG{k+kd}{end}
+\end{sphinxVerbatim}
+
+
+\subsection{not (¬)}
+\label{\detokenize{A_02_Constructive_Logic:not}}
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} ¬¬X ⊢ X                 \PYGZhy{}\PYGZhy{} negation elimination}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} X → ⊥ ⊢ ¬X             \PYGZhy{}\PYGZhy{} negation introduction}
+\end{sphinxVerbatim}
+
+
+\subsubsection{Introduction}
+\label{\detokenize{A_02_Constructive_Logic:id1}}
+\sphinxAtStartPar
+We saw in propositional logic that if \sphinxstyleemphasis{X → false} then
+\sphinxstyleemphasis{X} must be false. That’s easy to see: \sphinxstyleemphasis{true → false} is
+false, so \sphinxstyleemphasis{X} can’t be \sphinxstyleemphasis{true}. On the other hand, \sphinxstyleemphasis{false
+→ false} is true. \sphinxstyleemphasis{X} can only be \sphinxstyleemphasis{false}. Now, saying \sphinxstyleemphasis{X
+is false} in propositional logic is equivalent to saying
+¬X is true, giving us our constructive ¬ introduction rule:
+X → ⊥ ⊢ ¬X. This is the rule of ¬ introduction: to prove
+\sphinxstyleemphasis{¬X} it will suffice to prove \sphinxstyleemphasis{X → false}.
+
+\sphinxAtStartPar
+The same idea reappears in the constructive logic of Lean.
+In fact, Lean simply \sphinxstyleemphasis{defines} \sphinxstyleemphasis{¬X} to mean \sphinxstyleemphasis{X → false.}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} def not (a : Prop) := a → false}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} prefix `¬`:40 := not}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{not}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+Let’s think about what \sphinxstyleemphasis{a → false} means, where \sphinxstyleemphasis{a} is any
+proposition. In Lean, a proof of an implication is a function,
+namely one that would turn \sphinxstyleemphasis{any} proof of \sphinxstyleemphasis{a} into a proof of
+false. So, \sphinxstyleemphasis{if there were} a proof of \sphinxstyleemphasis{a} then one could have
+a proof of \sphinxstyleemphasis{false.} That can’t happen because there is no proof
+of false. So there must be no proof of \sphinxstyleemphasis{a}. Therefore \sphinxstyleemphasis{a} is
+false, and we can write that as \sphinxstyleemphasis{¬a}.
+
+\sphinxAtStartPar
+To prove a proposition, \sphinxstyleemphasis{¬a}, we thus just have to prove that
+\sphinxstyleemphasis{a → false}. To do this, we assume we have a proof of \sphinxstyleemphasis{a} and
+show that that leads to an impossibility, which shows that the
+assumption was wrong, thus \sphinxstyleemphasis{¬a} must be true. You can pronounce
+\sphinxstyleemphasis{¬a} as \sphinxstyleemphasis{not a} or \sphinxstyleemphasis{a is false}, but it can also help to think
+of it as saying \sphinxstyleemphasis{there provably can be no proof of a.}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{l+m+mi}{0} \PYG{n+nb+bp}{=} \PYG{l+m+mi}{1} \PYG{n+nb+bp}{→} \PYG{n}{false} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{h}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{h}\PYG{o}{,}
+\PYG{k+kd}{end}
+
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{n+nb+bp}{¬} \PYG{l+m+mi}{0} \PYG{n+nb+bp}{=} \PYG{l+m+mi}{1} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{h}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{h}\PYG{o}{,}
+\PYG{k+kd}{end}
+
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{l+m+mi}{0} \PYG{n+nb+bp}{≠} \PYG{l+m+mi}{1} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{h}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{h}\PYG{o}{,}
+\PYG{k+kd}{end}
+\end{sphinxVerbatim}
+
+
+\subsubsection{Elimination}
+\label{\detokenize{A_02_Constructive_Logic:elimination}}
+\sphinxAtStartPar
+In propositional logic, we have the rule of (double) negation
+elimination: \sphinxstyleemphasis{¬¬X → X}. An easy way to think about this is that
+two negations cancel out: negation is an involution. As we’ll
+now see, this rule is also defines proof by contradiction.
+
+\sphinxAtStartPar
+To see that, one can read the rule as saying that to prove \sphinxstyleemphasis{X}
+it will suffice to assume \sphinxstyleemphasis{¬X} and show that that leads to a
+a contradiction, thus proving that \sphinxstyleemphasis{¬X} is false, thus \sphinxstyleemphasis{¬¬X}.
+From there in classical logic it’s just a final step to \sphinxstyleemphasis{X}.
+
+\sphinxAtStartPar
+Is this inference rule valid in Lean? Let’s try to prove that
+it is. Our goal is to prove ∀ X, ¬¬X → X. We first rewrite the
+inner \sphinxstyleemphasis{¬X} on the left of the → as \sphinxstyleemphasis{(X → false)}. \sphinxstyleemphasis{¬¬X} becomes
+\sphinxstyleemphasis{¬(X → false)}. Rewriting again gives \sphinxstyleemphasis{(X → false) → false.}
+Our goal, then, is to prove ((X → false) → false) → X. We get
+a start by assuming (h : (X → false) → false), but then find
+that from \sphinxstyleemphasis{h} there’s no way to squeeze out a proof of \sphinxstyleemphasis{X}.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{X} \PYG{o}{:} \PYG{k+kt}{Prop}\PYG{o}{)}\PYG{o}{,} \PYG{n+nb+bp}{¬}\PYG{n+nb+bp}{¬}\PYG{n}{X} \PYG{n+nb+bp}{→} \PYG{n}{X} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{X} \PYG{n}{h}\PYG{o}{,}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} can\PYGZsq{}t do case analysis on a function}
+\PYG{n}{cases} \PYG{n}{h}\PYG{o}{,}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} we\PYGZsq{}re stuck with nowhere left to go!}
+\PYG{k+kd}{end}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+What we’ve found then is that (double) negation elimination,
+and thus proof by contradiction, is not valid in Lean (or in
+similar constructive logic proof assistants). This shows that
+in Lean a proposition, \sphinxstyleemphasis{X}, being proved \sphinxstyleemphasis{not false} (\sphinxstyleemphasis{¬¬X})
+does not imply that \sphinxstyleemphasis{X} is true. From a proof of the former we
+can’t obtain a proof of the latter. From a proof that \sphinxstyleemphasis{¬X is
+false} we have no way to derive a proof of \sphinxstyleemphasis{X}.
+
+
+\subsubsection{Constructive vs. Classical}
+\label{\detokenize{A_02_Constructive_Logic:constructive-vs-classical}}
+\sphinxAtStartPar
+In constructive logic, a proposition can thus be provably true
+(by a proof), it can be provably false (by a proof that there is
+no proof of it), or it can be provably not false, which is to
+say that there must exist a proof, but where one cannot be
+constructed from the given premise alone.
+
+\sphinxAtStartPar
+We’ll see the the same constructivity requirement again when we
+discuss proofs of existence. In a nutshell, a constructive proof
+exhibits a specific “witness” to show that one does exist. To be
+constructive means that a proof of existence requires an actual
+witness.
+
+\sphinxAtStartPar
+With respect to negation elimination, it’s not enough to know
+that there’s an unspecified proof of \sphinxstyleemphasis{X} “out there.” To know
+that \sphinxstyleemphasis{X} is true/valid, one has to \sphinxstyleemphasis{exhibit} such a proof: to
+have one in hand, that can actually be inspected and verified.
+
+\sphinxAtStartPar
+Consider \sphinxstyleemphasis{em} again. Given any proposition, \sphinxstyleemphasis{X}, \sphinxstyleemphasis{(em X)} is
+a proof of \sphinxstyleemphasis{X ∨ ¬X}. Now consider the introduction rules for
+∨ in constructive logic: to construct a proof of \sphinxstyleemphasis{X} you have
+to have either a proof of \sphinxstyleemphasis{X} or a proof of \sphinxstyleemphasis{¬X} in hand. The
+\sphinxstyleemphasis{em} axiom gives you a proof of \sphinxstyleemphasis{X ∨ ¬X} without requiring a
+proof of either disjunction. It’s thus non\sphinxhyphen{}constructive.
+
+\sphinxAtStartPar
+Classical logic and mathematics do not adopt the constraint
+of constructivity, and consequently there are theorems that
+can be proved in classical mathematics but not in constructive
+mathematics. Again, it’s easy to turn Lean classical simply
+by opening the classical namespace (the accepted signal that
+one will admit classical reasoning) and using \sphinxstyleemphasis{em} in your
+proofs.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} A proof of 0 = 0 by contradition}
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{l+m+mi}{0} \PYG{n+nb+bp}{=} \PYG{l+m+mi}{0} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{n}{by\PYGZus{}contradiction}\PYG{o}{,} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} applies ¬¬P → P}
+\PYG{k}{have} \PYG{n}{eq0} \PYG{o}{:=} \PYG{n}{eq.refl} \PYG{l+m+mi}{0}\PYG{o}{,}
+\PYG{n}{contradiction}\PYG{o}{,}
+\PYG{k+kd}{end}
+\end{sphinxVerbatim}
+
+
+\subsubsection{Excluded Middle}
+\label{\detokenize{A_02_Constructive_Logic:excluded-middle}}
+\sphinxAtStartPar
+We’ve seen that in \sphinxstyleemphasis{constructive} logic, knowing that it’s
+false that there’s no proof is not the same as, and is weaker
+than, actually having a proof. Knowing that a proposition is
+not false is not the same as actually having a proof in hand.
+What makes constructive logic constructive is that a proof is
+required to judge a proposition as being true.
+
+\sphinxAtStartPar
+In classical predicate and propositional logic, by contrast,
+negation elimination is an axiom. To prove a proposition, \sphinxstyleemphasis{X},
+by contradiction, one assumes \sphinxstyleemphasis{¬X}, shows that from that one
+can derive a contradiction, thus proving \sphinxstyleemphasis{¬¬X}, and from there
+(here it comes) by negation elimination one finally concludes
+\sphinxstyleemphasis{X}, thereby satisfying the original goal.
+
+\sphinxAtStartPar
+In summary, negation elimination is not an axiom in constructive
+logic, so any proof that relies on \sphinxstyleemphasis{∀ X, ¬¬X → X} gets blocked at
+this point. The reason it’s not an axiom is that it would make
+the logic non\sphinxhyphen{}constructive: while a proof that X is not false
+might suggest that there exists a proof of X, it does not give
+you such a proof, which is what constructive logic requires.
+
+\sphinxAtStartPar
+In constructive logic there are not just two truth states
+for any proposition. We’ve seen that we can know that a
+proposition is true (by having a proof of it), know that
+it is false (by having a proof it entails a contradiction),
+and know that it’s not false but without having constructed
+a proof that it’s true. We can know that something is not
+false without having a proof of it, and without a proof we
+can’t judge it to be true, either.
+
+\sphinxAtStartPar
+In classical logic, the \sphinxstyleemphasis{axiom (“law”) of the excluded middle}
+rules out this middle possibility, declaring as an assumption
+that for any given proposition, P, there is a proof of P ∨ ¬P.
+
+\sphinxAtStartPar
+This axiom then enables proof by contradiction. That’s an easy
+proof. We need to prove that if \sphinxstyleemphasis{P ∨ ¬ P} then \sphinxstyleemphasis{¬¬P → P}. The
+proof is by case analysis on an assumped proof of \sphinxstyleemphasis{P ∨ ¬ P}.
+In the first case, we assume a proof of P, so the implication
+is true trivially. In the case where we have a proof of ¬P, we
+have a contradiction between ¬P and ¬¬P, and so this case can’t
+actually arise and needn’t be considered any further.
+
+\sphinxAtStartPar
+In Lean, you can declare anything you want to be an additional
+axiom. If you’re careless, you will make the logic inconsistent
+and thus useless. For example, don’t assume \sphinxstyleemphasis{true ↔ false}. On
+the other hand, you may add any axiom that is independent of the
+given ones and you’ll still have a consistent logic in which
+propositions that lack proofs in constructive logic now have
+proofs.
+
+\sphinxAtStartPar
+The law of the excluded middle, \sphinxstyleemphasis{∀ P, P ∨ ¬P} is declared as an
+\sphinxstyleemphasis{axiom} in the \sphinxstyleemphasis{classical} namespace, where \sphinxstyleemphasis{classical.em} (or
+just \sphinxstyleemphasis{em} if you \sphinxstyleemphasis{open classical}) is assumed to be a proof of
+\sphinxstyleemphasis{em : ∀ P, P ∨ ¬P}.
+
+\sphinxAtStartPar
+Now the key to understanding the power of excluded middle is
+that it allows you to do case analysis on any \sphinxstyleemphasis{proposition} in
+our otherwise constructive logic. How’s that? Assume \sphinxstyleemphasis{X} is an
+arbitrary proposition. Then \sphinxstyleemphasis{(em X)} is a proof of X ∨ ¬X.
+
+\sphinxAtStartPar
+Note that \sphinxstyleemphasis{em}, being universally quantified is essentially
+a function. It can be \sphinxstyleemphasis{applied} to yield a specific instance
+of the general rule. Ok, so what can we do with a “free proof”
+of \sphinxstyleemphasis{X ∨ ¬X}? Case analysis! There will be just two cases. In
+the first case, we’d have a proof of \sphinxstyleemphasis{X}. In the second, we’d
+have a proof of \sphinxstyleemphasis{¬X}. And those are the only cases that need
+to be considered.
+
+
+\subsubsection{Exercise}
+\label{\detokenize{A_02_Constructive_Logic:exercise}}\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+Give a formal proof of the claim that excluded middle implies proof by contradiction.
+
+\item {} 
+\sphinxAtStartPar
+Determine whether, and if so prove, that the two statements are equivalent: excluded middle and proof by contradiction.
+
+\item {} 
+\sphinxAtStartPar
+Try to Prove each of DeMorgan’s laws in Lean to identify the non\sphinxhyphen{}constructive ones
+
+\item {} 
+\sphinxAtStartPar
+Finish the proofs of DeMorgan’s laws using the axiom of the excluded middle \sphinxstyleemphasis{(em)}.
+
+\end{itemize}
+
+
+\subsection{Coming Soon}
+\label{\detokenize{A_02_Constructive_Logic:coming-soon}}
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{c}{/\PYGZhy{}}
 \PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{m}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{z}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{t}
-\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{9}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{¬}\PYG{c+cm}{¬}\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{⊢}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{g}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{m}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}
-\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{0}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{⊥}\PYG{c+cm}{ }\PYG{c+cm}{⊢}\PYG{c+cm}{ }\PYG{c+cm}{¬}\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{g}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{d}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}
-\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{1}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{⊢}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{⊢}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{t}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{o}\PYG{c+cm}{m}\PYG{c+cm}{p}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{e}\PYG{c+cm}{d}
+\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{1}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{⊢}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{⊢}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{w}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{d}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}
 \PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{2}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{⊢}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{w}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{m}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}
-\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{3}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{⊢}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{↔}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{f}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{d}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}
+\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{3}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{⊢}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{↔}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{f}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{d}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}
 \PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{4}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{↔}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{ }\PYG{c+cm}{⊢}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{f}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{m}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{f}\PYG{c+cm}{t}
 \PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{5}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{↔}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{ }\PYG{c+cm}{⊢}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{f}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{m}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{i}\PYG{c+cm}{g}\PYG{c+cm}{h}\PYG{c+cm}{t}
+\PYG{c+cm}{\PYGZhy{}/}
 \end{sphinxVerbatim}
 
+\sphinxstepscope
+
+
+\chapter{Dependent Types}
+\label{\detokenize{A_03_Dependent_Types:dependent-types}}\label{\detokenize{A_03_Dependent_Types:introduction}}\label{\detokenize{A_03_Dependent_Types::doc}}
 \sphinxstepscope
 
 

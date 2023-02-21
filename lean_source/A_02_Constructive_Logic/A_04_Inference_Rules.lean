@@ -61,7 +61,8 @@ would. There's no interesting elimination rule for true.
 TEXT. -/
 
 
-/- TEXT: 
+/- TEXT:
+
 false
 -----
 
@@ -246,7 +247,7 @@ example (X Y: Prop) : X ∧ Y → X
 
 
 /- TEXT:
-or ∧ 
+or ∨ 
 ----
 
 - def or_intro_left_rule := (⟦X⟧ i = tt) → (⟦(X ∨ Y)⟧ i = tt) 
@@ -325,15 +326,283 @@ example (P Q R : Prop) : P ∨ Q → (P → R) → (Q → R) → R
 
 -- QUOTE.
 
+/- TEXT:
+Examples
+~~~~~~~~
+TEXT. -/
+
+-- QUOTE:
+example : ∀ P Q, P ∨ Q → Q ∨ P :=
+begin
+assume P Q h,
+cases h with p q,
+exact or.inr p,
+exact or.inl q,
+end
+
+
+example : ∀ P Q R, P ∨ (Q ∨ R) → (P ∨ Q) ∨ R :=
+begin
+assume P Q R h,
+cases h with p qr,
+left; left; assumption,
+cases qr with q r,
+left; exact or.inr q,
+right; assumption,
+end
+-- QUOTE.
+
+
+/- TEXT:
+not (¬)
+-------
+TEXT. -/
+
+-- QUOTE:
+-- ¬¬X ⊢ X                 -- negation elimination
+-- X → ⊥ ⊢ ¬X             -- negation introduction
+-- QUOTE.
+
+/- TEXT:
+Introduction
+~~~~~~~~~~~~
+
+We saw in propositional logic that if *X → false* then
+*X* must be false. That's easy to see: *true → false* is
+false, so *X* can't be *true*. On the other hand, *false 
+→ false* is true. *X* can only be *false*. Now, saying *X
+is false* in propositional logic is equivalent to saying 
+¬X is true, giving us our constructive ¬ introduction rule:
+X → ⊥ ⊢ ¬X. This is the rule of ¬ introduction: to prove
+*¬X* it will suffice to prove *X → false*.
+
+The same idea reappears in the constructive logic of Lean. 
+In fact, Lean simply *defines* *¬X* to mean *X → false.* 
+TEXT. -/
+
+-- QUOTE:
+-- def not (a : Prop) := a → false
+-- prefix `¬`:40 := not
+#check not
+-- QUOTE.
+
+/- TEXT:
+Let's think about what *a → false* means, where *a* is any
+proposition. In Lean, a proof of an implication is a function,
+namely one that would turn *any* proof of *a* into a proof of
+false. So, *if there were* a proof of *a* then one could have
+a proof of *false.* That can't happen because there is no proof
+of false. So there must be no proof of *a*. Therefore *a* is
+false, and we can write that as *¬a*. 
+
+To prove a proposition, *¬a*, we thus just have to prove that
+*a → false*. To do this, we assume we have a proof of *a* and
+show that that leads to an impossibility, which shows that the
+assumption was wrong, thus *¬a* must be true. You can pronounce
+*¬a* as *not a* or *a is false*, but it can also help to think 
+of it as saying *there provably can be no proof of a.*  
+TEXT. -/
+
+-- QUOTE:
+example : 0 = 1 → false :=
+begin
+assume h,
+cases h,
+end 
+
+example : ¬ 0 = 1 :=
+begin
+assume h,
+cases h,
+end 
+
+example : 0 ≠ 1 :=
+begin
+assume h,
+cases h,
+end 
+-- QUOTE.
+
+/- TEXT:
+Elimination
+~~~~~~~~~~~
+
+In propositional logic, we have the rule of (double) negation
+elimination: *¬¬X → X*. An easy way to think about this is that
+two negations cancel out: negation is an involution. As we'll
+now see, this rule is also defines proof by contradiction. 
+
+To see that, one can read the rule as saying that to prove *X*
+it will suffice to assume *¬X* and show that that leads to a 
+a contradiction, thus proving that *¬X* is false, thus *¬¬X*.
+From there in classical logic it's just a final step to *X*.  
+
+Is this inference rule valid in Lean? Let's try to prove that
+it is. Our goal is to prove ∀ X, ¬¬X → X. We first rewrite the
+inner *¬X* on the left of the → as *(X → false)*. *¬¬X* becomes 
+*¬(X → false)*. Rewriting again gives *(X → false) → false.*
+Our goal, then, is to prove ((X → false) → false) → X. We get
+a start by assuming (h : (X → false) → false), but then find 
+that from *h* there's no way to squeeze out a proof of *X*. 
+TEXT. -/
+
+-- QUOTE:
+example : ∀ (X : Prop), ¬¬X → X :=
+begin
+assume X h,
+-- can't do case analysis on a function
+cases h,
+-- we're stuck with nowhere left to go!
+end
+-- QUOTE.
+
+/- TEXT:
+What we've found then is that (double) negation elimination, 
+and thus proof by contradiction, is not valid in Lean (or in
+similar constructive logic proof assistants). This shows that
+in Lean a proposition, *X*, being proved *not false* (*¬¬X*) 
+does not imply that *X* is true. From a proof of the former we
+can't obtain a proof of the latter. From a proof that *¬X is 
+false* we have no way to derive a proof of *X*.  
+
+Constructive vs. Classical
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In constructive logic, a proposition can thus be provably true 
+(by a proof), it can be provably false (by a proof that there is 
+no proof of it), or it can be provably not false, which is to
+say that there must exist a proof, but where one cannot be
+constructed from the given premise alone.
+
+We'll see the the same constructivity requirement again when we
+discuss proofs of existence. In a nutshell, a constructive proof
+exhibits a specific "witness" to show that one does exist. To be
+constructive means that a proof of existence requires an actual
+witness. 
+
+With respect to negation elimination, it's not enough to know
+that there's an unspecified proof of *X* "out there." To know
+that *X* is true/valid, one has to *exhibit* such a proof: to
+have one in hand, that can actually be inspected and verified.
+
+Consider *em* again. Given any proposition, *X*, *(em X)* is 
+a proof of *X ∨ ¬X*. Now consider the introduction rules for
+∨ in constructive logic: to construct a proof of *X* you have
+to have either a proof of *X* or a proof of *¬X* in hand. The
+*em* axiom gives you a proof of *X ∨ ¬X* without requiring a
+proof of either disjunction. It's thus non-constructive. 
+
+Classical logic and mathematics do not adopt the constraint
+of constructivity, and consequently there are theorems that
+can be proved in classical mathematics but not in constructive
+mathematics. Again, it's easy to turn Lean classical simply
+by opening the classical namespace (the accepted signal that
+one will admit classical reasoning) and using *em* in your
+proofs. 
+TEXT. -/
+
+-- QUOTE:
+-- A proof of 0 = 0 by contradition 
+example : 0 = 0 :=
+begin
+by_contradiction, -- applies ¬¬P → P
+have eq0 := eq.refl 0,
+contradiction,
+end
+-- QUOTE.
+
+
+/- TEXT: 
+Excluded Middle
+~~~~~~~~~~~~~~~
+We've seen that in *constructive* logic, knowing that it's 
+false that there's no proof is not the same as, and is weaker
+than, actually having a proof. Knowing that a proposition is
+not false is not the same as actually having a proof in hand.
+What makes constructive logic constructive is that a proof is
+required to judge a proposition as being true.
+
+In classical predicate and propositional logic, by contrast,
+negation elimination is an axiom. To prove a proposition, *X*,
+by contradiction, one assumes *¬X*, shows that from that one 
+can derive a contradiction, thus proving *¬¬X*, and from there
+(here it comes) by negation elimination one finally concludes 
+*X*, thereby satisfying the original goal.
+
+In summary, negation elimination is not an axiom in constructive
+logic, so any proof that relies on *∀ X, ¬¬X → X* gets blocked at
+this point. The reason it's not an axiom is that it would make 
+the logic non-constructive: while a proof that X is not false 
+might suggest that there exists a proof of X, it does not give 
+you such a proof, which is what constructive logic requires. 
+
+In constructive logic there are not just two truth states 
+for any proposition. We've seen that we can know that a 
+proposition is true (by having a proof of it), know that 
+it is false (by having a proof it entails a contradiction),
+and know that it's not false but without having constructed
+a proof that it's true. We can know that something is not
+false without having a proof of it, and without a proof we
+can't judge it to be true, either. 
+
+In classical logic, the *axiom ("law") of the excluded middle*
+rules out this middle possibility, declaring as an assumption
+that for any given proposition, P, there is a proof of P ∨ ¬P.
+
+This axiom then enables proof by contradiction. That's an easy
+proof. We need to prove that if *P ∨ ¬ P* then *¬¬P → P*. The
+proof is by case analysis on an assumped proof of *P ∨ ¬ P*.
+In the first case, we assume a proof of P, so the implication
+is true trivially. In the case where we have a proof of ¬P, we
+have a contradiction between ¬P and ¬¬P, and so this case can't
+actually arise and needn't be considered any further.
+
+In Lean, you can declare anything you want to be an additional
+axiom. If you're careless, you will make the logic inconsistent
+and thus useless. For example, don't assume *true ↔ false*. On
+the other hand, you may add any axiom that is independent of the
+given ones and you'll still have a consistent logic in which
+propositions that lack proofs in constructive logic now have
+proofs. 
+
+The law of the excluded middle, *∀ P, P ∨ ¬P* is declared as an
+*axiom* in the *classical* namespace, where *classical.em* (or
+just *em* if you *open classical*) is assumed to be a proof of
+*em : ∀ P, P ∨ ¬P*.
+
+Now the key to understanding the power of excluded middle is 
+that it allows you to do case analysis on any *proposition* in
+our otherwise constructive logic. How's that? Assume *X* is an
+arbitrary proposition. Then *(em X)* is a proof of X ∨ ¬X. 
+
+Note that *em*, being universally quantified is essentially 
+a function. It can be *applied* to yield a specific instance 
+of the general rule. Ok, so what can we do with a "free proof"
+of *X ∨ ¬X*? Case analysis! There will be just two cases. In
+the first case, we'd have a proof of *X*. In the second, we'd
+have a proof of *¬X*. And those are the only cases that need
+to be considered.  
+
+Exercise
+~~~~~~~~
+
+- Give a formal proof of the claim that excluded middle implies proof by contradiction.
+- Determine whether, and if so prove, that the two statements are equivalent: excluded middle and proof by contradiction.
+- Try to Prove each of DeMorgan's laws in Lean to identify the non-constructive ones
+- Finish the proofs of DeMorgan's laws using the axiom of the excluded middle *(em)*.
+
+Coming Soon
+-----------
+TEXT. -/
+
+
 -- QUOTE:
 /-
 -- formalize the rest
--- 9. ¬¬X ⊢ X                 -- negation elimination
--- 10. X → ⊥ ⊢ ¬X             -- negation introduction
--- 11. (X ⊢ Y) ⊢ (X → Y)      -- a little complicated
+-- 11. (X ⊢ Y) ⊢ (X → Y)      -- arrow introduction
 -- 12. X → Y, X ⊢ Y           -- arrow elimination
--- 13. X → Y, Y → X ⊢ X ↔ Y    -- iff introduction
+-- 13. X → Y, Y → X ⊢ X ↔ Y   -- iff introduction
 -- 14. X ↔ Y ⊢ X → Y          -- iff elimination left
 -- 15. X ↔ Y ⊢ Y → X          -- iff elimination right
--- QUOTE.
 -/
+-- QUOTE.

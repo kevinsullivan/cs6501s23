@@ -1,3 +1,3 @@
 ===============
-Predicate Logic
+Dependent Types
 ===============

@@ -1,6 +1,6 @@
 /- TEXT:
 ===============
-Predicate Logic
+Dependent Types
 ===============
 TEXT. -/
 

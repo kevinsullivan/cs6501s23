@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3. Predicate Logic &mdash; CS6501 Spring 2023 1.2.2 documentation</title>
+  <title>3. Constructive Logic &mdash; CS6501 Spring 2023 1.2.2 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
@@ -22,7 +22,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Index" href="genindex.html" />
+    <link rel="next" title="4. Dependent Types" href="A_03_Dependent_Types.html" />
     <link rel="prev" title="2. Propositional Logic" href="A_01_Propositional_Logic.html" /> 
 </head>
 
@@ -44,7 +44,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="A_00_Introduction.html">1. CS6501 Spring 2023</a></li>
 <li class="toctree-l1"><a class="reference internal" href="A_01_Propositional_Logic.html">2. Propositional Logic</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">3. Predicate Logic</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">3. Constructive Logic</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#higher-order-predicate-logic">3.1. Higher-Order Predicate Logic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#propositions-as-types">3.2. Propositions as Types</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#computational-types">3.2.1. Computational Types</a></li>
@@ -59,21 +59,33 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#inference-rules">3.4. Inference Rules</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#true">3.4.1. true (&#8868;)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#and">3.4.2. and &#8743;</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#proposition-builders">3.4.2.1. Proposition Builders</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#introduction-proof-constructors">3.4.2.2. Introduction: Proof Constructors</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#elimination-case-analysis">3.4.2.3. Elimination: Case Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#false">3.4.2. false</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#and">3.4.3. and &#8743;</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#proposition-builders">3.4.3.1. Proposition Builders</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#introduction-proof-constructors">3.4.3.2. Introduction: Proof Constructors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#elimination-case-analysis">3.4.3.3. Elimination: Case Analysis</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#or">3.4.3. or &#8743;</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#introduction-rules">3.4.3.1. Introduction Rules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#elimination-rules">3.4.3.2. Elimination Rules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#or">3.4.4. or &#8744;</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction-rules">3.4.4.1. Introduction Rules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#elimination-rules">3.4.4.2. Elimination Rules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples">3.4.4.3. Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#not">3.4.5. not (&#172;)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">3.4.5.1. Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#elimination">3.4.5.2. Elimination</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#constructive-vs-classical">3.4.5.3. Constructive vs. Classical</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#excluded-middle">3.4.5.4. Excluded Middle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#exercise">3.4.5.5. Exercise</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#coming-soon">3.4.6. Coming Soon</a></li>
 </ul>
 </li>
 </ul>
 </li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="A_03_Dependent_Types.html">4. Dependent Types</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
@@ -93,9 +105,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">3. </span>Predicate Logic</li>
+      <li class="breadcrumb-item active"><span class="section-number">3. </span>Constructive Logic</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/A_02_Predicate_Logic.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/A_02_Constructive_Logic.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -103,8 +115,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="predicate-logic">
-<span id="introduction"></span><h1><span class="section-number">3. </span>Predicate Logic<a class="headerlink" href="#predicate-logic" title="Permalink to this heading">&#61633;</a></h1>
+  <section id="constructive-logic">
+<span id="introduction"></span><h1><span class="section-number">3. </span>Constructive Logic<a class="headerlink" href="#constructive-logic" title="Permalink to this heading">&#61633;</a></h1>
 <section id="higher-order-predicate-logic">
 <h2><span class="section-number">3.1. </span>Higher-Order Predicate Logic<a class="headerlink" href="#higher-order-predicate-logic" title="Permalink to this heading">&#61633;</a></h2>
 <p>The term, <em>predicate logic</em>, used informally, is usually taken to
@@ -157,7 +169,7 @@ there are any) serve as <em>proofs</em> of such propositions.</p>
 <section id="computational-types">
 <h3><span class="section-number">3.2.1. </span>Computational Types<a class="headerlink" href="#computational-types" title="Permalink to this heading">&#61633;</a></h3>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20The%20type%20of%201%20is%20nat%0A%23check%201%0A%0A--%20Type%20type%20of%20nat%20is%20*Type*%0A%23check%20nat%0A%0A--%20The%20type%20of%20all%20basic%20computational%20types%20is%20*Type*%0A%23check%20bool%0A%23check%20string%0A%23check%20list%20bool%0A%0A--%20A%20natural%20question%3A%20What's%20the%20type%20of%20Type%2C%20etc%3F%0A%23check%20Type%0A%23check%20Type%200%20%20%20--%20Type%20is%20shorthand%20for%20Type%200%0A%23check%20Type%201%20%20%20--%20It's%20type%20universes%20all%20the%20way%20up%0A%23check%20Type%202%20%20%20--%20etc.%0A%0A%2F-%0AWhat%20we%20have%20so%20far%20then%20is%20a%20hierarchy%20of%20%22computational%22%0Atypes%20like%20this%3A%0A%0A%20%20%20%20%20%20%20...%20%20%20%20%20%20%20%20higher%20type%20universes%0A%20%20%20%20%20%20%20%20%7C%0A%20%20%20%20%20%20Type%201%20(the%20type%20of%20objects%20that%20contains%20Type%200%20objects)%0A%20%20%20%20%20%20%20%20%7C%0A%20%20%20%20%20%20Type%200%20%20%20%20%20%20%20%20%20a%20type%20universe%0A%20%20%20%20%20%20%20%20%7C%0A%20%20%20%20%20%20%20nat%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20type%0A%20%20%20%20%20%20%20%20%7C%0A%20%20%20%20%20%20%20%201%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20value%0A%0AType%20Universes%0A--------------%0A-%2F%0A%0A--%20What%20universes%20do%20various%20objects%20inhabit%0A%23check%20nat%20%20%20%20%20%20%20%20%20%20%20%20%20--%20Type%200%0A%23check%20list%20nat%20%20%20%20%20%20%20%20--%20list%20of%20nats%20%3A%20Type%200%0A%0Adef%20list_of_types%20%3A%20list%20Type%20%3A%3D%20%5Bnat%2C%20bool%2C%20string%5D%0A%23check%20list%20(Type%200)%20%20%20--%20list%20of%20Type%200s%20%3A%20Type%201%0A%23check%20list%20(Type%201)%20%20%20--%20list%20of%20Type%201s%20%3A%20Type%202" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_34.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20The%20type%20of%201%20is%20nat%0A%23check%201%0A%0A--%20Type%20type%20of%20nat%20is%20*Type*%0A%23check%20nat%0A%0A--%20The%20type%20of%20all%20basic%20computational%20types%20is%20*Type*%0A%23check%20bool%0A%23check%20string%0A%23check%20list%20bool%0A%0A--%20A%20natural%20question%3A%20What's%20the%20type%20of%20Type%2C%20etc%3F%0A%23check%20Type%0A%23check%20Type%200%20%20%20--%20Type%20is%20shorthand%20for%20Type%200%0A%23check%20Type%201%20%20%20--%20It's%20type%20universes%20all%20the%20way%20up%0A%23check%20Type%202%20%20%20--%20etc.%0A%0A%2F-%0AWhat%20we%20have%20so%20far%20then%20is%20a%20hierarchy%20of%20%22computational%22%0Atypes%20like%20this%3A%0A%0A%20%20%20%20%20%20%20...%20%20%20%20%20%20%20%20higher%20type%20universes%0A%20%20%20%20%20%20%20%20%7C%0A%20%20%20%20%20%20Type%201%20(the%20type%20of%20objects%20that%20contains%20Type%200%20objects)%0A%20%20%20%20%20%20%20%20%7C%0A%20%20%20%20%20%20Type%200%20%20%20%20%20%20%20%20%20a%20type%20universe%0A%20%20%20%20%20%20%20%20%7C%0A%20%20%20%20%20%20%20nat%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20type%0A%20%20%20%20%20%20%20%20%7C%0A%20%20%20%20%20%20%20%201%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20value%0A%0AType%20Universes%0A--------------%0A-%2F%0A%0A--%20What%20universes%20do%20various%20objects%20inhabit%0A%23check%20nat%20%20%20%20%20%20%20%20%20%20%20%20%20--%20Type%200%0A%23check%20list%20nat%20%20%20%20%20%20%20%20--%20list%20of%20nats%20%3A%20Type%200%0A%0Adef%20list_of_types%20%3A%20list%20Type%20%3A%3D%20%5Bnat%2C%20bool%2C%20string%5D%0A%23check%20list%20(Type%200)%20%20%20--%20list%20of%20Type%200s%20%3A%20Type%201%0A%23check%20list%20(Type%201)%20%20%20--%20list%20of%20Type%201s%20%3A%20Type%202" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_34.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- The type of 1 is nat</span>
 <span class="k">#check</span> <span class="mi">1</span>
 
@@ -210,13 +222,13 @@ a logical kind. In Lean and related proof assistants and in
 type theory more generally, propositions are represented as
 <em>types</em> that inhabit a special type universe: in Lean, Prop.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%201%20%3D%201%20%20--%201%20%3D%201%20is%20a%20proposition%2C%20thus%20of%20type%20Prop%0A%23check%20%E2%88%83%20(a%20b%20c%20%3A%20%E2%84%95)%2C%20a*a%20%2B%20b*b%20%3D%20c*c%20--%20also%20of%20type%20Prop" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_88.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%201%20%3D%201%20%20--%201%20%3D%201%20is%20a%20proposition%2C%20thus%20of%20type%20Prop%0A%23check%20%E2%88%83%20(a%20b%20c%20%3A%20%E2%84%95)%2C%20a*a%20%2B%20b*b%20%3D%20c*c%20--%20also%20of%20type%20Prop" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_88.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="mi">1</span> <span class="bp">=</span> <span class="mi">1</span>  <span class="c1">-- 1 = 1 is a proposition, thus of type Prop</span>
 <span class="k">#check</span> <span class="bp">&#8707;</span> <span class="o">(</span><span class="n">a</span> <span class="n">b</span> <span class="n">c</span> <span class="o">:</span> <span class="n">&#8469;</span><span class="o">),</span> <span class="n">a</span><span class="bp">*</span><span class="n">a</span> <span class="bp">+</span> <span class="n">b</span><span class="bp">*</span><span class="n">b</span> <span class="bp">=</span> <span class="n">c</span><span class="bp">*</span><span class="n">c</span> <span class="c1">-- also of type Prop</span>
 </pre></div>
 </div>
 </div><div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20Example%3A%20Here's%20a%20proof%20of%201%20%3D%201%0Adef%20proof_of_1_eq_1%20%3A%3D%20eq.refl%201%0A%0A--%20What%20is%20its%20type%3F%0A%23check%20proof_of_1_eq_1" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_94.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20Example%3A%20Here's%20a%20proof%20of%201%20%3D%201%0Adef%20proof_of_1_eq_1%20%3A%3D%20eq.refl%201%0A%0A--%20What%20is%20its%20type%3F%0A%23check%20proof_of_1_eq_1" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_94.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Example: Here&#39;s a proof of 1 = 1</span>
 <span class="kd">def</span> <span class="n">proof_of_1_eq_1</span> <span class="o">:=</span> <span class="n">eq.refl</span> <span class="mi">1</span>
 
@@ -229,7 +241,7 @@ have already seen. So what is the type of <em>1 = 1</em>. It&#8217;s Prop.
 As we&#8217;ve said, logical types (propositions) inhabit the type
 universe, Prop, also known as Sort 0.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%201%20%3D%201%0A%23check%20Prop" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_107.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%201%20%3D%201%0A%23check%20Prop" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_107.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="mi">1</span> <span class="bp">=</span> <span class="mi">1</span>
 <span class="k">#check</span> <span class="kt">Prop</span>
 </pre></div>
@@ -239,7 +251,7 @@ is a type, and all such types are in turn of type, Prop. We we
 have the following picture of the type hierarchy for the
 terms we&#8217;ve just constructed.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20type%20is%201%20%3D%201%0A%23check%20proof_of_1_eq_1%0A%0A--%20type%20is%20Prop%0A%23check%201%20%3D%201" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_117.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20type%20is%201%20%3D%201%0A%23check%20proof_of_1_eq_1%0A%0A--%20type%20is%20Prop%0A%23check%201%20%3D%201" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_117.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- type is 1 = 1</span>
 <span class="k">#check</span> <span class="n">proof_of_1_eq_1</span>
 
@@ -249,7 +261,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </div>
 </div><p>You might finally ask, what is the type of Prop? It&#8217;s Type!</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20Prop%0A%0A%2F-%0AWe%20can%20draw%20a%20picture%20now%20to%20see%20how%20things%20work.%0A%0AProp%20(Sort%200)%20--%3E%20Type%20(Sort%201%2C%20Type%200)%20--%3E%20Type%201%20(Sort%202)%20--%3E%20etc%0A%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%0A%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%0A%20%201%20%3D%201%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20nat%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20list%20Type%0A%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%0A%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%0Aeq.refl%201%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%201%20%20%20%20%20%20%20%20%20%20%20%20%20%20%5Bnat%2C%20bool%2C%20string%5D%0A-%2F" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_127.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20Prop%0A%0A%2F-%0AWe%20can%20draw%20a%20picture%20now%20to%20see%20how%20things%20work.%0A%0AProp%20(Sort%200)%20--%3E%20Type%20(Sort%201%2C%20Type%200)%20--%3E%20Type%201%20(Sort%202)%20--%3E%20etc%0A%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%0A%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%0A%20%201%20%3D%201%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20nat%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20list%20Type%0A%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%0A%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7C%0Aeq.refl%201%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%201%20%20%20%20%20%20%20%20%20%20%20%20%20%20%5Bnat%2C%20bool%2C%20string%5D%0A-%2F" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_127.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="kt">Prop</span>
 
 <span class="c">/-</span>
@@ -284,7 +296,7 @@ type universes. To do so you declare one or more <em>universe
 variable</em> which you can then use in decaring types. Lean can
 also infer universe levels.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20declare%20two%20possible%20different%20type%20Universe%20levels%0Auniverses%20u%20v%0A%0A--%0A%23check%20%40prod.mk%0A%0A--%20Here's%20a%20function%20that%20takes%20two%20types%20in%20arbitrary%20universes%0Adef%20mk_pair%20(%CE%B1%20%3A%20Sort%20u)%20(%CE%B2%20%3A%20Sort%20v)%20%3A%3D%20(%CE%B1%2C%20%CE%B2)%0A%0A--%20Here%20are%20examples%20of%20type%20pairs%20we%20can%20form.%0A%23check%20mk_pair%20nat%20bool%0A%23check%20mk_pair%20(1%3D1)%20(2%3D1)%0A%23check%20mk_pair%20(1%3D1)%20(list%20Type)%0A%0A%2F-%0AAs%20another%20example%2C%20here's%20a%20thoroughly%20polymorphic%20version%20of%0Athe%20identity%20function.%20Given%20a%20type%20as%20an%20argument%2C%20it%20takes%20a%0Asecond%20value%2C%20a%2C%20*of%20that%20previously%20given%20type*%2C%20and%20returns%20it.%0A-%2F%0A%0Adef%20my_id%20(%CE%B1%20%3A%20Sort%20u)%20(a%20%3A%20%CE%B1)%20%3A%3D%20a%0A%0A--%20applications%20to%20objects%20of%20various%20types%0A%23reduce%20my_id%20Prop%20(1%3D1)%0A%23reduce%20my_id%20nat%201%0A%23reduce%20my_id%20(list%20Type)%20%5Bnat%2Cnat%2Cbool%5D" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_164.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20declare%20two%20possible%20different%20type%20Universe%20levels%0Auniverses%20u%20v%0A%0A--%0A%23check%20%40prod.mk%0A%0A--%20Here's%20a%20function%20that%20takes%20two%20types%20in%20arbitrary%20universes%0Adef%20mk_pair%20(%CE%B1%20%3A%20Sort%20u)%20(%CE%B2%20%3A%20Sort%20v)%20%3A%3D%20(%CE%B1%2C%20%CE%B2)%0A%0A--%20Here%20are%20examples%20of%20type%20pairs%20we%20can%20form.%0A%23check%20mk_pair%20nat%20bool%0A%23check%20mk_pair%20(1%3D1)%20(2%3D1)%0A%23check%20mk_pair%20(1%3D1)%20(list%20Type)%0A%0A%2F-%0AAs%20another%20example%2C%20here's%20a%20thoroughly%20polymorphic%20version%20of%0Athe%20identity%20function.%20Given%20a%20type%20as%20an%20argument%2C%20it%20takes%20a%0Asecond%20value%2C%20a%2C%20*of%20that%20previously%20given%20type*%2C%20and%20returns%20it.%0A-%2F%0A%0Adef%20my_id%20(%CE%B1%20%3A%20Sort%20u)%20(a%20%3A%20%CE%B1)%20%3A%3D%20a%0A%0A--%20applications%20to%20objects%20of%20various%20types%0A%23reduce%20my_id%20Prop%20(1%3D1)%0A%23reduce%20my_id%20nat%201%0A%23reduce%20my_id%20(list%20Type)%20%5Bnat%2Cnat%2Cbool%5D" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_164.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- declare two possible different type Universe levels</span>
 <span class="kd">universes</span> <span class="n">u</span> <span class="n">v</span>
 
@@ -317,7 +329,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <section id="implicit-arguments">
 <h3><span class="section-number">3.2.4. </span>Implicit Arguments<a class="headerlink" href="#implicit-arguments" title="Permalink to this heading">&#61633;</a></h3>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20With%20%7B%7D%20we%20tell%20Lean%20that%20%CE%B1%20should%20be%20inferred%20automatically%0Adef%20my_id'%20%7B%20%CE%B1%20%3A%20Sort%20u%20%7D%20(a%20%3A%20%CE%B1)%20%3A%3D%20a%0A%0A--%20Now%20we%20don't%20provide%20the%20type%20arguments%20explicitly%0A%23reduce%20my_id'%20(1%3D1)%0A%23reduce%20my_id'%201%0A%23reduce%20my_id'%20%5Bnat%2Cnat%2Cbool%5D%0A%0A--%20If%20necessary%20through%2C%20we%20can%20turn%20off%20implicit%20inference%20using%20%40%0A%23reduce%20%40my_id'%20Prop%20(1%3D1)%0A%23reduce%20%40my_id'%20nat%201%0A%23reduce%20%40my_id'%20(list%20Type)%20%5Bnat%2Cnat%2Cbool%5D" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_196.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20With%20%7B%7D%20we%20tell%20Lean%20that%20%CE%B1%20should%20be%20inferred%20automatically%0Adef%20my_id'%20%7B%20%CE%B1%20%3A%20Sort%20u%20%7D%20(a%20%3A%20%CE%B1)%20%3A%3D%20a%0A%0A--%20Now%20we%20don't%20provide%20the%20type%20arguments%20explicitly%0A%23reduce%20my_id'%20(1%3D1)%0A%23reduce%20my_id'%201%0A%23reduce%20my_id'%20%5Bnat%2Cnat%2Cbool%5D%0A%0A--%20If%20necessary%20through%2C%20we%20can%20turn%20off%20implicit%20inference%20using%20%40%0A%23reduce%20%40my_id'%20Prop%20(1%3D1)%0A%23reduce%20%40my_id'%20nat%201%0A%23reduce%20%40my_id'%20(list%20Type)%20%5Bnat%2Cnat%2Cbool%5D" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_196.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- With {} we tell Lean that &#945; should be inferred automatically</span>
 <span class="kd">def</span> <span class="n">my_id&#39;</span> <span class="o">{</span> <span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Sort</span> <span class="n">u</span> <span class="o">}</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="n">&#945;</span><span class="o">)</span> <span class="o">:=</span> <span class="n">a</span>
 
@@ -350,7 +362,7 @@ proof of P, we write (p : P). We can also read this proof
 judgement as a type judgment: that p is a value of type P.
 The and elimination left rule thus changes to the following:</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20and_elim_left_rule'%20%3A%3D%20%E2%88%80%20(P%20Q%20%3A%20Prop)%2C%20P%20%E2%88%A7%20Q%20%E2%86%92%20P" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_20.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20and_elim_left_rule'%20%3A%3D%20%E2%88%80%20(P%20Q%20%3A%20Prop)%2C%20P%20%E2%88%A7%20Q%20%E2%86%92%20P" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_20.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">and_elim_left_rule&#39;</span> <span class="o">:=</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">P</span> <span class="n">Q</span> <span class="o">:</span> <span class="kt">Prop</span><span class="o">),</span> <span class="n">P</span> <span class="bp">&#8743;</span> <span class="n">Q</span> <span class="bp">&#8594;</span> <span class="n">P</span>
 </pre></div>
 </div>
@@ -367,7 +379,7 @@ would be shortened to <em>P, Q &#8866; P &#8743; Q</em>.</p>
 <p>Using Lean&#8217;s <em>variables</em> declaration, we can achieve
 the same clarity with complete formality.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20Let%20P%2C%20Q%2C%20and%20R%20be%20arbitrary%20propositions%0Avariables%20(P%20Q%20R%20%3A%20Prop)%0A%0A--%20Now%20we%20can%20write%20the%20rule%20without%20the%20forall%0Adef%20and_elim_left_rule%20%3A%3D%20P%20%E2%88%A7%20Q%20%E2%86%92%20P%0A%0A%2F-%0ALean%20doesn't%20treat%20the%20two%20versions%20exactly%20the%0Asame.%20The%20type%20of%20and_elim_left_rule%20is%20of%20course%0Ajust%20Prop%2C%20because%20it's%20a%20proposition.%20However%2C%0Abecause%20we've%20declared%20*P*%20and%20*Q*%20to%20be%20general%0Ain%20the%20current%20environment%2C%20they%20are%20understood%0Aas%20arguments%2C%20allowing%20and_elim_left_rule%20to%20be%0A*applied*%20to%20any%20two%20propositions%20as%20arguments%0A(say%20P%2C%20Q)%2C%20yielding%20the%20specified%20proposition%20as%0Aa%20result.%0A-%2F%0A%23reduce%20and_elim_left_rule'%20%20%20--%20just%20a%20proposition%0A%23reduce%20and_elim_left_rule%20%20%20%20--%20function%20to%20proposition%0A%0A%23check%20and_elim_left_rule%20%20%20%20%20%20%20%20%20--%20Prop%20%E2%86%92%20Prop%20%E2%86%92%20Prop%0A%23reduce%20and_elim_left_rule%20%20%20%20%20%20%20%20--%20A%20proposition%0A%23reduce%20and_elim_left_rule%20P%20Q%20%20%20%20--%20Namely%2C%20P%20%E2%88%A7%20Q%20%E2%86%92%20P%0A%0A%23check%20and_elim_left_rule'%20%20%20%20%20%20%20--%20just%20Prop%0A%23check%20and_elim_left_rule'%20P%20Q%20%20%20--%20Can't%20be%20applied%0A%0A--%20and_elim_left_rule%20applies%20to%20*any*%20propositions%0Avariables%20(A%20B%20%3A%20Prop)%0A%23check%20and_elim_left_rule%20A%20B%0A%23reduce%20and_elim_left_rule%20A%20B" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_40.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20Let%20P%2C%20Q%2C%20and%20R%20be%20arbitrary%20propositions%0Avariables%20(P%20Q%20R%20%3A%20Prop)%0A%0A--%20Now%20we%20can%20write%20the%20rule%20without%20the%20forall%0Adef%20and_elim_left_rule%20%3A%3D%20P%20%E2%88%A7%20Q%20%E2%86%92%20P%0A%0A%2F-%0ALean%20doesn't%20treat%20the%20two%20versions%20exactly%20the%0Asame.%20The%20type%20of%20and_elim_left_rule%20is%20of%20course%0Ajust%20Prop%2C%20because%20it's%20a%20proposition.%20However%2C%0Abecause%20we've%20declared%20*P*%20and%20*Q*%20to%20be%20general%0Ain%20the%20current%20environment%2C%20they%20are%20understood%0Aas%20arguments%2C%20allowing%20and_elim_left_rule%20to%20be%0A*applied*%20to%20any%20two%20propositions%20as%20arguments%0A(say%20P%2C%20Q)%2C%20yielding%20the%20specified%20proposition%20as%0Aa%20result.%0A-%2F%0A%23reduce%20and_elim_left_rule'%20%20%20--%20just%20a%20proposition%0A%23reduce%20and_elim_left_rule%20%20%20%20--%20function%20to%20proposition%0A%0A%23check%20and_elim_left_rule%20%20%20%20%20%20%20%20%20--%20Prop%20%E2%86%92%20Prop%20%E2%86%92%20Prop%0A%23reduce%20and_elim_left_rule%20%20%20%20%20%20%20%20--%20A%20proposition%0A%23reduce%20and_elim_left_rule%20P%20Q%20%20%20%20--%20Namely%2C%20P%20%E2%88%A7%20Q%20%E2%86%92%20P%0A%0A%23check%20and_elim_left_rule'%20%20%20%20%20%20%20--%20just%20Prop%0A%23check%20and_elim_left_rule'%20P%20Q%20%20%20--%20Can't%20be%20applied%0A%0A--%20and_elim_left_rule%20applies%20to%20*any*%20propositions%0Avariables%20(A%20B%20%3A%20Prop)%0A%23check%20and_elim_left_rule%20A%20B%0A%23reduce%20and_elim_left_rule%20A%20B" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_40.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Let P, Q, and R be arbitrary propositions</span>
 <span class="kd">variables</span> <span class="o">(</span><span class="n">P</span> <span class="n">Q</span> <span class="n">R</span> <span class="o">:</span> <span class="kt">Prop</span><span class="o">)</span>
 
@@ -405,7 +417,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 it. Of course the proof in this case will be nothing
 but the application of Lean&#8217;s version, and.elim_left.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=theorem%20and_elim_left_valid%20%3A%20and_elim_left_rule%20P%20Q%20%3A%3D%0A--%20assume%20h%20is%20a%20proof%20of%20P%20%E2%86%92%20Q%2C%20show%20P%0Abegin%0Aunfold%20and_elim_left_rule%2C%0Aintro%20h%2C%0A--%20apply%20and.elim_left%20h%0Aexact%20h.left%2C%0Aend%0A%0A--%20The%20theorem%20now%20applies%20generally%20to%20any%20propositions%0A%0Atheorem%20and_elim_left_valid_2%20%3A%20and_elim_left_rule%20A%20B%20%3A%3D%0Abegin%0Aapply%20and_elim_left_valid%2C%0Aend" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_78.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=theorem%20and_elim_left_valid%20%3A%20and_elim_left_rule%20P%20Q%20%3A%3D%0A--%20assume%20h%20is%20a%20proof%20of%20P%20%E2%86%92%20Q%2C%20show%20P%0Abegin%0Aunfold%20and_elim_left_rule%2C%0Aintro%20h%2C%0A--%20apply%20and.elim_left%20h%0Aexact%20h.left%2C%0Aend%0A%0A--%20The%20theorem%20now%20applies%20generally%20to%20any%20propositions%0A%0Atheorem%20and_elim_left_valid_2%20%3A%20and_elim_left_rule%20A%20B%20%3A%3D%0Abegin%0Aapply%20and_elim_left_valid%2C%0Aend" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_78.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">theorem</span> <span class="n">and_elim_left_valid</span> <span class="o">:</span> <span class="n">and_elim_left_rule</span> <span class="n">P</span> <span class="n">Q</span> <span class="o">:=</span>
 <span class="c1">-- assume h is a proof of P &#8594; Q, show P</span>
 <span class="kd">begin</span>
@@ -441,7 +453,7 @@ example shows. We define two propositions, each with
 two &#8220;proofs,&#8221; and show that we can construct a proof
 of the the conjunction of the two propositions.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20A%20proposition%20called%20KevinIsFromCville%20with%20two%20proofs%0Ainductive%20KevinIsFromCville%20%3A%20Prop%0A%7C%20DL%20%20--%20driver's%20license%0A%7C%20EB%20%20--%20electric%20bill%0A%0A--%20Another%20similar%20proposition%0Ainductive%20NickIsFromNewHampshire%20%3A%20Prop%0A%7C%20DL%20%20%20%20%20%20--%20driver's%20license%0A%7C%20EB%20%20%20%20%20%20--%20electric%20bill%0A%7C%20LFODLP%20%20--%20secret%20code%0A%0A--%20Because%20we%20can%20prove%20each%20one%20we%20can%20prove%20the%20conjunction%0Aexample%20%3A%20KevinIsFromCville%20%E2%88%A7%20%20NickIsFromNewHampshire%20%3A%3D%0Abegin%0Aapply%20and.intro%20_%20_%2C%0Aexact%20KevinIsFromCville.EB%2C%0Aexact%20NickIsFromNewHampshire.LFODLP%2C%0Aend%0A%0A--%20Similarly%2C%20from%20a%20proof%20of%20a%20conjunctions%20we%20can%20prove%20each%0Aexample%20%3A%20KevinIsFromCville%20%E2%88%A7%20%20NickIsFromNewHampshire%20%E2%86%92%20KevinIsFromCville%20%3A%3D%0Abegin%0Aassume%20h%2C%0Acases%20h%2C%0Aassumption%2C%0Aend" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_117.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20A%20proposition%20called%20KevinIsFromCville%20with%20two%20proofs%0Ainductive%20KevinIsFromCville%20%3A%20Prop%0A%7C%20DL%20%20--%20driver's%20license%0A%7C%20EB%20%20--%20electric%20bill%0A%0A--%20Another%20similar%20proposition%0Ainductive%20NickIsFromNewHampshire%20%3A%20Prop%0A%7C%20DL%20%20%20%20%20%20--%20driver's%20license%0A%7C%20EB%20%20%20%20%20%20--%20electric%20bill%0A%7C%20LFODLP%20%20--%20secret%20code%0A%0A--%20Because%20we%20can%20prove%20each%20one%20we%20can%20prove%20the%20conjunction%0Aexample%20%3A%20KevinIsFromCville%20%E2%88%A7%20%20NickIsFromNewHampshire%20%3A%3D%0Abegin%0Aapply%20and.intro%20_%20_%2C%0Aexact%20KevinIsFromCville.EB%2C%0Aexact%20NickIsFromNewHampshire.LFODLP%2C%0Aend%0A%0A--%20Similarly%2C%20from%20a%20proof%20of%20a%20conjunctions%20we%20can%20prove%20each%0Aexample%20%3A%20KevinIsFromCville%20%E2%88%A7%20%20NickIsFromNewHampshire%20%E2%86%92%20KevinIsFromCville%20%3A%3D%0Abegin%0Aassume%20h%2C%0Acases%20h%2C%0Aassumption%2C%0Aend" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_117.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- A proposition called KevinIsFromCville with two proofs</span>
 <span class="kd">inductive</span> <span class="n">KevinIsFromCville</span> <span class="o">:</span> <span class="kt">Prop</span>
 <span class="bp">|</span> <span class="n">DL</span>  <span class="c1">-- driver&#39;s license</span>
@@ -502,7 +514,7 @@ evaluates to true (tt in Lean). The definition said this:
 has proof, called <em>intro</em>. We write <em>true.intro</em> to refer
 to it in its namespace.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20true%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20a%20proposition%0Aexample%20%3A%20true%20%3A%3D%20true.intro%20%20--%20a%20proof%20of%20it" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_38.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20true%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20a%20proposition%0Aexample%20%3A%20true%20%3A%3D%20true.intro%20%20--%20a%20proof%20of%20it" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_38.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="n">true</span>                   <span class="c1">-- a proposition</span>
 <span class="kd">example</span> <span class="o">:</span> <span class="n">true</span> <span class="o">:=</span> <span class="n">true.intro</span>  <span class="c1">-- a proof of it</span>
 </pre></div>
@@ -516,9 +528,10 @@ that&#8217;s the one and only proof, <em>intro</em>.That&#8217;s it!</p>
 | intro : true</p>
 <p>Sadly, a proof of true is pretty useless. A value of this type
 doesn&#8217;t even provide one bit of information, as a Boolean value
-would. There&#8217;s no interesting elimination rule for true.
-false
-&#8212;&#8211;</p>
+would. There&#8217;s no interesting elimination rule for true.</p>
+</section>
+<section id="false">
+<h3><span class="section-number">3.4.2. </span>false<a class="headerlink" href="#false" title="Permalink to this heading">&#61633;</a></h3>
 <p>In propositional logic, we had the propositional expression
 (prop_expr), &#8869;, for <em>false</em>. In Lean, by contrast, <em>false</em> is
 a <em>proposition</em>, which is to say, a type, called <em>false</em>.
@@ -536,7 +549,7 @@ called false.elim. It says that from a proof of false, a proof
 (or value) of <em>any</em> type in any type universe can be produced:
 not only proofs of other propositions but values of any types.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20false%0A%23check%20%40false.elim%20%20--%20false.elim%20%3A%20%CE%A0%20%7BC%20%3A%20Sort%20u_1%7D%2C%20false%20%E2%86%92%20C%0A%0A--%20explicit%20application%20of%20Lean's%20false.elim%20rule%0Aexample%20%3A%20false%20%E2%86%92%200%20%3D%201%20%3A%3D%0Abegin%0Aassume%20f%2C%0Aexact%20false.elim%20f%2C%20%20%20%20%20%20%20--%20So%20what%20is%20C%20(_)%3F%20It's%20the%20goal%2C%200%20%3D%201.%0A--%20exact%20%40false.elim%20_%20f%2C%20%20%20%20--%20Note%20that%20C%20is%20an%20implicit%20argument!%0Aend%0A%0A%2F-%0AWe%20can%20also%20do%20case%20analysis%20on%20f.%20We%20will%20get%0Aone%20case%20for%20each%20possible%20form%20of%20proof%2C%20f.%20As%0Athere%20are%20no%20proofs%20of%20f%2C%20there%20are%20no%20cases%20at%0Aall%2C%20and%20the%20proof%20is%20completed.%0A-%2F%0Aexample%20%3A%20false%20%E2%86%92%200%20%3D%201%20%3A%3D%0Abegin%0Aassume%20f%2C%0Acases%20f%2C%0Aend%0A%0A%2F-%0AFalse%20eliminations%20works%20for%20%22return%20types%22%20in%20any%0Atype%20universe.%20When%20the%20argument%20and%20return%20types%0Aare%20both%20in%20Prop%2C%20one%20has%20an%20ordinary%20implication.%0A-%2F%0Aexample%20%3A%20false%20%E2%86%92%20nat%20%3A%3D%0Abegin%0Aassume%20f%2C%0Acases%20f%2C%0A--%20contradiction%2C%20%20--%20this%20tactic%20works%20here%2C%20too%0Aend" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_78.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20false%0A%23check%20%40false.elim%20%20--%20false.elim%20%3A%20%CE%A0%20%7BC%20%3A%20Sort%20u_1%7D%2C%20false%20%E2%86%92%20C%0A%0A--%20explicit%20application%20of%20Lean's%20false.elim%20rule%0Aexample%20%3A%20false%20%E2%86%92%200%20%3D%201%20%3A%3D%0Abegin%0Aassume%20f%2C%0Aexact%20false.elim%20f%2C%20%20%20%20%20%20%20--%20So%20what%20is%20C%20(_)%3F%20It's%20the%20goal%2C%200%20%3D%201.%0A--%20exact%20%40false.elim%20_%20f%2C%20%20%20%20--%20Note%20that%20C%20is%20an%20implicit%20argument!%0Aend%0A%0A%2F-%0AWe%20can%20also%20do%20case%20analysis%20on%20f.%20We%20will%20get%0Aone%20case%20for%20each%20possible%20form%20of%20proof%2C%20f.%20As%0Athere%20are%20no%20proofs%20of%20f%2C%20there%20are%20no%20cases%20at%0Aall%2C%20and%20the%20proof%20is%20completed.%0A-%2F%0Aexample%20%3A%20false%20%E2%86%92%200%20%3D%201%20%3A%3D%0Abegin%0Aassume%20f%2C%0Acases%20f%2C%0Aend%0A%0A%2F-%0AFalse%20eliminations%20works%20for%20%22return%20types%22%20in%20any%0Atype%20universe.%20When%20the%20argument%20and%20return%20types%0Aare%20both%20in%20Prop%2C%20one%20has%20an%20ordinary%20implication.%0A-%2F%0Aexample%20%3A%20false%20%E2%86%92%20nat%20%3A%3D%0Abegin%0Aassume%20f%2C%0Acases%20f%2C%0A--%20contradiction%2C%20%20--%20this%20tactic%20works%20here%2C%20too%0Aend" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_79.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="n">false</span>
 <span class="k">#check</span> <span class="bp">@</span><span class="n">false.elim</span>  <span class="c1">-- false.elim : &#928; {C : Sort u_1}, false &#8594; C</span>
 
@@ -575,7 +588,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </div>
 </div></section>
 <section id="and">
-<h3><span class="section-number">3.4.2. </span>and &#8743;<a class="headerlink" href="#and" title="Permalink to this heading">&#61633;</a></h3>
+<h3><span class="section-number">3.4.3. </span>and &#8743;<a class="headerlink" href="#and" title="Permalink to this heading">&#61633;</a></h3>
 <p>From propositional logic we had three inference rules defining
 the meaning of <em>and</em>, one introduction and two elimination rules.
 These rules re-appear in both first-order predicate logic and in
@@ -588,14 +601,14 @@ easy example.</p>
 <li><p>and_elim_right_rule := (&#10214;(X &#8743; Y)&#10215; i = tt) &#8594; (&#10214;Y&#10215; i = tt)</p></li>
 </ul>
 <section id="proposition-builders">
-<h4><span class="section-number">3.4.2.1. </span>Proposition Builders<a class="headerlink" href="#proposition-builders" title="Permalink to this heading">&#61633;</a></h4>
+<h4><span class="section-number">3.4.3.1. </span>Proposition Builders<a class="headerlink" href="#proposition-builders" title="Permalink to this heading">&#61633;</a></h4>
 <p>A key idea in Lean&#8217;s definitions is that <em>and</em> is a <em>polymorphic</em>
 data type. That is to say, its akin to a function takes any two
 propositions (types in Prop) as arguments and yields a new Type.
 This new type encodes the proposition that is the conjunction of
 the given proposition arguments. Let&#8217;s see how <em>and</em> is defined.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=structure%20and%20(A%20B%20%3A%20Prop)%20%3A%20Prop%20%3A%3D%0Aintro%20%3A%3A%20(left%20%3A%20A)%20(right%20%3A%20B)" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_139.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=structure%20and%20(A%20B%20%3A%20Prop)%20%3A%20Prop%20%3A%3D%0Aintro%20%3A%3A%20(left%20%3A%20A)%20(right%20%3A%20B)" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_140.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">structure</span> <span class="n">and</span> <span class="o">(</span><span class="n">A</span> <span class="n">B</span> <span class="o">:</span> <span class="kt">Prop</span><span class="o">)</span> <span class="o">:</span> <span class="kt">Prop</span> <span class="o">:=</span>
 <span class="n">intro</span> <span class="o">::</span> <span class="o">(</span><span class="n">left</span> <span class="o">:</span> <span class="n">A</span><span class="o">)</span> <span class="o">(</span><span class="n">right</span> <span class="o">:</span> <span class="n">B</span><span class="o">)</span>
 </pre></div>
@@ -609,7 +622,7 @@ field access functions with the given field names. For example, if
 <em>(h : A &#8743; B)</em>, then <em>(h.left : A)</em> and <em>(h.right : B)</em>.</p>
 </section>
 <section id="introduction-proof-constructors">
-<h4><span class="section-number">3.4.2.2. </span>Introduction: Proof Constructors<a class="headerlink" href="#introduction-proof-constructors" title="Permalink to this heading">&#61633;</a></h4>
+<h4><span class="section-number">3.4.3.2. </span>Introduction: Proof Constructors<a class="headerlink" href="#introduction-proof-constructors" title="Permalink to this heading">&#61633;</a></h4>
 <p>The second key idea is that the constructors of a logical type
 define what terms count as proofs, i.e., values of the type.</p>
 <p>In the case of a conjunction, there is just one constructor,
@@ -627,7 +640,7 @@ no other way to construct a proof of a conjunction, <em>A &#8743; B,</em> than
 to use this constructor.</p>
 </section>
 <section id="elimination-case-analysis">
-<h4><span class="section-number">3.4.2.3. </span>Elimination: Case Analysis<a class="headerlink" href="#elimination-case-analysis" title="Permalink to this heading">&#61633;</a></h4>
+<h4><span class="section-number">3.4.3.3. </span>Elimination: Case Analysis<a class="headerlink" href="#elimination-case-analysis" title="Permalink to this heading">&#61633;</a></h4>
 <p>Now that we&#8217;ve seen how to (1) construct a conjunction from two
 given propositions, and (2) construct a proof of one, we turn to
 the question, what can we <em>do</em> with such a proof if we have one.</p>
@@ -643,7 +656,7 @@ proof by case analysis on a bool, b, thus requires two sub-proofs:
 one that shows a given goal follows if <em>b</em> is <em>tt</em> and another that
 shows it follows if <em>b</em> is <em>ff</em>.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=example%20(b%20%3A%20bool)%20%3A%20%20bnot%20(bnot%20b)%20%3D%20b%20%3A%3D%0Abegin%0Acases%20b%2C%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20NB%3A%20one%20case%20per%20constructor%0Arepeat%20%7B%20apply%20rfl%20%7D%2C%20--%20prove%20goal%20*in%20each%20case*%0A--%20QED.%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20thus%20proving%20it%20in%20*all*%20cases%0Aend" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_195.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=example%20(b%20%3A%20bool)%20%3A%20%20bnot%20(bnot%20b)%20%3D%20b%20%3A%3D%0Abegin%0Acases%20b%2C%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20NB%3A%20one%20case%20per%20constructor%0Arepeat%20%7B%20apply%20rfl%20%7D%2C%20--%20prove%20goal%20*in%20each%20case*%0A--%20QED.%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20thus%20proving%20it%20in%20*all*%20cases%0Aend" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_196.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">example</span> <span class="o">(</span><span class="n">b</span> <span class="o">:</span> <span class="n">bool</span><span class="o">)</span> <span class="o">:</span>  <span class="n">bnot</span> <span class="o">(</span><span class="n">bnot</span> <span class="n">b</span><span class="o">)</span> <span class="bp">=</span> <span class="n">b</span> <span class="o">:=</span>
 <span class="kd">begin</span>
 <span class="n">cases</span> <span class="n">b</span><span class="o">,</span>              <span class="c1">-- NB: one case per constructor</span>
@@ -661,7 +674,7 @@ in that one case, we&#8217;ll be entitled to assume that the
 two proof arguments must have been given. These will be
 the <em>left</em> and <em>right</em> proofs of <em>A</em> and <em>B</em> separately.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20Case%20analysis%20on%20*proof*%20values%0Aexample%20(X%20Y%3A%20Prop)%20%3A%20X%20%E2%88%A7%20Y%20%E2%86%92%20X%20%3A%3D%0Abegin%0Aassume%20h%2C%20%20%20%20%20%20%20%20%20%20%20--%20a%20proof%20we%20can%20*use*%0Acases%20h%20with%20x%20y%2C%20%20%20--%20analyze%20each%20possible%20case%0Aexact%20x%2C%20%20%20%20%20%20%20%20%20%20%20%20--%20also%20known%20as%20destructuring%0Aend%0A%0A--%20We%20can%20even%20use%20%22case%20analysis%22%20programming%20notation!%0Aexample%20(X%20Y%3A%20Prop)%20%3A%20X%20%E2%88%A7%20Y%20%E2%86%92%20X%0A%7C%20(and.intro%20a%20b)%20%3A%3D%20a" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_213.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20Case%20analysis%20on%20*proof*%20values%0Aexample%20(X%20Y%3A%20Prop)%20%3A%20X%20%E2%88%A7%20Y%20%E2%86%92%20X%20%3A%3D%0Abegin%0Aassume%20h%2C%20%20%20%20%20%20%20%20%20%20%20--%20a%20proof%20we%20can%20*use*%0Acases%20h%20with%20x%20y%2C%20%20%20--%20analyze%20each%20possible%20case%0Aexact%20x%2C%20%20%20%20%20%20%20%20%20%20%20%20--%20also%20known%20as%20destructuring%0Aend%0A%0A--%20We%20can%20even%20use%20%22case%20analysis%22%20programming%20notation!%0Aexample%20(X%20Y%3A%20Prop)%20%3A%20X%20%E2%88%A7%20Y%20%E2%86%92%20X%0A%7C%20(and.intro%20a%20b)%20%3A%3D%20a" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_214.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Case analysis on *proof* values</span>
 <span class="kd">example</span> <span class="o">(</span><span class="n">X</span> <span class="n">Y</span><span class="o">:</span> <span class="kt">Prop</span><span class="o">)</span> <span class="o">:</span> <span class="n">X</span> <span class="bp">&#8743;</span> <span class="n">Y</span> <span class="bp">&#8594;</span> <span class="n">X</span> <span class="o">:=</span>
 <span class="kd">begin</span>
@@ -678,7 +691,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </div></section>
 </section>
 <section id="or">
-<h3><span class="section-number">3.4.3. </span>or &#8743;<a class="headerlink" href="#or" title="Permalink to this heading">&#61633;</a></h3>
+<h3><span class="section-number">3.4.4. </span>or &#8744;<a class="headerlink" href="#or" title="Permalink to this heading">&#61633;</a></h3>
 <ul class="simple">
 <li><p>def or_intro_left_rule := (&#10214;X&#10215; i = tt) &#8594; (&#10214;(X &#8744; Y)&#10215; i = tt)</p></li>
 <li><p>def or_intro_right_rule := (&#10214;Y&#10215; i = tt) &#8594; (&#10214;(X &#8744; Y)&#10215; i = tt)</p></li>
@@ -687,7 +700,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <p>Just as with &#8743;, the &#8744; connective in Lean is represented as
 a logical type, polymorphic in two propositional arguments.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=inductive%20or%20(A%20B%20%3A%20Prop)%20%3A%20Prop%0A%7C%20inl%20(h%20%3A%20A)%20%3A%20or%0A%7C%20inr%20(h%20%3A%20B)%20%3A%20or%0Aend%20hidden" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_237.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=inductive%20or%20(A%20B%20%3A%20Prop)%20%3A%20Prop%0A%7C%20inl%20(h%20%3A%20A)%20%3A%20or%0A%7C%20inr%20(h%20%3A%20B)%20%3A%20or%0Aend%20hidden" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_238.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">inductive</span> <span class="n">or</span> <span class="o">(</span><span class="n">A</span> <span class="n">B</span> <span class="o">:</span> <span class="kt">Prop</span><span class="o">)</span> <span class="o">:</span> <span class="kt">Prop</span>
 <span class="bp">|</span> <span class="n">inl</span> <span class="o">(</span><span class="n">h</span> <span class="o">:</span> <span class="n">A</span><span class="o">)</span> <span class="o">:</span> <span class="n">or</span>
 <span class="bp">|</span> <span class="n">inr</span> <span class="o">(</span><span class="n">h</span> <span class="o">:</span> <span class="n">B</span><span class="o">)</span> <span class="o">:</span> <span class="n">or</span>
@@ -700,12 +713,12 @@ is that <em>at least one of</em> the propositions has a proof. This
 difference shows up in how proofs of disjunctions are created
 and used.</p>
 <section id="introduction-rules">
-<h4><span class="section-number">3.4.3.1. </span>Introduction Rules<a class="headerlink" href="#introduction-rules" title="Permalink to this heading">&#61633;</a></h4>
+<h4><span class="section-number">3.4.4.1. </span>Introduction Rules<a class="headerlink" href="#introduction-rules" title="Permalink to this heading">&#61633;</a></h4>
 <p>We now have two constructors. The first, <em>or.inl</em>, constructs
 a proof of <em>A &#8744; B</em> from a proof, (a : A). The second, <em>or.inr</em>,
 constructs a proof of <em>A &#8744; B</em> from a proof of <em>B</em>.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20Example%20using%20a%20lambda%20expression.%20Be%20sure%20you%20understand%20it.%0Aexample%20(A%20B%20%3A%20Prop)%20%3A%20A%20%E2%86%92%20A%20%E2%88%A8%20B%20%3A%3D%20fun%20(a%20%3A%20A)%2C%20or.inl%20a%0A%2F-%0AOk%2C%20you%20might%20have%20notice%20that%20I've%20been%20declaring%20some%20named%0Aarguments%20to%20the%20left%20of%20the%20%3A%20rather%20than%20giving%20them%20names%0Awith%20%E2%88%80%20bindings%20to%20the%20right.%20Yes%2C%20that's%20a%20thing%20you%20can%20do.%0AAlso%20note%20that%20we%20*do*%20bind%20a%20name%2C%20*a*m%20to%20the%20assumed%20proof%0Aof%20*A*%2C%20which%20we%20then%20use%20to%20build%20a%20proof%20of%20*A%20%E2%88%A8%20B*.%20That's%0Aall%20there%20is%20to%20it.%0A-%2F" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_257.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20Example%20using%20a%20lambda%20expression.%20Be%20sure%20you%20understand%20it.%0Aexample%20(A%20B%20%3A%20Prop)%20%3A%20A%20%E2%86%92%20A%20%E2%88%A8%20B%20%3A%3D%20fun%20(a%20%3A%20A)%2C%20or.inl%20a%0A%2F-%0AOk%2C%20you%20might%20have%20notice%20that%20I've%20been%20declaring%20some%20named%0Aarguments%20to%20the%20left%20of%20the%20%3A%20rather%20than%20giving%20them%20names%0Awith%20%E2%88%80%20bindings%20to%20the%20right.%20Yes%2C%20that's%20a%20thing%20you%20can%20do.%0AAlso%20note%20that%20we%20*do*%20bind%20a%20name%2C%20*a*m%20to%20the%20assumed%20proof%0Aof%20*A*%2C%20which%20we%20then%20use%20to%20build%20a%20proof%20of%20*A%20%E2%88%A8%20B*.%20That's%0Aall%20there%20is%20to%20it.%0A-%2F" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_258.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Example using a lambda expression. Be sure you understand it.</span>
 <span class="kd">example</span> <span class="o">(</span><span class="n">A</span> <span class="n">B</span> <span class="o">:</span> <span class="kt">Prop</span><span class="o">)</span> <span class="o">:</span> <span class="n">A</span> <span class="bp">&#8594;</span> <span class="n">A</span> <span class="bp">&#8744;</span> <span class="n">B</span> <span class="o">:=</span> <span class="k">fun</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="n">A</span><span class="o">),</span> <span class="n">or.inl</span> <span class="n">a</span>
 <span class="c">/-</span>
@@ -720,7 +733,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </div>
 </div></section>
 <section id="elimination-rules">
-<h4><span class="section-number">3.4.3.2. </span>Elimination Rules<a class="headerlink" href="#elimination-rules" title="Permalink to this heading">&#61633;</a></h4>
+<h4><span class="section-number">3.4.4.2. </span>Elimination Rules<a class="headerlink" href="#elimination-rules" title="Permalink to this heading">&#61633;</a></h4>
 <p>How do we use a proof of a conjunction, <em>A &#8744; B</em>? In general,
 what you&#8217;ll want to show is that if you have a proof, h, of
 <em>A &#8744; B</em>  then you can obtain a proof of a goal proposition,
@@ -735,7 +748,7 @@ proofs that <em>A &#8594; C</em> and <em>B &#8594; C</em>. In other words, to sh
 a case analysis of a proof of <em>A &#8744; B</em>. The elimination rule for
 &#8744; is thus akin to what we saw in propositional logic.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20or.elim%20%3A%20%E2%88%80%20%7Ba%20b%20c%20%3A%20Prop%7D%2C%20a%20%E2%88%A8%20b%20%E2%86%92%20(a%20%E2%86%92%20c)%20%E2%86%92%20(b%20%E2%86%92%20c)%20%E2%86%92%20c%0A--%20deduce%20c%20from%20proofs%20of%20a%20%E2%88%A8%20b%2C%20a%20%E2%86%92%20c%2C%20and%20b%20%E2%86%92%20c%2C%0A%23check%20%40or.elim%0A%0Aexample%20(P%20Q%20R%20%3A%20Prop)%20%3A%20P%20%E2%88%A8%20Q%20%E2%86%92%20(P%20%E2%86%92%20R)%20%E2%86%92%20(Q%20%E2%86%92%20R)%20%E2%86%92%20R%0A%7C%20(or.inl%20p)%20pr%20qr%20%3A%3D%20pr%20p%0A%7C%20(or.inr%20q)%20pr%20qr%20%3A%3D%20qr%20q" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_289.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20or.elim%20%3A%20%E2%88%80%20%7Ba%20b%20c%20%3A%20Prop%7D%2C%20a%20%E2%88%A8%20b%20%E2%86%92%20(a%20%E2%86%92%20c)%20%E2%86%92%20(b%20%E2%86%92%20c)%20%E2%86%92%20c%0A--%20deduce%20c%20from%20proofs%20of%20a%20%E2%88%A8%20b%2C%20a%20%E2%86%92%20c%2C%20and%20b%20%E2%86%92%20c%2C%0A%23check%20%40or.elim%0A%0Aexample%20(P%20Q%20R%20%3A%20Prop)%20%3A%20P%20%E2%88%A8%20Q%20%E2%86%92%20(P%20%E2%86%92%20R)%20%E2%86%92%20(Q%20%E2%86%92%20R)%20%E2%86%92%20R%0A%7C%20(or.inl%20p)%20pr%20qr%20%3A%3D%20pr%20p%0A%7C%20(or.inr%20q)%20pr%20qr%20%3A%3D%20qr%20q" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_290.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- or.elim : &#8704; {a b c : Prop}, a &#8744; b &#8594; (a &#8594; c) &#8594; (b &#8594; c) &#8594; c</span>
 <span class="c1">-- deduce c from proofs of a &#8744; b, a &#8594; c, and b &#8594; c,</span>
 <span class="k">#check</span> <span class="bp">@</span><span class="n">or.elim</span>
@@ -745,21 +758,258 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <span class="bp">|</span> <span class="o">(</span><span class="n">or.inr</span> <span class="n">q</span><span class="o">)</span> <span class="n">pr</span> <span class="n">qr</span> <span class="o">:=</span> <span class="n">qr</span> <span class="n">q</span>
 </pre></div>
 </div>
-</div><div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%2F-%0A--%20formalize%20the%20rest%0A--%209.%20%C2%AC%C2%ACX%20%E2%8A%A2%20X%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20negation%20elimination%0A--%2010.%20X%20%E2%86%92%20%E2%8A%A5%20%E2%8A%A2%20%C2%ACX%20%20%20%20%20%20%20%20%20%20%20%20%20--%20negation%20introduction%0A--%2011.%20(X%20%E2%8A%A2%20Y)%20%E2%8A%A2%20(X%20%E2%86%92%20Y)%20%20%20%20%20%20--%20a%20little%20complicated%0A--%2012.%20X%20%E2%86%92%20Y%2C%20X%20%E2%8A%A2%20Y%20%20%20%20%20%20%20%20%20%20%20--%20arrow%20elimination%0A--%2013.%20X%20%E2%86%92%20Y%2C%20Y%20%E2%86%92%20X%20%E2%8A%A2%20X%20%E2%86%94%20Y%20%20%20%20--%20iff%20introduction%0A--%2014.%20X%20%E2%86%94%20Y%20%E2%8A%A2%20X%20%E2%86%92%20Y%20%20%20%20%20%20%20%20%20%20--%20iff%20elimination%20left%0A--%2015.%20X%20%E2%86%94%20Y%20%E2%8A%A2%20Y%20%E2%86%92%20X%20%20%20%20%20%20%20%20%20%20--%20iff%20elimination%20right" target="_blank" tryitfile="../examples/A_02_Predicate_Logic/unnamed_301.lean">
-try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c">/-</span>
-<span class="cm">-- formalize the rest</span>
-<span class="cm">-- 9. &#172;&#172;X &#8866; X                 -- negation elimination</span>
-<span class="cm">-- 10. X &#8594; &#8869; &#8866; &#172;X             -- negation introduction</span>
-<span class="cm">-- 11. (X &#8866; Y) &#8866; (X &#8594; Y)      -- a little complicated</span>
-<span class="cm">-- 12. X &#8594; Y, X &#8866; Y           -- arrow elimination</span>
-<span class="cm">-- 13. X &#8594; Y, Y &#8594; X &#8866; X &#8596; Y    -- iff introduction</span>
-<span class="cm">-- 14. X &#8596; Y &#8866; X &#8594; Y          -- iff elimination left</span>
-<span class="cm">-- 15. X &#8596; Y &#8866; Y &#8594; X          -- iff elimination right</span>
+</div></section>
+<section id="examples">
+<h4><span class="section-number">3.4.4.3. </span>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">&#61633;</a></h4>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=example%20%3A%20%E2%88%80%20P%20Q%2C%20P%20%E2%88%A8%20Q%20%E2%86%92%20Q%20%E2%88%A8%20P%20%3A%3D%0Abegin%0Aassume%20P%20Q%20h%2C%0Acases%20h%20with%20p%20q%2C%0Aexact%20or.inr%20p%2C%0Aexact%20or.inl%20q%2C%0Aend%0A%0A%0Aexample%20%3A%20%E2%88%80%20P%20Q%20R%2C%20P%20%E2%88%A8%20(Q%20%E2%88%A8%20R)%20%E2%86%92%20(P%20%E2%88%A8%20Q)%20%E2%88%A8%20R%20%3A%3D%0Abegin%0Aassume%20P%20Q%20R%20h%2C%0Acases%20h%20with%20p%20qr%2C%0Aleft%3B%20left%3B%20assumption%2C%0Acases%20qr%20with%20q%20r%2C%0Aleft%3B%20exact%20or.inr%20q%2C%0Aright%3B%20assumption%2C%0Aend" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_304.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">example</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="n">P</span> <span class="n">Q</span><span class="o">,</span> <span class="n">P</span> <span class="bp">&#8744;</span> <span class="n">Q</span> <span class="bp">&#8594;</span> <span class="n">Q</span> <span class="bp">&#8744;</span> <span class="n">P</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">assume</span> <span class="n">P</span> <span class="n">Q</span> <span class="n">h</span><span class="o">,</span>
+<span class="n">cases</span> <span class="n">h</span> <span class="k">with</span> <span class="n">p</span> <span class="n">q</span><span class="o">,</span>
+<span class="n">exact</span> <span class="n">or.inr</span> <span class="n">p</span><span class="o">,</span>
+<span class="n">exact</span> <span class="n">or.inl</span> <span class="n">q</span><span class="o">,</span>
+<span class="kd">end</span>
+
+
+<span class="kd">example</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="n">P</span> <span class="n">Q</span> <span class="n">R</span><span class="o">,</span> <span class="n">P</span> <span class="bp">&#8744;</span> <span class="o">(</span><span class="n">Q</span> <span class="bp">&#8744;</span> <span class="n">R</span><span class="o">)</span> <span class="bp">&#8594;</span> <span class="o">(</span><span class="n">P</span> <span class="bp">&#8744;</span> <span class="n">Q</span><span class="o">)</span> <span class="bp">&#8744;</span> <span class="n">R</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">assume</span> <span class="n">P</span> <span class="n">Q</span> <span class="n">R</span> <span class="n">h</span><span class="o">,</span>
+<span class="n">cases</span> <span class="n">h</span> <span class="k">with</span> <span class="n">p</span> <span class="n">qr</span><span class="o">,</span>
+<span class="n">left</span><span class="bp">;</span> <span class="n">left</span><span class="bp">;</span> <span class="n">assumption</span><span class="o">,</span>
+<span class="n">cases</span> <span class="n">qr</span> <span class="k">with</span> <span class="n">q</span> <span class="n">r</span><span class="o">,</span>
+<span class="n">left</span><span class="bp">;</span> <span class="n">exact</span> <span class="n">or.inr</span> <span class="n">q</span><span class="o">,</span>
+<span class="n">right</span><span class="bp">;</span> <span class="n">assumption</span><span class="o">,</span>
+<span class="kd">end</span>
 </pre></div>
 </div>
 </div></section>
 </section>
+<section id="not">
+<h3><span class="section-number">3.4.5. </span>not (&#172;)<a class="headerlink" href="#not" title="Permalink to this heading">&#61633;</a></h3>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20%C2%AC%C2%ACX%20%E2%8A%A2%20X%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20negation%20elimination%0A--%20X%20%E2%86%92%20%E2%8A%A5%20%E2%8A%A2%20%C2%ACX%20%20%20%20%20%20%20%20%20%20%20%20%20--%20negation%20introduction" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_328.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- &#172;&#172;X &#8866; X                 -- negation elimination</span>
+<span class="c1">-- X &#8594; &#8869; &#8866; &#172;X             -- negation introduction</span>
+</pre></div>
+</div>
+</div><section id="id1">
+<h4><span class="section-number">3.4.5.1. </span>Introduction<a class="headerlink" href="#id1" title="Permalink to this heading">&#61633;</a></h4>
+<p>We saw in propositional logic that if <em>X &#8594; false</em> then
+<em>X</em> must be false. That&#8217;s easy to see: <em>true &#8594; false</em> is
+false, so <em>X</em> can&#8217;t be <em>true</em>. On the other hand, <em>false
+&#8594; false</em> is true. <em>X</em> can only be <em>false</em>. Now, saying <em>X
+is false</em> in propositional logic is equivalent to saying
+&#172;X is true, giving us our constructive &#172; introduction rule:
+X &#8594; &#8869; &#8866; &#172;X. This is the rule of &#172; introduction: to prove
+<em>&#172;X</em> it will suffice to prove <em>X &#8594; false</em>.</p>
+<p>The same idea reappears in the constructive logic of Lean.
+In fact, Lean simply <em>defines</em> <em>&#172;X</em> to mean <em>X &#8594; false.</em></p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20def%20not%20(a%20%3A%20Prop)%20%3A%3D%20a%20%E2%86%92%20false%0A--%20prefix%20%60%C2%AC%60%3A40%20%3A%3D%20not%0A%23check%20not" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_348.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- def not (a : Prop) := a &#8594; false</span>
+<span class="c1">-- prefix `&#172;`:40 := not</span>
+<span class="k">#check</span> <span class="n">not</span>
+</pre></div>
+</div>
+</div><p>Let&#8217;s think about what <em>a &#8594; false</em> means, where <em>a</em> is any
+proposition. In Lean, a proof of an implication is a function,
+namely one that would turn <em>any</em> proof of <em>a</em> into a proof of
+false. So, <em>if there were</em> a proof of <em>a</em> then one could have
+a proof of <em>false.</em> That can&#8217;t happen because there is no proof
+of false. So there must be no proof of <em>a</em>. Therefore <em>a</em> is
+false, and we can write that as <em>&#172;a</em>.</p>
+<p>To prove a proposition, <em>&#172;a</em>, we thus just have to prove that
+<em>a &#8594; false</em>. To do this, we assume we have a proof of <em>a</em> and
+show that that leads to an impossibility, which shows that the
+assumption was wrong, thus <em>&#172;a</em> must be true. You can pronounce
+<em>&#172;a</em> as <em>not a</em> or <em>a is false</em>, but it can also help to think
+of it as saying <em>there provably can be no proof of a.</em></p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=example%20%3A%200%20%3D%201%20%E2%86%92%20false%20%3A%3D%0Abegin%0Aassume%20h%2C%0Acases%20h%2C%0Aend%0A%0Aexample%20%3A%20%C2%AC%200%20%3D%201%20%3A%3D%0Abegin%0Aassume%20h%2C%0Acases%20h%2C%0Aend%0A%0Aexample%20%3A%200%20%E2%89%A0%201%20%3A%3D%0Abegin%0Aassume%20h%2C%0Acases%20h%2C%0Aend" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_369.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">example</span> <span class="o">:</span> <span class="mi">0</span> <span class="bp">=</span> <span class="mi">1</span> <span class="bp">&#8594;</span> <span class="n">false</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">assume</span> <span class="n">h</span><span class="o">,</span>
+<span class="n">cases</span> <span class="n">h</span><span class="o">,</span>
+<span class="kd">end</span>
+
+<span class="kd">example</span> <span class="o">:</span> <span class="bp">&#172;</span> <span class="mi">0</span> <span class="bp">=</span> <span class="mi">1</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">assume</span> <span class="n">h</span><span class="o">,</span>
+<span class="n">cases</span> <span class="n">h</span><span class="o">,</span>
+<span class="kd">end</span>
+
+<span class="kd">example</span> <span class="o">:</span> <span class="mi">0</span> <span class="bp">&#8800;</span> <span class="mi">1</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">assume</span> <span class="n">h</span><span class="o">,</span>
+<span class="n">cases</span> <span class="n">h</span><span class="o">,</span>
+<span class="kd">end</span>
+</pre></div>
+</div>
+</div></section>
+<section id="elimination">
+<h4><span class="section-number">3.4.5.2. </span>Elimination<a class="headerlink" href="#elimination" title="Permalink to this heading">&#61633;</a></h4>
+<p>In propositional logic, we have the rule of (double) negation
+elimination: <em>&#172;&#172;X &#8594; X</em>. An easy way to think about this is that
+two negations cancel out: negation is an involution. As we&#8217;ll
+now see, this rule is also defines proof by contradiction.</p>
+<p>To see that, one can read the rule as saying that to prove <em>X</em>
+it will suffice to assume <em>&#172;X</em> and show that that leads to a
+a contradiction, thus proving that <em>&#172;X</em> is false, thus <em>&#172;&#172;X</em>.
+From there in classical logic it&#8217;s just a final step to <em>X</em>.</p>
+<p>Is this inference rule valid in Lean? Let&#8217;s try to prove that
+it is. Our goal is to prove &#8704; X, &#172;&#172;X &#8594; X. We first rewrite the
+inner <em>&#172;X</em> on the left of the &#8594; as <em>(X &#8594; false)</em>. <em>&#172;&#172;X</em> becomes
+<em>&#172;(X &#8594; false)</em>. Rewriting again gives <em>(X &#8594; false) &#8594; false.</em>
+Our goal, then, is to prove ((X &#8594; false) &#8594; false) &#8594; X. We get
+a start by assuming (h : (X &#8594; false) &#8594; false), but then find
+that from <em>h</em> there&#8217;s no way to squeeze out a proof of <em>X</em>.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=example%20%3A%20%E2%88%80%20(X%20%3A%20Prop)%2C%20%C2%AC%C2%ACX%20%E2%86%92%20X%20%3A%3D%0Abegin%0Aassume%20X%20h%2C%0A--%20can't%20do%20case%20analysis%20on%20a%20function%0Acases%20h%2C%0A--%20we're%20stuck%20with%20nowhere%20left%20to%20go!%0Aend" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_410.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">example</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">X</span> <span class="o">:</span> <span class="kt">Prop</span><span class="o">),</span> <span class="bp">&#172;&#172;</span><span class="n">X</span> <span class="bp">&#8594;</span> <span class="n">X</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">assume</span> <span class="n">X</span> <span class="n">h</span><span class="o">,</span>
+<span class="c1">-- can&#39;t do case analysis on a function</span>
+<span class="n">cases</span> <span class="n">h</span><span class="o">,</span>
+<span class="c1">-- we&#39;re stuck with nowhere left to go!</span>
+<span class="kd">end</span>
+</pre></div>
+</div>
+</div><p>What we&#8217;ve found then is that (double) negation elimination,
+and thus proof by contradiction, is not valid in Lean (or in
+similar constructive logic proof assistants). This shows that
+in Lean a proposition, <em>X</em>, being proved <em>not false</em> (<em>&#172;&#172;X</em>)
+does not imply that <em>X</em> is true. From a proof of the former we
+can&#8217;t obtain a proof of the latter. From a proof that <em>&#172;X is
+false</em> we have no way to derive a proof of <em>X</em>.</p>
+</section>
+<section id="constructive-vs-classical">
+<h4><span class="section-number">3.4.5.3. </span>Constructive vs. Classical<a class="headerlink" href="#constructive-vs-classical" title="Permalink to this heading">&#61633;</a></h4>
+<p>In constructive logic, a proposition can thus be provably true
+(by a proof), it can be provably false (by a proof that there is
+no proof of it), or it can be provably not false, which is to
+say that there must exist a proof, but where one cannot be
+constructed from the given premise alone.</p>
+<p>We&#8217;ll see the the same constructivity requirement again when we
+discuss proofs of existence. In a nutshell, a constructive proof
+exhibits a specific &#8220;witness&#8221; to show that one does exist. To be
+constructive means that a proof of existence requires an actual
+witness.</p>
+<p>With respect to negation elimination, it&#8217;s not enough to know
+that there&#8217;s an unspecified proof of <em>X</em> &#8220;out there.&#8221; To know
+that <em>X</em> is true/valid, one has to <em>exhibit</em> such a proof: to
+have one in hand, that can actually be inspected and verified.</p>
+<p>Consider <em>em</em> again. Given any proposition, <em>X</em>, <em>(em X)</em> is
+a proof of <em>X &#8744; &#172;X</em>. Now consider the introduction rules for
+&#8744; in constructive logic: to construct a proof of <em>X</em> you have
+to have either a proof of <em>X</em> or a proof of <em>&#172;X</em> in hand. The
+<em>em</em> axiom gives you a proof of <em>X &#8744; &#172;X</em> without requiring a
+proof of either disjunction. It&#8217;s thus non-constructive.</p>
+<p>Classical logic and mathematics do not adopt the constraint
+of constructivity, and consequently there are theorems that
+can be proved in classical mathematics but not in constructive
+mathematics. Again, it&#8217;s easy to turn Lean classical simply
+by opening the classical namespace (the accepted signal that
+one will admit classical reasoning) and using <em>em</em> in your
+proofs.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20A%20proof%20of%200%20%3D%200%20by%20contradition%0Aexample%20%3A%200%20%3D%200%20%3A%3D%0Abegin%0Aby_contradiction%2C%20--%20applies%20%C2%AC%C2%ACP%20%E2%86%92%20P%0Ahave%20eq0%20%3A%3D%20eq.refl%200%2C%0Acontradiction%2C%0Aend" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_463.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- A proof of 0 = 0 by contradition</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="mi">0</span> <span class="bp">=</span> <span class="mi">0</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="n">by_contradiction</span><span class="o">,</span> <span class="c1">-- applies &#172;&#172;P &#8594; P</span>
+<span class="k">have</span> <span class="n">eq0</span> <span class="o">:=</span> <span class="n">eq.refl</span> <span class="mi">0</span><span class="o">,</span>
+<span class="n">contradiction</span><span class="o">,</span>
+<span class="kd">end</span>
+</pre></div>
+</div>
+</div></section>
+<section id="excluded-middle">
+<h4><span class="section-number">3.4.5.4. </span>Excluded Middle<a class="headerlink" href="#excluded-middle" title="Permalink to this heading">&#61633;</a></h4>
+<p>We&#8217;ve seen that in <em>constructive</em> logic, knowing that it&#8217;s
+false that there&#8217;s no proof is not the same as, and is weaker
+than, actually having a proof. Knowing that a proposition is
+not false is not the same as actually having a proof in hand.
+What makes constructive logic constructive is that a proof is
+required to judge a proposition as being true.</p>
+<p>In classical predicate and propositional logic, by contrast,
+negation elimination is an axiom. To prove a proposition, <em>X</em>,
+by contradiction, one assumes <em>&#172;X</em>, shows that from that one
+can derive a contradiction, thus proving <em>&#172;&#172;X</em>, and from there
+(here it comes) by negation elimination one finally concludes
+<em>X</em>, thereby satisfying the original goal.</p>
+<p>In summary, negation elimination is not an axiom in constructive
+logic, so any proof that relies on <em>&#8704; X, &#172;&#172;X &#8594; X</em> gets blocked at
+this point. The reason it&#8217;s not an axiom is that it would make
+the logic non-constructive: while a proof that X is not false
+might suggest that there exists a proof of X, it does not give
+you such a proof, which is what constructive logic requires.</p>
+<p>In constructive logic there are not just two truth states
+for any proposition. We&#8217;ve seen that we can know that a
+proposition is true (by having a proof of it), know that
+it is false (by having a proof it entails a contradiction),
+and know that it&#8217;s not false but without having constructed
+a proof that it&#8217;s true. We can know that something is not
+false without having a proof of it, and without a proof we
+can&#8217;t judge it to be true, either.</p>
+<p>In classical logic, the <em>axiom (&#8220;law&#8221;) of the excluded middle</em>
+rules out this middle possibility, declaring as an assumption
+that for any given proposition, P, there is a proof of P &#8744; &#172;P.</p>
+<p>This axiom then enables proof by contradiction. That&#8217;s an easy
+proof. We need to prove that if <em>P &#8744; &#172; P</em> then <em>&#172;&#172;P &#8594; P</em>. The
+proof is by case analysis on an assumped proof of <em>P &#8744; &#172; P</em>.
+In the first case, we assume a proof of P, so the implication
+is true trivially. In the case where we have a proof of &#172;P, we
+have a contradiction between &#172;P and &#172;&#172;P, and so this case can&#8217;t
+actually arise and needn&#8217;t be considered any further.</p>
+<p>In Lean, you can declare anything you want to be an additional
+axiom. If you&#8217;re careless, you will make the logic inconsistent
+and thus useless. For example, don&#8217;t assume <em>true &#8596; false</em>. On
+the other hand, you may add any axiom that is independent of the
+given ones and you&#8217;ll still have a consistent logic in which
+propositions that lack proofs in constructive logic now have
+proofs.</p>
+<p>The law of the excluded middle, <em>&#8704; P, P &#8744; &#172;P</em> is declared as an
+<em>axiom</em> in the <em>classical</em> namespace, where <em>classical.em</em> (or
+just <em>em</em> if you <em>open classical</em>) is assumed to be a proof of
+<em>em : &#8704; P, P &#8744; &#172;P</em>.</p>
+<p>Now the key to understanding the power of excluded middle is
+that it allows you to do case analysis on any <em>proposition</em> in
+our otherwise constructive logic. How&#8217;s that? Assume <em>X</em> is an
+arbitrary proposition. Then <em>(em X)</em> is a proof of X &#8744; &#172;X.</p>
+<p>Note that <em>em</em>, being universally quantified is essentially
+a function. It can be <em>applied</em> to yield a specific instance
+of the general rule. Ok, so what can we do with a &#8220;free proof&#8221;
+of <em>X &#8744; &#172;X</em>? Case analysis! There will be just two cases. In
+the first case, we&#8217;d have a proof of <em>X</em>. In the second, we&#8217;d
+have a proof of <em>&#172;X</em>. And those are the only cases that need
+to be considered.</p>
+</section>
+<section id="exercise">
+<h4><span class="section-number">3.4.5.5. </span>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">&#61633;</a></h4>
+<ul class="simple">
+<li><p>Give a formal proof of the claim that excluded middle implies proof by contradiction.</p></li>
+<li><p>Determine whether, and if so prove, that the two statements are equivalent: excluded middle and proof by contradiction.</p></li>
+<li><p>Try to Prove each of DeMorgan&#8217;s laws in Lean to identify the non-constructive ones</p></li>
+<li><p>Finish the proofs of DeMorgan&#8217;s laws using the axiom of the excluded middle <em>(em)</em>.</p></li>
+</ul>
+</section>
+</section>
+<section id="coming-soon">
+<h3><span class="section-number">3.4.6. </span>Coming Soon<a class="headerlink" href="#coming-soon" title="Permalink to this heading">&#61633;</a></h3>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%2F-%0A--%20formalize%20the%20rest%0A--%2011.%20(X%20%E2%8A%A2%20Y)%20%E2%8A%A2%20(X%20%E2%86%92%20Y)%20%20%20%20%20%20--%20arrow%20introduction%0A--%2012.%20X%20%E2%86%92%20Y%2C%20X%20%E2%8A%A2%20Y%20%20%20%20%20%20%20%20%20%20%20--%20arrow%20elimination%0A--%2013.%20X%20%E2%86%92%20Y%2C%20Y%20%E2%86%92%20X%20%E2%8A%A2%20X%20%E2%86%94%20Y%20%20%20--%20iff%20introduction%0A--%2014.%20X%20%E2%86%94%20Y%20%E2%8A%A2%20X%20%E2%86%92%20Y%20%20%20%20%20%20%20%20%20%20--%20iff%20elimination%20left%0A--%2015.%20X%20%E2%86%94%20Y%20%E2%8A%A2%20Y%20%E2%86%92%20X%20%20%20%20%20%20%20%20%20%20--%20iff%20elimination%20right%0A-%2F" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_554.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c">/-</span>
+<span class="cm">-- formalize the rest</span>
+<span class="cm">-- 11. (X &#8866; Y) &#8866; (X &#8594; Y)      -- arrow introduction</span>
+<span class="cm">-- 12. X &#8594; Y, X &#8866; Y           -- arrow elimination</span>
+<span class="cm">-- 13. X &#8594; Y, Y &#8594; X &#8866; X &#8596; Y   -- iff introduction</span>
+<span class="cm">-- 14. X &#8596; Y &#8866; X &#8594; Y          -- iff elimination left</span>
+<span class="cm">-- 15. X &#8596; Y &#8866; Y &#8594; X          -- iff elimination right</span>
+<span class="cm">-/</span>
+</pre></div>
+</div>
+</div></section>
 </section>
 </section>
 
@@ -768,7 +1018,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="A_01_Propositional_Logic.html" class="btn btn-neutral float-left" title="2. Propositional Logic" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="genindex.html" class="btn btn-neutral float-right" title="Index" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="A_03_Dependent_Types.html" class="btn btn-neutral float-right" title="4. Dependent Types" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
