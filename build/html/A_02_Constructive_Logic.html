@@ -77,10 +77,9 @@
 <li class="toctree-l4"><a class="reference internal" href="#elimination">3.4.5.2. Elimination</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#constructive-vs-classical">3.4.5.3. Constructive vs. Classical</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#excluded-middle">3.4.5.4. Excluded Middle</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#exercise">3.4.5.5. Exercise</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">3.4.5.5. Examples</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#coming-soon">3.4.6. Coming Soon</a></li>
 </ul>
 </li>
 </ul>
@@ -985,20 +984,71 @@ the first case, we&#8217;d have a proof of <em>X</em>. In the second, we&#8217;d
 have a proof of <em>&#172;X</em>. And those are the only cases that need
 to be considered.</p>
 </section>
-<section id="exercise">
-<h4><span class="section-number">3.4.5.5. </span>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">&#61633;</a></h4>
-<ul class="simple">
-<li><p>Give a formal proof of the claim that excluded middle implies proof by contradiction.</p></li>
-<li><p>Determine whether, and if so prove, that the two statements are equivalent: excluded middle and proof by contradiction.</p></li>
-<li><p>Try to Prove each of DeMorgan&#8217;s laws in Lean to identify the non-constructive ones</p></li>
-<li><p>Finish the proofs of DeMorgan&#8217;s laws using the axiom of the excluded middle <em>(em)</em>.</p></li>
-</ul>
-</section>
-</section>
-<section id="coming-soon">
-<h3><span class="section-number">3.4.6. </span>Coming Soon<a class="headerlink" href="#coming-soon" title="Permalink to this heading">&#61633;</a></h3>
+<section id="id2">
+<h4><span class="section-number">3.4.5.5. </span>Examples<a class="headerlink" href="#id2" title="Permalink to this heading">&#61633;</a></h4>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%2F-%0A--%20formalize%20the%20rest%0A--%2011.%20(X%20%E2%8A%A2%20Y)%20%E2%8A%A2%20(X%20%E2%86%92%20Y)%20%20%20%20%20%20--%20arrow%20introduction%0A--%2012.%20X%20%E2%86%92%20Y%2C%20X%20%E2%8A%A2%20Y%20%20%20%20%20%20%20%20%20%20%20--%20arrow%20elimination%0A--%2013.%20X%20%E2%86%92%20Y%2C%20Y%20%E2%86%92%20X%20%E2%8A%A2%20X%20%E2%86%94%20Y%20%20%20--%20iff%20introduction%0A--%2014.%20X%20%E2%86%94%20Y%20%E2%8A%A2%20X%20%E2%86%92%20Y%20%20%20%20%20%20%20%20%20%20--%20iff%20elimination%20left%0A--%2015.%20X%20%E2%86%94%20Y%20%E2%8A%A2%20Y%20%E2%86%92%20X%20%20%20%20%20%20%20%20%20%20--%20iff%20elimination%20right%0A-%2F" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_554.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%40%20classical.em%0A%0Atheorem%20foo%20%3A%20%E2%88%80%20P%2C%20(P%20%E2%88%A8%20%C2%AC%20P)%20%E2%86%92%20(%C2%AC%C2%ACP%20%E2%86%92%20P)%20%3A%3D%0Abegin%0Aassume%20P%2C%0Aassume%20em%2C%0Aassume%20notNotP%2C%0Acases%20em%2C%0A--%20case%201%0Aassumption%2C%0Acontradiction%2C%0Aend%0A%0Aexample%20%3A%200%20%3D%200%20%3A%3D%0Abegin%0Aby_contradiction%2C%0Ahave%20zez%20%3A%3D%20eq.refl%200%2C%0Acontradiction%2C%0Aend%0A%0Atheorem%20demorgan1%20%3A%20%E2%88%80%20P%20Q%2C%20%C2%AC(P%20%E2%88%A7%20Q)%20%E2%86%94%20%C2%ACP%20%E2%88%A8%20%C2%AC%20Q%20%3A%3D%0Abegin%0Aassume%20P%20Q%2C%0Asplit%2C%0A%0A--%20FORWARD%0Aassume%20h%2C%0Ahave%20ponp%20%3A%3D%20classical.em%20P%2C%0Ahave%20qonq%20%3A%3D%20classical.em%20Q%2C%0A%0Acases%20ponp%20with%20p%20np%2C%0Acases%20qonq%20with%20q%20nq%2C%0Ahave%20pandq%20%3A%3D%20and.intro%20p%20q%2C%0Acontradiction%2C%0Aapply%20or.inr%20nq%2C%0Aapply%20or.inl%20np%2C%0A%0A--%20BACKWARDS%0A%0Aassume%20h%2C%0A%0A%0Ahave%20ponp%20%3A%3D%20classical.em%20P%2C%0Ahave%20qonq%20%3A%3D%20classical.em%20Q%2C%0Acases%20ponp%20with%20p%20np%2C%0Acases%20qonq%20with%20q%20nq%2C%0A%0Acases%20h%2C%0Acontradiction%2C%0Acontradiction%2C%0A%0A--%20FINISH%20THIS%20PROOF%0A--%20IS%20BACKWARDS%20PROVABLE%20WITHOUT%20em%3F%0A%0Aend%0A%0A--%20PROVE%20THE%20SECOND%20DEMORGAN%20RULE" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_546.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span><span class="bp">@</span> <span class="n">classical.em</span>
+
+<span class="kd">theorem</span> <span class="n">foo</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="n">P</span><span class="o">,</span> <span class="o">(</span><span class="n">P</span> <span class="bp">&#8744;</span> <span class="bp">&#172;</span> <span class="n">P</span><span class="o">)</span> <span class="bp">&#8594;</span> <span class="o">(</span><span class="bp">&#172;&#172;</span><span class="n">P</span> <span class="bp">&#8594;</span> <span class="n">P</span><span class="o">)</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">assume</span> <span class="n">P</span><span class="o">,</span>
+<span class="k">assume</span> <span class="n">em</span><span class="o">,</span>
+<span class="k">assume</span> <span class="n">notNotP</span><span class="o">,</span>
+<span class="n">cases</span> <span class="n">em</span><span class="o">,</span>
+<span class="c1">-- case 1</span>
+<span class="n">assumption</span><span class="o">,</span>
+<span class="n">contradiction</span><span class="o">,</span>
+<span class="kd">end</span>
+
+<span class="kd">example</span> <span class="o">:</span> <span class="mi">0</span> <span class="bp">=</span> <span class="mi">0</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="n">by_contradiction</span><span class="o">,</span>
+<span class="k">have</span> <span class="n">zez</span> <span class="o">:=</span> <span class="n">eq.refl</span> <span class="mi">0</span><span class="o">,</span>
+<span class="n">contradiction</span><span class="o">,</span>
+<span class="kd">end</span>
+
+<span class="kd">theorem</span> <span class="n">demorgan1</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="n">P</span> <span class="n">Q</span><span class="o">,</span> <span class="bp">&#172;</span><span class="o">(</span><span class="n">P</span> <span class="bp">&#8743;</span> <span class="n">Q</span><span class="o">)</span> <span class="bp">&#8596;</span> <span class="bp">&#172;</span><span class="n">P</span> <span class="bp">&#8744;</span> <span class="bp">&#172;</span> <span class="n">Q</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">assume</span> <span class="n">P</span> <span class="n">Q</span><span class="o">,</span>
+<span class="n">split</span><span class="o">,</span>
+
+<span class="c1">-- FORWARD</span>
+<span class="k">assume</span> <span class="n">h</span><span class="o">,</span>
+<span class="k">have</span> <span class="n">ponp</span> <span class="o">:=</span> <span class="n">classical.em</span> <span class="n">P</span><span class="o">,</span>
+<span class="k">have</span> <span class="n">qonq</span> <span class="o">:=</span> <span class="n">classical.em</span> <span class="n">Q</span><span class="o">,</span>
+
+<span class="n">cases</span> <span class="n">ponp</span> <span class="k">with</span> <span class="n">p</span> <span class="n">np</span><span class="o">,</span>
+<span class="n">cases</span> <span class="n">qonq</span> <span class="k">with</span> <span class="n">q</span> <span class="n">nq</span><span class="o">,</span>
+<span class="k">have</span> <span class="n">pandq</span> <span class="o">:=</span> <span class="n">and.intro</span> <span class="n">p</span> <span class="n">q</span><span class="o">,</span>
+<span class="n">contradiction</span><span class="o">,</span>
+<span class="n">apply</span> <span class="n">or.inr</span> <span class="n">nq</span><span class="o">,</span>
+<span class="n">apply</span> <span class="n">or.inl</span> <span class="n">np</span><span class="o">,</span>
+
+<span class="c1">-- BACKWARDS</span>
+
+<span class="k">assume</span> <span class="n">h</span><span class="o">,</span>
+
+
+<span class="k">have</span> <span class="n">ponp</span> <span class="o">:=</span> <span class="n">classical.em</span> <span class="n">P</span><span class="o">,</span>
+<span class="k">have</span> <span class="n">qonq</span> <span class="o">:=</span> <span class="n">classical.em</span> <span class="n">Q</span><span class="o">,</span>
+<span class="n">cases</span> <span class="n">ponp</span> <span class="k">with</span> <span class="n">p</span> <span class="n">np</span><span class="o">,</span>
+<span class="n">cases</span> <span class="n">qonq</span> <span class="k">with</span> <span class="n">q</span> <span class="n">nq</span><span class="o">,</span>
+
+<span class="n">cases</span> <span class="n">h</span><span class="o">,</span>
+<span class="n">contradiction</span><span class="o">,</span>
+<span class="n">contradiction</span><span class="o">,</span>
+
+<span class="c1">-- FINISH THIS PROOF</span>
+<span class="c1">-- IS BACKWARDS PROVABLE WITHOUT em?</span>
+
+<span class="kd">end</span>
+
+<span class="c1">-- PROVE THE SECOND DEMORGAN RULE</span>
+</pre></div>
+</div>
+</div><div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%2F-%0A--%20formalize%20the%20rest%0A--%2011.%20(X%20%E2%8A%A2%20Y)%20%E2%8A%A2%20(X%20%E2%86%92%20Y)%20%20%20%20%20%20--%20arrow%20introduction%0A--%2012.%20X%20%E2%86%92%20Y%2C%20X%20%E2%8A%A2%20Y%20%20%20%20%20%20%20%20%20%20%20--%20arrow%20elimination%0A--%2013.%20X%20%E2%86%92%20Y%2C%20Y%20%E2%86%92%20X%20%E2%8A%A2%20X%20%E2%86%94%20Y%20%20%20--%20iff%20introduction%0A--%2014.%20X%20%E2%86%94%20Y%20%E2%8A%A2%20X%20%E2%86%92%20Y%20%20%20%20%20%20%20%20%20%20--%20iff%20elimination%20left%0A--%2015.%20X%20%E2%86%94%20Y%20%E2%8A%A2%20Y%20%E2%86%92%20X%20%20%20%20%20%20%20%20%20%20--%20iff%20elimination%20right%0A-%2F" target="_blank" tryitfile="../examples/A_02_Constructive_Logic/unnamed_607.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c">/-</span>
 <span class="cm">-- formalize the rest</span>
 <span class="cm">-- 11. (X &#8866; Y) &#8866; (X &#8594; Y)      -- arrow introduction</span>
@@ -1010,6 +1060,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </pre></div>
 </div>
 </div></section>
+</section>
 </section>
 </section>
 

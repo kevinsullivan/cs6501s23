@@ -82,7 +82,6 @@
 \contentsline {subsubsection}{Elimination}{42}{subsubsection*.13}
 \contentsline {subsubsection}{Constructive vs. Classical}{42}{subsubsection*.14}
 \contentsline {subsubsection}{Excluded Middle}{43}{subsubsection*.15}
-\contentsline {subsubsection}{Exercise}{43}{subsubsection*.16}
-\contentsline {subsection}{\numberline {3.4.6}Coming Soon}{44}{subsection.3.4.6}
+\contentsline {subsubsection}{Examples}{43}{subsubsection*.16}
 \contentsline {chapter}{\numberline {4}Dependent Types}{45}{chapter.4}
 \contentsline {chapter}{\numberline {5}Index}{47}{chapter.5}

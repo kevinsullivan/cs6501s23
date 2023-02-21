@@ -386,6 +386,13 @@ TEXT. -/
 #check not
 -- QUOTE.
 
+example : ¬ 0 = 1 :=
+begin
+show 0 = 1 → false,
+assume h,
+contradiction,
+end
+
 /- TEXT:
 Let's think about what *a → false* means, where *a* is any
 proposition. In Lean, a proof of an implication is a function,
@@ -501,6 +508,7 @@ one will admit classical reasoning) and using *em* in your
 proofs. 
 TEXT. -/
 
+
 -- QUOTE:
 -- A proof of 0 = 0 by contradition 
 example : 0 = 0 :=
@@ -583,6 +591,72 @@ the first case, we'd have a proof of *X*. In the second, we'd
 have a proof of *¬X*. And those are the only cases that need
 to be considered.  
 
+Examples
+~~~~~~~~
+TEXT. -/
+
+-- QUOTE:
+#check@ classical.em 
+
+theorem foo : ∀ P, (P ∨ ¬ P) → (¬¬P → P) :=
+begin
+assume P,
+assume em,
+assume notNotP,
+cases em,
+-- case 1
+assumption,
+contradiction,
+end
+
+example : 0 = 0 :=
+begin
+by_contradiction,
+have zez := eq.refl 0,
+contradiction, 
+end
+
+theorem demorgan1 : ∀ P Q, ¬(P ∧ Q) ↔ ¬P ∨ ¬ Q :=
+begin
+assume P Q,
+split,
+
+-- FORWARD
+assume h,
+have ponp := classical.em P,
+have qonq := classical.em Q,
+
+cases ponp with p np,
+cases qonq with q nq,
+have pandq := and.intro p q,
+contradiction,
+apply or.inr nq,
+apply or.inl np,
+
+-- BACKWARDS
+
+assume h,
+
+
+have ponp := classical.em P,
+have qonq := classical.em Q,
+cases ponp with p np,
+cases qonq with q nq,
+
+cases h,
+contradiction,
+contradiction,
+
+-- FINISH THIS PROOF
+-- IS BACKWARDS PROVABLE WITHOUT em?
+
+end
+
+-- PROVE THE SECOND DEMORGAN RULE
+-- QUOTE.
+
+
+/-
 Exercise
 ~~~~~~~~
 

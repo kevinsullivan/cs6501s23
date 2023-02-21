@@ -540,16 +540,69 @@ the first case, we'd have a proof of *X*. In the second, we'd
 have a proof of *¬X*. And those are the only cases that need
 to be considered.  
 
-Exercise
+Examples
 ~~~~~~~~
 
-- Give a formal proof of the claim that excluded middle implies proof by contradiction.
-- Determine whether, and if so prove, that the two statements are equivalent: excluded middle and proof by contradiction.
-- Try to Prove each of DeMorgan's laws in Lean to identify the non-constructive ones
-- Finish the proofs of DeMorgan's laws using the axiom of the excluded middle *(em)*.
+.. code-block:: lean
 
-Coming Soon
------------
+  #check@ classical.em 
+  
+  theorem foo : ∀ P, (P ∨ ¬ P) → (¬¬P → P) :=
+  begin
+  assume P,
+  assume em,
+  assume notNotP,
+  cases em,
+  -- case 1
+  assumption,
+  contradiction,
+  end
+  
+  example : 0 = 0 :=
+  begin
+  by_contradiction,
+  have zez := eq.refl 0,
+  contradiction, 
+  end
+  
+  theorem demorgan1 : ∀ P Q, ¬(P ∧ Q) ↔ ¬P ∨ ¬ Q :=
+  begin
+  assume P Q,
+  split,
+  
+  -- FORWARD
+  assume h,
+  have ponp := classical.em P,
+  have qonq := classical.em Q,
+  
+  cases ponp with p np,
+  cases qonq with q nq,
+  have pandq := and.intro p q,
+  contradiction,
+  apply or.inr nq,
+  apply or.inl np,
+  
+  -- BACKWARDS
+  
+  assume h,
+  
+  
+  have ponp := classical.em P,
+  have qonq := classical.em Q,
+  cases ponp with p np,
+  cases qonq with q nq,
+  
+  cases h,
+  contradiction,
+  contradiction,
+  
+  -- FINISH THIS PROOF
+  -- IS BACKWARDS PROVABLE WITHOUT em?
+  
+  end
+  
+  -- PROVE THE SECOND DEMORGAN RULE
+
 
 .. code-block:: lean
 

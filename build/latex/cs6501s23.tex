@@ -3363,29 +3363,68 @@ have a proof of \sphinxstyleemphasis{¬X}. And those are the only cases that nee
 to be considered.
 
 
-\subsubsection{Exercise}
-\label{\detokenize{A_02_Constructive_Logic:exercise}}\begin{itemize}
-\item {} 
-\sphinxAtStartPar
-Give a formal proof of the claim that excluded middle implies proof by contradiction.
+\subsubsection{Examples}
+\label{\detokenize{A_02_Constructive_Logic:id2}}
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k}{\PYGZsh{}check}\PYG{n+nb+bp}{@} \PYG{n}{classical.em}
 
-\item {} 
-\sphinxAtStartPar
-Determine whether, and if so prove, that the two statements are equivalent: excluded middle and proof by contradiction.
+\PYG{k+kd}{theorem} \PYG{n}{foo} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{n}{P}\PYG{o}{,} \PYG{o}{(}\PYG{n}{P} \PYG{n+nb+bp}{∨} \PYG{n+nb+bp}{¬} \PYG{n}{P}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{o}{(}\PYG{n+nb+bp}{¬}\PYG{n+nb+bp}{¬}\PYG{n}{P} \PYG{n+nb+bp}{→} \PYG{n}{P}\PYG{o}{)} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{P}\PYG{o}{,}
+\PYG{k}{assume} \PYG{n}{em}\PYG{o}{,}
+\PYG{k}{assume} \PYG{n}{notNotP}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{em}\PYG{o}{,}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} case 1}
+\PYG{n}{assumption}\PYG{o}{,}
+\PYG{n}{contradiction}\PYG{o}{,}
+\PYG{k+kd}{end}
 
-\item {} 
-\sphinxAtStartPar
-Try to Prove each of DeMorgan’s laws in Lean to identify the non\sphinxhyphen{}constructive ones
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{l+m+mi}{0} \PYG{n+nb+bp}{=} \PYG{l+m+mi}{0} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{n}{by\PYGZus{}contradiction}\PYG{o}{,}
+\PYG{k}{have} \PYG{n}{zez} \PYG{o}{:=} \PYG{n}{eq.refl} \PYG{l+m+mi}{0}\PYG{o}{,}
+\PYG{n}{contradiction}\PYG{o}{,}
+\PYG{k+kd}{end}
 
-\item {} 
-\sphinxAtStartPar
-Finish the proofs of DeMorgan’s laws using the axiom of the excluded middle \sphinxstyleemphasis{(em)}.
+\PYG{k+kd}{theorem} \PYG{n}{demorgan1} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{n}{P} \PYG{n}{Q}\PYG{o}{,} \PYG{n+nb+bp}{¬}\PYG{o}{(}\PYG{n}{P} \PYG{n+nb+bp}{∧} \PYG{n}{Q}\PYG{o}{)} \PYG{n+nb+bp}{↔} \PYG{n+nb+bp}{¬}\PYG{n}{P} \PYG{n+nb+bp}{∨} \PYG{n+nb+bp}{¬} \PYG{n}{Q} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{P} \PYG{n}{Q}\PYG{o}{,}
+\PYG{n}{split}\PYG{o}{,}
 
-\end{itemize}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} FORWARD}
+\PYG{k}{assume} \PYG{n}{h}\PYG{o}{,}
+\PYG{k}{have} \PYG{n}{ponp} \PYG{o}{:=} \PYG{n}{classical.em} \PYG{n}{P}\PYG{o}{,}
+\PYG{k}{have} \PYG{n}{qonq} \PYG{o}{:=} \PYG{n}{classical.em} \PYG{n}{Q}\PYG{o}{,}
+
+\PYG{n}{cases} \PYG{n}{ponp} \PYG{k}{with} \PYG{n}{p} \PYG{n}{np}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{qonq} \PYG{k}{with} \PYG{n}{q} \PYG{n}{nq}\PYG{o}{,}
+\PYG{k}{have} \PYG{n}{pandq} \PYG{o}{:=} \PYG{n}{and.intro} \PYG{n}{p} \PYG{n}{q}\PYG{o}{,}
+\PYG{n}{contradiction}\PYG{o}{,}
+\PYG{n}{apply} \PYG{n}{or.inr} \PYG{n}{nq}\PYG{o}{,}
+\PYG{n}{apply} \PYG{n}{or.inl} \PYG{n}{np}\PYG{o}{,}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} BACKWARDS}
+
+\PYG{k}{assume} \PYG{n}{h}\PYG{o}{,}
 
 
-\subsection{Coming Soon}
-\label{\detokenize{A_02_Constructive_Logic:coming-soon}}
+\PYG{k}{have} \PYG{n}{ponp} \PYG{o}{:=} \PYG{n}{classical.em} \PYG{n}{P}\PYG{o}{,}
+\PYG{k}{have} \PYG{n}{qonq} \PYG{o}{:=} \PYG{n}{classical.em} \PYG{n}{Q}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{ponp} \PYG{k}{with} \PYG{n}{p} \PYG{n}{np}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{qonq} \PYG{k}{with} \PYG{n}{q} \PYG{n}{nq}\PYG{o}{,}
+
+\PYG{n}{cases} \PYG{n}{h}\PYG{o}{,}
+\PYG{n}{contradiction}\PYG{o}{,}
+\PYG{n}{contradiction}\PYG{o}{,}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} FINISH THIS PROOF}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} IS BACKWARDS PROVABLE WITHOUT em?}
+
+\PYG{k+kd}{end}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} PROVE THE SECOND DEMORGAN RULE}
+\end{sphinxVerbatim}
+
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{c}{/\PYGZhy{}}
 \PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{m}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{z}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{t}
