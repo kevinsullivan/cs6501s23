@@ -81,7 +81,7 @@
 
 
 \title{Computing Foundations}
-\date{Feb 21, 2023}
+\date{Feb 23, 2023}
 \release{1.2.2}
 \author{Kevin Sullivan}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -3366,7 +3366,7 @@ to be considered.
 \subsubsection{Examples}
 \label{\detokenize{A_02_Constructive_Logic:id2}}
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{k}{\PYGZsh{}check}\PYG{n+nb+bp}{@} \PYG{n}{classical.em}
+\PYG{k}{\PYGZsh{}check} \PYG{n+nb+bp}{@}\PYG{n}{classical.em}
 
 \PYG{k+kd}{theorem} \PYG{n}{foo} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{n}{P}\PYG{o}{,} \PYG{o}{(}\PYG{n}{P} \PYG{n+nb+bp}{∨} \PYG{n+nb+bp}{¬} \PYG{n}{P}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{o}{(}\PYG{n+nb+bp}{¬}\PYG{n+nb+bp}{¬}\PYG{n}{P} \PYG{n+nb+bp}{→} \PYG{n}{P}\PYG{o}{)} \PYG{o}{:=}
 \PYG{k+kd}{begin}
@@ -3386,7 +3386,7 @@ to be considered.
 \PYG{n}{contradiction}\PYG{o}{,}
 \PYG{k+kd}{end}
 
-\PYG{k+kd}{theorem} \PYG{n}{demorgan1} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{n}{P} \PYG{n}{Q}\PYG{o}{,} \PYG{n+nb+bp}{¬}\PYG{o}{(}\PYG{n}{P} \PYG{n+nb+bp}{∧} \PYG{n}{Q}\PYG{o}{)} \PYG{n+nb+bp}{↔} \PYG{n+nb+bp}{¬}\PYG{n}{P} \PYG{n+nb+bp}{∨} \PYG{n+nb+bp}{¬} \PYG{n}{Q} \PYG{o}{:=}
+\PYG{k+kd}{theorem} \PYG{n}{demorgan1} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{n}{P} \PYG{n}{Q}\PYG{o}{,} \PYG{n+nb+bp}{¬}\PYG{o}{(}\PYG{n}{P} \PYG{n+nb+bp}{∧} \PYG{n}{Q}\PYG{o}{)} \PYG{n+nb+bp}{↔} \PYG{o}{(}\PYG{n+nb+bp}{¬}\PYG{n}{P} \PYG{n+nb+bp}{∨} \PYG{n+nb+bp}{¬} \PYG{n}{Q}\PYG{o}{)} \PYG{o}{:=}
 \PYG{k+kd}{begin}
 \PYG{k}{assume} \PYG{n}{P} \PYG{n}{Q}\PYG{o}{,}
 \PYG{n}{split}\PYG{o}{,}
@@ -3404,10 +3404,7 @@ to be considered.
 \PYG{n}{apply} \PYG{n}{or.inl} \PYG{n}{np}\PYG{o}{,}
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} BACKWARDS}
-
 \PYG{k}{assume} \PYG{n}{h}\PYG{o}{,}
-
-
 \PYG{k}{have} \PYG{n}{ponp} \PYG{o}{:=} \PYG{n}{classical.em} \PYG{n}{P}\PYG{o}{,}
 \PYG{k}{have} \PYG{n}{qonq} \PYG{o}{:=} \PYG{n}{classical.em} \PYG{n}{Q}\PYG{o}{,}
 \PYG{n}{cases} \PYG{n}{ponp} \PYG{k}{with} \PYG{n}{p} \PYG{n}{np}\PYG{o}{,}
@@ -3417,30 +3414,141 @@ to be considered.
 \PYG{n}{contradiction}\PYG{o}{,}
 \PYG{n}{contradiction}\PYG{o}{,}
 
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} FINISH THIS PROOF}
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} IS BACKWARDS PROVABLE WITHOUT em?}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} HOMEWORK:}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} (1) FINISH THIS PROOF}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} (2) IS BACKWARDS PROVABLE WITHOUT em?}
 
 \PYG{k+kd}{end}
 
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} PROVE THE SECOND DEMORGAN RULE}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} HOMEWORK: PROVE THE SECOND DEMORGAN RULE}
 \end{sphinxVerbatim}
 
+
+\subsubsection{Exercises}
+\label{\detokenize{A_02_Constructive_Logic:exercises}}\begin{enumerate}
+\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\item {} 
+\sphinxAtStartPar
+Give a formal proof of the claim that excluded middle implies proof by contradiction.
+
+\item {} 
+\sphinxAtStartPar
+Determine whether, and if so prove, that the two statements are equivalent: excluded middle and proof by contradiction.
+
+\item {} 
+\sphinxAtStartPar
+Try to Prove each of DeMorgan’s laws in Lean to identify the non\sphinxhyphen{}constructive ones
+
+\item {} 
+\sphinxAtStartPar
+Finish the proofs of DeMorgan’s laws using the axiom of the excluded middle \sphinxstyleemphasis{(em)}.
+
+\end{enumerate}
+
+
+\subsection{iff ↔}
+\label{\detokenize{A_02_Constructive_Logic:iff}}
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{c}{/\PYGZhy{}}
-\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{m}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{z}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{t}
-\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{1}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{⊢}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{⊢}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{w}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{d}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}
-\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{2}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{⊢}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{w}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{m}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}
-\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{3}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{⊢}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{↔}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{f}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{d}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}
-\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{4}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{↔}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{ }\PYG{c+cm}{⊢}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{f}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{m}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{f}\PYG{c+cm}{t}
-\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{5}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{↔}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{ }\PYG{c+cm}{⊢}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{X}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{f}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{m}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{i}\PYG{c+cm}{g}\PYG{c+cm}{h}\PYG{c+cm}{t}
-\PYG{c+cm}{\PYGZhy{}/}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 13. X → Y, Y → X ⊢ X ↔ Y   \PYGZhy{}\PYGZhy{} iff introduction}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 14. X ↔ Y ⊢ X → Y          \PYGZhy{}\PYGZhy{} iff elimination left}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 15. X ↔ Y ⊢ Y → X          \PYGZhy{}\PYGZhy{} iff elimination right}
 \end{sphinxVerbatim}
+
+\sphinxAtStartPar
+We want \sphinxstyleemphasis{P ↔ Q} to be equivalent to (P → Q) ∧ (Q → P).
+
+\sphinxAtStartPar
+The
+introduction rule, \sphinxstyleemphasis{iff.intro,} like \sphinxstyleemphasis{and.intro}, thus
+takes two implications proofs, one in each direction and
+yields a proof of the biimplication.
+
+\sphinxAtStartPar
+The \sphinxstyleemphasis{iff} left and right elimination rules are similarly akin
+to those for \sphinxstyleemphasis{and}: from a proof, \sphinxstyleemphasis{h : P ↔ Q}, they derive
+proofs of the respective forwards and backwards implications,
+\sphinxstyleemphasis{P → Q} and \sphinxstyleemphasis{Q → P}. Such proofs are functions, and thus can
+be applied to arguments in subsequent proofs steps.
+
+\sphinxAtStartPar
+The names of the \sphinxstyleemphasis{iff} left and right elimination rules in
+Lean are \sphinxstyleemphasis{iff.mp} and \sphinxstyleemphasis{iff.mpr.} Case analysis on a proof,
+\sphinxstyleemphasis{h : P ↔ Q,} using the \sphinxstyleemphasis{cases} tactic, will derive proofs of
+both implications at once.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{example} \PYG{o}{(}\PYG{n}{P} \PYG{n}{Q} \PYG{o}{:} \PYG{k+kt}{Prop}\PYG{o}{)} \PYG{o}{:} \PYG{o}{(}\PYG{n}{P} \PYG{n+nb+bp}{↔} \PYG{n}{Q}\PYG{o}{)} \PYG{n+nb+bp}{↔} \PYG{o}{(}\PYG{o}{(}\PYG{n}{P} \PYG{n+nb+bp}{→} \PYG{n}{Q}\PYG{o}{)} \PYG{n+nb+bp}{∧} \PYG{o}{(}\PYG{n}{Q} \PYG{n+nb+bp}{→} \PYG{n}{P}\PYG{o}{)}\PYG{o}{)} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{n}{split}\PYG{o}{,}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} FORWARD}
+\PYG{k}{assume} \PYG{n}{piffq}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{piffq} \PYG{k}{with} \PYG{n}{pq} \PYG{n}{qp}\PYG{o}{,}
+\PYG{n}{exact} \PYG{n}{and.intro} \PYG{n}{pq} \PYG{n}{qp}\PYG{o}{,}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} BACKWARD}
+\PYG{k}{assume} \PYG{n}{pqqp}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{pqqp} \PYG{k}{with} \PYG{n}{pq} \PYG{n}{qp}\PYG{o}{,}
+\PYG{n}{exact} \PYG{n}{iff.intro} \PYG{n}{pq} \PYG{n}{qp}\PYG{o}{,}
+\PYG{k+kd}{end}
+\end{sphinxVerbatim}
+
+
+\subsection{Conclusion}
+\label{\detokenize{A_02_Constructive_Logic:conclusion}}
+\sphinxAtStartPar
+In this section you’ve encountered analogs in
+higher\sphinxhyphen{}order logic of the reasoning principles
+that you saw (in weaker forms) in propositional
+logic, but now as rules for and expressed in a
+higher\sphinxhyphen{}order predicae logic itself embedded in
+the higher\sphinxhyphen{}order logic of Lean.
+
+\sphinxAtStartPar
+Just as we ourselves specified an embedding
+of propositional logic in Lean, so the Lean
+library authors have given us a higher\sphinxhyphen{}order
+predicate logic embedded in Lean. We have
+already met propositions as types in Prop,
+functions, predicates as functions to Prop.
+We know the inference rules.
+
+\sphinxAtStartPar
+But what we’ve not yet met formally are the
+quantifiers of predicate logic (higher\sphinxhyphen{}order or
+not), ∀ and ∃. In Lean, these quantifiers are
+represented using \sphinxstyleemphasis{dependent types}. In the
+next chapter we take up these topics,
 
 \sphinxstepscope
 
 
-\chapter{Dependent Types}
-\label{\detokenize{A_03_Dependent_Types:dependent-types}}\label{\detokenize{A_03_Dependent_Types:introduction}}\label{\detokenize{A_03_Dependent_Types::doc}}
+\chapter{Recursive Types}
+\label{\detokenize{A_03_Recursive_Types:recursive-types}}\label{\detokenize{A_03_Recursive_Types:introduction}}\label{\detokenize{A_03_Recursive_Types::doc}}
+
+\section{Introduction}
+\label{\detokenize{A_03_Recursive_Types:id1}}
+\sphinxAtStartPar
+In this chapter we’ll look at inductive data types
+definitions that specify objects that have recursive
+structure. In particular, we’ll look at the \sphinxstyleemphasis{nat} and
+polymorphic \sphinxstyleemphasis{list} types, with an eye to seeing some
+interesting algebraic commonalities.
+
+
+\section{Natural Numbers}
+\label{\detokenize{A_03_Recursive_Types:natural-numbers}}
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k}{\PYGZsh{}check} \PYG{n}{nat}
+\end{sphinxVerbatim}
+
+
+\section{Polymorphic Lists}
+\label{\detokenize{A_03_Recursive_Types:polymorphic-lists}}
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k}{\PYGZsh{}check} \PYG{n}{list}
+\end{sphinxVerbatim}
+
 \sphinxstepscope
 
 

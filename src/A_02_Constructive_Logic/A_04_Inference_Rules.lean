@@ -176,7 +176,7 @@ end
 
 
 
-#check@ classical.em 
+#check @classical.em 
 
 theorem foo : ∀ P, (P ∨ ¬ P) → (¬¬P → P) :=
 begin
@@ -196,7 +196,7 @@ have zez := eq.refl 0,
 contradiction, 
 end
 
-theorem demorgan1 : ∀ P Q, ¬(P ∧ Q) ↔ ¬P ∨ ¬ Q :=
+theorem demorgan1 : ∀ P Q, ¬(P ∧ Q) ↔ (¬P ∨ ¬ Q) :=
 begin
 assume P Q,
 split,
@@ -214,10 +214,7 @@ apply or.inr nq,
 apply or.inl np,
 
 -- BACKWARDS
-
 assume h,
-
-
 have ponp := classical.em P,
 have qonq := classical.em Q,
 cases ponp with p np,
@@ -227,32 +224,35 @@ cases h,
 contradiction,
 contradiction,
 
--- FINISH THIS PROOF
--- IS BACKWARDS PROVABLE WITHOUT em?
+-- HOMEWORK: 
+-- (1) FINISH THIS PROOF
+-- (2) IS BACKWARDS PROVABLE WITHOUT em?
 
 end
 
--- PROVE THE SECOND DEMORGAN RULE
+-- HOMEWORK: PROVE THE SECOND DEMORGAN RULE
 
 
-/-
-Exercise
-~~~~~~~~
 
-- Give a formal proof of the claim that excluded middle implies proof by contradiction.
-- Determine whether, and if so prove, that the two statements are equivalent: excluded middle and proof by contradiction.
-- Try to Prove each of DeMorgan's laws in Lean to identify the non-constructive ones
-- Finish the proofs of DeMorgan's laws using the axiom of the excluded middle *(em)*.
-
-Coming Soon
------------
-
-
-/-
--- formalize the rest
--- 11. (X ⊢ Y) ⊢ (X → Y)      -- arrow introduction
--- 12. X → Y, X ⊢ Y           -- arrow elimination
 -- 13. X → Y, Y → X ⊢ X ↔ Y   -- iff introduction
 -- 14. X ↔ Y ⊢ X → Y          -- iff elimination left
 -- 15. X ↔ Y ⊢ Y → X          -- iff elimination right
--/
+
+
+example (P Q : Prop) : (P ↔ Q) ↔ ((P → Q) ∧ (Q → P)) :=
+begin
+split,
+
+-- FORWARD
+assume piffq,
+cases piffq with pq qp,
+exact and.intro pq qp,
+
+-- BACKWARD
+assume pqqp,
+cases pqqp with pq qp,
+exact iff.intro pq qp,
+end  
+
+
+

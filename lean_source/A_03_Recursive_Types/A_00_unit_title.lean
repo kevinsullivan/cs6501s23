@@ -1,6 +1,5 @@
 /- TEXT:
 ===============
-Dependent Types
+Recursive Types
 ===============
 TEXT. -/
-

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>4. Dependent Types &mdash; CS6501 Spring 2023 1.2.2 documentation</title>
+  <title>4. Recursive Types &mdash; CS6501 Spring 2023 1.2.2 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
@@ -45,7 +45,12 @@
 <li class="toctree-l1"><a class="reference internal" href="A_00_Introduction.html">1. CS6501 Spring 2023</a></li>
 <li class="toctree-l1"><a class="reference internal" href="A_01_Propositional_Logic.html">2. Propositional Logic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="A_02_Constructive_Logic.html">3. Constructive Logic</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">4. Dependent Types</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">4. Recursive Types</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">4.1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#natural-numbers">4.2. Natural Numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#polymorphic-lists">4.3. Polymorphic Lists</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
@@ -65,9 +70,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">4. </span>Dependent Types</li>
+      <li class="breadcrumb-item active"><span class="section-number">4. </span>Recursive Types</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/A_03_Dependent_Types.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/A_03_Recursive_Types.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -75,8 +80,32 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="dependent-types">
-<span id="introduction"></span><h1><span class="section-number">4. </span>Dependent Types<a class="headerlink" href="#dependent-types" title="Permalink to this heading">&#61633;</a></h1>
+  <section id="recursive-types">
+<span id="introduction"></span><h1><span class="section-number">4. </span>Recursive Types<a class="headerlink" href="#recursive-types" title="Permalink to this heading">&#61633;</a></h1>
+<section id="id1">
+<h2><span class="section-number">4.1. </span>Introduction<a class="headerlink" href="#id1" title="Permalink to this heading">&#61633;</a></h2>
+<p>In this chapter we&#8217;ll look at inductive data types
+definitions that specify objects that have recursive
+structure. In particular, we&#8217;ll look at the <em>nat</em> and
+polymorphic <em>list</em> types, with an eye to seeing some
+interesting algebraic commonalities.</p>
+</section>
+<section id="natural-numbers">
+<h2><span class="section-number">4.2. </span>Natural Numbers<a class="headerlink" href="#natural-numbers" title="Permalink to this heading">&#61633;</a></h2>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20nat" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_5.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="n">nat</span>
+</pre></div>
+</div>
+</div></section>
+<section id="polymorphic-lists">
+<h2><span class="section-number">4.3. </span>Polymorphic Lists<a class="headerlink" href="#polymorphic-lists" title="Permalink to this heading">&#61633;</a></h2>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20list" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_5.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="n">list</span>
+</pre></div>
+</div>
+</div></section>
 </section>
 
 

@@ -1,3 +1,59 @@
+import data.vector
+
+namespace hidden
+-- QUOTE:
+universe u
+def id { α : Sort u } (a : α) := a
+/-
+The *type* of the second argument, *a*, depends on 
+the *value* of the first parameter, *α*.
+-/
+
+inductive list (α : Type u) 
+| nil : list
+| cons (h : α) (t : list) : list
+
+#check @list.cons
+/-
+The constructors are polymorphic implicitly in α. We can
+see this in the type of *list.cons : Π {α : Type u_1}, α → 
+list α → list α*. For any type, *α*, the *cons* constructor
+builds a new list from a value, *h* (for head), of type *α*, 
+and from *t,* (for tail), a smaller *list α* value, returning
+the term, *(cons h t)*, representing the list in which *h* is
+prepended to *t* (written *h::t*). The salient point here is
+that the *type* of the final return value of *cons, list α,* 
+depends on the *value* of *α*. 
+-/
+
+def ev (n : ℕ) : Prop := n % 2 = 0 
+
+#check (ev 0)
+#check (ev 1)
+#check (ev 2)
+/-
+These object are propositions, and propositions are types
+that inhabit the universe, Prop.
+-/
+
+#check @vector
+
+inductive nlist (α : Type u) (len : ℕ) 
+| nil : nlist
+| cons (h : α)
+
+-- QUOTE.
+end hidden
+
+
+#check list
+
+
+
+
+
+
+
 /- TITLE:
 Introduction
 ------------

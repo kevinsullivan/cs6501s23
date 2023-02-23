@@ -83,5 +83,11 @@
 \contentsline {subsubsection}{Constructive vs. Classical}{42}{subsubsection*.14}
 \contentsline {subsubsection}{Excluded Middle}{43}{subsubsection*.15}
 \contentsline {subsubsection}{Examples}{43}{subsubsection*.16}
-\contentsline {chapter}{\numberline {4}Dependent Types}{45}{chapter.4}
-\contentsline {chapter}{\numberline {5}Index}{47}{chapter.5}
+\contentsline {subsubsection}{Exercises}{44}{subsubsection*.17}
+\contentsline {subsection}{\numberline {3.4.6}iff ↔}{45}{subsection.3.4.6}
+\contentsline {subsection}{\numberline {3.4.7}Conclusion}{45}{subsection.3.4.7}
+\contentsline {chapter}{\numberline {4}Recursive Types}{47}{chapter.4}
+\contentsline {section}{\numberline {4.1}Introduction}{47}{section.4.1}
+\contentsline {section}{\numberline {4.2}Natural Numbers}{47}{section.4.2}
+\contentsline {section}{\numberline {4.3}Polymorphic Lists}{47}{section.4.3}
+\contentsline {chapter}{\numberline {5}Index}{49}{chapter.5}

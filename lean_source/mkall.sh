@@ -20,5 +20,8 @@ lean_source/mkdoc.py A_02_Constructive_Logic A_04_Inference_Rules
 lean_source/mkdoc.py A_02_Constructive_Logic A_05_Quantifiers
 lean_source/mkdoc.py A_02_Constructive_Logic A_06_Theorems
 
-lean_source/mkdoc.py A_03_Dependent_Types A_00_unit_title
-lean_source/mkdoc.py A_03_Dependent_Types A_01_introduction
+lean_source/mkdoc.py A_03_Recursive_Types A_00_unit_title
+lean_source/mkdoc.py A_03_Recursive_Types A_01_introduction
+lean_source/mkdoc.py A_03_Recursive_Types A_02_natural_numbers
+lean_source/mkdoc.py A_03_Recursive_Types A_03_polymorphic_lists
+

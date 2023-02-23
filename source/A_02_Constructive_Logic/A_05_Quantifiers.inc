@@ -21,3 +21,11 @@ To prove ∃ (x : T), P x, you apply exists.intro to
 two arguments: a specific value, x, of type T, and 
 a separate proof of P t. We'll discuss the elimination
 rule soon. 
+
+.. code-block:: lean
+
+  /-
+  -- 11. (X ⊢ Y) ⊢ (X → Y)      -- arrow introduction
+  -- 12. X → Y, X ⊢ Y           -- arrow elimination
+  -/
+
