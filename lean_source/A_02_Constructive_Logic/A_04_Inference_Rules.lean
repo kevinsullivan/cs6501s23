@@ -596,7 +596,7 @@ Examples
 TEXT. -/
 
 -- QUOTE:
-#check@ classical.em 
+#check @classical.em 
 
 theorem foo : ∀ P, (P ∨ ¬ P) → (¬¬P → P) :=
 begin
@@ -616,13 +616,16 @@ have zez := eq.refl 0,
 contradiction, 
 end
 
-theorem demorgan1 : ∀ P Q, ¬(P ∧ Q) ↔ ¬P ∨ ¬ Q :=
+theorem demorgan1 : ∀ P Q, ¬(P ∧ Q) ↔ (¬P ∨ ¬ Q) :=
 begin
 assume P Q,
-split,
+--apply iff.intro _ _,
+split,   
 
 -- FORWARD
 assume h,
+
+
 have ponp := classical.em P,
 have qonq := classical.em Q,
 
@@ -630,53 +633,134 @@ cases ponp with p np,
 cases qonq with q nq,
 have pandq := and.intro p q,
 contradiction,
+
 apply or.inr nq,
 apply or.inl np,
 
 -- BACKWARDS
-
 assume h,
-
-
-have ponp := classical.em P,
-have qonq := classical.em Q,
-cases ponp with p np,
-cases qonq with q nq,
-
 cases h,
-contradiction,
+
+assume pandq,
+have p := and.elim_left pandq,
+-- cases pandq with p q,
 contradiction,
 
--- FINISH THIS PROOF
--- IS BACKWARDS PROVABLE WITHOUT em?
+assume pandq,
+cases pandq with p q,
+contradiction,
 
 end
 
--- PROVE THE SECOND DEMORGAN RULE
--- QUOTE.
+example : ∀ (P : Prop), ¬ (P ∧ ¬P) :=
+begin
+assume P,
+assume h,
+cases h with p np,
+apply false.elim (np p),
+end
+
+example : ∀ P Q R, P ∨ (Q ∧ R) → (P ∨ Q) ∧ (P ∨ R) :=
+begin
+assume P Q R,
+assume h,
+apply and.intro _ _,
+
+cases h with p qandr,
+exact or.inl p,
+cases qandr with q r,
+apply or.inr q,
+cases h,
+exact or.inl h,
+cases h,
+exact (or.inr h_right)
 
 
-/-
-Exercise
-~~~~~~~~
+end
 
-- Give a formal proof of the claim that excluded middle implies proof by contradiction.
-- Determine whether, and if so prove, that the two statements are equivalent: excluded middle and proof by contradiction.
-- Try to Prove each of DeMorgan's laws in Lean to identify the non-constructive ones
-- Finish the proofs of DeMorgan's laws using the axiom of the excluded middle *(em)*.
+/- TEXT:
+Exercises
+~~~~~~~~~
 
-Coming Soon
------------
+1. Give a formal proof of the claim that excluded middle implies proof by contradiction.
+2. Determine whether, and if so prove, that the two statements are equivalent: excluded middle and proof by contradiction.
+3. Try to Prove each of DeMorgan's laws in Lean to identify the non-constructive ones
+4. Finish the proofs of DeMorgan's laws using the axiom of the excluded middle *(em)*.
 TEXT. -/
 
+/- TEXT:
+
+iff ↔ 
+-----
+TEXT. -/
 
 -- QUOTE:
-/-
--- formalize the rest
--- 11. (X ⊢ Y) ⊢ (X → Y)      -- arrow introduction
--- 12. X → Y, X ⊢ Y           -- arrow elimination
 -- 13. X → Y, Y → X ⊢ X ↔ Y   -- iff introduction
 -- 14. X ↔ Y ⊢ X → Y          -- iff elimination left
 -- 15. X ↔ Y ⊢ Y → X          -- iff elimination right
--/
 -- QUOTE.
+
+/- TEXT:
+We want *P ↔ Q* to be equivalent to (P → Q) ∧ (Q → P). 
+
+The
+introduction rule, *iff.intro,* like *and.intro*, thus 
+takes two implications proofs, one in each direction and
+yields a proof of the biimplication. 
+
+The *iff* left and right elimination rules are similarly akin
+to those for *and*: from a proof, *h : P ↔ Q*, they derive 
+proofs of the respective forwards and backwards implications,
+*P → Q* and *Q → P*. Such proofs are functions, and thus can
+be applied to arguments in subsequent proofs steps.
+
+The names of the *iff* left and right elimination rules in 
+Lean are *iff.mp* and *iff.mpr.* Case analysis on a proof, 
+*h : P ↔ Q,* using the *cases* tactic, will derive proofs of
+both implications at once. 
+TEXT. -/
+
+-- QUOTE:
+example (P Q : Prop) : (P ↔ Q) ↔ ((P → Q) ∧ (Q → P)) :=
+begin
+split,
+
+-- FORWARD
+assume piffq,
+cases piffq with pq qp,
+exact and.intro pq qp,
+
+-- BACKWARD
+assume pqqp,
+cases pqqp with pq qp,
+exact iff.intro pq qp,
+end  
+-- QUOTE.
+
+
+/- TEXT:
+Conclusion
+----------
+
+In this section you've encountered analogs in 
+higher-order logic of the reasoning principles 
+that you saw (in weaker forms) in propositional
+logic, but now as rules for and expressed in a 
+higher-order predicae logic itself embedded in
+the higher-order logic of Lean. 
+
+Just as we ourselves specified an embedding
+of propositional logic in Lean, so the Lean
+library authors have given us a higher-order 
+predicate logic embedded in Lean. We have 
+already met propositions as types in Prop, 
+functions, predicates as functions to Prop.
+We know the inference rules. 
+
+But what we've not yet met formally are the 
+quantifiers of predicate logic (higher-order or
+not), ∀ and ∃. In Lean, these quantifiers are 
+represented using *dependent types*. In the 
+next chapter we take up these topics,   
+TEXT. -/
+
