@@ -93,16 +93,149 @@ interesting algebraic commonalities.</p>
 <section id="natural-numbers">
 <h2><span class="section-number">4.2. </span>Natural Numbers<a class="headerlink" href="#natural-numbers" title="Permalink to this heading">&#61633;</a></h2>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20nat" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_5.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20nat%0A%0A%2F-%0Ainductive%20nat%0A%7C%20zero%20%3A%20nat%0A%7C%20succ%20(n%20%3A%20nat)%20%3A%20nat%0A-%2F%0A%0A--%20notations%20for%20writing%20succ%20applications%0Adef%20three%20%20%3A%3D%20nat.zero.succ.succ.succ%0Adef%20three'%20%20%3A%3D%20(nat.succ(nat.succ(nat.succ(nat.zero))))%0A%0A%0A--%20increment%20is%20just%20succ%20application%0Adef%20inc%20(n'%20%3A%20nat)%20%3A%20nat%20%3A%3D%20n'.succ%0Adef%20three''%20%3A%3D%20inc(inc(inc%20nat.zero))%0A%0Adef%20pred'%20%3A%20nat%20%E2%86%92%20nat%20%3A%3D%0Abegin%0Aassume%20n%2C%0Acases%20n%2C%0Aexact%200%2C%0Aexact%20n%2C%0Aend%0A%0A%23eval%20pred'%206%0A%0Adef%20pred%20%3A%20nat%20%E2%86%92%20nat%0A%7C%20nat.zero%20%3A%3D%20nat.zero%0A%7C%20(nat.succ%20n')%20%3A%3D%20n'%0A%0A%23eval%20pred%205%0A%0Adef%20sub2%20%3A%20nat%20%E2%86%92%20nat%0A%7C%20nat.zero%20%3A%3D%20nat.zero%0A%7C%20(nat.succ%20nat.zero)%20%3A%3D%20nat.zero%0A%7C%20(nat.succ%20(nat.succ%20n'))%20%3A%3D%20n'" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_5.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="n">nat</span>
+
+<span class="c">/-</span>
+<span class="cm">inductive nat</span>
+<span class="cm">| zero : nat</span>
+<span class="cm">| succ (n : nat) : nat</span>
+<span class="cm">-/</span>
+
+<span class="c1">-- notations for writing succ applications</span>
+<span class="kd">def</span> <span class="n">three</span>  <span class="o">:=</span> <span class="n">nat.zero.succ.succ.succ</span>
+<span class="kd">def</span> <span class="n">three&#39;</span>  <span class="o">:=</span> <span class="o">(</span><span class="n">nat.succ</span><span class="o">(</span><span class="n">nat.succ</span><span class="o">(</span><span class="n">nat.succ</span><span class="o">(</span><span class="n">nat.zero</span><span class="o">))))</span>
+
+
+<span class="c1">-- increment is just succ application</span>
+<span class="kd">def</span> <span class="n">inc</span> <span class="o">(</span><span class="n">n&#39;</span> <span class="o">:</span> <span class="n">nat</span><span class="o">)</span> <span class="o">:</span> <span class="n">nat</span> <span class="o">:=</span> <span class="n">n&#39;.succ</span>
+<span class="kd">def</span> <span class="n">three&#39;&#39;</span> <span class="o">:=</span> <span class="n">inc</span><span class="o">(</span><span class="n">inc</span><span class="o">(</span><span class="n">inc</span> <span class="n">nat.zero</span><span class="o">))</span>
+
+<span class="kd">def</span> <span class="n">pred&#39;</span> <span class="o">:</span> <span class="n">nat</span> <span class="bp">&#8594;</span> <span class="n">nat</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">assume</span> <span class="n">n</span><span class="o">,</span>
+<span class="n">cases</span> <span class="n">n</span><span class="o">,</span>
+<span class="n">exact</span> <span class="mi">0</span><span class="o">,</span>
+<span class="n">exact</span> <span class="n">n</span><span class="o">,</span>
+<span class="kd">end</span>
+
+<span class="k">#eval</span> <span class="n">pred&#39;</span> <span class="mi">6</span>
+
+<span class="kd">def</span> <span class="n">pred</span> <span class="o">:</span> <span class="n">nat</span> <span class="bp">&#8594;</span> <span class="n">nat</span>
+<span class="bp">|</span> <span class="n">nat.zero</span> <span class="o">:=</span> <span class="n">nat.zero</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">nat.succ</span> <span class="n">n&#39;</span><span class="o">)</span> <span class="o">:=</span> <span class="n">n&#39;</span>
+
+<span class="k">#eval</span> <span class="n">pred</span> <span class="mi">5</span>
+
+<span class="kd">def</span> <span class="n">sub2</span> <span class="o">:</span> <span class="n">nat</span> <span class="bp">&#8594;</span> <span class="n">nat</span>
+<span class="bp">|</span> <span class="n">nat.zero</span> <span class="o">:=</span> <span class="n">nat.zero</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">nat.succ</span> <span class="n">nat.zero</span><span class="o">)</span> <span class="o">:=</span> <span class="n">nat.zero</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">nat.succ</span> <span class="o">(</span><span class="n">nat.succ</span> <span class="n">n&#39;</span><span class="o">))</span> <span class="o">:=</span> <span class="n">n&#39;</span>
 </pre></div>
 </div>
 </div></section>
 <section id="polymorphic-lists">
 <h2><span class="section-number">4.3. </span>Polymorphic Lists<a class="headerlink" href="#polymorphic-lists" title="Permalink to this heading">&#61633;</a></h2>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20list" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_5.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20list%0A%0A%2F-%0Ainductive%20list%20(T%20%3A%20Type%20u)%0A%7C%20nil%20%3A%20list%0A%7C%20cons%20(hd%20%3A%20T)%20(tl%20%3A%20list)%20%3A%20list%0A-%2F%0A%0A--%20notations%20for%20writing%20cons%20applications%0A--%20let's%20construct%20the%20list%20%5B1%2C%202%2C%203%5D%0Adef%20three_list_nat''%20%3A%3D%0A%20%20list.cons%0A%20%20%20%201%0A%20%20%20%20(%0A%20%20%20%20%20%20list.cons%0A%20%20%20%20%20%20%20%202%0A%20%20%20%20%20%20%20%20(%0A%20%20%20%20%20%20%20%20%20%20list.cons%0A%20%20%20%20%20%20%20%20%20%20%20%203%0A%20%20%20%20%20%20%20%20%20%20%20%20list.nil%0A%20%20%20%20%20%20%20%20)%0A%20%20%20%20)%0A%0A%23reduce%20three_list_nat''%0A%0A--%20notation%2C%20%3A%3A%20is%20infix%20for%20cons%0A--%20%5B%5D%20notation%20adds%20nil%20at%20end%0Adef%20three_list_nat'''%20%3A%3D%201%3A%3A2%3A%3A3%3A%3Alist.nil%0Adef%20three_list_nat''''%20%3A%3D%20%5B1%2C2%2C3%5D%0A%0A%0A--%20list%20prepend%20analogous%20to%20nat%20increment%0Adef%20prepend'%20(%CE%B1%20%3A%20Type)%20(a%20%3A%20%CE%B1)%20(l%20%3A%20list%20%CE%B1)%20%3A%3D%0A%20%20list.cons%20a%20l%0A%0Adef%20three_list_nat'%20%3A%3D%0A%20%20prepend'%20nat%0A%20%20%20%201%0A%20%20%20%20(prepend'%20nat%0A%20%20%20%20%20%202%0A%20%20%20%20%20%20(prepend'%20nat%0A%20%20%20%20%20%20%20%203%0A%20%20%20%20%20%20%20%20list.nil%0A%20%20%20%20%20%20)%0A%20%20%20%20)%0A%0A%23eval%20three_list_nat'%0A%0Adef%20prepend%20%7B%CE%B1%20%3A%20Type%7D%20(a%20%3A%20%CE%B1)%20(l%20%3A%20list%20%CE%B1)%20%3A%3D%0A%20%20list.cons%20a%20l%0A%0Adef%20three_list_nat%20%3A%3D%0A%20%20prepend%0A%20%20%20%201%0A%20%20%20%20(prepend%0A%20%20%20%20%20%202%0A%20%20%20%20%20%20(prepend%0A%20%20%20%20%20%20%20%203%0A%20%20%20%20%20%20%20%20list.nil%0A%20%20%20%20%20%20)%0A%20%20%20%20)%0A%0A--%20yay%2C%20that%20looks%20good%0A--%20but%20know%20that%20to%20which%20it%20desugars%0A%0Aexample%20%3A%3D%20prepend'%20nat%202%20%5B3%2C4%2C5%5D%0A%23eval%20prepend'%20nat%202%20%5B3%2C4%2C5%5D%0A%0Aexample%20%3A%3D%20prepend%202%20%5B3%2C4%2C5%5D%0A%23eval%20prepend%202%20%5B3%2C4%2C5%5D%0A%0A%23eval%202%3A%3A%5B3%2C4%2C5%5D%0A%0Adef%20tail%20%3A%20%E2%88%80%20%7B%CE%B1%20%3A%20Type%7D%2C%20list%20%CE%B1%20%E2%86%92%20list%20%CE%B1%0A%7C%20%CE%B1%20list.nil%20%3A%3D%20list.nil%0A%7C%20%CE%B1%20(h%3A%3At)%20%3A%3D%20t%0A%0A%23eval%20tail%20%5B1%2C2%2C3%2C4%2C5%5D%0A%0Adef%20head''%20%3A%20%E2%88%80%20%7B%CE%B1%20%3A%20Type%7D%2C%20list%20%CE%B1%20%E2%86%92%20option%20%CE%B1%0A%7C%20%CE%B1%20list.nil%20%3A%3D%20none%0A%7C%20%CE%B1%20(h%3A%3At)%20%3A%3D%20some%20h%0A%0A%23eval%20head''%20%5B1%2C2%2C3%5D%0A%23eval%20%40head''%20nat%20%5B%5D%0A%0Adef%20head'%20%3A%20%E2%88%80%20%7B%CE%B1%20%3A%20Type%7D%20(l%20%3A%20list%20%CE%B1)%2C%20(l%20%E2%89%A0%20list.nil)%20%E2%86%92%20%CE%B1%0A%7C%20%20%CE%B1%20l%20p%20%3A%3D%0Abegin%0Acases%20l%2C%0Acontradiction%2C%0Aexact%20l_hd%2C%0Aend%0A%0A%23eval%20head'%20%5B1%2C2%2C3%5D%0Abegin%0Acontradiction%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_5.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="n">list</span>
+
+<span class="c">/-</span>
+<span class="cm">inductive list (T : Type u)</span>
+<span class="cm">| nil : list</span>
+<span class="cm">| cons (hd : T) (tl : list) : list</span>
+<span class="cm">-/</span>
+
+<span class="c1">-- notations for writing cons applications</span>
+<span class="c1">-- let&#39;s construct the list [1, 2, 3]</span>
+<span class="kd">def</span> <span class="n">three_list_nat&#39;&#39;</span> <span class="o">:=</span>
+  <span class="n">list.cons</span>
+    <span class="mi">1</span>
+    <span class="o">(</span>
+      <span class="n">list.cons</span>
+        <span class="mi">2</span>
+        <span class="o">(</span>
+          <span class="n">list.cons</span>
+            <span class="mi">3</span>
+            <span class="n">list.nil</span>
+        <span class="o">)</span>
+    <span class="o">)</span>
+
+<span class="k">#reduce</span> <span class="n">three_list_nat&#39;&#39;</span>
+
+<span class="c1">-- notation, :: is infix for cons</span>
+<span class="c1">-- [] notation adds nil at end</span>
+<span class="kd">def</span> <span class="n">three_list_nat&#39;&#39;&#39;</span> <span class="o">:=</span> <span class="mi">1</span><span class="o">::</span><span class="mi">2</span><span class="o">::</span><span class="mi">3</span><span class="o">::</span><span class="n">list.nil</span>
+<span class="kd">def</span> <span class="n">three_list_nat&#39;&#39;&#39;&#39;</span> <span class="o">:=</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">]</span>
+
+
+<span class="c1">-- list prepend analogous to nat increment</span>
+<span class="kd">def</span> <span class="n">prepend&#39;</span> <span class="o">(</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="n">&#945;</span><span class="o">)</span> <span class="o">(</span><span class="n">l</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span><span class="o">)</span> <span class="o">:=</span>
+  <span class="n">list.cons</span> <span class="n">a</span> <span class="n">l</span>
+
+<span class="kd">def</span> <span class="n">three_list_nat&#39;</span> <span class="o">:=</span>
+  <span class="n">prepend&#39;</span> <span class="n">nat</span>
+    <span class="mi">1</span>
+    <span class="o">(</span><span class="n">prepend&#39;</span> <span class="n">nat</span>
+      <span class="mi">2</span>
+      <span class="o">(</span><span class="n">prepend&#39;</span> <span class="n">nat</span>
+        <span class="mi">3</span>
+        <span class="n">list.nil</span>
+      <span class="o">)</span>
+    <span class="o">)</span>
+
+<span class="k">#eval</span> <span class="n">three_list_nat&#39;</span>
+
+<span class="kd">def</span> <span class="n">prepend</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="n">&#945;</span><span class="o">)</span> <span class="o">(</span><span class="n">l</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span><span class="o">)</span> <span class="o">:=</span>
+  <span class="n">list.cons</span> <span class="n">a</span> <span class="n">l</span>
+
+<span class="kd">def</span> <span class="n">three_list_nat</span> <span class="o">:=</span>
+  <span class="n">prepend</span>
+    <span class="mi">1</span>
+    <span class="o">(</span><span class="n">prepend</span>
+      <span class="mi">2</span>
+      <span class="o">(</span><span class="n">prepend</span>
+        <span class="mi">3</span>
+        <span class="n">list.nil</span>
+      <span class="o">)</span>
+    <span class="o">)</span>
+
+<span class="c1">-- yay, that looks good</span>
+<span class="c1">-- but know that to which it desugars</span>
+
+<span class="kd">example</span> <span class="o">:=</span> <span class="n">prepend&#39;</span> <span class="n">nat</span> <span class="mi">2</span> <span class="o">[</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>
+<span class="k">#eval</span> <span class="n">prepend&#39;</span> <span class="n">nat</span> <span class="mi">2</span> <span class="o">[</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>
+
+<span class="kd">example</span> <span class="o">:=</span> <span class="n">prepend</span> <span class="mi">2</span> <span class="o">[</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>
+<span class="k">#eval</span> <span class="n">prepend</span> <span class="mi">2</span> <span class="o">[</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>
+
+<span class="k">#eval</span> <span class="mi">2</span><span class="o">::[</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>
+
+<span class="kd">def</span> <span class="n">tail</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">},</span> <span class="n">list</span> <span class="n">&#945;</span> <span class="bp">&#8594;</span> <span class="n">list</span> <span class="n">&#945;</span>
+<span class="bp">|</span> <span class="n">&#945;</span> <span class="n">list.nil</span> <span class="o">:=</span> <span class="n">list.nil</span>
+<span class="bp">|</span> <span class="n">&#945;</span> <span class="o">(</span><span class="n">h</span><span class="o">::</span><span class="n">t</span><span class="o">)</span> <span class="o">:=</span> <span class="n">t</span>
+
+<span class="k">#eval</span> <span class="n">tail</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>
+
+<span class="kd">def</span> <span class="n">head&#39;&#39;</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">},</span> <span class="n">list</span> <span class="n">&#945;</span> <span class="bp">&#8594;</span> <span class="n">option</span> <span class="n">&#945;</span>
+<span class="bp">|</span> <span class="n">&#945;</span> <span class="n">list.nil</span> <span class="o">:=</span> <span class="n">none</span>
+<span class="bp">|</span> <span class="n">&#945;</span> <span class="o">(</span><span class="n">h</span><span class="o">::</span><span class="n">t</span><span class="o">)</span> <span class="o">:=</span> <span class="n">some</span> <span class="n">h</span>
+
+<span class="k">#eval</span> <span class="n">head&#39;&#39;</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">]</span>
+<span class="k">#eval</span> <span class="bp">@</span><span class="n">head&#39;&#39;</span> <span class="n">nat</span> <span class="o">[]</span>
+
+<span class="kd">def</span> <span class="n">head&#39;</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">(</span><span class="n">l</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span><span class="o">),</span> <span class="o">(</span><span class="n">l</span> <span class="bp">&#8800;</span> <span class="n">list.nil</span><span class="o">)</span> <span class="bp">&#8594;</span> <span class="n">&#945;</span>
+<span class="bp">|</span>  <span class="n">&#945;</span> <span class="n">l</span> <span class="n">p</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="n">cases</span> <span class="n">l</span><span class="o">,</span>
+<span class="n">contradiction</span><span class="o">,</span>
+<span class="n">exact</span> <span class="n">l_hd</span><span class="o">,</span>
+<span class="kd">end</span>
+
+<span class="k">#eval</span> <span class="n">head&#39;</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">]</span>
+<span class="kd">begin</span>
+<span class="n">contradiction</span><span class="o">,</span>
+<span class="kd">end</span>
 </pre></div>
 </div>
 </div></section>

@@ -81,7 +81,7 @@
 
 
 \title{Computing Foundations}
-\date{Feb 23, 2023}
+\date{Mar 01, 2023}
 \release{1.2.2}
 \author{Kevin Sullivan}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -3149,6 +3149,13 @@ In fact, Lean simply \sphinxstyleemphasis{defines} \sphinxstyleemphasis{¬X} to 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} def not (a : Prop) := a → false}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} prefix `¬`:40 := not}
 \PYG{k}{\PYGZsh{}check} \PYG{n}{not}
+
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{n+nb+bp}{¬} \PYG{l+m+mi}{0} \PYG{n+nb+bp}{=} \PYG{l+m+mi}{1} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{show} \PYG{l+m+mi}{0} \PYG{n+nb+bp}{=} \PYG{l+m+mi}{1} \PYG{n+nb+bp}{→} \PYG{n}{false}\PYG{o}{,}
+\PYG{k}{assume} \PYG{n}{h}\PYG{o}{,}
+\PYG{n}{contradiction}\PYG{o}{,}
+\PYG{k+kd}{end}
 \end{sphinxVerbatim}
 
 \sphinxAtStartPar
@@ -3389,10 +3396,13 @@ to be considered.
 \PYG{k+kd}{theorem} \PYG{n}{demorgan1} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{n}{P} \PYG{n}{Q}\PYG{o}{,} \PYG{n+nb+bp}{¬}\PYG{o}{(}\PYG{n}{P} \PYG{n+nb+bp}{∧} \PYG{n}{Q}\PYG{o}{)} \PYG{n+nb+bp}{↔} \PYG{o}{(}\PYG{n+nb+bp}{¬}\PYG{n}{P} \PYG{n+nb+bp}{∨} \PYG{n+nb+bp}{¬} \PYG{n}{Q}\PYG{o}{)} \PYG{o}{:=}
 \PYG{k+kd}{begin}
 \PYG{k}{assume} \PYG{n}{P} \PYG{n}{Q}\PYG{o}{,}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}apply iff.intro \PYGZus{} \PYGZus{},}
 \PYG{n}{split}\PYG{o}{,}
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} FORWARD}
 \PYG{k}{assume} \PYG{n}{h}\PYG{o}{,}
+
+
 \PYG{k}{have} \PYG{n}{ponp} \PYG{o}{:=} \PYG{n}{classical.em} \PYG{n}{P}\PYG{o}{,}
 \PYG{k}{have} \PYG{n}{qonq} \PYG{o}{:=} \PYG{n}{classical.em} \PYG{n}{Q}\PYG{o}{,}
 
@@ -3400,27 +3410,49 @@ to be considered.
 \PYG{n}{cases} \PYG{n}{qonq} \PYG{k}{with} \PYG{n}{q} \PYG{n}{nq}\PYG{o}{,}
 \PYG{k}{have} \PYG{n}{pandq} \PYG{o}{:=} \PYG{n}{and.intro} \PYG{n}{p} \PYG{n}{q}\PYG{o}{,}
 \PYG{n}{contradiction}\PYG{o}{,}
+
 \PYG{n}{apply} \PYG{n}{or.inr} \PYG{n}{nq}\PYG{o}{,}
 \PYG{n}{apply} \PYG{n}{or.inl} \PYG{n}{np}\PYG{o}{,}
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} BACKWARDS}
 \PYG{k}{assume} \PYG{n}{h}\PYG{o}{,}
-\PYG{k}{have} \PYG{n}{ponp} \PYG{o}{:=} \PYG{n}{classical.em} \PYG{n}{P}\PYG{o}{,}
-\PYG{k}{have} \PYG{n}{qonq} \PYG{o}{:=} \PYG{n}{classical.em} \PYG{n}{Q}\PYG{o}{,}
-\PYG{n}{cases} \PYG{n}{ponp} \PYG{k}{with} \PYG{n}{p} \PYG{n}{np}\PYG{o}{,}
-\PYG{n}{cases} \PYG{n}{qonq} \PYG{k}{with} \PYG{n}{q} \PYG{n}{nq}\PYG{o}{,}
-
 \PYG{n}{cases} \PYG{n}{h}\PYG{o}{,}
-\PYG{n}{contradiction}\PYG{o}{,}
+
+\PYG{k}{assume} \PYG{n}{pandq}\PYG{o}{,}
+\PYG{k}{have} \PYG{n}{p} \PYG{o}{:=} \PYG{n}{and.elim\PYGZus{}left} \PYG{n}{pandq}\PYG{o}{,}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} cases pandq with p q,}
 \PYG{n}{contradiction}\PYG{o}{,}
 
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} HOMEWORK:}
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} (1) FINISH THIS PROOF}
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} (2) IS BACKWARDS PROVABLE WITHOUT em?}
+\PYG{k}{assume} \PYG{n}{pandq}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{pandq} \PYG{k}{with} \PYG{n}{p} \PYG{n}{q}\PYG{o}{,}
+\PYG{n}{contradiction}\PYG{o}{,}
 
 \PYG{k+kd}{end}
 
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} HOMEWORK: PROVE THE SECOND DEMORGAN RULE}
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{P} \PYG{o}{:} \PYG{k+kt}{Prop}\PYG{o}{)}\PYG{o}{,} \PYG{n+nb+bp}{¬} \PYG{o}{(}\PYG{n}{P} \PYG{n+nb+bp}{∧} \PYG{n+nb+bp}{¬}\PYG{n}{P}\PYG{o}{)} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{P}\PYG{o}{,}
+\PYG{k}{assume} \PYG{n}{h}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{h} \PYG{k}{with} \PYG{n}{p} \PYG{n}{np}\PYG{o}{,}
+\PYG{n}{apply} \PYG{n}{false.elim} \PYG{o}{(}\PYG{n}{np} \PYG{n}{p}\PYG{o}{)}\PYG{o}{,}
+\PYG{k+kd}{end}
+
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{n}{P} \PYG{n}{Q} \PYG{n}{R}\PYG{o}{,} \PYG{n}{P} \PYG{n+nb+bp}{∨} \PYG{o}{(}\PYG{n}{Q} \PYG{n+nb+bp}{∧} \PYG{n}{R}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{o}{(}\PYG{n}{P} \PYG{n+nb+bp}{∨} \PYG{n}{Q}\PYG{o}{)} \PYG{n+nb+bp}{∧} \PYG{o}{(}\PYG{n}{P} \PYG{n+nb+bp}{∨} \PYG{n}{R}\PYG{o}{)} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{P} \PYG{n}{Q} \PYG{n}{R}\PYG{o}{,}
+\PYG{k}{assume} \PYG{n}{h}\PYG{o}{,}
+\PYG{n}{apply} \PYG{n}{and.intro} \PYG{n}{\PYGZus{}} \PYG{n}{\PYGZus{}}\PYG{o}{,}
+
+\PYG{n}{cases} \PYG{n}{h} \PYG{k}{with} \PYG{n}{p} \PYG{n}{qandr}\PYG{o}{,}
+\PYG{n}{exact} \PYG{n}{or.inl} \PYG{n}{p}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{qandr} \PYG{k}{with} \PYG{n}{q} \PYG{n}{r}\PYG{o}{,}
+\PYG{n}{apply} \PYG{n}{or.inr} \PYG{n}{q}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{h}\PYG{o}{,}
+\PYG{n}{exact} \PYG{n}{or.inl} \PYG{n}{h}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{h}\PYG{o}{,}
+\PYG{n}{exact} \PYG{o}{(}\PYG{n}{or.inr} \PYG{n}{h\PYGZus{}right}\PYG{o}{)}
+
+\PYG{k+kd}{end}
 \end{sphinxVerbatim}
 
 
@@ -3540,6 +3572,42 @@ interesting algebraic commonalities.
 \label{\detokenize{A_03_Recursive_Types:natural-numbers}}
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k}{\PYGZsh{}check} \PYG{n}{nat}
+
+\PYG{c}{/\PYGZhy{}}
+\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}
+\PYG{c+cm}{|}\PYG{c+cm}{ }\PYG{c+cm}{z}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}
+\PYG{c+cm}{|}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{c}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}
+\PYG{c+cm}{\PYGZhy{}/}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} notations for writing succ applications}
+\PYG{k+kd}{def} \PYG{n}{three}  \PYG{o}{:=} \PYG{n}{nat.zero.succ.succ.succ}
+\PYG{k+kd}{def} \PYG{n}{three\PYGZsq{}}  \PYG{o}{:=} \PYG{o}{(}\PYG{n}{nat.succ}\PYG{o}{(}\PYG{n}{nat.succ}\PYG{o}{(}\PYG{n}{nat.succ}\PYG{o}{(}\PYG{n}{nat.zero}\PYG{o}{)}\PYG{o}{)}\PYG{o}{)}\PYG{o}{)}
+
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} increment is just succ application}
+\PYG{k+kd}{def} \PYG{n}{inc} \PYG{o}{(}\PYG{n}{n\PYGZsq{}} \PYG{o}{:} \PYG{n}{nat}\PYG{o}{)} \PYG{o}{:} \PYG{n}{nat} \PYG{o}{:=} \PYG{n}{n\PYGZsq{}.succ}
+\PYG{k+kd}{def} \PYG{n}{three\PYGZsq{}\PYGZsq{}} \PYG{o}{:=} \PYG{n}{inc}\PYG{o}{(}\PYG{n}{inc}\PYG{o}{(}\PYG{n}{inc} \PYG{n}{nat.zero}\PYG{o}{)}\PYG{o}{)}
+
+\PYG{k+kd}{def} \PYG{n}{pred\PYGZsq{}} \PYG{o}{:} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{n}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{n}\PYG{o}{,}
+\PYG{n}{exact} \PYG{l+m+mi}{0}\PYG{o}{,}
+\PYG{n}{exact} \PYG{n}{n}\PYG{o}{,}
+\PYG{k+kd}{end}
+
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{pred\PYGZsq{}} \PYG{l+m+mi}{6}
+
+\PYG{k+kd}{def} \PYG{n}{pred} \PYG{o}{:} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat}
+\PYG{n+nb+bp}{|} \PYG{n}{nat.zero} \PYG{o}{:=} \PYG{n}{nat.zero}
+\PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{nat.succ} \PYG{n}{n\PYGZsq{}}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{n\PYGZsq{}}
+
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{pred} \PYG{l+m+mi}{5}
+
+\PYG{k+kd}{def} \PYG{n}{sub2} \PYG{o}{:} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat}
+\PYG{n+nb+bp}{|} \PYG{n}{nat.zero} \PYG{o}{:=} \PYG{n}{nat.zero}
+\PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{nat.succ} \PYG{n}{nat.zero}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{nat.zero}
+\PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{nat.succ} \PYG{o}{(}\PYG{n}{nat.succ} \PYG{n}{n\PYGZsq{}}\PYG{o}{)}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{n\PYGZsq{}}
 \end{sphinxVerbatim}
 
 
@@ -3547,6 +3615,103 @@ interesting algebraic commonalities.
 \label{\detokenize{A_03_Recursive_Types:polymorphic-lists}}
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k}{\PYGZsh{}check} \PYG{n}{list}
+
+\PYG{c}{/\PYGZhy{}}
+\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{T}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{T}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{u}\PYG{c+cm}{)}
+\PYG{c+cm}{|}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{i}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}
+\PYG{c+cm}{|}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{h}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{T}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{t}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}
+\PYG{c+cm}{\PYGZhy{}/}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} notations for writing cons applications}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} let\PYGZsq{}s construct the list [1, 2, 3]}
+\PYG{k+kd}{def} \PYG{n}{three\PYGZus{}list\PYGZus{}nat\PYGZsq{}\PYGZsq{}} \PYG{o}{:=}
+  \PYG{n}{list.cons}
+    \PYG{l+m+mi}{1}
+    \PYG{o}{(}
+      \PYG{n}{list.cons}
+        \PYG{l+m+mi}{2}
+        \PYG{o}{(}
+          \PYG{n}{list.cons}
+            \PYG{l+m+mi}{3}
+            \PYG{n}{list.nil}
+        \PYG{o}{)}
+    \PYG{o}{)}
+
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{three\PYGZus{}list\PYGZus{}nat\PYGZsq{}\PYGZsq{}}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} notation, :: is infix for cons}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} [] notation adds nil at end}
+\PYG{k+kd}{def} \PYG{n}{three\PYGZus{}list\PYGZus{}nat\PYGZsq{}\PYGZsq{}\PYGZsq{}} \PYG{o}{:=} \PYG{l+m+mi}{1}\PYG{o}{:}\PYG{o}{:}\PYG{l+m+mi}{2}\PYG{o}{:}\PYG{o}{:}\PYG{l+m+mi}{3}\PYG{o}{:}\PYG{o}{:}\PYG{n}{list.nil}
+\PYG{k+kd}{def} \PYG{n}{three\PYGZus{}list\PYGZus{}nat\PYGZsq{}\PYGZsq{}\PYGZsq{}\PYGZsq{}} \PYG{o}{:=} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{]}
+
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} list prepend analogous to nat increment}
+\PYG{k+kd}{def} \PYG{n}{prepend\PYGZsq{}} \PYG{o}{(}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{)} \PYG{o}{(}\PYG{n}{a} \PYG{o}{:} \PYG{n}{α}\PYG{o}{)} \PYG{o}{(}\PYG{n}{l} \PYG{o}{:} \PYG{n}{list} \PYG{n}{α}\PYG{o}{)} \PYG{o}{:=}
+  \PYG{n}{list.cons} \PYG{n}{a} \PYG{n}{l}
+
+\PYG{k+kd}{def} \PYG{n}{three\PYGZus{}list\PYGZus{}nat\PYGZsq{}} \PYG{o}{:=}
+  \PYG{n}{prepend\PYGZsq{}} \PYG{n}{nat}
+    \PYG{l+m+mi}{1}
+    \PYG{o}{(}\PYG{n}{prepend\PYGZsq{}} \PYG{n}{nat}
+      \PYG{l+m+mi}{2}
+      \PYG{o}{(}\PYG{n}{prepend\PYGZsq{}} \PYG{n}{nat}
+        \PYG{l+m+mi}{3}
+        \PYG{n}{list.nil}
+      \PYG{o}{)}
+    \PYG{o}{)}
+
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{three\PYGZus{}list\PYGZus{}nat\PYGZsq{}}
+
+\PYG{k+kd}{def} \PYG{n}{prepend} \PYG{o}{\PYGZob{}}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{\PYGZcb{}} \PYG{o}{(}\PYG{n}{a} \PYG{o}{:} \PYG{n}{α}\PYG{o}{)} \PYG{o}{(}\PYG{n}{l} \PYG{o}{:} \PYG{n}{list} \PYG{n}{α}\PYG{o}{)} \PYG{o}{:=}
+  \PYG{n}{list.cons} \PYG{n}{a} \PYG{n}{l}
+
+\PYG{k+kd}{def} \PYG{n}{three\PYGZus{}list\PYGZus{}nat} \PYG{o}{:=}
+  \PYG{n}{prepend}
+    \PYG{l+m+mi}{1}
+    \PYG{o}{(}\PYG{n}{prepend}
+      \PYG{l+m+mi}{2}
+      \PYG{o}{(}\PYG{n}{prepend}
+        \PYG{l+m+mi}{3}
+        \PYG{n}{list.nil}
+      \PYG{o}{)}
+    \PYG{o}{)}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} yay, that looks good}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} but know that to which it desugars}
+
+\PYG{k+kd}{example} \PYG{o}{:=} \PYG{n}{prepend\PYGZsq{}} \PYG{n}{nat} \PYG{l+m+mi}{2} \PYG{o}{[}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{5}\PYG{o}{]}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{prepend\PYGZsq{}} \PYG{n}{nat} \PYG{l+m+mi}{2} \PYG{o}{[}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{5}\PYG{o}{]}
+
+\PYG{k+kd}{example} \PYG{o}{:=} \PYG{n}{prepend} \PYG{l+m+mi}{2} \PYG{o}{[}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{5}\PYG{o}{]}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{prepend} \PYG{l+m+mi}{2} \PYG{o}{[}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{5}\PYG{o}{]}
+
+\PYG{k}{\PYGZsh{}eval} \PYG{l+m+mi}{2}\PYG{o}{:}\PYG{o}{:}\PYG{o}{[}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{5}\PYG{o}{]}
+
+\PYG{k+kd}{def} \PYG{n}{tail} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{\PYGZob{}}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{\PYGZcb{}}\PYG{o}{,} \PYG{n}{list} \PYG{n}{α} \PYG{n+nb+bp}{→} \PYG{n}{list} \PYG{n}{α}
+\PYG{n+nb+bp}{|} \PYG{n}{α} \PYG{n}{list.nil} \PYG{o}{:=} \PYG{n}{list.nil}
+\PYG{n+nb+bp}{|} \PYG{n}{α} \PYG{o}{(}\PYG{n}{h}\PYG{o}{:}\PYG{o}{:}\PYG{n}{t}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{t}
+
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{tail} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{5}\PYG{o}{]}
+
+\PYG{k+kd}{def} \PYG{n}{head\PYGZsq{}\PYGZsq{}} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{\PYGZob{}}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{\PYGZcb{}}\PYG{o}{,} \PYG{n}{list} \PYG{n}{α} \PYG{n+nb+bp}{→} \PYG{n}{option} \PYG{n}{α}
+\PYG{n+nb+bp}{|} \PYG{n}{α} \PYG{n}{list.nil} \PYG{o}{:=} \PYG{n}{none}
+\PYG{n+nb+bp}{|} \PYG{n}{α} \PYG{o}{(}\PYG{n}{h}\PYG{o}{:}\PYG{o}{:}\PYG{n}{t}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{some} \PYG{n}{h}
+
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{head\PYGZsq{}\PYGZsq{}} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{]}
+\PYG{k}{\PYGZsh{}eval} \PYG{n+nb+bp}{@}\PYG{n}{head\PYGZsq{}\PYGZsq{}} \PYG{n}{nat} \PYG{o}{[}\PYG{o}{]}
+
+\PYG{k+kd}{def} \PYG{n}{head\PYGZsq{}} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{\PYGZob{}}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{\PYGZcb{}} \PYG{o}{(}\PYG{n}{l} \PYG{o}{:} \PYG{n}{list} \PYG{n}{α}\PYG{o}{)}\PYG{o}{,} \PYG{o}{(}\PYG{n}{l} \PYG{n+nb+bp}{≠} \PYG{n}{list.nil}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{n}{α}
+\PYG{n+nb+bp}{|}  \PYG{n}{α} \PYG{n}{l} \PYG{n}{p} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{n}{cases} \PYG{n}{l}\PYG{o}{,}
+\PYG{n}{contradiction}\PYG{o}{,}
+\PYG{n}{exact} \PYG{n}{l\PYGZus{}hd}\PYG{o}{,}
+\PYG{k+kd}{end}
+
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{head\PYGZsq{}} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{]}
+\PYG{k+kd}{begin}
+\PYG{n}{contradiction}\PYG{o}{,}
+\PYG{k+kd}{end}
 \end{sphinxVerbatim}
 
 \sphinxstepscope

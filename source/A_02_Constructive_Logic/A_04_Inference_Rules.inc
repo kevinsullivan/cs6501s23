@@ -350,6 +350,13 @@ In fact, Lean simply *defines* *¬X* to mean *X → false.*
   -- def not (a : Prop) := a → false
   -- prefix `¬`:40 := not
   #check not
+  
+  example : ¬ 0 = 1 :=
+  begin
+  show 0 = 1 → false,
+  assume h,
+  contradiction,
+  end
 
 Let's think about what *a → false* means, where *a* is any
 proposition. In Lean, a proof of an implication is a function,
@@ -568,10 +575,13 @@ Examples
   theorem demorgan1 : ∀ P Q, ¬(P ∧ Q) ↔ (¬P ∨ ¬ Q) :=
   begin
   assume P Q,
-  split,
+  --apply iff.intro _ _,
+  split,   
   
   -- FORWARD
   assume h,
+  
+  
   have ponp := classical.em P,
   have qonq := classical.em Q,
   
@@ -579,27 +589,49 @@ Examples
   cases qonq with q nq,
   have pandq := and.intro p q,
   contradiction,
+  
   apply or.inr nq,
   apply or.inl np,
   
   -- BACKWARDS
   assume h,
-  have ponp := classical.em P,
-  have qonq := classical.em Q,
-  cases ponp with p np,
-  cases qonq with q nq,
-  
   cases h,
-  contradiction,
+  
+  assume pandq,
+  have p := and.elim_left pandq,
+  -- cases pandq with p q,
   contradiction,
   
-  -- HOMEWORK: 
-  -- (1) FINISH THIS PROOF
-  -- (2) IS BACKWARDS PROVABLE WITHOUT em?
+  assume pandq,
+  cases pandq with p q,
+  contradiction,
   
   end
   
-  -- HOMEWORK: PROVE THE SECOND DEMORGAN RULE
+  example : ∀ (P : Prop), ¬ (P ∧ ¬P) :=
+  begin
+  assume P,
+  assume h,
+  cases h with p np,
+  apply false.elim (np p),
+  end
+  
+  example : ∀ P Q R, P ∨ (Q ∧ R) → (P ∨ Q) ∧ (P ∨ R) :=
+  begin
+  assume P Q R,
+  assume h,
+  apply and.intro _ _,
+  
+  cases h with p qandr,
+  exact or.inl p,
+  cases qandr with q r,
+  apply or.inr q,
+  cases h,
+  exact or.inl h,
+  cases h,
+  exact (or.inr h_right)
+  
+  end
 
 Exercises
 ~~~~~~~~~

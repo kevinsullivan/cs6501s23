@@ -384,7 +384,6 @@ TEXT. -/
 -- def not (a : Prop) := a → false
 -- prefix `¬`:40 := not
 #check not
--- QUOTE.
 
 example : ¬ 0 = 1 :=
 begin
@@ -392,6 +391,7 @@ show 0 = 1 → false,
 assume h,
 contradiction,
 end
+-- QUOTE.
 
 /- TEXT:
 Let's think about what *a → false* means, where *a* is any
@@ -675,8 +675,8 @@ exact or.inl h,
 cases h,
 exact (or.inr h_right)
 
-
 end
+-- QUOTE.
 
 /- TEXT:
 Exercises
