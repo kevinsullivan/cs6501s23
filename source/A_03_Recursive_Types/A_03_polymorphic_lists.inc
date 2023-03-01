@@ -2,6 +2,9 @@
 Polymorphic Lists
 *****************
 
+Concepts
+--------
+
 .. code-block:: lean
 
   #check list
