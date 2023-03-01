@@ -38,6 +38,3 @@ def sub2 : nat → nat
 | (nat.succ nat.zero) := nat.zero
 | (nat.succ (nat.succ n')) := n'
 
-
-
-

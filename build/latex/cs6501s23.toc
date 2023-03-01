@@ -90,4 +90,5 @@
 \contentsline {section}{\numberline {4.1}Introduction}{47}{section.4.1}
 \contentsline {section}{\numberline {4.2}Natural Numbers}{47}{section.4.2}
 \contentsline {section}{\numberline {4.3}Polymorphic Lists}{48}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}Exercises}{50}{subsection.4.3.1}
 \contentsline {chapter}{\numberline {5}Index}{51}{chapter.5}
