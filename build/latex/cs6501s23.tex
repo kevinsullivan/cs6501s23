@@ -3570,27 +3570,22 @@ interesting algebraic commonalities.
 
 \section{Natural Numbers}
 \label{\detokenize{A_03_Recursive_Types:natural-numbers}}
+
+\subsection{Data Type}
+\label{\detokenize{A_03_Recursive_Types:data-type}}
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k}{\PYGZsh{}check} \PYG{n}{nat}
+\end{sphinxVerbatim}
 
-\PYG{c}{/\PYGZhy{}}
-\PYG{c+cm}{T}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{f}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{m}\PYG{c+cm}{s}\PYG{c+cm}{/}\PYG{c+cm}{v}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{u}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{h}\PYG{c+cm}{i}\PYG{c+cm}{c}\PYG{c+cm}{h}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{e}
-\PYG{c+cm}{u}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{u}\PYG{c+cm}{m}\PYG{c+cm}{b}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{s}\PYG{c+cm}{.}
-
-\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}
-\PYG{c+cm}{|}\PYG{c+cm}{ }\PYG{c+cm}{z}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}
-\PYG{c+cm}{|}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{c}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}
-
-\PYG{c+cm}{T}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{m}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{f}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{l}\PYG{c+cm}{y}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{F}\PYG{c+cm}{i}\PYG{c+cm}{r}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{*}\PYG{c+cm}{z}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{*}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{m}
-\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{*}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{*}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{S}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{*}\PYG{c+cm}{n}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{*}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{m}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{*}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{*}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{o}
-\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{*}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{.}\PYG{c+cm}{s}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{c}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{*}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{w}\PYG{c+cm}{h}\PYG{c+cm}{i}\PYG{c+cm}{c}\PYG{c+cm}{h}\PYG{c+cm}{ }\PYG{c+cm}{y}\PYG{c+cm}{o}\PYG{c+cm}{u}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{s}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{r}\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{.}\PYG{c+cm}{s}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{c}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{ }\PYG{c+cm}{+}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{)}\PYG{c+cm}{.}
-\PYG{c+cm}{\PYGZhy{}/}
-
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} notations for writing succ applications}
 \PYG{k+kd}{def} \PYG{n}{three\PYGZsq{}}  \PYG{o}{:=} \PYG{o}{(}\PYG{n}{nat.succ} \PYG{o}{(}\PYG{n}{nat.succ} \PYG{o}{(}\PYG{n}{nat.succ} \PYG{o}{(}\PYG{n}{nat.zero}\PYG{o}{)}\PYG{o}{)}\PYG{o}{)}\PYG{o}{)}
 \PYG{k+kd}{def} \PYG{n}{three}  \PYG{o}{:=} \PYG{n}{nat.zero.succ.succ.succ}
 \end{sphinxVerbatim}
 
+
+\subsection{Operations}
+\label{\detokenize{A_03_Recursive_Types:operations}}
 \sphinxAtStartPar
 Having seen how the \sphinxstyleemphasis{nat} data type is defined, we now look
 at how to define functions taking \sphinxstyleemphasis{nat} values as arguments.
@@ -3607,65 +3602,75 @@ then (a) it does not match \sphinxstyleemphasis{nat.zero}, but (b) it does match
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} increment is just succ application}
 \PYG{k+kd}{def} \PYG{n}{inc} \PYG{o}{(}\PYG{n}{n\PYGZsq{}} \PYG{o}{:} \PYG{n}{nat}\PYG{o}{)} \PYG{o}{:} \PYG{n}{nat} \PYG{o}{:=} \PYG{n}{n\PYGZsq{}.succ}
 \PYG{k+kd}{def} \PYG{n}{three\PYGZsq{}\PYGZsq{}} \PYG{o}{:=} \PYG{n}{inc}\PYG{o}{(}\PYG{n}{inc}\PYG{o}{(}\PYG{n}{inc} \PYG{n}{nat.zero}\PYG{o}{)}\PYG{o}{)}
+\end{sphinxVerbatim}
 
-\PYG{c}{/\PYGZhy{}}
-\PYG{c+cm}{A}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{s}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{f}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{y}
-\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{y}\PYG{c+cm}{s}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{g}\PYG{c+cm}{u}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{H}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{e}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{l}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{f}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{*}\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{*}
-\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{0}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{p}\PYG{c+cm}{p}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{0}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{w}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}
-\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{m}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{v}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{u}\PYG{c+cm}{e}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{*}\PYG{c+cm}{n}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{*}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{p}\PYG{c+cm}{p}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{z}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{v}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{u}\PYG{c+cm}{e}\PYG{c+cm}{,}
-\PYG{c+cm}{*}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{.}\PYG{c+cm}{s}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{c}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{*}\PYG{c+cm}{.}
+\sphinxAtStartPar
+A predecessor (one less than) function can be defined by
+case analysis on a nat argument. Here we’ll define \sphinxstyleemphasis{pred’}
+to return 0 when applied to 0, and otherwise to return the
+one smaller value, \sphinxstyleemphasis{n’}, when applied to any non\sphinxhyphen{}zero value,
+\sphinxstyleemphasis{nat.succ n’}.
 
-\PYG{c+cm}{R}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{\PYGZdq{}}\PYG{c+cm}{i}\PYG{c+cm}{m}\PYG{c+cm}{p}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{\PYGZdq{}}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{k}\PYG{c+cm}{ }\PYG{c+cm}{\PYGZdq{}}\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{v}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}
-\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{.}\PYG{c+cm}{\PYGZdq{}}\PYG{c+cm}{ }\PYG{c+cm}{A}\PYG{c+cm}{ }\PYG{c+cm}{\PYGZdq{}}\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{\PYGZdq{}}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{*}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{,}\PYG{c+cm}{*}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}
-\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{t}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{g}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{o}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{u}\PYG{c+cm}{l}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{.}
+\sphinxAtStartPar
+Rather than “implementing a function” think “proving a function
+type.” A “proof” of function type, \sphinxstyleemphasis{nat → nat,} is any function
+that converts any given nat into some resulting nat.
 
-\PYG{c+cm}{W}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{v}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{d}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{p}\PYG{c+cm}{p}\PYG{c+cm}{o}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{a}
-\PYG{c+cm}{l}\PYG{c+cm}{o}\PYG{c+cm}{g}\PYG{c+cm}{i}\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{p}\PYG{c+cm}{o}\PYG{c+cm}{s}\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{*}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{y}\PYG{c+cm}{*}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{i}\PYG{c+cm}{l}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{d}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{v}\PYG{c+cm}{e}
-\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{p}\PYG{c+cm}{o}\PYG{c+cm}{s}\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{h}\PYG{c+cm}{i}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{u}\PYG{c+cm}{s}\PYG{c+cm}{u}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{l}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{i}\PYG{c+cm}{f}\PYG{c+cm}{i}\PYG{c+cm}{c}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}
-\PYG{c+cm}{s}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{i}\PYG{c+cm}{f}\PYG{c+cm}{i}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{H}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{x}\PYG{c+cm}{a}\PYG{c+cm}{m}\PYG{c+cm}{p}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{d}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}
-\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{a}\PYG{c+cm}{k}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{n}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{u}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{c}\PYG{c+cm}{u}\PYG{c+cm}{l}\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{n}\PYG{c+cm}{s}
-\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{q}\PYG{c+cm}{u}\PYG{c+cm}{i}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{s}\PYG{c+cm}{w}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{g}\PYG{c+cm}{u}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{)}\PYG{c+cm}{.}
+\sphinxAtStartPar
+When proving a function or other data type, as opposed to a
+logical (proposition) type, is that \sphinxstyleemphasis{any} proof will do to prove
+the proposition, while we usually want a specific function of the
+specified type. Here, for example, we don’t want any function
+that takes and returns a nat, but one that in particular returns
+the required answer (one less than the argument).
 
-\PYG{c+cm}{D}\PYG{c+cm}{i}\PYG{c+cm}{f}\PYG{c+cm}{f}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{c}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{w}\PYG{c+cm}{e}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{p}\PYG{c+cm}{o}\PYG{c+cm}{s}\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{r}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{v}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}
-\PYG{c+cm}{L}\PYG{c+cm}{e}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{D}\PYG{c+cm}{i}\PYG{c+cm}{f}\PYG{c+cm}{f}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{c}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{w}\PYG{c+cm}{e}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{\PYGZdq{}}\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{s}\PYG{c+cm}{\PYGZdq{}}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{d}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{a}
-\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{r}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{v}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{;}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{y}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{u}\PYG{c+cm}{s}\PYG{c+cm}{u}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{l}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{h}\PYG{c+cm}{i}\PYG{c+cm}{g}\PYG{c+cm}{h}\PYG{c+cm}{l}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{v}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{!}\PYG{c+cm}{ }\PYG{c+cm}{S}\PYG{c+cm}{o}
-\PYG{c+cm}{b}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{r}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{f}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{\PYGZdq{}}\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{\PYGZdq{}}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{g}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}
-\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{.}
+\sphinxAtStartPar
+Differences between proofs of propositions are irrelevant in
+Lean. Differences between “proofs” of function or other data
+types aren’t irrelevant; they’re usually highly relevant! So
+be sure to construct a preferred “proof” of any given function
+type.
 
-\PYG{c+cm}{L}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{o}\PYG{c+cm}{o}\PYG{c+cm}{k}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{s}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{a}\PYG{c+cm}{k}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{y}
-\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{v}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{u}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{n}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{o}\PYG{c+cm}{l}\PYG{c+cm}{l}\PYG{c+cm}{o}\PYG{c+cm}{w}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{z}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{g}\PYG{c+cm}{u}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{s}
-\PYG{c+cm}{z}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{w}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{g}\PYG{c+cm}{u}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{v}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{u}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{+}\PYG{c+cm}{1}\PYG{c+cm}{.}
-\PYG{c+cm}{\PYGZhy{}/}
+\sphinxAtStartPar
+Let’s look at the predecessor function: the one that takes any
+nat value and returns the following: zero if the argument is
+zero, and otherwise n’, where the argument value is n’+1.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k+kd}{def} \PYG{n}{pred\PYGZsq{}} \PYG{o}{:} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat} \PYG{o}{:=}
 \PYG{k+kd}{begin}
 \PYG{k}{assume} \PYG{n}{n}\PYG{o}{,}
-\PYG{n}{cases} \PYG{n}{n} \PYG{k}{with} \PYG{n}{n\PYGZsq{}}\PYG{o}{,}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} this is right now}
-\PYG{n}{exact} \PYG{l+m+mi}{0}\PYG{o}{,}
-\PYG{n}{exact} \PYG{n}{n\PYGZsq{}}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{n} \PYG{k}{with} \PYG{n}{n\PYGZsq{}}\PYG{o}{,}
+\PYG{n}{exact} \PYG{l+m+mi}{0}\PYG{o}{,}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} when n is zero}
+\PYG{n}{exact} \PYG{n}{n\PYGZsq{}}\PYG{o}{,} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} when n is succ n\PYGZsq{}}
 \PYG{k+kd}{end}
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} quick test}
 \PYG{k}{\PYGZsh{}eval} \PYG{n}{pred\PYGZsq{}} \PYG{l+m+mi}{6}
 \PYG{k+kd}{example} \PYG{o}{:} \PYG{n}{pred\PYGZsq{}} \PYG{l+m+mi}{6} \PYG{n+nb+bp}{=} \PYG{l+m+mi}{5} \PYG{o}{:=} \PYG{n}{rfl}
+\end{sphinxVerbatim}
 
-\PYG{c}{/\PYGZhy{}}
-\PYG{c+cm}{H}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{a}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{j}\PYG{c+cm}{u}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{i}\PYG{c+cm}{f}\PYG{c+cm}{i}\PYG{c+cm}{e}\PYG{c+cm}{d}
-\PYG{c+cm}{u}\PYG{c+cm}{s}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{t}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{m}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{c}\PYG{c+cm}{h}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{w}\PYG{c+cm}{h}\PYG{c+cm}{i}\PYG{c+cm}{c}\PYG{c+cm}{h}\PYG{c+cm}{,}
-\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{e}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{g}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{z}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{y}\PYG{c+cm}{s}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{)}\PYG{c+cm}{.}
-\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}/}
+\sphinxAtStartPar
+Here’s the same function just specified
+using pattern matching notation (which,
+as we’ve seen generalizes case analysis).
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k+kd}{def} \PYG{n}{pred} \PYG{o}{:} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat}
 \PYG{n+nb+bp}{|} \PYG{n}{nat.zero} \PYG{o}{:=} \PYG{n}{nat.zero}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} loop at zero}
 \PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{nat.succ} \PYG{n}{n\PYGZsq{}}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{n\PYGZsq{}}
 
 \PYG{k}{\PYGZsh{}eval} \PYG{n}{pred} \PYG{l+m+mi}{5}
 \PYG{k+kd}{example} \PYG{o}{:} \PYG{n}{pred} \PYG{l+m+mi}{5} \PYG{n+nb+bp}{=} \PYG{l+m+mi}{4} \PYG{o}{:=} \PYG{n}{rfl}
+\end{sphinxVerbatim}
 
-\PYG{c}{/\PYGZhy{}}
-\PYG{c+cm}{P}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{t}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{m}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{c}\PYG{c+cm}{h}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{ }\PYG{c+cm}{g}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{z}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{y}\PYG{c+cm}{s}\PYG{c+cm}{i}\PYG{c+cm}{s}
-\PYG{c+cm}{b}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{g}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{ }\PYG{c+cm}{y}\PYG{c+cm}{o}\PYG{c+cm}{u}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{d}\PYG{c+cm}{i}\PYG{c+cm}{f}\PYG{c+cm}{f}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}
-\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{u}\PYG{c+cm}{l}\PYG{c+cm}{t}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{e}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{y}\PYG{c+cm}{s}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{g}\PYG{c+cm}{u}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}
-\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{r}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{u}\PYG{c+cm}{s}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{t}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{m}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{c}\PYG{c+cm}{h}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{/}\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{i}\PYG{c+cm}{f}\PYG{c+cm}{i}\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{.}
-\PYG{c+cm}{\PYGZhy{}/}
+\sphinxAtStartPar
+Pattern matching generalizes case analysis
+by giving you a means to return different
+results based on deeper analysis of argument
+structures using pattern matching/unification.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k+kd}{def} \PYG{n}{sub2} \PYG{o}{:} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat}
 \PYG{n+nb+bp}{|} \PYG{n}{nat.zero} \PYG{o}{:=} \PYG{n}{nat.zero}
 \PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{nat.succ} \PYG{n}{nat.zero}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{nat.zero}
@@ -3677,7 +3682,7 @@ then (a) it does not match \sphinxstyleemphasis{nat.zero}, but (b) it does match
 \label{\detokenize{A_03_Recursive_Types:polymorphic-lists}}
 
 \subsection{Data Type}
-\label{\detokenize{A_03_Recursive_Types:data-type}}
+\label{\detokenize{A_03_Recursive_Types:id2}}
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k}{\PYGZsh{}check} \PYG{n}{list}
 \end{sphinxVerbatim}
@@ -3729,7 +3734,7 @@ type and of any finite length.
 
 
 \subsection{Operations}
-\label{\detokenize{A_03_Recursive_Types:operations}}
+\label{\detokenize{A_03_Recursive_Types:id3}}
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} list prepend analogous to nat increment}
 \PYG{k+kd}{def} \PYG{n}{prepend\PYGZsq{}} \PYG{o}{(}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{)} \PYG{o}{(}\PYG{n}{a} \PYG{o}{:} \PYG{n}{α}\PYG{o}{)} \PYG{o}{(}\PYG{n}{l} \PYG{o}{:} \PYG{n}{list} \PYG{n}{α}\PYG{o}{)} \PYG{o}{:=}

@@ -89,9 +89,11 @@
 \contentsline {chapter}{\numberline {4}Recursive Types}{47}{chapter.4}
 \contentsline {section}{\numberline {4.1}Introduction}{47}{section.4.1}
 \contentsline {section}{\numberline {4.2}Natural Numbers}{47}{section.4.2}
-\contentsline {section}{\numberline {4.3}Polymorphic Lists}{49}{section.4.3}
-\contentsline {subsection}{\numberline {4.3.1}Data Type}{49}{subsection.4.3.1}
-\contentsline {subsection}{\numberline {4.3.2}Constructor Notations}{50}{subsection.4.3.2}
-\contentsline {subsection}{\numberline {4.3.3}Operations}{50}{subsection.4.3.3}
-\contentsline {subsection}{\numberline {4.3.4}Exercises}{52}{subsection.4.3.4}
+\contentsline {subsection}{\numberline {4.2.1}Data Type}{47}{subsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2.2}Operations}{47}{subsection.4.2.2}
+\contentsline {section}{\numberline {4.3}Polymorphic Lists}{48}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}Data Type}{48}{subsection.4.3.1}
+\contentsline {subsection}{\numberline {4.3.2}Constructor Notations}{49}{subsection.4.3.2}
+\contentsline {subsection}{\numberline {4.3.3}Operations}{49}{subsection.4.3.3}
+\contentsline {subsection}{\numberline {4.3.4}Exercises}{51}{subsection.4.3.4}
 \contentsline {chapter}{\numberline {5}Index}{53}{chapter.5}
