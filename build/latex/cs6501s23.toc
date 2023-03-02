@@ -93,7 +93,11 @@
 \contentsline {subsection}{\numberline {4.2.2}Operations}{47}{subsection.4.2.2}
 \contentsline {section}{\numberline {4.3}Polymorphic Lists}{48}{section.4.3}
 \contentsline {subsection}{\numberline {4.3.1}Data Type}{48}{subsection.4.3.1}
-\contentsline {subsection}{\numberline {4.3.2}Constructor Notations}{49}{subsection.4.3.2}
+\contentsline {subsection}{\numberline {4.3.2}Notations}{49}{subsection.4.3.2}
 \contentsline {subsection}{\numberline {4.3.3}Operations}{49}{subsection.4.3.3}
-\contentsline {subsection}{\numberline {4.3.4}Exercises}{51}{subsection.4.3.4}
+\contentsline {subsection}{\numberline {4.3.4}Partial Functions}{50}{subsection.4.3.4}
+\contentsline {subsubsection}{Default Value}{50}{subsubsection*.18}
+\contentsline {subsubsection}{Option Values}{50}{subsubsection*.19}
+\contentsline {subsubsection}{Precondition}{51}{subsubsection*.20}
+\contentsline {subsection}{\numberline {4.3.5}Exercises}{51}{subsection.4.3.5}
 \contentsline {chapter}{\numberline {5}Index}{53}{chapter.5}

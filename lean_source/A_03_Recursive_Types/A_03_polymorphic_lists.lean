@@ -51,8 +51,8 @@ def three_list_nat'' :=
 -- QUOTE.
 
 /- TEXT: 
-Constructor Notations
----------------------
+Notations
+---------
 TEXT. -/
 
 -- QUOTE:
@@ -60,6 +60,7 @@ TEXT. -/
 -- [] notation adds nil at end
 def three_list_nat''' := 1::2::3::list.nil
 def three_list_nat'''' := [1,2,3]
+def four_list_nat := 0::[1,2,3]       -- fun!
 -- QUOTE.
 
 /- TEXT:
@@ -114,31 +115,30 @@ example := prepend 2 [3,4,5]
 
 
 /- TEXT:
+Partial Functions
+-----------------
+
 Now we face some interesting issues. Our aim is to define
 functions that *analyze* lists and return parts of them.
-The problem is that there are no parts when the given list
+The problem is that there are no parts when a given list
 is empty. 
 
-When we defined the predecessor function, pred, above, we
-defined the predecessor or zero to be zero, rather than to
-be undefined, making it mathematically a total function, 
-easily represented as a lambda abstractraction in Lean.
-
-That's ok, but in a different application we really might
-want to define the predecessor of 0 as undefined, not 0.
+When we defined pred, above, we defined pred of zero to be 
+zero (rather than to be undefined). Doing that makes the 
+function total and easily represented as a function (lambda 
+abstractraction) in Lean. However, in a different application
+we really might want to define pred 0 to be undefined, not 0.
 
 A similar set of issues arises when we consider head and
-tail functions that when given non-empty lists return their
-head elements and tail lists, respectively. 
+tail functions on lists. When given non-empty lists there
+is no problem. But what to do with an empty list argument?
+There is no head or tail element to return, yet some value
+of the specified type *has to be* returned. 
 
-What about in the case of an empty list argument? There is
-no head or tail element but a value of the right type still
-*has to be* returned. The problem is to represent what are
-*mathematically partial* functions as *functions* in Lean,
-which are necessarily total. 
+Let's see some fo the solutions that are available.
 
-So let's see what happens, what solutions are available, and
-how they compare and contrast.
+Default Value
+~~~~~~~~~~~~~
 TEXT. -/
 
 -- QUOTE:
@@ -147,30 +147,36 @@ def tail' : ∀ {α : Type}, list α → list α
 | α list.nil := list.nil 
 | α (h::t) := t
 #eval tail' [1,2,3,4,5]
+-- QUOTE.
 
-/-
-The preceding solution represents the mathematical
-predecessor functions on the natural numbers, which
-is not defined at 0, and which is thus partial, with
-a lambda abstraction representing the closely related
-total function obtained by defining 0 to be the value
-of the function at 0. One nice thing about this solution
+/- TEXT:
+One nice thing about this solution
 is that the function type is still about as natural as
 can be: list α → list α.
+
+Option Values
+~~~~~~~~~~~~~
 
 The next solution changes the type of the function,
 so that return value is in the form of a *variant* 
 type, a value of which is either *none* or *some 
 valid return value*.
--/
+TEXT. -/
+
+-- QUOTE:
 def head'' : ∀ {α : Type}, list α → option α 
 | α list.nil := none
 | α (h::t) := some h
 
 #eval head'' [1,2,3]
 #eval @head'' nat []
+-- QUOTE.
 
-/-
+/- TEXT:
+
+Precondition
+~~~~~~~~~~~~
+
 Finally, we can define a version of head' that (1) typechecks
 as being a total function, (2) can never actually be applied
 fully to an empty list, in which case (3) no real result has 
@@ -190,8 +196,9 @@ the function, namely that the given list not be empty. Let's
 see how e might first write the function using a tactic 
 script, to take advantage of your familiarity with using
 it to build proofs.  
--/
+TEXT. -/
 
+-- QUOTE:
 def head' : ∀ {α : Type} (l : list α), (l ≠ list.nil) → α 
 |  α l p := 
 begin
@@ -204,22 +211,19 @@ end
 #eval head' [1,2,3] begin contradiction end   -- proof as a proof script
 #eval head' [1,2,3] (by contradiction)        -- alternative syntax, fyi
 #eval head' ([] : list nat) _                 -- you'll need a proof of list.nil ≠ list.nil!
-
 -- QUOTE.
 
 /- TEXT:
 Exercises
 ---------
-TEXT. -/
 
--- QUOTE:
-/-
 - Write a version of the pred function that can only be called for argument values greater than 0.
 - Write a version of the pred function that returns an option nat value "in the usual way"
 - Write a tail function that can only be called with a non-empty list, using our "by cases" notation for function definition. It should look like tail'. Note 1: Where a proof value is required, you can always use tactic mode to construct the required proof, in a begin..end block. If such a proof is a single tactic long, you can write by <tactic>. For example, try by contradiction as the *result* when your new tail function is applied to an empty list. Here's how I wrote the function type. You should provide the cases (on l).
 def tail {α : Type} : ∀ (l : list α), (l ≠ list.nil) → list α 
--/
+TEXT. -/
 
+-- QUOTE:
 -- implement the function, no need to (do not try) to match on α
 -- it's named before the colon and is global to this definition
 -- we do want to match (do case analysis) on l, so it's after :

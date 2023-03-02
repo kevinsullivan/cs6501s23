@@ -107,6 +107,10 @@ Pattern matching generalizes case analysis
 by giving you a means to return different
 results based on deeper analysis of argument
 structures using pattern matching/unification.
+This example implements subtract-two, looping
+at zero. Notice how the third pattern matches
+to the sub-natural-number object nested two
+succ-levels deep.
 TEXT. -/
 
 -- QUOTE:
