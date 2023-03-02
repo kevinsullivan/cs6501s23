@@ -49,8 +49,10 @@
 <li class="toctree-l2"><a class="reference internal" href="#id1">4.1. Introduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#natural-numbers">4.2. Natural Numbers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#polymorphic-lists">4.3. Polymorphic Lists</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#concepts">4.3.1. Concepts</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#exercises">4.3.2. Exercises</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-type">4.3.1. Data Type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#constructor-notations">4.3.2. Constructor Notations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#operations">4.3.3. Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exercises">4.3.4. Exercises</a></li>
 </ul>
 </li>
 </ul>
@@ -97,40 +99,101 @@ interesting algebraic commonalities.</p>
 <section id="natural-numbers">
 <h2><span class="section-number">4.2. </span>Natural Numbers<a class="headerlink" href="#natural-numbers" title="Permalink to this heading">&#61633;</a></h2>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20nat%0A%0A%2F-%0Ainductive%20nat%0A%7C%20zero%20%3A%20nat%0A%7C%20succ%20(n%20%3A%20nat)%20%3A%20nat%0A-%2F%0A%0A--%20notations%20for%20writing%20succ%20applications%0Adef%20three%20%20%3A%3D%20nat.zero.succ.succ.succ%0Adef%20three'%20%20%3A%3D%20(nat.succ(nat.succ(nat.succ(nat.zero))))%0A%0A%0A--%20increment%20is%20just%20succ%20application%0Adef%20inc%20(n'%20%3A%20nat)%20%3A%20nat%20%3A%3D%20n'.succ%0Adef%20three''%20%3A%3D%20inc(inc(inc%20nat.zero))%0A%0Adef%20pred'%20%3A%20nat%20%E2%86%92%20nat%20%3A%3D%0Abegin%0Aassume%20n%2C%0Acases%20n%2C%0Aexact%200%2C%0Aexact%20n%2C%0Aend%0A%0A%23eval%20pred'%206%0A%0Adef%20pred%20%3A%20nat%20%E2%86%92%20nat%0A%7C%20nat.zero%20%3A%3D%20nat.zero%0A%7C%20(nat.succ%20n')%20%3A%3D%20n'%0A%0A%23eval%20pred%205%0A%0Adef%20sub2%20%3A%20nat%20%E2%86%92%20nat%0A%7C%20nat.zero%20%3A%3D%20nat.zero%0A%7C%20(nat.succ%20nat.zero)%20%3A%3D%20nat.zero%0A%7C%20(nat.succ%20(nat.succ%20n'))%20%3A%3D%20n'" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_5.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20nat%0A%0A%2F-%0AThe%20definition%20of%20the%20type%2C%20nat%2C%20the%20terms%2Fvalues%20of%20which%20we%0Ause%20to%20represent%20natural%20numbers.%0A%0Ainductive%20nat%0A%7C%20zero%20%3A%20nat%0A%7C%20succ%20(n%20%3A%20nat)%20%3A%20nat%0A%0AThe%20set%20of%20terms%20is%20defined%20inductively.%20First%2C%20*zero*%20is%20a%20term%0Aof%20type%20*nat*.%20Second%2C%20if%20*n'*%20is%20any%20term%20of%20type%20*nat*%2C%20then%20so%0Ais%20*nat.succ%20n'*%20(which%20you%20can%20also%20write%20as%20n'.succ%20or%20n'%20%2B%201).%0A-%2F%0A%0A--%20notations%20for%20writing%20succ%20applications%0Adef%20three'%20%20%3A%3D%20(nat.succ%20(nat.succ%20(nat.succ%20(nat.zero))))%0Adef%20three%20%20%3A%3D%20nat.zero.succ.succ.succ" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_5.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="n">nat</span>
 
 <span class="c">/-</span>
+<span class="cm">The definition of the type, nat, the terms/values of which we</span>
+<span class="cm">use to represent natural numbers.</span>
+
 <span class="cm">inductive nat</span>
 <span class="cm">| zero : nat</span>
 <span class="cm">| succ (n : nat) : nat</span>
+
+<span class="cm">The set of terms is defined inductively. First, *zero* is a term</span>
+<span class="cm">of type *nat*. Second, if *n&#39;* is any term of type *nat*, then so</span>
+<span class="cm">is *nat.succ n&#39;* (which you can also write as n&#39;.succ or n&#39; + 1).</span>
 <span class="cm">-/</span>
 
 <span class="c1">-- notations for writing succ applications</span>
+<span class="kd">def</span> <span class="n">three&#39;</span>  <span class="o">:=</span> <span class="o">(</span><span class="n">nat.succ</span> <span class="o">(</span><span class="n">nat.succ</span> <span class="o">(</span><span class="n">nat.succ</span> <span class="o">(</span><span class="n">nat.zero</span><span class="o">))))</span>
 <span class="kd">def</span> <span class="n">three</span>  <span class="o">:=</span> <span class="n">nat.zero.succ.succ.succ</span>
-<span class="kd">def</span> <span class="n">three&#39;</span>  <span class="o">:=</span> <span class="o">(</span><span class="n">nat.succ</span><span class="o">(</span><span class="n">nat.succ</span><span class="o">(</span><span class="n">nat.succ</span><span class="o">(</span><span class="n">nat.zero</span><span class="o">))))</span>
-
-
-<span class="c1">-- increment is just succ application</span>
+</pre></div>
+</div>
+</div><p>Having seen how the <em>nat</em> data type is defined, we now look
+at how to define functions taking <em>nat</em> values as arguments.
+As we&#8217;ve seen before, many such functions here will again be
+defined by case analysis on an incoming nat argument value.
+That means considering two cases separately: the incoming value
+is either zero or non-zero: that is, either <em>nat.zero,</em> or
+<em>nat.succ n&#8217;</em> for some &#8220;one-smaller&#8221; value, <em>n&#8217;</em>. For example,
+if the incoming argument is <em>succ(succ(succ zero))</em>, i.e., 3,
+then (a) it does not match <em>nat.zero</em>, but (b) it does match
+<em>nat.succ n&#8217;</em>, with <em>n&#8217;</em> is bound to <em>succ(succ zero)</em>, i.e., 2.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20increment%20is%20just%20succ%20application%0Adef%20inc%20(n'%20%3A%20nat)%20%3A%20nat%20%3A%3D%20n'.succ%0Adef%20three''%20%3A%3D%20inc(inc(inc%20nat.zero))%0A%0A%2F-%0AA%20predecessor%20(one%20less%20than)%20function%20can%20be%20defined%20by%0Acase%20analysis%20on%20a%20nat%20argument.%20Here%20we'll%20define%20*pred'*%0Ato%20return%200%20when%20applied%20to%200%2C%20and%20otherwise%20to%20return%20the%0Aone%20smaller%20value%2C%20*n'*%2C%20when%20applied%20to%20any%20non-zero%20value%2C%0A*nat.succ%20n'*.%0A%0ARather%20than%20%22implementing%20a%20function%22%20think%20%22proving%20a%20function%0Atype.%22%20A%20%22proof%22%20of%20function%20type%2C%20*nat%20%E2%86%92%20nat%2C*%20is%20any%20function%0Athat%20converts%20any%20given%20nat%20into%20some%20resulting%20nat.%0A%0AWhen%20proving%20a%20function%20or%20other%20data%20type%2C%20as%20opposed%20to%20a%0Alogical%20(proposition)%20type%2C%20is%20that%20*any*%20proof%20will%20do%20to%20prove%0Athe%20proposition%2C%20while%20we%20usually%20want%20a%20specific%20function%20of%20the%0Aspecified%20type.%20Here%2C%20for%20example%2C%20we%20don't%20want%20any%20function%0Athat%20takes%20and%20returns%20a%20nat%2C%20but%20one%20that%20in%20particular%20returns%0Athe%20required%20answer%20(one%20less%20than%20the%20argument).%0A%0ADifferences%20between%20proofs%20of%20propositions%20are%20irrelevant%20in%0ALean.%20Differences%20between%20%22proofs%22%20of%20function%20or%20other%20data%0Atypes%20aren't%20irrelevant%3B%20they're%20usually%20highly%20relevant!%20So%0Abe%20sure%20to%20construct%20a%20preferred%20%22proof%22%20of%20any%20given%20function%0Atype.%0A%0ALet's%20look%20at%20the%20predecessor%20function%3A%20the%20one%20that%20takes%20any%0Anat%20value%20and%20returns%20the%20following%3A%20zero%20if%20the%20argument%20is%0Azero%2C%20and%20otherwise%20n'%2C%20where%20the%20argument%20value%20is%20n'%2B1.%0A-%2F%0Adef%20pred'%20%3A%20nat%20%E2%86%92%20nat%20%3A%3D%0Abegin%0Aassume%20n%2C%0Acases%20n%20with%20n'%2C%20%20--%20this%20is%20right%20now%0Aexact%200%2C%0Aexact%20n'%2C%0Aend%0A%0A--%20quick%20test%0A%23eval%20pred'%206%0Aexample%20%3A%20pred'%206%20%3D%205%20%3A%3D%20rfl%0A%0A%2F-%0AHere's%20the%20same%20function%20just%20specified%0Ausing%20pattern%20matching%20notation%20(which%2C%0Aas%20we've%20seen%20generalizes%20case%20analysis).%0A%20-%2F%0Adef%20pred%20%3A%20nat%20%E2%86%92%20nat%0A%7C%20nat.zero%20%3A%3D%20nat.zero%20%20--%20loop%20at%20zero%0A%7C%20(nat.succ%20n')%20%3A%3D%20n'%0A%0A%23eval%20pred%205%0Aexample%20%3A%20pred%205%20%3D%204%20%3A%3D%20rfl%0A%0A%2F-%0APattern%20matching%20generalizes%20case%20analysis%0Aby%20giving%20you%20a%20means%20to%20return%20different%0Aresults%20based%20on%20deeper%20analysis%20of%20argument%0Astructures%20using%20pattern%20matching%2Funification.%0A-%2F%0Adef%20sub2%20%3A%20nat%20%E2%86%92%20nat%0A%7C%20nat.zero%20%3A%3D%20nat.zero%0A%7C%20(nat.succ%20nat.zero)%20%3A%3D%20nat.zero%0A%7C%20(nat.succ%20(nat.succ%20n'))%20%3A%3D%20n'" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_38.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- increment is just succ application</span>
 <span class="kd">def</span> <span class="n">inc</span> <span class="o">(</span><span class="n">n&#39;</span> <span class="o">:</span> <span class="n">nat</span><span class="o">)</span> <span class="o">:</span> <span class="n">nat</span> <span class="o">:=</span> <span class="n">n&#39;.succ</span>
 <span class="kd">def</span> <span class="n">three&#39;&#39;</span> <span class="o">:=</span> <span class="n">inc</span><span class="o">(</span><span class="n">inc</span><span class="o">(</span><span class="n">inc</span> <span class="n">nat.zero</span><span class="o">))</span>
 
+<span class="c">/-</span>
+<span class="cm">A predecessor (one less than) function can be defined by</span>
+<span class="cm">case analysis on a nat argument. Here we&#39;ll define *pred&#39;*</span>
+<span class="cm">to return 0 when applied to 0, and otherwise to return the</span>
+<span class="cm">one smaller value, *n&#39;*, when applied to any non-zero value,</span>
+<span class="cm">*nat.succ n&#39;*.</span>
+
+<span class="cm">Rather than &quot;implementing a function&quot; think &quot;proving a function</span>
+<span class="cm">type.&quot; A &quot;proof&quot; of function type, *nat &#8594; nat,* is any function</span>
+<span class="cm">that converts any given nat into some resulting nat.</span>
+
+<span class="cm">When proving a function or other data type, as opposed to a</span>
+<span class="cm">logical (proposition) type, is that *any* proof will do to prove</span>
+<span class="cm">the proposition, while we usually want a specific function of the</span>
+<span class="cm">specified type. Here, for example, we don&#39;t want any function</span>
+<span class="cm">that takes and returns a nat, but one that in particular returns</span>
+<span class="cm">the required answer (one less than the argument).</span>
+
+<span class="cm">Differences between proofs of propositions are irrelevant in</span>
+<span class="cm">Lean. Differences between &quot;proofs&quot; of function or other data</span>
+<span class="cm">types aren&#39;t irrelevant; they&#39;re usually highly relevant! So</span>
+<span class="cm">be sure to construct a preferred &quot;proof&quot; of any given function</span>
+<span class="cm">type.</span>
+
+<span class="cm">Let&#39;s look at the predecessor function: the one that takes any</span>
+<span class="cm">nat value and returns the following: zero if the argument is</span>
+<span class="cm">zero, and otherwise n&#39;, where the argument value is n&#39;+1.</span>
+<span class="cm">-/</span>
 <span class="kd">def</span> <span class="n">pred&#39;</span> <span class="o">:</span> <span class="n">nat</span> <span class="bp">&#8594;</span> <span class="n">nat</span> <span class="o">:=</span>
 <span class="kd">begin</span>
 <span class="k">assume</span> <span class="n">n</span><span class="o">,</span>
-<span class="n">cases</span> <span class="n">n</span><span class="o">,</span>
+<span class="n">cases</span> <span class="n">n</span> <span class="k">with</span> <span class="n">n&#39;</span><span class="o">,</span>  <span class="c1">-- this is right now</span>
 <span class="n">exact</span> <span class="mi">0</span><span class="o">,</span>
-<span class="n">exact</span> <span class="n">n</span><span class="o">,</span>
+<span class="n">exact</span> <span class="n">n&#39;</span><span class="o">,</span>
 <span class="kd">end</span>
 
+<span class="c1">-- quick test</span>
 <span class="k">#eval</span> <span class="n">pred&#39;</span> <span class="mi">6</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">pred&#39;</span> <span class="mi">6</span> <span class="bp">=</span> <span class="mi">5</span> <span class="o">:=</span> <span class="n">rfl</span>
 
+<span class="c">/-</span>
+<span class="cm">Here&#39;s the same function just specified</span>
+<span class="cm">using pattern matching notation (which,</span>
+<span class="cm">as we&#39;ve seen generalizes case analysis).</span>
+<span class="cm"> -/</span>
 <span class="kd">def</span> <span class="n">pred</span> <span class="o">:</span> <span class="n">nat</span> <span class="bp">&#8594;</span> <span class="n">nat</span>
-<span class="bp">|</span> <span class="n">nat.zero</span> <span class="o">:=</span> <span class="n">nat.zero</span>
+<span class="bp">|</span> <span class="n">nat.zero</span> <span class="o">:=</span> <span class="n">nat.zero</span>  <span class="c1">-- loop at zero</span>
 <span class="bp">|</span> <span class="o">(</span><span class="n">nat.succ</span> <span class="n">n&#39;</span><span class="o">)</span> <span class="o">:=</span> <span class="n">n&#39;</span>
 
 <span class="k">#eval</span> <span class="n">pred</span> <span class="mi">5</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">pred</span> <span class="mi">5</span> <span class="bp">=</span> <span class="mi">4</span> <span class="o">:=</span> <span class="n">rfl</span>
 
+<span class="c">/-</span>
+<span class="cm">Pattern matching generalizes case analysis</span>
+<span class="cm">by giving you a means to return different</span>
+<span class="cm">results based on deeper analysis of argument</span>
+<span class="cm">structures using pattern matching/unification.</span>
+<span class="cm">-/</span>
 <span class="kd">def</span> <span class="n">sub2</span> <span class="o">:</span> <span class="n">nat</span> <span class="bp">&#8594;</span> <span class="n">nat</span>
 <span class="bp">|</span> <span class="n">nat.zero</span> <span class="o">:=</span> <span class="n">nat.zero</span>
 <span class="bp">|</span> <span class="o">(</span><span class="n">nat.succ</span> <span class="n">nat.zero</span><span class="o">)</span> <span class="o">:=</span> <span class="n">nat.zero</span>
@@ -140,25 +203,36 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </div></section>
 <section id="polymorphic-lists">
 <h2><span class="section-number">4.3. </span>Polymorphic Lists<a class="headerlink" href="#polymorphic-lists" title="Permalink to this heading">&#61633;</a></h2>
-<section id="concepts">
-<h3><span class="section-number">4.3.1. </span>Concepts<a class="headerlink" href="#concepts" title="Permalink to this heading">&#61633;</a></h3>
+<section id="data-type">
+<h3><span class="section-number">4.3.1. </span>Data Type<a class="headerlink" href="#data-type" title="Permalink to this heading">&#61633;</a></h3>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20list%0A%0A%2F-%0Ainductive%20list%20(T%20%3A%20Type%20u)%0A%7C%20nil%20%3A%20list%0A%7C%20cons%20(hd%20%3A%20T)%20(tl%20%3A%20list)%20%3A%20list%0A-%2F%0A%0A--%20notations%20for%20writing%20cons%20applications%0A--%20let's%20construct%20the%20list%20%5B1%2C%202%2C%203%5D%0Adef%20three_list_nat''%20%3A%3D%0A%20%20list.cons%0A%20%20%20%201%0A%20%20%20%20(%0A%20%20%20%20%20%20list.cons%0A%20%20%20%20%20%20%20%202%0A%20%20%20%20%20%20%20%20(%0A%20%20%20%20%20%20%20%20%20%20list.cons%0A%20%20%20%20%20%20%20%20%20%20%20%203%0A%20%20%20%20%20%20%20%20%20%20%20%20list.nil%0A%20%20%20%20%20%20%20%20)%0A%20%20%20%20)%0A%0A%23reduce%20three_list_nat''%0A%0A--%20notation%2C%20%3A%3A%20is%20infix%20for%20cons%0A--%20%5B%5D%20notation%20adds%20nil%20at%20end%0Adef%20three_list_nat'''%20%3A%3D%201%3A%3A2%3A%3A3%3A%3Alist.nil%0Adef%20three_list_nat''''%20%3A%3D%20%5B1%2C2%2C3%5D%0A%0A%0A--%20list%20prepend%20analogous%20to%20nat%20increment%0Adef%20prepend'%20(%CE%B1%20%3A%20Type)%20(a%20%3A%20%CE%B1)%20(l%20%3A%20list%20%CE%B1)%20%3A%3D%0A%20%20list.cons%20a%20l%0A%0Adef%20three_list_nat'%20%3A%3D%0A%20%20prepend'%20nat%0A%20%20%20%201%0A%20%20%20%20(prepend'%20nat%0A%20%20%20%20%20%202%0A%20%20%20%20%20%20(prepend'%20nat%0A%20%20%20%20%20%20%20%203%0A%20%20%20%20%20%20%20%20list.nil%0A%20%20%20%20%20%20)%0A%20%20%20%20)%0A%0A%23eval%20three_list_nat'%0A%0Adef%20prepend%20%7B%CE%B1%20%3A%20Type%7D%20(a%20%3A%20%CE%B1)%20(l%20%3A%20list%20%CE%B1)%20%3A%3D%0A%20%20list.cons%20a%20l%0A%0Adef%20three_list_nat%20%3A%3D%0A%20%20prepend%0A%20%20%20%201%0A%20%20%20%20(prepend%0A%20%20%20%20%20%202%0A%20%20%20%20%20%20(prepend%0A%20%20%20%20%20%20%20%203%0A%20%20%20%20%20%20%20%20list.nil%0A%20%20%20%20%20%20)%0A%20%20%20%20)%0A%0A--%20yay%2C%20that%20looks%20good%0A--%20but%20know%20that%20to%20which%20it%20desugars%0A%0Aexample%20%3A%3D%20prepend'%20nat%202%20%5B3%2C4%2C5%5D%0A%23eval%20prepend'%20nat%202%20%5B3%2C4%2C5%5D%0A%0Aexample%20%3A%3D%20prepend%202%20%5B3%2C4%2C5%5D%0A%23eval%20prepend%202%20%5B3%2C4%2C5%5D%0A%0A%23eval%202%3A%3A%5B3%2C4%2C5%5D%0A%0Adef%20tail'%20%3A%20%E2%88%80%20%7B%CE%B1%20%3A%20Type%7D%2C%20list%20%CE%B1%20%E2%86%92%20list%20%CE%B1%0A%7C%20%CE%B1%20list.nil%20%3A%3D%20list.nil%0A%7C%20%CE%B1%20(h%3A%3At)%20%3A%3D%20t%0A%0A%23eval%20tail'%20%5B1%2C2%2C3%2C4%2C5%5D%0A%0Adef%20head''%20%3A%20%E2%88%80%20%7B%CE%B1%20%3A%20Type%7D%2C%20list%20%CE%B1%20%E2%86%92%20option%20%CE%B1%0A%7C%20%CE%B1%20list.nil%20%3A%3D%20none%0A%7C%20%CE%B1%20(h%3A%3At)%20%3A%3D%20some%20h%0A%0A%23eval%20head''%20%5B1%2C2%2C3%5D%0A%23eval%20%40head''%20nat%20%5B%5D%0A%0Adef%20head'%20%3A%20%E2%88%80%20%7B%CE%B1%20%3A%20Type%7D%20(l%20%3A%20list%20%CE%B1)%2C%20(l%20%E2%89%A0%20list.nil)%20%E2%86%92%20%CE%B1%0A%7C%20%20%CE%B1%20l%20p%20%3A%3D%0Abegin%0Acases%20l%2C%0Acontradiction%2C%0Aexact%20l_hd%2C%0Aend%0A%0A%23eval%20head'%20%5B1%2C2%2C3%5D%0Abegin%0Acontradiction%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_8.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20list" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_8.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="n">list</span>
-
-<span class="c">/-</span>
-<span class="cm">inductive list (T : Type u)</span>
-<span class="cm">| nil : list</span>
-<span class="cm">| cons (hd : T) (tl : list) : list</span>
-<span class="cm">-/</span>
-
-<span class="c1">-- notations for writing cons applications</span>
-<span class="c1">-- let&#39;s construct the list [1, 2, 3]</span>
+</pre></div>
+</div>
+</div><p>The list data type is surprising similar to the nat
+data type. Where as a larger nat is constructed from
+only a smaller nat, a larger list is constructed from
+a new first element (the <em>head</em> of the new list) and
+a smaller list (the <em>tail</em> of the new list). This type
+builder enables us to represent lists of values of any
+type and of any finite length.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=universe%20u%0Ainductive%20list%20(T%20%3A%20Type%20u)%0A%7C%20nil%20%3A%20list%0A%7C%20cons%20(hd%20%3A%20T)%20(tl%20%3A%20list)%20%3A%20list" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_20.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">universe</span> <span class="n">u</span>
+<span class="kd">inductive</span> <span class="n">list</span> <span class="o">(</span><span class="n">T</span> <span class="o">:</span> <span class="kt">Type</span> <span class="n">u</span><span class="o">)</span>
+<span class="bp">|</span> <span class="n">nil</span> <span class="o">:</span> <span class="n">list</span>
+<span class="bp">|</span> <span class="n">cons</span> <span class="o">(</span><span class="n">hd</span> <span class="o">:</span> <span class="n">T</span><span class="o">)</span> <span class="o">(</span><span class="n">tl</span> <span class="o">:</span> <span class="n">list</span><span class="o">)</span> <span class="o">:</span> <span class="n">list</span>
+</pre></div>
+</div>
+</div><div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20example%3A%20let's%20represent%20the%20list%20of%20nats%2C%20%5B1%2C2%2C3%5D%0Adef%20three_list_nat''%20%3A%3D%0A%20%20list.cons%20%20%20--%20takes%20two%20arguments%0A%20%20%20%201%20%20%20%20%20%20%20%20%20--%20head%20of%20new%20list%0A%20%20%20%20(%20%20%20%20%20%20%20%20%20--%20tail%20list%20of%20the%20new%20list%0A%20%20%20%20%20%20list.cons%20%20%20--%20etc.%0A%20%20%20%20%20%20%20%202%0A%20%20%20%20%20%20%20%20(%0A%20%20%20%20%20%20%20%20%20%20list.cons%0A%20%20%20%20%20%20%20%20%20%20%20%203%0A%20%20%20%20%20%20%20%20%20%20%20%20list.nil%0A%20%20%20%20%20%20%20%20)%0A%20%20%20%20)%0A%0A--%20it%20seems%20to%20have%20worked%0A%23reduce%20three_list_nat''" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_28.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- example: let&#39;s represent the list of nats, [1,2,3]</span>
 <span class="kd">def</span> <span class="n">three_list_nat&#39;&#39;</span> <span class="o">:=</span>
-  <span class="n">list.cons</span>
-    <span class="mi">1</span>
-    <span class="o">(</span>
-      <span class="n">list.cons</span>
+  <span class="n">list.cons</span>   <span class="c1">-- takes two arguments</span>
+    <span class="mi">1</span>         <span class="c1">-- head of new list</span>
+    <span class="o">(</span>         <span class="c1">-- tail list of the new list</span>
+      <span class="n">list.cons</span>   <span class="c1">-- etc.</span>
         <span class="mi">2</span>
         <span class="o">(</span>
           <span class="n">list.cons</span>
@@ -167,15 +241,27 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
         <span class="o">)</span>
     <span class="o">)</span>
 
+<span class="c1">-- it seems to have worked</span>
 <span class="k">#reduce</span> <span class="n">three_list_nat&#39;&#39;</span>
-
-<span class="c1">-- notation, :: is infix for cons</span>
+</pre></div>
+</div>
+</div></section>
+<section id="constructor-notations">
+<h3><span class="section-number">4.3.2. </span>Constructor Notations<a class="headerlink" href="#constructor-notations" title="Permalink to this heading">&#61633;</a></h3>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20notation%2C%20%3A%3A%20is%20infix%20for%20cons%0A--%20%5B%5D%20notation%20adds%20nil%20at%20end%0Adef%20three_list_nat'''%20%3A%3D%201%3A%3A2%3A%3A3%3A%3Alist.nil%0Adef%20three_list_nat''''%20%3A%3D%20%5B1%2C2%2C3%5D" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_50.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- notation, :: is infix for cons</span>
 <span class="c1">-- [] notation adds nil at end</span>
 <span class="kd">def</span> <span class="n">three_list_nat&#39;&#39;&#39;</span> <span class="o">:=</span> <span class="mi">1</span><span class="o">::</span><span class="mi">2</span><span class="o">::</span><span class="mi">3</span><span class="o">::</span><span class="n">list.nil</span>
 <span class="kd">def</span> <span class="n">three_list_nat&#39;&#39;&#39;&#39;</span> <span class="o">:=</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">]</span>
-
-
-<span class="c1">-- list prepend analogous to nat increment</span>
+</pre></div>
+</div>
+</div></section>
+<section id="operations">
+<h3><span class="section-number">4.3.3. </span>Operations<a class="headerlink" href="#operations" title="Permalink to this heading">&#61633;</a></h3>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20list%20prepend%20analogous%20to%20nat%20increment%0Adef%20prepend'%20(%CE%B1%20%3A%20Type)%20(a%20%3A%20%CE%B1)%20(l%20%3A%20list%20%CE%B1)%20%3A%3D%0A%20%20list.cons%20a%20l%0A%0Adef%20three_list_nat'%20%3A%3D%0A%20%20prepend'%20nat%0A%20%20%20%201%0A%20%20%20%20(prepend'%20nat%0A%20%20%20%20%20%202%0A%20%20%20%20%20%20(prepend'%20nat%0A%20%20%20%20%20%20%20%203%0A%20%20%20%20%20%20%20%20list.nil%0A%20%20%20%20%20%20)%0A%20%20%20%20)%0A%0A%23eval%20three_list_nat'%0A%0A--%20here%20with%20an%20implicit%20type%20parameter%2C%20making%20it%20equivalent%20to%20cons%0Adef%20prepend%20%7B%CE%B1%20%3A%20Type%7D%20(a%20%3A%20%CE%B1)%20(l%20%3A%20list%20%CE%B1)%20%3A%3D%0A%20%20list.cons%20a%20l%0A%0Adef%20three_list_nat%20%3A%3D%0A%20%20prepend%0A%20%20%20%201%0A%20%20%20%20(prepend%0A%20%20%20%20%20%202%0A%20%20%20%20%20%20(prepend%0A%20%20%20%20%20%20%20%203%0A%20%20%20%20%20%20%20%20list.nil%0A%20%20%20%20%20%20)%0A%20%20%20%20)%0A%0A--%20okay%2C%20that%20looks%20good%0A--%20but%20know%20that%20to%20which%20it%20desugars%0A%0Aexample%20%3A%3D%20prepend'%20nat%202%20%5B3%2C4%2C5%5D%0A%23eval%20prepend'%20nat%202%20%5B3%2C4%2C5%5D%0A%0Aexample%20%3A%3D%20prepend%202%20%5B3%2C4%2C5%5D%0A%23eval%20prepend%202%20%5B3%2C4%2C5%5D%0A%0A%23eval%202%3A%3A%5B3%2C4%2C5%5D" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_60.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- list prepend analogous to nat increment</span>
 <span class="kd">def</span> <span class="n">prepend&#39;</span> <span class="o">(</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="n">&#945;</span><span class="o">)</span> <span class="o">(</span><span class="n">l</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span><span class="o">)</span> <span class="o">:=</span>
   <span class="n">list.cons</span> <span class="n">a</span> <span class="n">l</span>
 
@@ -192,6 +278,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 
 <span class="k">#eval</span> <span class="n">three_list_nat&#39;</span>
 
+<span class="c1">-- here with an implicit type parameter, making it equivalent to cons</span>
 <span class="kd">def</span> <span class="n">prepend</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="n">&#945;</span><span class="o">)</span> <span class="o">(</span><span class="n">l</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span><span class="o">)</span> <span class="o">:=</span>
   <span class="n">list.cons</span> <span class="n">a</span> <span class="n">l</span>
 
@@ -206,7 +293,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
       <span class="o">)</span>
     <span class="o">)</span>
 
-<span class="c1">-- yay, that looks good</span>
+<span class="c1">-- okay, that looks good</span>
 <span class="c1">-- but know that to which it desugars</span>
 
 <span class="kd">example</span> <span class="o">:=</span> <span class="n">prepend&#39;</span> <span class="n">nat</span> <span class="mi">2</span> <span class="o">[</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>
@@ -216,19 +303,79 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <span class="k">#eval</span> <span class="n">prepend</span> <span class="mi">2</span> <span class="o">[</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>
 
 <span class="k">#eval</span> <span class="mi">2</span><span class="o">::[</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>
-
+</pre></div>
+</div>
+</div><p>Now we face some interesting issues. Our aim is to define
+functions that <em>analyze</em> lists and return parts of them.
+The problem is that there are no parts when the given list
+is empty.</p>
+<p>When we defined the predecessor function, pred, above, we
+defined the predecessor or zero to be zero, rather than to
+be undefined, making it mathematically a total function,
+easily represented as a lambda abstractraction in Lean.</p>
+<p>That&#8217;s ok, but in a different application we really might
+want to define the predecessor of 0 as undefined, not 0.</p>
+<p>A similar set of issues arises when we consider head and
+tail functions that when given non-empty lists return their
+head elements and tail lists, respectively.</p>
+<p>What about in the case of an empty list argument? There is
+no head or tail element but a value of the right type still
+<em>has to be</em> returned. The problem is to represent what are
+<em>mathematically partial</em> functions as <em>functions</em> in Lean,
+which are necessarily total.</p>
+<p>So let&#8217;s see what happens, what solutions are available, and
+how they compare and contrast.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20a%20version%20of%20tail%20that%20%22loops%20at%20zero%22%0Adef%20tail'%20%3A%20%E2%88%80%20%7B%CE%B1%20%3A%20Type%7D%2C%20list%20%CE%B1%20%E2%86%92%20list%20%CE%B1%0A%7C%20%CE%B1%20list.nil%20%3A%3D%20list.nil%0A%7C%20%CE%B1%20(h%3A%3At)%20%3A%3D%20t%0A%23eval%20tail'%20%5B1%2C2%2C3%2C4%2C5%5D%0A%0A%2F-%0AThe%20preceding%20solution%20represents%20the%20mathematical%0Apredecessor%20functions%20on%20the%20natural%20numbers%2C%20which%0Ais%20not%20defined%20at%200%2C%20and%20which%20is%20thus%20partial%2C%20with%0Aa%20lambda%20abstraction%20representing%20the%20closely%20related%0Atotal%20function%20obtained%20by%20defining%200%20to%20be%20the%20value%0Aof%20the%20function%20at%200.%20One%20nice%20thing%20about%20this%20solution%0Ais%20that%20the%20function%20type%20is%20still%20about%20as%20natural%20as%0Acan%20be%3A%20list%20%CE%B1%20%E2%86%92%20list%20%CE%B1.%0A%0AThe%20next%20solution%20changes%20the%20type%20of%20the%20function%2C%0Aso%20that%20return%20value%20is%20in%20the%20form%20of%20a%20*variant*%0Atype%2C%20a%20value%20of%20which%20is%20either%20*none*%20or%20*some%0Avalid%20return%20value*.%0A-%2F%0Adef%20head''%20%3A%20%E2%88%80%20%7B%CE%B1%20%3A%20Type%7D%2C%20list%20%CE%B1%20%E2%86%92%20option%20%CE%B1%0A%7C%20%CE%B1%20list.nil%20%3A%3D%20none%0A%7C%20%CE%B1%20(h%3A%3At)%20%3A%3D%20some%20h%0A%0A%23eval%20head''%20%5B1%2C2%2C3%5D%0A%23eval%20%40head''%20nat%20%5B%5D%0A%0A%2F-%0AFinally%2C%20we%20can%20define%20a%20version%20of%20head'%20that%20(1)%20typechecks%0Aas%20being%20a%20total%20function%2C%20(2)%20can%20never%20actually%20be%20applied%0Afully%20to%20an%20empty%20list%2C%20in%20which%20case%20(3)%20no%20real%20result%20has%0Ato%20be%20specified%20to%20%22prove%20the%20return%20type%22%20because%20such%20a%20case%0Acan't%20happen.%20It%20would%20be%20a%20contradiction%20if%20it%20did%2C%20and%20so%20it%0Acan%20be%20dismissed%20as%20an%20impossibility.%20Magic%3A%20It%20*is*%20a%20total%0Afunction%2C%20but%20it%20can%20never%20be%20fully%20appied%20to%20an%20empty%20list%0Abecause%20a%20required%20proof%20argument%2C%20for%20*that*%20list%2C%20can%20never%0Abe%20given%3B%20so%20one%20can%20dismiss%20this%20case%20by%20false%20elimination%2C%0Awithout%20having%20to%20give%20an%20actual%20proof%20of%20the%20conclusion.%0A%0AConsider%20a%20head%20function.%20It%20returns%20the%20head%20element%20from%0Aa%20non-empty%20list%2C%20but%20is%20undefined%20mathematically%20when%20it's%0Aapplied%20to%20an%20empty%20list.%20The%20key%20idea%20in%20the%20next%20design%0Ais%20that%20we%20can%20embed%20a%20*precondition*%20for%20application%20of%0Athe%20function%2C%20namely%20that%20the%20given%20list%20not%20be%20empty.%20Let's%0Asee%20how%20e%20might%20first%20write%20the%20function%20using%20a%20tactic%0Ascript%2C%20to%20take%20advantage%20of%20your%20familiarity%20with%20using%0Ait%20to%20build%20proofs.%0A-%2F%0A%0Adef%20head'%20%3A%20%E2%88%80%20%7B%CE%B1%20%3A%20Type%7D%20(l%20%3A%20list%20%CE%B1)%2C%20(l%20%E2%89%A0%20list.nil)%20%E2%86%92%20%CE%B1%0A%7C%20%20%CE%B1%20l%20p%20%3A%3D%0Abegin%0Acases%20l%2C%0Acontradiction%2C%0Aexact%20l_hd%2C%0Aend%0A%0A--%20When%20applying%20it%20a%20proof%20about%20the%20first%20argument%20has%20to%20be%20given%0A%23eval%20head'%20%5B1%2C2%2C3%5D%20begin%20contradiction%20end%20%20%20--%20proof%20as%20a%20proof%20script%0A%23eval%20head'%20%5B1%2C2%2C3%5D%20(by%20contradiction)%20%20%20%20%20%20%20%20--%20alternative%20syntax%2C%20fyi%0A%23eval%20head'%20(%5B%5D%20%3A%20list%20nat)%20_%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20you'll%20need%20a%20proof%20of%20list.nil%20%E2%89%A0%20list.nil!" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_131.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- a version of tail that &quot;loops at zero&quot;</span>
 <span class="kd">def</span> <span class="n">tail&#39;</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">},</span> <span class="n">list</span> <span class="n">&#945;</span> <span class="bp">&#8594;</span> <span class="n">list</span> <span class="n">&#945;</span>
 <span class="bp">|</span> <span class="n">&#945;</span> <span class="n">list.nil</span> <span class="o">:=</span> <span class="n">list.nil</span>
 <span class="bp">|</span> <span class="n">&#945;</span> <span class="o">(</span><span class="n">h</span><span class="o">::</span><span class="n">t</span><span class="o">)</span> <span class="o">:=</span> <span class="n">t</span>
-
 <span class="k">#eval</span> <span class="n">tail&#39;</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>
 
+<span class="c">/-</span>
+<span class="cm">The preceding solution represents the mathematical</span>
+<span class="cm">predecessor functions on the natural numbers, which</span>
+<span class="cm">is not defined at 0, and which is thus partial, with</span>
+<span class="cm">a lambda abstraction representing the closely related</span>
+<span class="cm">total function obtained by defining 0 to be the value</span>
+<span class="cm">of the function at 0. One nice thing about this solution</span>
+<span class="cm">is that the function type is still about as natural as</span>
+<span class="cm">can be: list &#945; &#8594; list &#945;.</span>
+
+<span class="cm">The next solution changes the type of the function,</span>
+<span class="cm">so that return value is in the form of a *variant*</span>
+<span class="cm">type, a value of which is either *none* or *some</span>
+<span class="cm">valid return value*.</span>
+<span class="cm">-/</span>
 <span class="kd">def</span> <span class="n">head&#39;&#39;</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">},</span> <span class="n">list</span> <span class="n">&#945;</span> <span class="bp">&#8594;</span> <span class="n">option</span> <span class="n">&#945;</span>
 <span class="bp">|</span> <span class="n">&#945;</span> <span class="n">list.nil</span> <span class="o">:=</span> <span class="n">none</span>
 <span class="bp">|</span> <span class="n">&#945;</span> <span class="o">(</span><span class="n">h</span><span class="o">::</span><span class="n">t</span><span class="o">)</span> <span class="o">:=</span> <span class="n">some</span> <span class="n">h</span>
 
 <span class="k">#eval</span> <span class="n">head&#39;&#39;</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">]</span>
 <span class="k">#eval</span> <span class="bp">@</span><span class="n">head&#39;&#39;</span> <span class="n">nat</span> <span class="o">[]</span>
+
+<span class="c">/-</span>
+<span class="cm">Finally, we can define a version of head&#39; that (1) typechecks</span>
+<span class="cm">as being a total function, (2) can never actually be applied</span>
+<span class="cm">fully to an empty list, in which case (3) no real result has</span>
+<span class="cm">to be specified to &quot;prove the return type&quot; because such a case</span>
+<span class="cm">can&#39;t happen. It would be a contradiction if it did, and so it</span>
+<span class="cm">can be dismissed as an impossibility. Magic: It *is* a total</span>
+<span class="cm">function, but it can never be fully appied to an empty list</span>
+<span class="cm">because a required proof argument, for *that* list, can never</span>
+<span class="cm">be given; so one can dismiss this case by false elimination,</span>
+<span class="cm">without having to give an actual proof of the conclusion.</span>
+
+<span class="cm">Consider a head function. It returns the head element from</span>
+<span class="cm">a non-empty list, but is undefined mathematically when it&#39;s</span>
+<span class="cm">applied to an empty list. The key idea in the next design</span>
+<span class="cm">is that we can embed a *precondition* for application of</span>
+<span class="cm">the function, namely that the given list not be empty. Let&#39;s</span>
+<span class="cm">see how e might first write the function using a tactic</span>
+<span class="cm">script, to take advantage of your familiarity with using</span>
+<span class="cm">it to build proofs.</span>
+<span class="cm">-/</span>
 
 <span class="kd">def</span> <span class="n">head&#39;</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">(</span><span class="n">l</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span><span class="o">),</span> <span class="o">(</span><span class="n">l</span> <span class="bp">&#8800;</span> <span class="n">list.nil</span><span class="o">)</span> <span class="bp">&#8594;</span> <span class="n">&#945;</span>
 <span class="bp">|</span>  <span class="n">&#945;</span> <span class="n">l</span> <span class="n">p</span> <span class="o">:=</span>
@@ -238,17 +385,17 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <span class="n">exact</span> <span class="n">l_hd</span><span class="o">,</span>
 <span class="kd">end</span>
 
-<span class="k">#eval</span> <span class="n">head&#39;</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">]</span>
-<span class="kd">begin</span>
-<span class="n">contradiction</span><span class="o">,</span>
-<span class="kd">end</span>
+<span class="c1">-- When applying it a proof about the first argument has to be given</span>
+<span class="k">#eval</span> <span class="n">head&#39;</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">]</span> <span class="kd">begin</span> <span class="n">contradiction</span> <span class="kd">end</span>   <span class="c1">-- proof as a proof script</span>
+<span class="k">#eval</span> <span class="n">head&#39;</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">]</span> <span class="o">(</span><span class="kd">by</span> <span class="n">contradiction</span><span class="o">)</span>        <span class="c1">-- alternative syntax, fyi</span>
+<span class="k">#eval</span> <span class="n">head&#39;</span> <span class="o">([]</span> <span class="o">:</span> <span class="n">list</span> <span class="n">nat</span><span class="o">)</span> <span class="n">_</span>                 <span class="c1">-- you&#39;ll need a proof of list.nil &#8800; list.nil!</span>
 </pre></div>
 </div>
 </div></section>
 <section id="exercises">
-<h3><span class="section-number">4.3.2. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">&#61633;</a></h3>
+<h3><span class="section-number">4.3.4. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">&#61633;</a></h3>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%2F-%0A-%20Write%20a%20version%20of%20the%20pred%20function%20that%20can%20only%20be%20called%20for%20argument%20values%20greater%20than%200.%0A-%20Write%20a%20version%20of%20the%20pred%20function%20that%20returns%20an%20option%20nat%20value%20%22in%20the%20usual%20way%22%0A-%20Write%20a%20tail%20function%20that%20can%20only%20be%20called%20with%20a%20non-empty%20list%2C%20using%20our%20%22by%20cases%22%20notation%20for%20function%20definition.%20It%20should%20look%20like%20tail'.%20Note%201%3A%20Where%20a%20proof%20value%20is%20required%2C%20you%20can%20always%20use%20tactic%20mode%20to%20construct%20the%20required%20proof%2C%20in%20a%20begin..end%20block.%20If%20such%20a%20proof%20is%20a%20single%20tactic%20long%2C%20you%20can%20write%20by%20%3Ctactic%3E.%20For%20example%2C%20try%20by%20contradiction%20as%20the%20*result*%20when%20your%20new%20tail%20function%20is%20applied%20to%20an%20empty%20list.%20Here's%20how%20I%20wrote%20the%20function%20type.%20You%20should%20provide%20the%20cases%20(on%20l).%0Adef%20tail%20%7B%CE%B1%20%3A%20Type%7D%20%3A%20%E2%88%80%20(l%20%3A%20list%20%CE%B1)%2C%20(l%20%E2%89%A0%20list.nil)%20%E2%86%92%20list%20%CE%B1%0A-%2F%0A%0A--%20implement%20the%20function%2C%20no%20need%20to%20*do%20not%20try)%20to%20match%20%CE%B1%0A--%20it's%20named%20before%20the%20colon%20and%20is%20global%20to%20this%20definition%0A--%20we%20do%20want%20to%20match%20(do%20case%20analysis)%20on%20l%2C%20so%20it's%20after%20%3A%0Adef%20tail%20%7B%CE%B1%20%3A%20Type%7D%20%3A%20%E2%88%80%20(l%20%3A%20list%20%CE%B1)%2C%20(l%20%E2%89%A0%20list.nil)%20%E2%86%92%20list%20%CE%B1%0A%7C%0A%7C" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_113.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%2F-%0A-%20Write%20a%20version%20of%20the%20pred%20function%20that%20can%20only%20be%20called%20for%20argument%20values%20greater%20than%200.%0A-%20Write%20a%20version%20of%20the%20pred%20function%20that%20returns%20an%20option%20nat%20value%20%22in%20the%20usual%20way%22%0A-%20Write%20a%20tail%20function%20that%20can%20only%20be%20called%20with%20a%20non-empty%20list%2C%20using%20our%20%22by%20cases%22%20notation%20for%20function%20definition.%20It%20should%20look%20like%20tail'.%20Note%201%3A%20Where%20a%20proof%20value%20is%20required%2C%20you%20can%20always%20use%20tactic%20mode%20to%20construct%20the%20required%20proof%2C%20in%20a%20begin..end%20block.%20If%20such%20a%20proof%20is%20a%20single%20tactic%20long%2C%20you%20can%20write%20by%20%3Ctactic%3E.%20For%20example%2C%20try%20by%20contradiction%20as%20the%20*result*%20when%20your%20new%20tail%20function%20is%20applied%20to%20an%20empty%20list.%20Here's%20how%20I%20wrote%20the%20function%20type.%20You%20should%20provide%20the%20cases%20(on%20l).%0Adef%20tail%20%7B%CE%B1%20%3A%20Type%7D%20%3A%20%E2%88%80%20(l%20%3A%20list%20%CE%B1)%2C%20(l%20%E2%89%A0%20list.nil)%20%E2%86%92%20list%20%CE%B1%0A-%2F%0A%0A--%20implement%20the%20function%2C%20no%20need%20to%20(do%20not%20try)%20to%20match%20on%20%CE%B1%0A--%20it's%20named%20before%20the%20colon%20and%20is%20global%20to%20this%20definition%0A--%20we%20do%20want%20to%20match%20(do%20case%20analysis)%20on%20l%2C%20so%20it's%20after%20%3A%0Adef%20tail%20%7B%CE%B1%20%3A%20Type%7D%20%3A%20%E2%88%80%20(l%20%3A%20list%20%CE%B1)%2C%20(l%20%E2%89%A0%20list.nil)%20%E2%86%92%20list%20%CE%B1%0A%7C%0A%7C" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_200.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c">/-</span>
 <span class="cm">- Write a version of the pred function that can only be called for argument values greater than 0.</span>
 <span class="cm">- Write a version of the pred function that returns an option nat value &quot;in the usual way&quot;</span>
@@ -256,7 +403,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <span class="cm">def tail {&#945; : Type} : &#8704; (l : list &#945;), (l &#8800; list.nil) &#8594; list &#945;</span>
 <span class="cm">-/</span>
 
-<span class="c1">-- implement the function, no need to *do not try) to match &#945;</span>
+<span class="c1">-- implement the function, no need to (do not try) to match on &#945;</span>
 <span class="c1">-- it&#39;s named before the colon and is global to this definition</span>
 <span class="c1">-- we do want to match (do case analysis) on l, so it&#39;s after :</span>
 <span class="kd">def</span> <span class="n">tail</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">l</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span><span class="o">),</span> <span class="o">(</span><span class="n">l</span> <span class="bp">&#8800;</span> <span class="n">list.nil</span><span class="o">)</span> <span class="bp">&#8594;</span> <span class="n">list</span> <span class="n">&#945;</span>
