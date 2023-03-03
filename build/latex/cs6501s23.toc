@@ -102,13 +102,13 @@
 \contentsline {subsection}{\numberline {4.3.5}Exercises}{52}{subsection.4.3.5}
 \contentsline {subsection}{\numberline {4.3.6}Solutions}{52}{subsection.4.3.6}
 \contentsline {section}{\numberline {4.4}Higher\sphinxhyphen {}Order Functions}{53}{section.4.4}
-\contentsline {subsection}{\numberline {4.4.1}Example: \sphinxstyleemphasis {pEval}}{53}{subsection.4.4.1}
+\contentsline {subsection}{\numberline {4.4.1}Example: \sphinxstyleemphasis {pEval}}{54}{subsection.4.4.1}
 \contentsline {subsection}{\numberline {4.4.2}Function composition}{54}{subsection.4.4.2}
 \contentsline {subsection}{\numberline {4.4.3}Higher\sphinxhyphen {}Order Functions on Lists}{55}{subsection.4.4.3}
 \contentsline {subsubsection}{map}{55}{subsubsection*.21}
 \contentsline {subsubsection}{filter}{55}{subsubsection*.22}
 \contentsline {subsubsection}{fold}{56}{subsubsection*.23}
 \contentsline {subsection}{\numberline {4.4.4}Exercises}{56}{subsection.4.4.4}
-\contentsline {section}{\numberline {4.5}Recursive Proofs}{56}{section.4.5}
-\contentsline {subsection}{\numberline {4.5.1}Introduction}{56}{subsection.4.5.1}
-\contentsline {chapter}{\numberline {5}Index}{57}{chapter.5}
+\contentsline {section}{\numberline {4.5}Recursive Proofs}{57}{section.4.5}
+\contentsline {subsection}{\numberline {4.5.1}Introduction}{57}{subsection.4.5.1}
+\contentsline {chapter}{\numberline {5}Index}{59}{chapter.5}

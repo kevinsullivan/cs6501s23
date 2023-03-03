@@ -3947,6 +3947,7 @@ Write a tail function that can only be called with a non\sphinxhyphen{}empty lis
 \subsection{Solutions}
 \label{\detokenize{A_03_Recursive_Types:solutions}}
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} let\PYGZsq{}s implement a \PYGZdq{}safe\PYGZdq{} pred function using tactics}
 \PYG{k+kd}{def} \PYG{n}{pred\PYGZsq{}} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{n} \PYG{o}{:} \PYG{n}{nat}\PYG{o}{)}\PYG{o}{,} \PYG{o}{(}\PYG{n}{n} \PYG{n+nb+bp}{≠} \PYG{n}{nat.zero}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{n}{ℕ} \PYG{o}{:=}
 \PYG{k+kd}{begin}
 \PYG{k}{assume} \PYG{n}{n}\PYG{o}{,}
@@ -3961,35 +3962,47 @@ Write a tail function that can only be called with a non\sphinxhyphen{}empty lis
 \PYG{k}{\PYGZsh{}reduce} \PYG{n}{pred\PYGZsq{}} \PYG{l+m+mi}{2} \PYG{n}{\PYGZus{}}
 \PYG{k}{\PYGZsh{}reduce} \PYG{n}{pred\PYGZsq{}} \PYG{l+m+mi}{0} \PYG{n}{\PYGZus{}}
 
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} here\PYGZsq{}s the same predecessor function presented differently}
 \PYG{k+kd}{def} \PYG{n}{pred\PYGZsq{}\PYGZsq{}} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{n} \PYG{o}{:} \PYG{n}{nat}\PYG{o}{)}\PYG{o}{,} \PYG{o}{(}\PYG{n}{n} \PYG{n+nb+bp}{≠} \PYG{n}{nat.zero}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{n}{ℕ}
 \PYG{n+nb+bp}{|} \PYG{n}{nat.zero} \PYG{n}{h} \PYG{o}{:=} \PYG{k+kd}{by} \PYG{n}{contradiction}
 \PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{nat.succ} \PYG{n}{n\PYGZsq{}}\PYG{o}{)} \PYG{n}{h} \PYG{o}{:=} \PYG{n}{n\PYGZsq{}}
 
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} a different safe predecessor function using an option return}
 \PYG{k+kd}{def} \PYG{n}{pred\PYGZsq{}\PYGZsq{}\PYGZsq{}} \PYG{o}{:} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{option} \PYG{n}{nat}
 \PYG{n+nb+bp}{|} \PYG{n}{nat.zero} \PYG{o}{:=} \PYG{n}{option.none}
 \PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{nat.succ} \PYG{n}{n\PYGZsq{}}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{some} \PYG{n}{n\PYGZsq{}}
 
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} the same ideas work for safe head and tail functions on lists}
 \PYG{k+kd}{universe} \PYG{n}{u}
 \PYG{k+kd}{def} \PYG{n}{tail} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{\PYGZob{}}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type} \PYG{n}{u}\PYG{o}{\PYGZcb{}} \PYG{o}{(}\PYG{n}{l} \PYG{o}{:} \PYG{n}{list} \PYG{n}{α}\PYG{o}{)}\PYG{o}{,} \PYG{o}{(}\PYG{n}{l} \PYG{n+nb+bp}{≠} \PYG{n}{list.nil}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{n}{list} \PYG{n}{α}
 \PYG{n+nb+bp}{|} \PYG{n}{α} \PYG{n}{list.nil} \PYG{n}{p} \PYG{o}{:=} \PYG{k+kd}{by} \PYG{n}{contradiction}
 \PYG{n+nb+bp}{|} \PYG{n}{α} \PYG{o}{(}\PYG{n}{h}\PYG{o}{:}\PYG{o}{:}\PYG{n}{t}\PYG{o}{)} \PYG{n}{p} \PYG{o}{:=} \PYG{n}{t}
 
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} apply tail to [1,2,3] giving the proof as a tactic script}
 \PYG{k}{\PYGZsh{}eval} \PYG{n}{tail} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{]}
 \PYG{k+kd}{begin}
 \PYG{k}{assume} \PYG{n}{p}\PYG{o}{,}
 \PYG{n}{contradiction}\PYG{o}{,}
 \PYG{k+kd}{end}
 
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} cleaner this way}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{tail} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{]} \PYG{o}{(}\PYG{k+kd}{by} \PYG{n}{contradiction}\PYG{o}{)}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{tail} \PYG{o}{[}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{]} \PYG{o}{(}\PYG{k+kd}{by} \PYG{n}{contradiction}\PYG{o}{)}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{tail} \PYG{o}{[}\PYG{l+m+mi}{3}\PYG{o}{]} \PYG{o}{(}\PYG{k+kd}{by} \PYG{n}{contradiction}\PYG{o}{)}
+\PYG{k}{\PYGZsh{}eval} \PYG{n+nb+bp}{@}\PYG{n}{tail} \PYG{n}{nat} \PYG{o}{[}\PYG{o}{]} \PYG{o}{(}\PYG{k+kd}{by} \PYG{n}{contradiction}\PYG{o}{)}      \PYG{c+c1}{\PYGZhy{}\PYGZhy{} no can do!}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} let\PYGZsq{}s try it with a tactic script}
 \PYG{k}{\PYGZsh{}eval} \PYG{n+nb+bp}{@}\PYG{n}{tail} \PYG{n}{nat} \PYG{o}{[}\PYG{o}{]}
 \PYG{k+kd}{begin}
-\PYG{k}{assume} \PYG{n}{h}\PYG{o}{,}   \PYG{c+c1}{\PYGZhy{}\PYGZhy{} we\PYGZsq{}re stuck and that\PYGZsq{}s good!}
+\PYG{k}{assume} \PYG{n}{h}\PYG{o}{,}   \PYG{c+c1}{\PYGZhy{}\PYGZhy{} we\PYGZsq{}re stuck, and that\PYGZsq{}s good!}
 \PYG{k+kd}{end}
 
 
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} append: the list analog of natural number addition}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} please do compare/contrast list.append and nat.add}
 \PYG{k+kd}{def} \PYG{n}{appnd} \PYG{o}{\PYGZob{}}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{\PYGZcb{}} \PYG{o}{:} \PYG{n}{list} \PYG{n}{α} \PYG{n+nb+bp}{→} \PYG{n}{list} \PYG{n}{α} \PYG{n+nb+bp}{→} \PYG{n}{list} \PYG{n}{α}
 \PYG{n+nb+bp}{|} \PYG{n}{list.nil} \PYG{n}{m} \PYG{o}{:=} \PYG{n}{m}
 \PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{h}\PYG{o}{:}\PYG{o}{:}\PYG{n}{t}\PYG{o}{)} \PYG{n}{m} \PYG{o}{:=} \PYG{n}{h}\PYG{o}{:}\PYG{o}{:}\PYG{n}{appnd} \PYG{n}{t} \PYG{n}{m}
-
 
 \PYG{k}{\PYGZsh{}eval} \PYG{n}{appnd} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{]} \PYG{o}{[}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{]}
 \end{sphinxVerbatim}
@@ -4226,24 +4239,21 @@ of the list.
 \begin{itemize}
 \item {} 
 \sphinxAtStartPar
-Give an English language explanation of how fold can be used
+Give an English language explanation of how fold can be used to convert a list of strings into a bool, where the result is true (tt) iff the length of each string in the list is even. Pay close attention to the type of the reduction binary operation you will need to produce a working result.
+
+\item {} 
+\sphinxAtStartPar
+Exercise: Formalize the general type and give an implementation of the polymorphic fold function on lists.
+
+\item {} 
+\sphinxAtStartPar
+Exercise: Give a few examples of applications to bolster the case for the claim that it works correctly.
+
+\item {} 
+\sphinxAtStartPar
+Exercise: Use fold to implement a function that takes a list of strings and returns tt if all strings in the list are even length and false otherwise. Call it all\_even. The trick will be to define the right reduction (binary) operation. Define it as a separate function, all\_even\_reducer.
 
 \end{itemize}
-
-\sphinxAtStartPar
-to convert a list of strings into a bool, where the result is
-true (tt) iff the length of each string in the list is even. Pay
-close attention to the type of the reduction binary operation you
-will need to produce a working result.
-\sphinxhyphen{} Exercise: Formalize the general type and give an implementation
-of the polymorphic fold function on lists.
-\sphinxhyphen{} Exercise: Give a few examples of applications to bolster the case
-for the claim that it works correctly.
-\sphinxhyphen{} Exercise: Use fold to implement a function that takes a list of
-strings and returns tt if all strings in the list are even length
-and false otherwise. Call it all\_even. The trick will be to define
-the right reduction (binary) operation. Define it as a separate
-function, all\_even\_reducer.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Your answer here:}
@@ -4278,6 +4288,62 @@ Can you use parametric polymorphism to solve the preceding problem. Explain why 
 \label{\detokenize{A_03_Recursive_Types:id5}}
 \sphinxAtStartPar
 Coming soon.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{inductive} \PYG{n}{le} \PYG{o}{(}\PYG{n}{n} \PYG{o}{:} \PYG{n}{nat}\PYG{o}{)}\PYG{o}{:} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{k+kt}{Prop}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} n is an implicit firt argument to each constructor}
+\PYG{n+nb+bp}{|} \PYG{n}{refl} \PYG{o}{:} \PYG{n}{le} \PYG{c}{/\PYGZhy{}}\PYG{c+cm}{n}\PYG{c+cm}{\PYGZhy{}/} \PYG{n}{n}
+\PYG{n+nb+bp}{|} \PYG{n}{step} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{n}{m}\PYG{o}{,} \PYG{n}{le} \PYG{c}{/\PYGZhy{}}\PYG{c+cm}{n}\PYG{c+cm}{\PYGZhy{}/} \PYG{n}{m} \PYG{n+nb+bp}{→} \PYG{n}{le} \PYG{c}{/\PYGZhy{}}\PYG{c+cm}{n}\PYG{c+cm}{\PYGZhy{}/} \PYG{n}{m.succ}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} you can see it in the types of the constructors}
+\PYG{k}{\PYGZsh{}check} \PYG{n+nb+bp}{@}\PYG{n}{le.refl}
+\PYG{k}{\PYGZsh{}check} \PYG{n+nb+bp}{@}\PYG{n}{le.step}
+
+
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{n}{le} \PYG{l+m+mi}{0} \PYG{l+m+mi}{0} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{n}{apply} \PYG{n}{le.refl}\PYG{o}{,}
+\PYG{k+kd}{end}
+
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{n}{le} \PYG{l+m+mi}{3} \PYG{l+m+mi}{3} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{n}{apply} \PYG{n}{le.refl}\PYG{o}{,}
+\PYG{k+kd}{end}
+
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{n}{le} \PYG{l+m+mi}{0} \PYG{l+m+mi}{1} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{n}{apply} \PYG{n}{le.step}\PYG{o}{,}
+\PYG{n}{apply} \PYG{n}{le.refl}\PYG{o}{,}
+\PYG{k+kd}{end}
+
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{n}{le} \PYG{l+m+mi}{0} \PYG{l+m+mi}{3} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{n}{apply} \PYG{n}{le.step}\PYG{o}{,}
+\PYG{n}{apply} \PYG{n}{le.step}\PYG{o}{,}
+\PYG{n}{apply} \PYG{n}{le.step}\PYG{o}{,}
+\PYG{n}{apply} \PYG{n}{le.refl}\PYG{o}{,}
+\PYG{k+kd}{end}
+
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} here\PYGZsq{}s the same example using Lean\PYGZsq{}s version of \PYGZdq{}le\PYGZdq{}}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} it\PYGZsq{}s called nat.less\PYGZus{}than\PYGZus{}or\PYGZus{}equal}
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{l+m+mi}{0} \PYG{n+nb+bp}{≤} \PYG{l+m+mi}{3} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{n}{apply} \PYG{n}{nat.less\PYGZus{}than\PYGZus{}or\PYGZus{}equal.step}\PYG{o}{,}
+\PYG{n}{apply} \PYG{n}{nat.less\PYGZus{}than\PYGZus{}or\PYGZus{}equal.step}\PYG{o}{,}
+\PYG{n}{apply} \PYG{n}{nat.less\PYGZus{}than\PYGZus{}or\PYGZus{}equal.step}\PYG{o}{,}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} apply nat.less\PYGZus{}than\PYGZus{}or\PYGZus{}equal.step,}
+\PYG{n}{apply} \PYG{n}{nat.less\PYGZus{}than\PYGZus{}or\PYGZus{}equal.refl}\PYG{o}{,}
+\PYG{k+kd}{end}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} oops, goes too far}
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{l+m+mi}{1} \PYG{n+nb+bp}{≤} \PYG{l+m+mi}{4} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} repeat \PYGZob{}apply nat.less\PYGZus{}than\PYGZus{}or\PYGZus{}equal.step\PYGZcb{},}
+\PYG{n}{iterate} \PYG{l+m+mi}{3} \PYG{o}{\PYGZob{}}\PYG{n}{apply} \PYG{n}{nat.less\PYGZus{}than\PYGZus{}or\PYGZus{}equal.step}\PYG{o}{\PYGZcb{}}\PYG{o}{,}
+\PYG{n}{apply} \PYG{n}{nat.less\PYGZus{}than\PYGZus{}or\PYGZus{}equal.refl}\PYG{o}{,}
+\PYG{k+kd}{end}
+\end{sphinxVerbatim}
 
 \sphinxstepscope
 

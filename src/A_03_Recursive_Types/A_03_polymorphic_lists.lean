@@ -117,6 +117,7 @@ end
 -- |
 
 
+-- let's implement a "safe" pred function using tactics
 def pred' : ∀ (n : nat), (n ≠ nat.zero) → ℕ :=
 begin
 assume n,
@@ -131,35 +132,47 @@ end
 #reduce pred' 2 _
 #reduce pred' 0 _
 
+-- here's the same predecessor function presented differently
 def pred'' : ∀ (n : nat), (n ≠ nat.zero) → ℕ 
 | nat.zero h := by contradiction
 | (nat.succ n') h := n'
  
+-- a different safe predecessor function using an option return 
 def pred''' : nat → option nat  
 | nat.zero := option.none
 | (nat.succ n') := some n'
 
+-- the same ideas work for safe head and tail functions on lists
 universe u
 def tail : ∀ {α : Type u} (l : list α), (l ≠ list.nil) → list α  
 | α list.nil p := by contradiction
 | α (h::t) p := t  
 
+-- apply tail to [1,2,3] giving the proof as a tactic script
 #eval tail [1,2,3] 
 begin 
 assume p,
 contradiction,
 end
 
+-- cleaner this way
+#eval tail [1,2,3] (by contradiction)
+#eval tail [2,3] (by contradiction)
+#eval tail [3] (by contradiction)
+#eval @tail nat [] (by contradiction)      -- no can do!
+
+-- let's try it with a tactic script
 #eval @tail nat [] 
 begin 
-assume h,   -- we're stuck and that's good!
+assume h,   -- we're stuck, and that's good!
 end
 
 
+-- append: the list analog of natural number addition
+-- please do compare/contrast list.append and nat.add
 def appnd {α : Type} : list α → list α → list α
 | list.nil m := m
 | (h::t) m := h::appnd t m 
-
 
 #eval appnd [1,2,3] [4,3,2]
 

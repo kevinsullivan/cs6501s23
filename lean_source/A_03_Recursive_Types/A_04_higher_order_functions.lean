@@ -238,20 +238,10 @@ fold function returns the result of applying the given reduction
 operation to h and the result of recursively reducing the *rest*
 of the list. 
 
-- Give an English language explanation of how fold can be used
-to convert a list of strings into a bool, where the result is
-true (tt) iff the length of each string in the list is even. Pay
-close attention to the type of the reduction binary operation you
-will need to produce a working result.
-- Exercise: Formalize the general type and give an implementation
-of the polymorphic fold function on lists.
-- Exercise: Give a few examples of applications to bolster the case
-for the claim that it works correctly.
-- Exercise: Use fold to implement a function that takes a list of
-strings and returns tt if all strings in the list are even length
-and false otherwise. Call it all_even. The trick will be to define
-the right reduction (binary) operation. Define it as a separate
-function, all_even_reducer.
+- Give an English language explanation of how fold can be used to convert a list of strings into a bool, where the result is true (tt) iff the length of each string in the list is even. Pay close attention to the type of the reduction binary operation you will need to produce a working result.
+- Exercise: Formalize the general type and give an implementation of the polymorphic fold function on lists.
+- Exercise: Give a few examples of applications to bolster the case for the claim that it works correctly.
+- Exercise: Use fold to implement a function that takes a list of strings and returns tt if all strings in the list are even length and false otherwise. Call it all_even. The trick will be to define the right reduction (binary) operation. Define it as a separate function, all_even_reducer.
 
 TEXT. -/
 
