@@ -1,4 +1,3 @@
-/- TEXT:
 **********************
 Higher-Order Functions
 **********************
@@ -7,10 +6,6 @@ Higher-order functions are simply functions that consume
 function definitions as arguments and/or return function
 definitions as results. You've been seeing higher-order
 functions from early in this class. 
-TEXT. -/
-
-
-/- TEXT: 
 
 Example: *pEval*
 ----------------
@@ -72,20 +67,18 @@ As an exercise, let's write a version, *comp*, of
 *apply_comp* that leaves out the final argument. It will 
 just take two functions of compatible types and return 
 their composition.
-TEXT. -/
 
--- QUOTE:
-universe u
-def comp {α β γ : Type u} : (α → β) → (β → γ) → (α → γ)
-| f g := λ a, g ( f a)
+.. code-block:: lean
 
--- Standard notation reversing argument order: g after f
+  universe u
+  def comp {α β γ : Type u} : (α → β) → (β → γ) → (α → γ)
+  | f g := λ a, g ( f a)
+  
+  -- Standard notation reversing argument order: g after f
+  
+  notation : g ` ∘ ` f := comp f g
+  
 
-notation : g ` ∘ ` f := comp f g
-
--- QUOTE.
-
-/- TEXT:
 Exercise: Use comp to construct a new function, ev_len, 
 that takes a string, s, and returns true (tt) if the length 
 of s is even and false otherwise. 
@@ -98,42 +91,32 @@ You should explicitly declare the type of ev_len to be
 string → bool.  Lean will then insert a coercion to convert 
 the result of this check from a proposition (n % 2 = 0) to 
 a bool value for you.  
-TEXT. -/
 
--- QUOTE:
--- apply comp explicitly in your answer
-def ev_len : string → bool := _ 
+.. code-block:: lean
 
--- do it again but using ∘ notation
-def ev_len' := _
+  -- apply comp explicitly in your answer
+  def ev_len : string → bool := _ 
+  
+  -- do it again but using ∘ notation
+  def ev_len' := _
+  
+  -- test cases
+  example : ev_len "Hello" = ff := rfl
+  example : ev_len' "Hello" = ff := rfl
+  example : ev_len "Hello!" = tt := rfl
+  example : ev_len' "Hello!" = tt := rfl
+  
 
--- test cases
-example : ev_len "Hello" = ff := rfl
-example : ev_len' "Hello" = ff := rfl
-example : ev_len "Hello!" = tt := rfl
-example : ev_len' "Hello!" = tt := rfl
-
--- QUOTE. 
-
-/- TEXT:
 Exercise: Write a function, comp_n, polymorphic in alpha that 
 takes a function, f : α → α, and a natural number, n, and that
 returns the function, f after f after f n times, i.e., the 
 function obtained by composing f with itself n times. You'll 
 see again that your hand is forced when deciding what to return
 when n is zero. 
-TEXT. -/
-
-/- TEXT:
 
 Higher-Order Functions on Lists
 -------------------------------
 
-TEXT. -/
-
-
-
-/- TEXT: 
 map
 ~~~
 
@@ -152,30 +135,25 @@ for the new list.
 
 Exercise: Given an English-language explanation of the
 second pattern-matching rule below.
-TEXT. -/
 
--- QUOTE:
-universe v    -- u is already a universe level 
+.. code-block:: lean
 
-def map {α : Type u} {β : Type v} : (α → β) → list α → list β 
-| f list.nil  := list.nil
-| f (h::t)    := (f h)::(map f t)
+  universe v    -- u is already a universe level 
+  
+  def map {α : Type u} {β : Type v} : (α → β) → list α → list β 
+  | f list.nil  := list.nil
+  | f (h::t)    := (f h)::(map f t)
+  
+  -- nat → nat
+  #eval map nat.succ [0,1,2,3,4]        
+  #eval map (λ n, n * n) [0,1,2,3,4]
+  
+  -- string → nat
+  #eval map string.length ["Hello", "Lean", "We", "Love", "You!"]
+  
+  #check @list.map
+  
 
--- nat → nat
-#eval map nat.succ [0,1,2,3,4]        
-#eval map (λ n, n * n) [0,1,2,3,4]
-
--- string → nat
-#eval map string.length ["Hello", "Lean", "We", "Love", "You!"]
-
-#check @list.map
-
--- QUOTE. 
-
-
-
-
-/- TEXT: 
 filter
 ~~~~~~
 
@@ -183,28 +161,26 @@ The filter function, polymorphic in a type, α, takes a list,
 l, of α values and a *predicate function*, p, from α to bool, 
 and returns the sublist of elements in l that *satisfy* p.
 
-TEXT. -/
 
--- QUOTE:
--- In this example we also introduce "match" for doing case analysis on a term
-def filter' {α : Type u} : (α → bool) → list α → list α
-| p list.nil := list.nil
-| p (h::t) :=   
-    match (p h) with 
-      | tt := h::filter' p t
-      | ff := filter' p t
-    end
+.. code-block:: lean
 
-#eval filter' ((λ n, n % 2 = 0) ∘ (string.length)) ["Hello", "Lean", "We", "Love", "You!"]
+  -- In this example we also introduce "match" for doing case analysis on a term
+  def filter' {α : Type u} : (α → bool) → list α → list α
+  | p list.nil := list.nil
+  | p (h::t) :=   
+      match (p h) with 
+        | tt := h::filter' p t
+        | ff := filter' p t
+      end
+  
+  #eval filter' ((λ n, n % 2 = 0) ∘ (string.length)) ["Hello", "Lean", "We", "Love", "You!"]
+  
+  -- same function using if/then/else; there's still a coercion happening from (p h) to bool 
+  def filter {α : Type u} : (α → bool) → list α → list α
+  | p list.nil := list.nil
+  | p (h::t) := if (p h) then (h::filter p t) else (filter p t)
+  
 
--- same function using if/then/else; there's still a coercion happening from (p h) to bool 
-def filter {α : Type u} : (α → bool) → list α → list α
-| p list.nil := list.nil
-| p (h::t) := if (p h) then (h::filter p t) else (filter p t)
-
--- QUOTE. 
-
-/- TEXT: 
 
 fold
 ~~~~
@@ -253,14 +229,12 @@ and false otherwise. Call it all_even. The trick will be to define
 the right reduction (binary) operation. Define it as a separate
 function, all_even_reducer.
 
-TEXT. -/
 
--- QUOTE:
--- Your answer here:
+.. code-block:: lean
 
--- QUOTE. 
+  -- Your answer here:
+  
 
-/- TEXT: 
 Exercises
 ---------
 
@@ -268,6 +242,4 @@ Exercises
 - Define a type, tree α, whose values are either empty or an α value and two smaller trees; then define a variant of the map function operating on such trees, calling it map_tree.
 - There an interesting commonality here. How might one generalize our list-based map function to *any* type of data structure containing values of some type α, where what you want back is the same structure but with all the α values replaced by β values?
 - Can you use parametric polymorphism to solve the preceding problem. Explain why or why not.
-
-TEXT. -/
 
