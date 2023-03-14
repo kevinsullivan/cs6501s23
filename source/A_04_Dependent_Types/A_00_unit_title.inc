@@ -1,5 +1,3 @@
-/- TEXT:
 ===============
 Dependent Types
 ===============
-TEXT. -/

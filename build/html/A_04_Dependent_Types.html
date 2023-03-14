@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5. Dependent Types &mdash; CS6501 Spring 2023 1.2.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Index" href="genindex.html" />
+    <link rel="prev" title="4. Recursive Types" href="A_03_Recursive_Types.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> CS6501 Spring 2023
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="A_00_Introduction.html">1. CS6501 Spring 2023</a></li>
+<li class="toctree-l1"><a class="reference internal" href="A_01_Propositional_Logic.html">2. Propositional Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="A_02_Constructive_Logic.html">3. Constructive Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="A_03_Recursive_Types.html">4. Recursive Types</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">5. Dependent Types</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#types">5.1. &#931; Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">5.2. &#928; Types</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CS6501 Spring 2023</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">5. </span>Dependent Types</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/A_04_Dependent_Types.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dependent-types">
+<span id="introduction"></span><h1><span class="section-number">5. </span>Dependent Types<a class="headerlink" href="#dependent-types" title="Permalink to this heading">&#61633;</a></h1>
+<section id="types">
+<h2><span class="section-number">5.1. </span>&#931; Types<a class="headerlink" href="#types" title="Permalink to this heading">&#61633;</a></h2>
+</section>
+<section id="id1">
+<h2><span class="section-number">5.2. </span>&#928; Types<a class="headerlink" href="#id1" title="Permalink to this heading">&#61633;</a></h2>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20A%20predicate%20(function%20from%20value%20to%20type)%0Adef%20Q%20(n%20%3A%20nat)%20%3A%3D%0A%20%20%E2%88%83%20m%2C%20m%20%3D%20n.succ%0A%0A--%20A%20function%20from%20(n%20%3A%20%E2%84%95)%20to%20*proof*%20of%20proposition%20*about%20n*%0Adef%20dep_fun_prop%20%3A%20%E2%88%80%20(n%20%3A%20%E2%84%95)%2C%20Q%20n%20%3A%3D%0Abegin%0Aintro%20n%2C%0Aapply%20exists.intro%20(n.succ)%20_%2C%0Aapply%20eq.refl%20(n%2B1)%2C%0Aend%0A%0A--%20The%20type%20of%20the%20result%20depends%20on%20the%20argument%20*value*%0A%23check%20dep_fun_prop%0A%0A%23check%20dep_fun_prop%200%0A%23check%20dep_fun_prop%201%0A%23check%20dep_fun_prop%202%0A%0A%23reduce%20dep_fun_prop%200%0A%23reduce%20dep_fun_prop%201%0A%23reduce%20dep_fun_prop%202%0A%0A%0Avariables%0A%20%20(%CE%B1%20%3A%20Type)%20%20%20%20%20%20%20%20%20%20--%20a%20*data*%20type%0A%20%20(P%20%3A%20%CE%B1%20%E2%86%92%20Prop)%20%20%20%20%20%20--%20predicate%20on%20%CE%B1%0A%0A%23check%20%E2%88%80%20(a%20%3A%20%CE%B1)%2C%20P%20a%0A%23check%20%CE%A0%20(a%20%3A%20%CE%B1)%2C%20P%20a" target="_blank" tryitfile="../examples/A_04_Dependent_Types/unnamed_4.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- A predicate (function from value to type)</span>
+<span class="kd">def</span> <span class="n">Q</span> <span class="o">(</span><span class="n">n</span> <span class="o">:</span> <span class="n">nat</span><span class="o">)</span> <span class="o">:=</span>
+  <span class="bp">&#8707;</span> <span class="n">m</span><span class="o">,</span> <span class="n">m</span> <span class="bp">=</span> <span class="n">n.succ</span>
+
+<span class="c1">-- A function from (n : &#8469;) to *proof* of proposition *about n*</span>
+<span class="kd">def</span> <span class="n">dep_fun_prop</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">n</span> <span class="o">:</span> <span class="n">&#8469;</span><span class="o">),</span> <span class="n">Q</span> <span class="n">n</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="n">intro</span> <span class="n">n</span><span class="o">,</span>
+<span class="n">apply</span> <span class="n">exists.intro</span> <span class="o">(</span><span class="n">n.succ</span><span class="o">)</span> <span class="n">_</span><span class="o">,</span>
+<span class="n">apply</span> <span class="n">eq.refl</span> <span class="o">(</span><span class="n">n</span><span class="bp">+</span><span class="mi">1</span><span class="o">),</span>
+<span class="kd">end</span>
+
+<span class="c1">-- The type of the result depends on the argument *value*</span>
+<span class="k">#check</span> <span class="n">dep_fun_prop</span>
+
+<span class="k">#check</span> <span class="n">dep_fun_prop</span> <span class="mi">0</span>
+<span class="k">#check</span> <span class="n">dep_fun_prop</span> <span class="mi">1</span>
+<span class="k">#check</span> <span class="n">dep_fun_prop</span> <span class="mi">2</span>
+
+<span class="k">#reduce</span> <span class="n">dep_fun_prop</span> <span class="mi">0</span>
+<span class="k">#reduce</span> <span class="n">dep_fun_prop</span> <span class="mi">1</span>
+<span class="k">#reduce</span> <span class="n">dep_fun_prop</span> <span class="mi">2</span>
+
+
+<span class="kd">variables</span>
+  <span class="o">(</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span>          <span class="c1">-- a *data* type</span>
+  <span class="o">(</span><span class="n">P</span> <span class="o">:</span> <span class="n">&#945;</span> <span class="bp">&#8594;</span> <span class="kt">Prop</span><span class="o">)</span>      <span class="c1">-- predicate on &#945;</span>
+
+<span class="k">#check</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="n">&#945;</span><span class="o">),</span> <span class="n">P</span> <span class="n">a</span>
+<span class="k">#check</span> <span class="bp">&#928;</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="n">&#945;</span><span class="o">),</span> <span class="n">P</span> <span class="n">a</span>
+</pre></div>
+</div>
+</div></section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="A_03_Recursive_Types.html" class="btn btn-neutral float-left" title="4. Recursive Types" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="genindex.html" class="btn btn-neutral float-right" title="Index" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Kevin Sullivan.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

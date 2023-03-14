@@ -33,7 +33,8 @@
 		"redhat.vscode-yaml",
 		"DanielThielking.aws-cloudformation-yaml",
 		"donjayamanne.python-extension-pack",
-		"ms-vscode.makefile-tools"
+		"ms-vscode.makefile-tools",
+		"dafny-lang.ide-vscode"
 	],
 	"forwardPorts": [],
 	"postCreateCommand": "elan self update && leanpkg configure && leanproject get-mathlib-cache"

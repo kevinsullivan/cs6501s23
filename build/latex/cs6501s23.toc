@@ -111,4 +111,7 @@
 \contentsline {subsection}{\numberline {4.4.4}Exercises}{56}{subsection.4.4.4}
 \contentsline {section}{\numberline {4.5}Recursive Proofs}{57}{section.4.5}
 \contentsline {subsection}{\numberline {4.5.1}Introduction}{57}{subsection.4.5.1}
-\contentsline {chapter}{\numberline {5}Index}{59}{chapter.5}
+\contentsline {chapter}{\numberline {5}Dependent Types}{59}{chapter.5}
+\contentsline {section}{\numberline {5.1}Σ Types}{59}{section.5.1}
+\contentsline {section}{\numberline {5.2}Π Types}{59}{section.5.2}
+\contentsline {chapter}{\numberline {6}Index}{61}{chapter.6}

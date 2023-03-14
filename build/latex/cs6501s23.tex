@@ -81,7 +81,7 @@
 
 
 \title{Computing Foundations}
-\date{Mar 03, 2023}
+\date{Mar 04, 2023}
 \release{1.2.2}
 \author{Kevin Sullivan}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -4336,13 +4336,57 @@ Coming soon.
 \PYG{n}{apply} \PYG{n}{nat.less\PYGZus{}than\PYGZus{}or\PYGZus{}equal.refl}\PYG{o}{,}
 \PYG{k+kd}{end}
 
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} oops, goes too far}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} repeat tactical goes too far; use iterate instead}
 \PYG{k+kd}{example} \PYG{o}{:} \PYG{l+m+mi}{1} \PYG{n+nb+bp}{≤} \PYG{l+m+mi}{4} \PYG{o}{:=}
 \PYG{k+kd}{begin}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} repeat \PYGZob{}apply nat.less\PYGZus{}than\PYGZus{}or\PYGZus{}equal.step\PYGZcb{},}
 \PYG{n}{iterate} \PYG{l+m+mi}{3} \PYG{o}{\PYGZob{}}\PYG{n}{apply} \PYG{n}{nat.less\PYGZus{}than\PYGZus{}or\PYGZus{}equal.step}\PYG{o}{\PYGZcb{}}\PYG{o}{,}
 \PYG{n}{apply} \PYG{n}{nat.less\PYGZus{}than\PYGZus{}or\PYGZus{}equal.refl}\PYG{o}{,}
 \PYG{k+kd}{end}
+\end{sphinxVerbatim}
+
+\sphinxstepscope
+
+
+\chapter{Dependent Types}
+\label{\detokenize{A_04_Dependent_Types:dependent-types}}\label{\detokenize{A_04_Dependent_Types:introduction}}\label{\detokenize{A_04_Dependent_Types::doc}}
+
+\section{Σ Types}
+\label{\detokenize{A_04_Dependent_Types:types}}
+
+\section{Π Types}
+\label{\detokenize{A_04_Dependent_Types:id1}}
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} A predicate (function from value to type)}
+\PYG{k+kd}{def} \PYG{n}{Q} \PYG{o}{(}\PYG{n}{n} \PYG{o}{:} \PYG{n}{nat}\PYG{o}{)} \PYG{o}{:=}
+  \PYG{n+nb+bp}{∃} \PYG{n}{m}\PYG{o}{,} \PYG{n}{m} \PYG{n+nb+bp}{=} \PYG{n}{n.succ}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} A function from (n : ℕ) to *proof* of proposition *about n*}
+\PYG{k+kd}{def} \PYG{n}{dep\PYGZus{}fun\PYGZus{}prop} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{n} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{)}\PYG{o}{,} \PYG{n}{Q} \PYG{n}{n} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{n}{intro} \PYG{n}{n}\PYG{o}{,}
+\PYG{n}{apply} \PYG{n}{exists.intro} \PYG{o}{(}\PYG{n}{n.succ}\PYG{o}{)} \PYG{n}{\PYGZus{}}\PYG{o}{,}
+\PYG{n}{apply} \PYG{n}{eq.refl} \PYG{o}{(}\PYG{n}{n}\PYG{n+nb+bp}{+}\PYG{l+m+mi}{1}\PYG{o}{)}\PYG{o}{,}
+\PYG{k+kd}{end}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} The type of the result depends on the argument *value*}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{dep\PYGZus{}fun\PYGZus{}prop}
+
+\PYG{k}{\PYGZsh{}check} \PYG{n}{dep\PYGZus{}fun\PYGZus{}prop} \PYG{l+m+mi}{0}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{dep\PYGZus{}fun\PYGZus{}prop} \PYG{l+m+mi}{1}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{dep\PYGZus{}fun\PYGZus{}prop} \PYG{l+m+mi}{2}
+
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{dep\PYGZus{}fun\PYGZus{}prop} \PYG{l+m+mi}{0}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{dep\PYGZus{}fun\PYGZus{}prop} \PYG{l+m+mi}{1}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{dep\PYGZus{}fun\PYGZus{}prop} \PYG{l+m+mi}{2}
+
+
+\PYG{k+kd}{variables}
+  \PYG{o}{(}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{)}          \PYG{c+c1}{\PYGZhy{}\PYGZhy{} a *data* type}
+  \PYG{o}{(}\PYG{n}{P} \PYG{o}{:} \PYG{n}{α} \PYG{n+nb+bp}{→} \PYG{k+kt}{Prop}\PYG{o}{)}      \PYG{c+c1}{\PYGZhy{}\PYGZhy{} predicate on α}
+
+\PYG{k}{\PYGZsh{}check} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{a} \PYG{o}{:} \PYG{n}{α}\PYG{o}{)}\PYG{o}{,} \PYG{n}{P} \PYG{n}{a}
+\PYG{k}{\PYGZsh{}check} \PYG{n+nb+bp}{Π} \PYG{o}{(}\PYG{n}{a} \PYG{o}{:} \PYG{n}{α}\PYG{o}{)}\PYG{o}{,} \PYG{n}{P} \PYG{n}{a}
 \end{sphinxVerbatim}
 
 \sphinxstepscope

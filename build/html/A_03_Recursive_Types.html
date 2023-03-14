@@ -22,7 +22,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Index" href="genindex.html" />
+    <link rel="next" title="5. Dependent Types" href="A_04_Dependent_Types.html" />
     <link rel="prev" title="3. Constructive Logic" href="A_02_Constructive_Logic.html" /> 
 </head>
 
@@ -84,6 +84,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="A_04_Dependent_Types.html">5. Dependent Types</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
@@ -758,7 +759,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <h3><span class="section-number">4.5.1. </span>Introduction<a class="headerlink" href="#id5" title="Permalink to this heading">&#61633;</a></h3>
 <p>Coming soon.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=inductive%20le%20(n%20%3A%20nat)%3A%20nat%20%E2%86%92%20Prop%0A--%20n%20is%20an%20implicit%20firt%20argument%20to%20each%20constructor%0A%7C%20refl%20%3A%20le%20%2F-n-%2F%20n%0A%7C%20step%20%3A%20%E2%88%80%20m%2C%20le%20%2F-n-%2F%20m%20%E2%86%92%20le%20%2F-n-%2F%20m.succ%0A%0A--%20you%20can%20see%20it%20in%20the%20types%20of%20the%20constructors%0A%23check%20%40le.refl%0A%23check%20%40le.step%0A%0A%0Aexample%20%3A%20le%200%200%20%3A%3D%0Abegin%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%203%203%20%3A%3D%0Abegin%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%200%201%20%3A%3D%0Abegin%0Aapply%20le.step%2C%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%200%203%20%3A%3D%0Abegin%0Aapply%20le.step%2C%0Aapply%20le.step%2C%0Aapply%20le.step%2C%0Aapply%20le.refl%2C%0Aend%0A%0A%0A--%20here's%20the%20same%20example%20using%20Lean's%20version%20of%20%22le%22%0A--%20it's%20called%20nat.less_than_or_equal%0Aexample%20%3A%200%20%E2%89%A4%203%20%3A%3D%0Abegin%0Aapply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.step%2C%0A--%20apply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.refl%2C%0Aend%0A%0A--%20oops%2C%20goes%20too%20far%0Aexample%20%3A%201%20%E2%89%A4%204%20%3A%3D%0Abegin%0A--%20repeat%20%7Bapply%20nat.less_than_or_equal.step%7D%2C%0Aiterate%203%20%7Bapply%20nat.less_than_or_equal.step%7D%2C%0Aapply%20nat.less_than_or_equal.refl%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_10.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=inductive%20le%20(n%20%3A%20nat)%3A%20nat%20%E2%86%92%20Prop%0A--%20n%20is%20an%20implicit%20firt%20argument%20to%20each%20constructor%0A%7C%20refl%20%3A%20le%20%2F-n-%2F%20n%0A%7C%20step%20%3A%20%E2%88%80%20m%2C%20le%20%2F-n-%2F%20m%20%E2%86%92%20le%20%2F-n-%2F%20m.succ%0A%0A--%20you%20can%20see%20it%20in%20the%20types%20of%20the%20constructors%0A%23check%20%40le.refl%0A%23check%20%40le.step%0A%0A%0Aexample%20%3A%20le%200%200%20%3A%3D%0Abegin%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%203%203%20%3A%3D%0Abegin%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%200%201%20%3A%3D%0Abegin%0Aapply%20le.step%2C%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%200%203%20%3A%3D%0Abegin%0Aapply%20le.step%2C%0Aapply%20le.step%2C%0Aapply%20le.step%2C%0Aapply%20le.refl%2C%0Aend%0A%0A%0A--%20here's%20the%20same%20example%20using%20Lean's%20version%20of%20%22le%22%0A--%20it's%20called%20nat.less_than_or_equal%0Aexample%20%3A%200%20%E2%89%A4%203%20%3A%3D%0Abegin%0Aapply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.step%2C%0A--%20apply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.refl%2C%0Aend%0A%0A--%20repeat%20tactical%20goes%20too%20far%3B%20use%20iterate%20instead%0Aexample%20%3A%201%20%E2%89%A4%204%20%3A%3D%0Abegin%0A--%20repeat%20%7Bapply%20nat.less_than_or_equal.step%7D%2C%0Aiterate%203%20%7Bapply%20nat.less_than_or_equal.step%7D%2C%0Aapply%20nat.less_than_or_equal.refl%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_10.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">inductive</span> <span class="n">le</span> <span class="o">(</span><span class="n">n</span> <span class="o">:</span> <span class="n">nat</span><span class="o">):</span> <span class="n">nat</span> <span class="bp">&#8594;</span> <span class="kt">Prop</span>
 <span class="c1">-- n is an implicit firt argument to each constructor</span>
 <span class="bp">|</span> <span class="n">refl</span> <span class="o">:</span> <span class="n">le</span> <span class="c">/-</span><span class="cm">n-/</span> <span class="n">n</span>
@@ -805,7 +806,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <span class="n">apply</span> <span class="n">nat.less_than_or_equal.refl</span><span class="o">,</span>
 <span class="kd">end</span>
 
-<span class="c1">-- oops, goes too far</span>
+<span class="c1">-- repeat tactical goes too far; use iterate instead</span>
 <span class="kd">example</span> <span class="o">:</span> <span class="mi">1</span> <span class="bp">&#8804;</span> <span class="mi">4</span> <span class="o">:=</span>
 <span class="kd">begin</span>
 <span class="c1">-- repeat {apply nat.less_than_or_equal.step},</span>
@@ -823,7 +824,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="A_02_Constructive_Logic.html" class="btn btn-neutral float-left" title="3. Constructive Logic" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="genindex.html" class="btn btn-neutral float-right" title="Index" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="A_04_Dependent_Types.html" class="btn btn-neutral float-right" title="5. Dependent Types" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

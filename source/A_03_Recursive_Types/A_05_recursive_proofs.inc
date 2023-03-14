@@ -56,7 +56,7 @@ Coming soon.
   apply nat.less_than_or_equal.refl,
   end 
   
-  -- oops, goes too far
+  -- repeat tactical goes too far; use iterate instead
   example : 1 ≤ 4 :=
   begin
   -- repeat {apply nat.less_than_or_equal.step},
