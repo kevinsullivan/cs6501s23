@@ -81,7 +81,7 @@
 
 
 \title{Computing Foundations}
-\date{Mar 04, 2023}
+\date{Mar 15, 2023}
 \release{1.2.2}
 \author{Kevin Sullivan}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -4011,281 +4011,760 @@ Write a tail function that can only be called with a non\sphinxhyphen{}empty lis
 \section{Higher\sphinxhyphen{}Order Functions}
 \label{\detokenize{A_03_Recursive_Types:higher-order-functions}}
 \sphinxAtStartPar
-Higher\sphinxhyphen{}order functions are simply functions that consume
-function definitions as arguments and/or return function
-definitions as results. You’ve been seeing higher\sphinxhyphen{}order
-functions from early in this class.
+A higher\sphinxhyphen{}order function is simply a function that
+takes functions as arguments and/or that returns a
+function as a result.
 
 
-\subsection{Example: \sphinxstyleemphasis{pEval}}
-\label{\detokenize{A_03_Recursive_Types:example-peval}}
+\subsection{In Logic}
+\label{\detokenize{A_03_Recursive_Types:in-logic}}
 \sphinxAtStartPar
-Consider our semantic evaluation function, \sphinxstyleemphasis{pEval,} for
-propositional logic. It takes two arguments: an expression, \sphinxstyleemphasis{e},
-and an \sphinxstyleemphasis{interpretation} \sphinxstyleemphasis{i,} in the form of a function from
-propositional variables to logical truth (Boolean) values.
-
-\sphinxAtStartPar
-The type of \sphinxstyleemphasis{pEval} is thus \sphinxstyleemphasis{prop\_expr → (prop\_var → bool)
-→ bool}. The second argument is a \sphinxstyleemphasis{function value}, which
-\sphinxstyleemphasis{pEval} uses to get the Boolean values of the \sphinxstyleemphasis{variables}
-in the expression to be evaluated. The fact that \sphinxstyleemphasis{pEval}
-takes another function as an argument makes \sphinxstyleemphasis{pEval} a
-higher\sphinxhyphen{}order function.
+We’ve already seen this idea in logical reasoning,
+where function values are proofs of implications.
+In this chapter, we’ll see that same idea in the
+realm of computation.
 
 \sphinxAtStartPar
-More generally, whenever a function, \sphinxstyleemphasis{g}, takes a function,
-\sphinxstyleemphasis{f} as an argument, then \sphinxstyleemphasis{g} is a higher\sphinxhyphen{}order function.
-You can think of \sphinxstyleemphasis{f} as a \sphinxstyleemphasis{little} machine (of a specific
-type) that you hand to \sphinxstyleemphasis{g} and that \sphinxstyleemphasis{g} can then use to do
-its job.
-
-\sphinxAtStartPar
-Exercise: Write a function, \sphinxstyleemphasis{apply\_once,} polymorphic in
-types α and β, taking two arguments, a function value,
-f : α → β, and (2) an argument value, (a : α), that
-returns the value of type β obtained by applying f to a.
-
-\sphinxAtStartPar
-Exercise: Write a function, \sphinxstyleemphasis{apply\_twice}, polymorphic
-in a type, α, taking a function value, \sphinxstyleemphasis{f : α → α}, and
-an argument value, \sphinxstyleemphasis{a : α}, and that returns the result
-of applying f to the result of applying f to a. In other
-words, return the result of applying f twice to a.
-
-\sphinxAtStartPar
-Exercise: Write a function, \sphinxstyleemphasis{apply\_n}, polymorphic in a
-type, α, taking a function value, \sphinxstyleemphasis{f : α → α}, and an
-argument value, \sphinxstyleemphasis{a : α}, that returns the result gotten
-by applying f to a n times. Observe that the type of this
-higher\sphinxhyphen{}order function really gives you no choice as to
-what to return when n is zero.
-
-\sphinxAtStartPar
-Exercise: Write a function, \sphinxstyleemphasis{apply\_comp}, polymorphic
-in types, α, β, and γ, taking two functions, \sphinxstyleemphasis{f : α → β},
-and \sphinxstyleemphasis{g : β → γ}, and an argument value, \sphinxstyleemphasis{a : α}, and that
-returns the result obtained by applying g to the result
-obtained by applying f to a.
-
-
-\subsection{Function composition}
-\label{\detokenize{A_03_Recursive_Types:function-composition}}
-\sphinxAtStartPar
-Now just as a higher\sphinxhyphen{}order function can \sphinxstyleemphasis{use} other
-functions given as arguments, a higher\sphinxhyphen{}order function can
-also \sphinxstyleemphasis{return} function values. Suppose, for example, that
-you apply \sphinxstyleemphasis{apply\_comp} to just two function values, without
-giving the third argument. The result is a new function,
-which we can write as (g ∘ f), pronouned as \sphinxstyleemphasis{g after f},
-that takes an argument, \sphinxstyleemphasis{a}, and returns \sphinxstyleemphasis{g(f(a)).}
-
-\sphinxAtStartPar
-As an exercise, let’s write a version, \sphinxstyleemphasis{comp}, of
-\sphinxstyleemphasis{apply\_comp} that leaves out the final argument. It will
-just take two functions of compatible types and return
-their composition.
+Let’s start by reviewing a logical example to
+refresh memories. We’ll review the proof that
+\sphinxstyleemphasis{implication is transitive}: if the truth of some
+proposition, P, implies the truth of Q, and if the
+truth of Q implies the truth of R, then the truth
+of P implies that of R. Thinking computationally,
+if we have a function, pq, that converts any proof
+of P into a proof of Q (a proof of P → Q), and a
+function, qr, that converts any proof of Q into a
+proof of R (a proof of Q → R), then we can build
+a function, pr, that converts any proof, p, of P,
+into a proof of R (the desired proof of P → R) by
+applying the proof of P → Q to p to get a proof of
+Q, and by then applying the proof of Q → R to that
+value to get a proof of R. Here it is formally.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{k+kd}{universe} \PYG{n}{u}
-\PYG{k+kd}{def} \PYG{n}{comp} \PYG{o}{\PYGZob{}}\PYG{n}{α} \PYG{n}{β} \PYG{n}{γ} \PYG{o}{:} \PYG{k+kt}{Type} \PYG{n}{u}\PYG{o}{\PYGZcb{}} \PYG{o}{:} \PYG{o}{(}\PYG{n}{α} \PYG{n+nb+bp}{→} \PYG{n}{β}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{o}{(}\PYG{n}{β} \PYG{n+nb+bp}{→} \PYG{n}{γ}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{o}{(}\PYG{n}{α} \PYG{n+nb+bp}{→} \PYG{n}{γ}\PYG{o}{)}
-\PYG{n+nb+bp}{|} \PYG{n}{f} \PYG{n}{g} \PYG{o}{:=} \PYG{n+nb+bp}{λ} \PYG{n}{a}\PYG{o}{,} \PYG{n}{g} \PYG{o}{(} \PYG{n}{f} \PYG{n}{a}\PYG{o}{)}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Standard notation reversing argument order: g after f}
-
-\PYG{k+kd}{notation} \PYG{o}{:} \PYG{n}{g} \PYG{n+nb+bp}{`} \PYG{n+nb+bp}{∘} \PYG{n+nb+bp}{`} \PYG{n}{f} \PYG{o}{:=} \PYG{n}{comp} \PYG{n}{f} \PYG{n}{g}
+\PYG{k+kd}{example} \PYG{o}{\PYGZob{}}\PYG{n}{P} \PYG{n}{Q} \PYG{n}{R} \PYG{o}{:} \PYG{k+kt}{Prop}\PYG{o}{\PYGZcb{}} \PYG{o}{:} \PYG{o}{(}\PYG{n}{P} \PYG{n+nb+bp}{→} \PYG{n}{Q}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{o}{(}\PYG{n}{Q} \PYG{n+nb+bp}{→} \PYG{n}{R}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{o}{(}\PYG{n}{P} \PYG{n+nb+bp}{→} \PYG{n}{R}\PYG{o}{)} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{pq} \PYG{n}{qr}\PYG{o}{,}   \PYG{c+c1}{\PYGZhy{}\PYGZhy{} assume P → Q and Q → R}
+\PYG{k}{assume} \PYG{n}{p}\PYG{o}{,}       \PYG{c+c1}{\PYGZhy{}\PYGZhy{} to show P → R, assume p a proof of P}
+\PYG{n}{exact} \PYG{n}{qr} \PYG{o}{(}\PYG{n}{pq} \PYG{n}{p}\PYG{o}{)} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} and derive the desired proof of R}
+\PYG{k+kd}{end}
 \end{sphinxVerbatim}
 
 \sphinxAtStartPar
-Exercise: Use comp to construct a new function, ev\_len,
-that takes a string, s, and returns true (tt) if the length
-of s is even and false otherwise.
+This proof is a higher\sphinxhyphen{}order function, albeit in the
+realm of logic not computation with ordinary data. It
+takes two function arguments (one proving of P → Q and
+the second proving Q → R) and returns a function that,
+by converting any proof of P into a proof of R, proves
+P → R. Therefore, (P → Q) → (Q → R) → (P → R). That is,
+\sphinxstyleemphasis{implication is transitive}.
 
-\sphinxAtStartPar
-You may use string.length to compute the length of a string
-and (λ n, n \% 2 = 0) to compute whether a given natural number
-is even or not.
 
+\subsection{Composition}
+\label{\detokenize{A_03_Recursive_Types:composition}}
 \sphinxAtStartPar
-You should explicitly declare the type of ev\_len to be
-string → bool.  Lean will then insert a coercion to convert
-the result of this check from a proposition (n \% 2 = 0) to
-a bool value for you.
+What do we get when we construct the same argument not
+for proofs of logical propositions but for functions on
+ordinary data? What we get is a higher\sphinxhyphen{}order function
+that performs \sphinxstyleemphasis{function composition}. Note the change
+from Prop (logic) to Type (computation) in the following
+definition.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} apply comp explicitly in your answer}
-\PYG{k+kd}{def} \PYG{n}{ev\PYGZus{}len} \PYG{o}{:} \PYG{n}{string} \PYG{n+nb+bp}{→} \PYG{n}{bool} \PYG{o}{:=} \PYG{n}{\PYGZus{}}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} do it again but using ∘ notation}
-\PYG{k+kd}{def} \PYG{n}{ev\PYGZus{}len\PYGZsq{}} \PYG{o}{:=} \PYG{n}{\PYGZus{}}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} test cases}
-\PYG{k+kd}{example} \PYG{o}{:} \PYG{n}{ev\PYGZus{}len} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Hello}\PYG{l+s+s2}{\PYGZdq{}} \PYG{n+nb+bp}{=} \PYG{n}{ff} \PYG{o}{:=} \PYG{n}{rfl}
-\PYG{k+kd}{example} \PYG{o}{:} \PYG{n}{ev\PYGZus{}len\PYGZsq{}} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Hello}\PYG{l+s+s2}{\PYGZdq{}} \PYG{n+nb+bp}{=} \PYG{n}{ff} \PYG{o}{:=} \PYG{n}{rfl}
-\PYG{k+kd}{example} \PYG{o}{:} \PYG{n}{ev\PYGZus{}len} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Hello!}\PYG{l+s+s2}{\PYGZdq{}} \PYG{n+nb+bp}{=} \PYG{n}{tt} \PYG{o}{:=} \PYG{n}{rfl}
-\PYG{k+kd}{example} \PYG{o}{:} \PYG{n}{ev\PYGZus{}len\PYGZsq{}} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Hello!}\PYG{l+s+s2}{\PYGZdq{}} \PYG{n+nb+bp}{=} \PYG{n}{tt} \PYG{o}{:=} \PYG{n}{rfl}
+\PYG{k+kd}{example} \PYG{o}{\PYGZob{}}\PYG{n}{α} \PYG{n}{β} \PYG{n}{γ} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{\PYGZcb{}} \PYG{o}{:} \PYG{o}{(}\PYG{n}{α} \PYG{n+nb+bp}{→} \PYG{n}{β}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{o}{(}\PYG{n}{β} \PYG{n+nb+bp}{→} \PYG{n}{γ}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{o}{(}\PYG{n}{α} \PYG{n+nb+bp}{→} \PYG{n}{γ}\PYG{o}{)} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{αβ} \PYG{n}{βγ}\PYG{o}{,}   \PYG{c+c1}{\PYGZhy{}\PYGZhy{} assume f g}
+\PYG{k}{assume} \PYG{n}{a} \PYG{o}{:} \PYG{n}{α}\PYG{o}{,}   \PYG{c+c1}{\PYGZhy{}\PYGZhy{} assume a}
+\PYG{n}{exact} \PYG{n}{βγ} \PYG{o}{(}\PYG{n}{αβ} \PYG{n}{a}\PYG{o}{)} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} return λ a, g (f a)}
+\PYG{k+kd}{end}
 \end{sphinxVerbatim}
 
 \sphinxAtStartPar
-Exercise: Write a function, comp\_n, polymorphic in alpha that
-takes a function, f : α → α, and a natural number, n, and that
-returns the function, f after f after f n times, i.e., the
-function obtained by composing f with itself n times. You’ll
-see again that your hand is forced when deciding what to return
-when n is zero.
+Compare and contrast this definition with the statement
+and proof of the transitivity of implication. See that
+you’ve already been using higher\sphinxhyphen{}order functions albeit
+to reason with functions that serve as proofs of logical
+implications, rather than with with functions on ordinary
+data.
+
+\sphinxAtStartPar
+Let’s write this definition a little more naturally,
+and give it a name: \sphinxstyleemphasis{comp}, short for  \sphinxstyleemphasis{composition}.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{def} \PYG{n}{comp} \PYG{o}{\PYGZob{}}\PYG{n}{α} \PYG{n}{β} \PYG{n}{γ} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{\PYGZcb{}} \PYG{o}{(}\PYG{n}{f} \PYG{o}{:} \PYG{n}{α} \PYG{n+nb+bp}{→} \PYG{n}{β}\PYG{o}{)} \PYG{o}{(}\PYG{n}{g} \PYG{o}{:} \PYG{n}{β} \PYG{n+nb+bp}{→} \PYG{n}{γ}\PYG{o}{)} \PYG{o}{:} \PYG{n}{α} \PYG{n+nb+bp}{→} \PYG{n}{γ} \PYG{o}{:=}
+\PYG{k}{fun} \PYG{o}{(}\PYG{n}{a} \PYG{o}{:} \PYG{n}{α}\PYG{o}{)}\PYG{o}{,} \PYG{n}{g} \PYG{o}{(}\PYG{n}{f} \PYG{n}{a}\PYG{o}{)}
+\end{sphinxVerbatim}
 
 
-\subsection{Higher\sphinxhyphen{}Order Functions on Lists}
-\label{\detokenize{A_03_Recursive_Types:higher-order-functions-on-lists}}
+\subsubsection{Example}
+\label{\detokenize{A_03_Recursive_Types:example}}
+\sphinxAtStartPar
+Let’s see an example. Suppose we have two functions, \sphinxstyleemphasis{inc}
+that increments a natural number and sqr that squares one.
+We can form a function that first increments then squares
+its argument by \sphinxstyleemphasis{composing} these two functions.
 
-\subsubsection{map}
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{def} \PYG{n}{inc} \PYG{o}{(}\PYG{n}{n} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{n} \PYG{n+nb+bp}{+} \PYG{l+m+mi}{1}
+\PYG{k+kd}{def} \PYG{n}{sqr} \PYG{o}{(}\PYG{n}{n} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{n} \PYG{n+nb+bp}{*} \PYG{n}{n}
+\PYG{k+kd}{def} \PYG{n}{inc\PYGZus{}then\PYGZus{}sqr} \PYG{o}{:=} \PYG{n}{comp} \PYG{n}{inc} \PYG{n}{sqr}
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{n}{inc\PYGZus{}then\PYGZus{}sqr} \PYG{l+m+mi}{5} \PYG{n+nb+bp}{=} \PYG{l+m+mi}{36} \PYG{o}{:=} \PYG{n}{rfl}   \PYG{c+c1}{\PYGZhy{}\PYGZhy{} seems to work!}
+\end{sphinxVerbatim}
+
+
+\subsubsection{Notation}
+\label{\detokenize{A_03_Recursive_Types:notation}}
+\sphinxAtStartPar
+Lean defines the infix operator ∘ as notation for function
+composition. Note that the order of the function arguments
+is reversed. (g ∘ f) is the function that applies g after
+applying f to its argument. That is, (g ∘ f) x = g (f x).
+We pronounce the function, (g ∘ f), as \sphinxstyleemphasis{g after f.}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{def} \PYG{n}{inc\PYGZus{}then\PYGZus{}sqr\PYGZsq{}} \PYG{o}{:=} \PYG{n}{sqr} \PYG{n+nb+bp}{∘} \PYG{n}{inc}        \PYG{c+c1}{\PYGZhy{}\PYGZhy{} composition!}
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{n}{inc\PYGZus{}then\PYGZus{}sqr\PYGZsq{}} \PYG{l+m+mi}{5} \PYG{n+nb+bp}{=} \PYG{l+m+mi}{36} \PYG{o}{:=} \PYG{n}{rfl} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} seems to work!}
+\end{sphinxVerbatim}
+
+
+\subsubsection{Example With Two Types}
+\label{\detokenize{A_03_Recursive_Types:example-with-two-types}}
+\sphinxAtStartPar
+In this example, given functions that compute the length
+of a list and decrement a natural number, we construct a
+function that takes a list of objects and returns one less
+than its length. We first illustrate applications of Lean
+functions for length and decrement and then use both our
+notation and the Lean ∘ notation to construct the desired
+function, which we apply to the list {[}1,2,3{]} yielding the
+value, 2.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{list.length} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{]} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} apply length function to list}
+\PYG{k}{\PYGZsh{}eval} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{]}\PYG{n+nb+bp}{.}\PYG{n}{length}      \PYG{c+c1}{\PYGZhy{}\PYGZhy{} function application notation}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{nat.pred} \PYG{l+m+mi}{3}          \PYG{c+c1}{\PYGZhy{}\PYGZhy{} apply decrement function to 3}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Apply composition of length and pred to list}
+\PYG{k}{\PYGZsh{}eval} \PYG{o}{(}\PYG{n}{comp} \PYG{n}{list.length} \PYG{n}{nat.pred}\PYG{o}{)} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{]}
+\PYG{k}{\PYGZsh{}eval} \PYG{o}{(}\PYG{n}{nat.pred} \PYG{n+nb+bp}{∘} \PYG{n}{list.length}\PYG{o}{)} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{]}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+The infix notation is best. Think of the argument, here the
+list {[}1,2,3{]}, as moving left through list.length, yielding 3,
+which then moves left through nat.pred, finally yielding 2.
+
+
+\subsection{Map}
 \label{\detokenize{A_03_Recursive_Types:map}}
 \sphinxAtStartPar
-The \sphinxstyleemphasis{map} function takes a list of values and transforms
-it, element by element, into a new list of corresponding
-values, obtained by applying the given function to each
-element in the given list. Note that the \sphinxstyleemphasis{map} function
-never changes the \sphinxstyleemphasis{shape} of the list, only the \sphinxstyleemphasis{values}
-that it holds.
+In this section, we introduce the \sphinxstyleemphasis{map} function on lists.
+It takes (1) a function that takes objects of some type
+α and converts them into objects of some type β, and (2) a
+list of objects of type α, and returns a list of objects
+of type β, obtained by using the function to turn each each
+α object in the given list into a corresponding β object
+in the resulting list.
 
 \sphinxAtStartPar
-As specified below, we define \sphinxstyleemphasis{map} to be polymorphic in
-the types of the elements in the given and returned lists,
-respectively. It then takes a function that it will use to
-convert values in the given list into corresponding values
-for the new list.
+We build to a general definition of map starting with a
+special case: of a function that takes a list of natural
+numbers and returns a list in which each is increased by
+one, by the application of \sphinxstyleemphasis{inc}, our increment function.
 
 \sphinxAtStartPar
-Exercise: Given an English\sphinxhyphen{}language explanation of the
-second pattern\sphinxhyphen{}matching rule below.
+We define a function that “maps” the increment function
+over a given list of natural numbers by case analysis on
+any given list. If the given list is nil, we return nil;
+otherwise, if the list is (h::t) we return the list with
+the value of (inc h) at its head and the list obtained
+by similarly incrementing each value in the tail of the
+given list as its tail.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{k+kd}{universe} \PYG{n}{v}    \PYG{c+c1}{\PYGZhy{}\PYGZhy{} u is already a universe level}
+\PYG{k+kd}{def} \PYG{n}{inc\PYGZus{}list\PYGZus{}nat} \PYG{o}{:} \PYG{n}{list} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{list} \PYG{n}{nat}
+\PYG{n+nb+bp}{|} \PYG{n}{list.nil} \PYG{o}{:=} \PYG{n}{list.nil}
+\PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{h}\PYG{o}{:}\PYG{o}{:}\PYG{n}{t}\PYG{o}{)} \PYG{o}{:=} \PYG{o}{(}\PYG{n}{inc} \PYG{n}{h}\PYG{o}{)}\PYG{o}{:}\PYG{o}{:}\PYG{n}{inc\PYGZus{}list\PYGZus{}nat} \PYG{n}{t}
 
-\PYG{k+kd}{def} \PYG{n}{map} \PYG{o}{\PYGZob{}}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type} \PYG{n}{u}\PYG{o}{\PYGZcb{}} \PYG{o}{\PYGZob{}}\PYG{n}{β} \PYG{o}{:} \PYG{k+kt}{Type} \PYG{n}{v}\PYG{o}{\PYGZcb{}} \PYG{o}{:} \PYG{o}{(}\PYG{n}{α} \PYG{n+nb+bp}{→} \PYG{n}{β}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{n}{list} \PYG{n}{α} \PYG{n+nb+bp}{→} \PYG{n}{list} \PYG{n}{β}
-\PYG{n+nb+bp}{|} \PYG{n}{f} \PYG{n}{list.nil}  \PYG{o}{:=} \PYG{n}{list.nil}
-\PYG{n+nb+bp}{|} \PYG{n}{f} \PYG{o}{(}\PYG{n}{h}\PYG{o}{:}\PYG{o}{:}\PYG{n}{t}\PYG{o}{)}    \PYG{o}{:=} \PYG{o}{(}\PYG{n}{f} \PYG{n}{h}\PYG{o}{)}\PYG{o}{:}\PYG{o}{:}\PYG{o}{(}\PYG{n}{map} \PYG{n}{f} \PYG{n}{t}\PYG{o}{)}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} nat → nat}
-\PYG{k}{\PYGZsh{}eval} \PYG{n}{map} \PYG{n}{nat.succ} \PYG{o}{[}\PYG{l+m+mi}{0}\PYG{o}{,}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{]}
-\PYG{k}{\PYGZsh{}eval} \PYG{n}{map} \PYG{o}{(}\PYG{n+nb+bp}{λ} \PYG{n}{n}\PYG{o}{,} \PYG{n}{n} \PYG{n+nb+bp}{*} \PYG{n}{n}\PYG{o}{)} \PYG{o}{[}\PYG{l+m+mi}{0}\PYG{o}{,}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{]}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} string → nat}
-\PYG{k}{\PYGZsh{}eval} \PYG{n}{map} \PYG{n}{string.length} \PYG{o}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Hello}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Lean}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{We}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Love}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{You!}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{]}
-
-\PYG{k}{\PYGZsh{}check} \PYG{n+nb+bp}{@}\PYG{n}{list.map}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} it works}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{inc\PYGZus{}list\PYGZus{}nat}\PYG{o}{[}\PYG{o}{]}        \PYG{c+c1}{\PYGZhy{}\PYGZhy{} expect []}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{inc\PYGZus{}list\PYGZus{}nat} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{]}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} expect [2,3,4]}
 \end{sphinxVerbatim}
 
-
-\subsubsection{filter}
-\label{\detokenize{A_03_Recursive_Types:filter}}
 \sphinxAtStartPar
-The filter function, polymorphic in a type, α, takes a list,
-l, of α values and a \sphinxstyleemphasis{predicate function}, p, from α to bool,
-and returns the sublist of elements in l that \sphinxstyleemphasis{satisfy} p.
+Suppose that instead of incrementing each element
+of a given list to obtain a new list, we want to
+square each element. One way to do it is to clone
+the function above and replace inc with sqr.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} In this example we also introduce \PYGZdq{}match\PYGZdq{} for doing case analysis on a term}
-\PYG{k+kd}{def} \PYG{n}{filter\PYGZsq{}} \PYG{o}{\PYGZob{}}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type} \PYG{n}{u}\PYG{o}{\PYGZcb{}} \PYG{o}{:} \PYG{o}{(}\PYG{n}{α} \PYG{n+nb+bp}{→} \PYG{n}{bool}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{n}{list} \PYG{n}{α} \PYG{n+nb+bp}{→} \PYG{n}{list} \PYG{n}{α}
-\PYG{n+nb+bp}{|} \PYG{n}{p} \PYG{n}{list.nil} \PYG{o}{:=} \PYG{n}{list.nil}
-\PYG{n+nb+bp}{|} \PYG{n}{p} \PYG{o}{(}\PYG{n}{h}\PYG{o}{:}\PYG{o}{:}\PYG{n}{t}\PYG{o}{)} \PYG{o}{:=}
-    \PYG{k}{match} \PYG{o}{(}\PYG{n}{p} \PYG{n}{h}\PYG{o}{)} \PYG{k}{with}
-      \PYG{n+nb+bp}{|} \PYG{n}{tt} \PYG{o}{:=} \PYG{n}{h}\PYG{o}{:}\PYG{o}{:}\PYG{n}{filter\PYGZsq{}} \PYG{n}{p} \PYG{n}{t}
-      \PYG{n+nb+bp}{|} \PYG{n}{ff} \PYG{o}{:=} \PYG{n}{filter\PYGZsq{}} \PYG{n}{p} \PYG{n}{t}
-    \PYG{k+kd}{end}
+\PYG{k+kd}{def} \PYG{n}{sqr\PYGZus{}list\PYGZus{}nat} \PYG{o}{:} \PYG{n}{list} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{list} \PYG{n}{nat}
+\PYG{n+nb+bp}{|} \PYG{n}{list.nil} \PYG{o}{:=} \PYG{n}{list.nil}
+\PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{h}\PYG{o}{:}\PYG{o}{:}\PYG{n}{t}\PYG{o}{)} \PYG{o}{:=} \PYG{o}{(}\PYG{n}{sqr} \PYG{n}{h}\PYG{o}{)}\PYG{o}{:}\PYG{o}{:}\PYG{n}{sqr\PYGZus{}list\PYGZus{}nat} \PYG{n}{t}
 
-\PYG{k}{\PYGZsh{}eval} \PYG{n}{filter\PYGZsq{}} \PYG{o}{(}\PYG{o}{(}\PYG{n+nb+bp}{λ} \PYG{n}{n}\PYG{o}{,} \PYG{n}{n} \PYG{n+nb+bp}{\PYGZpc{}} \PYG{l+m+mi}{2} \PYG{n+nb+bp}{=} \PYG{l+m+mi}{0}\PYG{o}{)} \PYG{n+nb+bp}{∘} \PYG{o}{(}\PYG{n}{string.length}\PYG{o}{)}\PYG{o}{)} \PYG{o}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Hello}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Lean}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{We}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Love}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{You!}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{]}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} same function using if/then/else; there\PYGZsq{}s still a coercion happening from (p h) to bool}
-\PYG{k+kd}{def} \PYG{n}{filter} \PYG{o}{\PYGZob{}}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type} \PYG{n}{u}\PYG{o}{\PYGZcb{}} \PYG{o}{:} \PYG{o}{(}\PYG{n}{α} \PYG{n+nb+bp}{→} \PYG{n}{bool}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{n}{list} \PYG{n}{α} \PYG{n+nb+bp}{→} \PYG{n}{list} \PYG{n}{α}
-\PYG{n+nb+bp}{|} \PYG{n}{p} \PYG{n}{list.nil} \PYG{o}{:=} \PYG{n}{list.nil}
-\PYG{n+nb+bp}{|} \PYG{n}{p} \PYG{o}{(}\PYG{n}{h}\PYG{o}{:}\PYG{o}{:}\PYG{n}{t}\PYG{o}{)} \PYG{o}{:=} \PYG{k}{if} \PYG{o}{(}\PYG{n}{p} \PYG{n}{h}\PYG{o}{)} \PYG{k}{then} \PYG{o}{(}\PYG{n}{h}\PYG{o}{:}\PYG{o}{:}\PYG{n}{filter} \PYG{n}{p} \PYG{n}{t}\PYG{o}{)} \PYG{k}{else} \PYG{o}{(}\PYG{n}{filter} \PYG{n}{p} \PYG{n}{t}\PYG{o}{)}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} It works}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{sqr\PYGZus{}list\PYGZus{}nat} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{5}\PYG{o}{]}
 \end{sphinxVerbatim}
 
+\sphinxAtStartPar
+Clearly we can clone and edit the preceding code
+to produce a version that applies \sphinxstyleemphasis{any} function of
+type nat → nat, instead of inc or sqr, to the head
+of the given list, with all of the remaining code
+unchanged, to map given lists of natural numbers
+to new lists by replacement of existing elements
+with new elements computed by application of the
+given function.
 
-\subsubsection{fold}
+\sphinxAtStartPar
+That all the code remains the same but for the
+\sphinxstyleemphasis{element} converting function suggests that we
+can instead \sphinxstyleemphasis{generalize} by making this function
+a \sphinxstyleemphasis{parameter} of the otherwise unchanging code.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{def} \PYG{n}{any\PYGZus{}list\PYGZus{}nat} \PYG{o}{:} \PYG{o}{(}\PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{n}{list} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{list} \PYG{n}{nat}
+\PYG{n+nb+bp}{|} \PYG{n}{f} \PYG{n}{list.nil} \PYG{o}{:=} \PYG{n}{list.nil}
+\PYG{n+nb+bp}{|} \PYG{n}{f} \PYG{o}{(}\PYG{n}{h}\PYG{o}{:}\PYG{o}{:}\PYG{n}{t}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{f} \PYG{n}{h}\PYG{o}{:}\PYG{o}{:}\PYG{n}{any\PYGZus{}list\PYGZus{}nat} \PYG{n}{f} \PYG{n}{t}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} It seems to work!}
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{n}{any\PYGZus{}list\PYGZus{}nat} \PYG{n}{sqr} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{5}\PYG{o}{]} \PYG{n+nb+bp}{=} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{9}\PYG{o}{,}\PYG{l+m+mi}{16}\PYG{o}{,}\PYG{l+m+mi}{25}\PYG{o}{]} \PYG{o}{:=} \PYG{n}{rfl}
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{n}{any\PYGZus{}list\PYGZus{}nat} \PYG{n}{inc} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{5}\PYG{o}{]} \PYG{n+nb+bp}{=} \PYG{o}{[}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{5}\PYG{o}{,}\PYG{l+m+mi}{6}\PYG{o}{]} \PYG{o}{:=} \PYG{n}{rfl}
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{n}{any\PYGZus{}list\PYGZus{}nat} \PYG{n}{nat.pred} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{5}\PYG{o}{]} \PYG{n+nb+bp}{=} \PYG{o}{[}\PYG{l+m+mi}{0}\PYG{o}{,}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{]} \PYG{o}{:=} \PYG{n}{rfl}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+We’ve generalized the nat → nat function, but suppose we wanted
+to convert a list of \sphinxstyleemphasis{strings} to a list of their natural number
+lengths. We don’t have the machinery to do that yet, as we can
+only map functions over lists of natural numbers. Otherwise we
+get a type error.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{any\PYGZus{}list\PYGZus{}nat} \PYG{n}{string.length} \PYG{o}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{I}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Love}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Math}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{]}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} nope!}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+One solution is simply to write a new version of our mapping
+function specialized to map lists of strings to lists of nat
+values, using any given string → nat function to perform the
+element\sphinxhyphen{}wise mapping.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{def} \PYG{n}{xyz\PYGZus{}list\PYGZus{}nat} \PYG{o}{:} \PYG{o}{(}\PYG{n}{string} \PYG{n+nb+bp}{→} \PYG{n}{nat}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{n}{list} \PYG{n}{string} \PYG{n+nb+bp}{→} \PYG{n}{list} \PYG{n}{nat}
+\PYG{n+nb+bp}{|} \PYG{n}{f} \PYG{n}{list.nil} \PYG{o}{:=} \PYG{n}{list.nil}
+\PYG{n+nb+bp}{|} \PYG{n}{f} \PYG{o}{(}\PYG{n}{h}\PYG{o}{:}\PYG{o}{:}\PYG{n}{t}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{f} \PYG{n}{h}\PYG{o}{:}\PYG{o}{:}\PYG{n}{xyz\PYGZus{}list\PYGZus{}nat} \PYG{n}{f} \PYG{n}{t}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} It seems to work}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{xyz\PYGZus{}list\PYGZus{}nat} \PYG{n}{string.length} \PYG{o}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{I}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Love}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Math}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{]}
+
+\PYG{c}{/\PYGZhy{}}
+\PYG{c+cm}{B}\PYG{c+cm}{u}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{a}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{b}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{m}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{e}\PYG{c+cm}{f}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{o}\PYG{c+cm}{w}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{t}
+\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{m}\PYG{c+cm}{a}\PYG{c+cm}{p}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{r}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{B}\PYG{c+cm}{o}\PYG{c+cm}{o}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{v}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{u}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{.}\PYG{c+cm}{g}\PYG{c+cm}{.}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{f}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}
+\PYG{c+cm}{w}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{a}\PYG{c+cm}{c}\PYG{c+cm}{h}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{r}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{t}\PYG{c+cm}{t}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{f}\PYG{c+cm}{f}\PYG{c+cm}{)}\PYG{c+cm}{.}
+\PYG{c+cm}{C}\PYG{c+cm}{l}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{o}\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{d}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{i}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{e}
+\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{l}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{o}\PYG{c+cm}{l}\PYG{c+cm}{u}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{.}
+\PYG{c+cm}{\PYGZhy{}/}
+\PYG{k+kd}{def} \PYG{n}{map\PYGZus{}string\PYGZus{}bool} \PYG{o}{:} \PYG{o}{(}\PYG{n}{string} \PYG{n+nb+bp}{→} \PYG{n}{bool}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{n}{list} \PYG{n}{string} \PYG{n+nb+bp}{→} \PYG{n}{list} \PYG{n}{bool}
+\PYG{n+nb+bp}{|} \PYG{n}{f} \PYG{n}{list.nil} \PYG{o}{:=} \PYG{n}{list.nil}
+\PYG{n+nb+bp}{|} \PYG{n}{f} \PYG{o}{(}\PYG{n}{h}\PYG{o}{:}\PYG{o}{:}\PYG{n}{t}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{f} \PYG{n}{h}\PYG{o}{:}\PYG{o}{:}\PYG{n}{map\PYGZus{}string\PYGZus{}bool} \PYG{n}{f} \PYG{n}{t}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} is\PYGZus{}even takes a nat and return tt if it\PYGZsq{}s even else ff}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}}
+\PYG{k+kd}{def} \PYG{n}{is\PYGZus{}even} \PYG{o}{(}\PYG{n}{n} \PYG{o}{:} \PYG{n}{nat}\PYG{o}{)} \PYG{o}{:} \PYG{n}{bool} \PYG{o}{:=} \PYG{n}{n} \PYG{n+nb+bp}{\PYGZpc{}} \PYG{l+m+mi}{2} \PYG{n+nb+bp}{=} \PYG{l+m+mi}{0}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{is\PYGZus{}even} \PYG{l+m+mi}{2}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{is\PYGZus{}even} \PYG{l+m+mi}{3}
+
+\PYG{c}{/\PYGZhy{}}
+\PYG{c+cm}{N}\PYG{c+cm}{o}\PYG{c+cm}{w}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{m}\PYG{c+cm}{a}\PYG{c+cm}{p}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{e}\PYG{c+cm}{l}\PYG{c+cm}{l}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{g}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{r}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}
+\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{g}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{r}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}
+\PYG{c+cm}{g}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{p}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{t}\PYG{c+cm}{/}\PYG{c+cm}{f}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{v}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{u}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{.}
+\PYG{c+cm}{\PYGZhy{}/}
+\PYG{k+kd}{def} \PYG{n}{is\PYGZus{}even\PYGZus{}length} \PYG{o}{:=} \PYG{n}{is\PYGZus{}even} \PYG{n+nb+bp}{∘} \PYG{n}{string.length}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{map\PYGZus{}string\PYGZus{}bool} \PYG{n}{is\PYGZus{}even\PYGZus{}length} \PYG{o}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{I}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Love}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Math}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{]}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+Of course well run into exactly the same sort of problem,
+of having to engage in error\sphinxhyphen{}prone cloning and editing of
+code, if we want to now map lists of Boolean values to lists
+of strings (e.g., mapping each tt to “T” and each ff to “F”).
+
+\sphinxAtStartPar
+And you can imagine many other examples: mapping lists of
+employees to list of their corresponding salaries, or mapping
+lists of Boolean values to lists of their negations, etc. The
+possibilities are endless.
+
+\sphinxAtStartPar
+The answer should now we pretty clear: we need to further
+generalize: not only over the function to apply to map each
+list element, but also over the the types of element in the
+input and output lists! Here, then, is a greatly generalized
+version.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{def} \PYG{n}{map\PYGZus{}list} \PYG{o}{\PYGZob{}}\PYG{n}{α} \PYG{n}{β} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{\PYGZcb{}} \PYG{o}{:} \PYG{o}{(}\PYG{n}{α} \PYG{n+nb+bp}{→} \PYG{n}{β}\PYG{o}{)} \PYG{n+nb+bp}{→} \PYG{n}{list} \PYG{n}{α} \PYG{n+nb+bp}{→} \PYG{n}{list} \PYG{n}{β}
+\PYG{n+nb+bp}{|} \PYG{n}{f} \PYG{n}{list.nil} \PYG{o}{:=} \PYG{n}{list.nil}
+\PYG{n+nb+bp}{|} \PYG{n}{f} \PYG{o}{(}\PYG{n}{h}\PYG{o}{:}\PYG{o}{:}\PYG{n}{t}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{f} \PYG{n}{h} \PYG{o}{:}\PYG{o}{:} \PYG{n}{map\PYGZus{}list} \PYG{n}{f} \PYG{n}{t}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} It seems to work!}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{map\PYGZus{}list} \PYG{n}{nat.succ} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{]}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{map\PYGZus{}list} \PYG{n}{is\PYGZus{}even\PYGZus{}length} \PYG{o}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{I}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Love}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Math}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{]}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+For now, we’ll be satisfied with this level of generality.
+We will just observe that our mapping function still only
+works for \sphinxstyleemphasis{lists} as element containers. What if you wanted
+to map functions over other kinds of element “containers,”
+e.g., to turn values of type \sphinxstyleemphasis{option α} into \sphinxstyleemphasis{option βs}?
+Or trees of α values into corresponding trees of β values?
+
+\sphinxAtStartPar
+The key roadblock will be that there’s no way to do this
+using exactly the same code for, say, lists and options.
+So the kind of parametric polymorphism we’ve been using
+will no longer be enough. The answer will be found in a
+different kind of polymorphism, \sphinxstyleemphasis{ad hoc} polynorphism, of
+which \sphinxstyleemphasis{operator overloading} (as in C++) is an example.
+For instance, you can write complex number and string
+classes and overload the + operator in each class to do
+respective complex number addition and string append, but
+the implementations of these operations will hardly share
+the same code. Completely different implementations will
+be needed, to be selected (by the compler in C++) based
+on the types of the arguments to which the + operator is
+applied.  More on this topic later.
+
+
+\subsection{Fold}
 \label{\detokenize{A_03_Recursive_Types:fold}}
 \sphinxAtStartPar
-The \sphinxstyleemphasis{fold} function, also often called \sphinxstyleemphasis{reduce}, takes a list,
-\sphinxstyleemphasis{l}, of values of some type, α, and reduces it to a single value
-of some type β. It is defined by case analysis on \sphinxstyleemphasis{l}. If \sphinxstyleemphasis{l} is
-nil, fold needs to return an approriate result. For now, we will
-pass this “value for the base case” as an additional argument to
-fold. In the second, cases, where \sphinxstyleemphasis{l} is non\sphinxhyphen{}empty and thus of
-the form, \sphinxstyleemphasis{h::t,} fold returns the result obtained by applying
-a given binary \sphinxstyleemphasis{reduction} function (also an argument) to (a)
-the head of the list, and (b) the \sphinxstyleemphasis{reduced} (folded) value of
-the rest of the list.
+We now turn to a very different higher\sphinxhyphen{}order function
+appliable to lists. It’s called \sphinxstyleemphasis{fold} (or event better,
+\sphinxstyleemphasis{fold\_right}) or \sphinxstyleemphasis{reduce}.
 
 \sphinxAtStartPar
-As an example, consider fold applied to the list {[}1,2,3{]} using
-the binary operation, nat.add : nat → nat → nat as a reduction
-operation. Here α = β = nat. The list is not nil, so we return
-the result obtained by applying \sphinxstyleemphasis{nat.add} to 1 and the result
-of reducing {[}2, 3{]} in the same way: fold nat.add {[}1,2,3{]} thus
-reduces to \sphinxstyleemphasis{1 + fold nat.add {[}2, 3{]}}, which reduces to \sphinxstyleemphasis{1 + 2
-+ fold nat.add {[}3{]}}, which reduces to \sphinxstyleemphasis{1 + 2 + 3 + fold nat.add
-{[}{]}}. Clearly for this operation to return the right value, we
-must define the last value to be zero.
+The fundamental purpose of this operation is to turn a
+\sphinxstyleemphasis{binary} operation on the values of any given type (e.g.,
+nat) into an operation that can be applied to \sphinxstyleemphasis{any} number
+of arguments, where the arguments are packaged into a list
+data structure.
 
 \sphinxAtStartPar
-So how do we define this fold function precisely? It’s by case
-analysis on l. If l is nil, fold has to return the right value
-for the given binary operation (zero in the preceding example).
-If l is not nil, then it’s of the form (h::t), in which case the
-fold function returns the result of applying the given reduction
-operation to h and the result of recursively reducing the \sphinxstyleemphasis{rest}
-of the list.
-\begin{itemize}
-\item {} 
-\sphinxAtStartPar
-Give an English language explanation of how fold can be used to convert a list of strings into a bool, where the result is true (tt) iff the length of each string in the list is even. Pay close attention to the type of the reduction binary operation you will need to produce a working result.
+The way the generalized version of the binary operation
+works is that for the empty list it returns a base value,
+and for a non\sphinxhyphen{}empty list, \sphinxstyleemphasis{h::t}, it applies the binary
+operation to \sphinxstyleemphasis{h} and \sphinxstyleemphasis{to the result of applying the n\sphinxhyphen{}ary
+version to the rest of the list, *t}.
 
-\item {} 
 \sphinxAtStartPar
-Exercise: Formalize the general type and give an implementation of the polymorphic fold function on lists.
-
-\item {} 
-\sphinxAtStartPar
-Exercise: Give a few examples of applications to bolster the case for the claim that it works correctly.
-
-\item {} 
-\sphinxAtStartPar
-Exercise: Use fold to implement a function that takes a list of strings and returns tt if all strings in the list are even length and false otherwise. Call it all\_even. The trick will be to define the right reduction (binary) operation. Define it as a separate function, all\_even\_reducer.
-
-\end{itemize}
+As an example, fold will turn the addition function on
+natural numbers (nat.add) into an operation that can be
+applied to a list of any number of natural number values
+to compute the sum of them all. Here, for example, is
+such a program.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Your answer here:}
+\PYG{k+kd}{def} \PYG{n}{reduce\PYGZus{}sum} \PYG{o}{:} \PYG{n}{list} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat}
+\PYG{n+nb+bp}{|} \PYG{n}{list.nil} \PYG{o}{:=} \PYG{l+m+mi}{0}
+\PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{h}\PYG{o}{:}\PYG{o}{:}\PYG{n}{t}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{nat.add} \PYG{n}{h} \PYG{o}{(}\PYG{n}{reduce\PYGZus{}sum} \PYG{n}{t}\PYG{o}{)}
+
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{reduce\PYGZus{}sum} \PYG{o}{[}\PYG{o}{]}           \PYG{c+c1}{\PYGZhy{}\PYGZhy{} sum of zero arguments}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{reduce\PYGZus{}sum} \PYG{o}{[}\PYG{l+m+mi}{5}\PYG{o}{]}          \PYG{c+c1}{\PYGZhy{}\PYGZhy{} sum of one argument}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{reduce\PYGZus{}sum} \PYG{o}{[}\PYG{l+m+mi}{5}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{]}        \PYG{c+c1}{\PYGZhy{}\PYGZhy{} sum of two arguments}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{reduce\PYGZus{}sum} \PYG{o}{[}\PYG{l+m+mi}{5}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{1}\PYG{o}{]}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} sum of five arguments}
 \end{sphinxVerbatim}
+
+\sphinxAtStartPar
+It should be clear that we will want to generalize
+the binary operator from nat.add to \sphinxstyleemphasis{any} binary
+operation on natural numbers. For example, we might
+want a function that implements n\sphinxhyphen{}ary multiplication,
+reducing any list of natural numbers to the product
+of all the numbers in the list.
+
+\sphinxAtStartPar
+This is a little bit tricker than one might guess.
+To see the problem, let’s clone and edit the code
+we’ve got, substituting multiplication for addition,
+in an attempt to implement n\sphinxhyphen{}ary multiplication.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{def} \PYG{n}{reduce\PYGZus{}prod\PYGZsq{}} \PYG{o}{:} \PYG{n}{list} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat}
+\PYG{n+nb+bp}{|} \PYG{n}{list.nil} \PYG{o}{:=} \PYG{l+m+mi}{0}
+\PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{h}\PYG{o}{:}\PYG{o}{:}\PYG{n}{t}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{nat.mul} \PYG{n}{h} \PYG{o}{(}\PYG{n}{reduce\PYGZus{}prod\PYGZsq{}} \PYG{n}{t}\PYG{o}{)}
+
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{reduce\PYGZus{}prod\PYGZsq{}} \PYG{o}{[}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{1}\PYG{o}{]}   \PYG{c+c1}{\PYGZhy{}\PYGZhy{} expect 6 got 0!}
+
+\PYG{c}{/\PYGZhy{}}
+\PYG{c+cm}{T}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{g}\PYG{c+cm}{o}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{l}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{s}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{:}
+\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{e}\PYG{c+cm}{\PYGZus{}}\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{d}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{ }\PYG{c+cm}{[}\PYG{c+cm}{3}\PYG{c+cm}{,}\PYG{c+cm}{2}\PYG{c+cm}{,}\PYG{c+cm}{1}\PYG{c+cm}{]}\PYG{c+cm}{ }\PYG{c+cm}{=}
+\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{m}\PYG{c+cm}{u}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{3}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{e}\PYG{c+cm}{\PYGZus{}}\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{d}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{ }\PYG{c+cm}{[}\PYG{c+cm}{2}\PYG{c+cm}{,}\PYG{c+cm}{1}\PYG{c+cm}{]}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{=}
+\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{m}\PYG{c+cm}{u}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{3}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{m}\PYG{c+cm}{u}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{2}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{e}\PYG{c+cm}{\PYGZus{}}\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{d}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{ }\PYG{c+cm}{[}\PYG{c+cm}{1}\PYG{c+cm}{]}\PYG{c+cm}{)}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{=}
+\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{m}\PYG{c+cm}{u}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{3}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{m}\PYG{c+cm}{u}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{2}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{m}\PYG{c+cm}{u}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{e}\PYG{c+cm}{\PYGZus{}}\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{d}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{ }\PYG{c+cm}{[}\PYG{c+cm}{]}\PYG{c+cm}{)}\PYG{c+cm}{)}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{=}
+\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{m}\PYG{c+cm}{u}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{3}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{m}\PYG{c+cm}{u}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{2}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{m}\PYG{c+cm}{u}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{ }\PYG{c+cm}{0}\PYG{c+cm}{)}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{=}\PYG{c+cm}{ }\PYG{c+cm}{0}\PYG{c+cm}{!}
+\PYG{c+cm}{T}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{b}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{m}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{o}\PYG{c+cm}{w}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{o}\PYG{c+cm}{l}\PYG{c+cm}{u}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{:}
+\PYG{c+cm}{w}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{d}\PYG{c+cm}{i}\PYG{c+cm}{f}\PYG{c+cm}{f}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{v}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{u}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{e}
+\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{m}\PYG{c+cm}{p}\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{s}
+\PYG{c+cm}{m}\PYG{c+cm}{u}\PYG{c+cm}{l}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{p}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{d}\PYG{c+cm}{d}\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{S}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{i}\PYG{c+cm}{f}\PYG{c+cm}{i}\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{l}\PYG{c+cm}{y}\PYG{c+cm}{,}
+\PYG{c+cm}{w}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{z}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{o}\PYG{c+cm}{u}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{o}\PYG{c+cm}{w}
+\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{b}\PYG{c+cm}{a}\PYG{c+cm}{b}\PYG{c+cm}{l}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{g}\PYG{c+cm}{u}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{g}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{n}
+\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{*}\PYG{c+cm}{i}\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{u}\PYG{c+cm}{t}\PYG{c+cm}{r}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{v}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{u}\PYG{c+cm}{e}\PYG{c+cm}{*}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{e}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{r}
+\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{H}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{e}
+\PYG{c+cm}{w}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{.}
+\PYG{c+cm}{\PYGZhy{}/}
+
+\PYG{k+kd}{def} \PYG{n}{reduce\PYGZus{}prod} \PYG{o}{:} \PYG{n}{list} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat}
+\PYG{n+nb+bp}{|} \PYG{n}{list.nil} \PYG{o}{:=} \PYG{l+m+mi}{1}
+\PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{h}\PYG{o}{:}\PYG{o}{:}\PYG{n}{t}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{nat.mul} \PYG{n}{h} \PYG{o}{(}\PYG{n}{reduce\PYGZus{}prod} \PYG{n}{t}\PYG{o}{)}
+
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{reduce\PYGZus{}prod} \PYG{o}{[}\PYG{o}{]}          \PYG{c+c1}{\PYGZhy{}\PYGZhy{} expect 1}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{reduce\PYGZus{}prod} \PYG{o}{[}\PYG{l+m+mi}{5}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{1}\PYG{o}{]} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} expect 120}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+So now we can correctly generalize fold\_nat over
+binary operators by making the operator a parameter
+but by also adding as a second parameter the right
+identity element for whatever operator we provide
+as an actual parameter.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{def} \PYG{n}{fold\PYGZus{}nat} \PYG{o}{(}\PYG{n}{op} \PYG{o}{:} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat}\PYG{o}{)}\PYG{o}{:}  \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{list} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat}
+\PYG{n+nb+bp}{|} \PYG{n}{id} \PYG{n}{list.nil} \PYG{o}{:=} \PYG{n}{id}
+\PYG{n+nb+bp}{|} \PYG{n}{id} \PYG{o}{(}\PYG{n}{h}\PYG{o}{:}\PYG{o}{:}\PYG{n}{t}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{op} \PYG{n}{h} \PYG{o}{(}\PYG{n}{fold\PYGZus{}nat} \PYG{n}{id} \PYG{n}{t}\PYG{o}{)}
+
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} It seems to work!}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{fold\PYGZus{}nat} \PYG{n}{nat.add} \PYG{l+m+mi}{0} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{5}\PYG{o}{]}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} expect 15}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{fold\PYGZus{}nat} \PYG{n}{nat.mul} \PYG{l+m+mi}{1} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{5}\PYG{o}{]}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} expect 120}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+Yet a problem remains. There is nothing in our
+solution that prevents us from passing the wrong
+value for the identity element for the given binary
+operator. The following function application runs
+without any errors being reported but it gives the
+wrong answer, because we pass the wrong identity
+element for nat.mul.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{fold\PYGZus{}nat} \PYG{n}{nat.mul} \PYG{l+m+mi}{0} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{]}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} oops, wrong}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+We will finish this chapter with a step toward our
+ultimate solution: we will now construct a version
+of fold\_nat (fold\_nat’) that \sphinxstyleemphasis{enforces consistency}
+between the binary function and identity element
+arguments by requiring, as an additional argument,
+a proof that the putative identity element really
+is one!
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{def} \PYG{n}{fold\PYGZus{}nat\PYGZsq{}}
+  \PYG{o}{(}\PYG{n}{op}\PYG{o}{:} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat}\PYG{o}{)}
+  \PYG{o}{(}\PYG{n}{id} \PYG{o}{:}\PYG{n}{nat}\PYG{o}{)}
+  \PYG{o}{(}\PYG{n}{right\PYGZus{}id} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{n} \PYG{o}{:} \PYG{n}{nat}\PYG{o}{)}\PYG{o}{,} \PYG{n}{op} \PYG{n}{n} \PYG{n}{id} \PYG{n+nb+bp}{=} \PYG{n}{n}\PYG{o}{)} \PYG{o}{:}
+  \PYG{n}{list} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat}
+\PYG{n+nb+bp}{|} \PYG{n}{list.nil} \PYG{o}{:=} \PYG{n}{id}
+\PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{h}\PYG{o}{:}\PYG{o}{:}\PYG{n}{t}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{op} \PYG{n}{h} \PYG{o}{(}\PYG{n}{fold\PYGZus{}nat\PYGZsq{}} \PYG{n}{t}\PYG{o}{)}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+Let’s construct named proofs that 0 is an identity
+when it appears as the second argument to nat.add.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{theorem} \PYG{n}{zero\PYGZus{}right\PYGZus{}id\PYGZus{}add} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{n} \PYG{o}{:} \PYG{n}{nat}\PYG{o}{)}\PYG{o}{,} \PYG{n}{nat.add} \PYG{n}{n} \PYG{l+m+mi}{0} \PYG{n+nb+bp}{=} \PYG{n}{n} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{n}\PYG{o}{,}
+\PYG{n}{simp} \PYG{o}{[}\PYG{n}{nat.add}\PYG{o}{]}
+\PYG{k+kd}{end}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Now we can safely use fold\PYGZus{}nat\PYGZsq{}}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{fold\PYGZus{}nat\PYGZsq{}} \PYG{n}{nat.add} \PYG{l+m+mi}{0} \PYG{n}{zero\PYGZus{}right\PYGZus{}id\PYGZus{}add} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{]}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} This application fails because the proof is wrong}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{fold\PYGZus{}nat\PYGZsq{}} \PYG{n}{nat.add} \PYG{l+m+mi}{1} \PYG{n}{zero\PYGZus{}right\PYGZus{}id\PYGZus{}add} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{]}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+As a closing point, we circle back to the notion that
+fold generalizes any given binary operator to an n\sphinxhyphen{}ary
+operator applicable to any number of arguments as long
+as they’re arranged in a list. You can see this idea
+in action by just partially applying fold\_nat’ to a
+binary operator, it’s identity, and the required proof,
+leaving the list argument TBD.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{def} \PYG{n}{n\PYGZus{}ary\PYGZus{}add} \PYG{o}{:=} \PYG{n}{fold\PYGZus{}nat\PYGZsq{}} \PYG{n}{nat.add} \PYG{l+m+mi}{0} \PYG{n}{zero\PYGZus{}right\PYGZus{}id\PYGZus{}add}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} It seems to work!}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{n\PYGZus{}ary\PYGZus{}add} \PYG{o}{[}\PYG{o}{]}            \PYG{c+c1}{\PYGZhy{}\PYGZhy{} zero arguments}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{n\PYGZus{}ary\PYGZus{}add} \PYG{o}{[}\PYG{l+m+mi}{5}\PYG{o}{]}           \PYG{c+c1}{\PYGZhy{}\PYGZhy{} one argument}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{n\PYGZus{}ary\PYGZus{}add} \PYG{o}{[}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{5}\PYG{o}{]}         \PYG{c+c1}{\PYGZhy{}\PYGZhy{} two arguments}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{n\PYGZus{}ary\PYGZus{}add} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{5}\PYG{o}{]}   \PYG{c+c1}{\PYGZhy{}\PYGZhy{} five arguments, etc!}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+Soon we’ll be able similarly to turn binary multiplication
+into n\sphinxhyphen{}ary multiplication, with a definitions like this:
+\sphinxstyleemphasis{def n\_ary\_mul := fold\_nat’ nat.mul 1 one\_right\_id\_mul}. The
+problem is we don’t yet have the machinery (namely proof by
+induction) to construct the proof that 1 is a right identity
+for nat.mul. That’ll come soon enough. For now, we can stub
+it out and get something that works but without a proof that
+1 is a right identity for natural number multiplication.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{def} \PYG{n}{n\PYGZus{}ary\PYGZus{}mul} \PYG{o}{:=} \PYG{n}{fold\PYGZus{}nat\PYGZsq{}} \PYG{n}{nat.mul} \PYG{l+m+mi}{1} \PYG{g+gr}{sorry}
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{n\PYGZus{}ary\PYGZus{}mul} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{5}\PYG{o}{]}
+\end{sphinxVerbatim}
+
+
+\subsection{Summary}
+\label{\detokenize{A_03_Recursive_Types:summary}}
+\sphinxAtStartPar
+Higher\sphinxhyphen{}order functions are functions that consume functions
+as arguments and/or that return functions as results. In this
+chapter we’ve produced highly general higher\sphinxhyphen{}order functions
+for (1) composition of functions, (2) mapping functions over
+lists to derive new lists, and (3) extending binary operators
+to n\sphinxhyphen{}ary operators whose arguments are given as lists of any
+length.
 
 
 \subsection{Exercises}
-\label{\detokenize{A_03_Recursive_Types:id4}}\begin{itemize}
-\item {} 
+\label{\detokenize{A_03_Recursive_Types:id4}}
 \sphinxAtStartPar
-Write an analog of the map function not for lists but for option values. Call is map\_option.
+1. Write a function, n\_ary\_append (without using fold) that
+takes a list of lists of objects of some type, α (the type will
+be \sphinxstyleemphasis{list (list α)}) and that reduces it to a single list of α
+using \sphinxstyleemphasis{list.append} as a binary operation. For example, it’d
+turn this list, {[}{[}1,2{]},{[}3,4{]},{[}5{]}{]} into the list {[}1,2,3,4,5{]}.
+You may use Lean’s list.append function as a binary operator
+that combines two lists into one.
 
-\item {} 
 \sphinxAtStartPar
-Define a type, tree α, whose values are either empty or an α value and two smaller trees; then define a variant of the map function operating on such trees, calling it map\_tree.
+2. Write a function (without using fold) that takes a a list
+of lists of α and that returns the sum of the lengths of the
+contained lists. For example applying your function to the
+list, {[}{[}{]},{[}1,2,3{]},{[}1,2,3,4,5{]}{]}, should return 8: the sum of
+0 for the first list, 3 for the second, and 5 for the third.
+Your function will work by adding the length of the head of
+the list of lists to the result of recursively reducing the
+\sphinxstyleemphasis{rest} (tail) of the list of lists. You may use list.length
+to compute the length of any list.
 
-\item {} 
 \sphinxAtStartPar
-There an interesting commonality here. How might one generalize our list\sphinxhyphen{}based map function to \sphinxstyleemphasis{any} type of data structure containing values of some type α, where what you want back is the same structure but with all the α values replaced by β values?
-
-\item {} 
-\sphinxAtStartPar
-Can you use parametric polymorphism to solve the preceding problem. Explain why or why not.
-
-\end{itemize}
+3. Write a function without using fold that takes a list of
+lists of α and that returns true if the length of each of
+the elements lists is even and false otherwise.
 
 
 \section{Recursive Proofs}
 \label{\detokenize{A_03_Recursive_Types:recursive-proofs}}
 
-\subsection{Introduction}
-\label{\detokenize{A_03_Recursive_Types:id5}}
+\subsection{Proof by Induction}
+\label{\detokenize{A_03_Recursive_Types:proof-by-induction}}
+\sphinxAtStartPar
+There was something notably questionable in the last
+chapter. We defined a \sphinxstyleemphasis{safe} version of \sphinxstyleemphasis{fold} by requiring
+a proof that the value returned for an empty list be a
+\sphinxstyleemphasis{right} (but not a \sphinxstyleemphasis{left}) identity element for the actual
+binary operator parameter given to the fold function.
+
+\sphinxAtStartPar
+We then found it easy to prove that 0 is indeed a right
+identity for nat.add. They key insight you need to have
+is that it was easy to prove because it’s already given
+to us as an \sphinxstyleemphasis{axiom}. In particular, the first rule in the
+recursive definition of nat.add makes it so. Here’s the
+definition of nat.add from Lean’s core library.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{def} \PYG{n}{add} \PYG{o}{:} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat}
+\PYG{n+nb+bp}{|} \PYG{n}{a}  \PYG{n}{zero}     \PYG{o}{:=} \PYG{n}{a}
+\PYG{n+nb+bp}{|} \PYG{n}{a}  \PYG{o}{(}\PYG{n}{succ} \PYG{n}{b}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{succ} \PYG{o}{(}\PYG{n}{add} \PYG{n}{a} \PYG{n}{b}\PYG{o}{)}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+Look at the first case/rule: any a added to zero
+is equal to a. This rule establishes that zero is
+a right identity for add.  Here again is our earlier
+statement and proof.
+
+\sphinxAtStartPar
+Note that the \sphinxstyleemphasis{simp} tactict tries to fine, and if
+found applies, rules/axioms from the definition of
+any of the listed functions: here from just nat.add.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{n} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{)}\PYG{o}{,} \PYG{n}{nat.add} \PYG{n}{n} \PYG{l+m+mi}{0} \PYG{n+nb+bp}{=} \PYG{n}{n} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{n}\PYG{o}{,}
+\PYG{n}{simp} \PYG{o}{[}\PYG{n}{nat.add}\PYG{o}{]}\PYG{o}{,}
+\PYG{k+kd}{end}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+What’s \sphinxstyleemphasis{not} provided by the definition
+of nat.add is an axiom that stipulates
+zero is a \sphinxstyleemphasis{left} identity for nat.add.
+If we try the same proof technique to
+prove \sphinxstyleemphasis{∀ n, 0 + n = n}, with 0 now on
+the left, we can’t! (When writing these
+propositions and proofs, use nat.add in
+a consistent manner instead of 0. It’s
+a complication that’s annoying, but for
+now just follow this simple instruction
+and you’ll be fine.)
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{n}{n}\PYG{o}{,} \PYG{n}{nat.add} \PYG{n}{nat.zero} \PYG{n}{n} \PYG{n+nb+bp}{=} \PYG{n}{n} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{n}\PYG{o}{,}
+\PYG{n}{simp} \PYG{o}{[}\PYG{n}{nat.add}\PYG{o}{]}\PYG{o}{,}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} oops, that didn\PYGZsq{}t help; we\PYGZsq{}re stuck!}
+\PYG{k+kd}{end}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+Looking at what remains to be proved, we
+might consider proof by case analysis on
+n. So let’s try that.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{example} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{n}{n}\PYG{o}{,} \PYG{n}{nat.add} \PYG{n}{nat.zero} \PYG{n}{n} \PYG{n+nb+bp}{=} \PYG{n}{n} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{n}\PYG{o}{,}
+\PYG{n}{cases} \PYG{n}{n} \PYG{k}{with} \PYG{n}{n\PYGZsq{}}\PYG{o}{,}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} first case: zero\PYGZsq{}s also on the right}
+\PYG{n}{simp} \PYG{o}{[}\PYG{n}{nat.add}\PYG{o}{]}\PYG{o}{,}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} second case, argument is succ of some n\PYGZsq{}}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} how to show 0 + (succ n\PYGZsq{}) = (succ n\PYGZsq{})}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} but again we\PYGZsq{}re stuck}
+\PYG{n}{simp} \PYG{o}{[}\PYG{n}{nat.add}\PYG{o}{]}\PYG{o}{,}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} basically back where we started; stuck.}
+\PYG{k+kd}{end}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+The problem is that all we know about n’
+is that it’s some natural number, and that
+isn’t enough to work with to prove the goal.
+
+\sphinxAtStartPar
+What if we knew a little more? What if we
+knew that 0 is a left zero for n’ as part
+of the context in which are to prove that
+it’s a zero for (succ n’)? Would that help?
+
+\sphinxAtStartPar
+It would. Suppose we know that \sphinxstyleemphasis{add 0 n’ = n’}
+and that we want to prive that \sphinxstyleemphasis{add 0 (succ n’)
+= (succ n’)}. Key insight: We can apply the
+\sphinxstyleemphasis{second} axiom of addition,given by the second
+rule in its definition, to rewrite the term,
+\sphinxstyleemphasis{add 0 (succ n’)} to the term \sphinxstyleemphasis{succ (add 0 n’);}
+then we can use the fact that (by assumption)
+0 is a left 0 for n’ to rewrite the term
+\sphinxstyleemphasis{succ (add 0 n’)} to \sphinxstyleemphasis{succ n’.} That’s it.
+We’ve shown that 0 + succ n’ = succ n’.
+
+\sphinxAtStartPar
+But what could possibly justify assuming
+that 0 + n’ = n’ in the first place? Well,
+let’s see if it can be justified informally
+before getting into formalities.
+
+\sphinxAtStartPar
+Let’s start by noting that by the first rule
+of addition, 0 is a left zero for 0. This
+proof gives us a base on which we can now
+construct a proof that 0 is a left zero for 1.
+
+\sphinxAtStartPar
+Details: we want to show that 0 + 1 = 1. That
+is, we want to show that 0 + succ 0 = succ 0.
+By the second rule/axiom of add, the left side
+is succ (0 + 0). \sphinxstyleemphasis{BE SURE YOU UNDERSTAND THIS
+STEP.}  Now yy the first rule, 0 + 0 = 0, so
+we can rewrite succ (0 + 0) to just succ 0.
+With this expression on the left side, all
+thatremains to prove is that succ 0 = succ 0,
+and this is true of course by the reflexivity
+of the equality relation.
+
+\sphinxAtStartPar
+To recap, we proved a “base case” (that
+zero is a left identity for zero) using the
+first axiom of addition. Then we applied the
+second axiom to show that 0 is a left identity
+for 1. With this proof in hand we can apply
+the second axiom \sphinxstyleemphasis{again} to construct a proof
+that zero is left identity for 2. From this
+we can derive that 0 is a left identity for
+3. Indeed to prove that 0 is a left identity
+for \sphinxstyleemphasis{any} n, we start with a proof that it’s
+a left identity for zero using the first
+axiom, then we iteratively apply the second
+axiom n times to prove it’s a left identity
+for \sphinxstyleemphasis{any} n.
+
+\sphinxAtStartPar
+Let’s just program it to make it all clear.
+Out program will take any value n and return
+a proof that 0 is a left identity for it. It
+does this in the reverse order, constructing
+a proof for the case where n is non\sphinxhyphen{}zero, i.e.,
+where n = succ n’ for some n’, and obtaining
+a proof for n’ \sphinxstyleemphasis{by recursion}. The recursive
+calls implement iteration until the base case
+of n = 0 is reached, at which point a proof
+for that case is returned, the recursion
+unwinds, and we’re left with a proof that 0
+is a left identity for that arbitrary n. The
+existence of this function shows that we can
+construct a proof of the proposition that 0
+is a left identity for any n, and so it is
+true \sphinxstyleemphasis{for all} n. And that’s what we wanted.
+QED.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} a proof\PYGZhy{}returning function defined by cases}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} takes any n and returns a proof of 0 + n = n}
+\PYG{k+kd}{def} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}n} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{n}{n}\PYG{o}{,} \PYG{o}{(}\PYG{n}{nat.add} \PYG{l+m+mi}{0} \PYG{n}{n} \PYG{n+nb+bp}{=} \PYG{n}{n}\PYG{o}{)}
+\PYG{n+nb+bp}{|} \PYG{n}{nat.zero} \PYG{o}{:=} \PYG{k+kd}{by} \PYG{n}{simp} \PYG{o}{[}\PYG{n}{nat.add}\PYG{o}{]} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} base case}
+\PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{nat.succ} \PYG{n}{n\PYGZsq{}}\PYG{o}{)} \PYG{o}{:=}              \PYG{c+c1}{\PYGZhy{}\PYGZhy{} recursive case}
+  \PYG{k+kd}{begin}
+  \PYG{n}{simp} \PYG{o}{[}\PYG{n}{nat.add}\PYG{o}{]}\PYG{o}{,}               \PYG{c+c1}{\PYGZhy{}\PYGZhy{} applies second rule and ...}
+                                \PYG{c+c1}{\PYGZhy{}\PYGZhy{} removes succ on each side}
+                                \PYG{c+c1}{\PYGZhy{}\PYGZhy{} by injectivity of constructors}
+                                \PYG{c+c1}{\PYGZhy{}\PYGZhy{} inherent in inductive definitions}
+  \PYG{n}{exact} \PYG{o}{(}\PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}n} \PYG{n}{n\PYGZsq{}}\PYG{o}{)}\PYG{o}{,} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} prove result recursively}
+  \PYG{k+kd}{end}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} eyeball check of the recursive structure of these proofs!}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}n} \PYG{l+m+mi}{0}     \PYG{c+c1}{\PYGZhy{}\PYGZhy{} the proof term is unpretty (just eyeball it)}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}n} \PYG{l+m+mi}{1}     \PYG{c+c1}{\PYGZhy{}\PYGZhy{} the proof for 1 buids on the proof for 0}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}n} \PYG{l+m+mi}{2}     \PYG{c+c1}{\PYGZhy{}\PYGZhy{} the proof for 2 buids on the proof for 1}
+                                \PYG{c+c1}{\PYGZhy{}\PYGZhy{} and we see we can build such a proof for any n}
+                                \PYG{c+c1}{\PYGZhy{}\PYGZhy{} therefore 0 is a left identity for addition}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+A bit more to come.
+
+
+\subsection{Inductive Families}
+\label{\detokenize{A_03_Recursive_Types:inductive-families}}
 \sphinxAtStartPar
 Coming soon.
 
@@ -4324,7 +4803,6 @@ Coming soon.
 \PYG{n}{apply} \PYG{n}{le.refl}\PYG{o}{,}
 \PYG{k+kd}{end}
 
-
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} here\PYGZsq{}s the same example using Lean\PYGZsq{}s version of \PYGZdq{}le\PYGZdq{}}
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} it\PYGZsq{}s called nat.less\PYGZus{}than\PYGZus{}or\PYGZus{}equal}
 \PYG{k+kd}{example} \PYG{o}{:} \PYG{l+m+mi}{0} \PYG{n+nb+bp}{≤} \PYG{l+m+mi}{3} \PYG{o}{:=}
@@ -4356,30 +4834,74 @@ Coming soon.
 
 \section{Π Types}
 \label{\detokenize{A_04_Dependent_Types:id1}}
+\sphinxAtStartPar
+A Pi type associates types with values.
+We define a predicate, Q, as an example
+to use in what follows. Q is true of any
+natural number \sphinxstyleemphasis{n} by the reflexivity of
+equality.
+
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} A predicate (function from value to type)}
-\PYG{k+kd}{def} \PYG{n}{Q} \PYG{o}{(}\PYG{n}{n} \PYG{o}{:} \PYG{n}{nat}\PYG{o}{)} \PYG{o}{:=}
-  \PYG{n+nb+bp}{∃} \PYG{n}{m}\PYG{o}{,} \PYG{n}{m} \PYG{n+nb+bp}{=} \PYG{n}{n.succ}
+\PYG{k+kd}{def} \PYG{n}{Q} \PYG{o}{(}\PYG{n}{n} \PYG{o}{:} \PYG{n}{nat}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{n} \PYG{n+nb+bp}{=} \PYG{n}{n}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{Q}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} \PYGZdq{}propositions are types\PYGZdq{}}
+\end{sphinxVerbatim}
 
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} A function from (n : ℕ) to *proof* of proposition *about n*}
-\PYG{k+kd}{def} \PYG{n}{dep\PYGZus{}fun\PYGZus{}prop} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{n} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{)}\PYG{o}{,} \PYG{n}{Q} \PYG{n}{n} \PYG{o}{:=}
-\PYG{k+kd}{begin}
-\PYG{n}{intro} \PYG{n}{n}\PYG{o}{,}
-\PYG{n}{apply} \PYG{n}{exists.intro} \PYG{o}{(}\PYG{n}{n.succ}\PYG{o}{)} \PYG{n}{\PYGZus{}}\PYG{o}{,}
-\PYG{n}{apply} \PYG{n}{eq.refl} \PYG{o}{(}\PYG{n}{n}\PYG{n+nb+bp}{+}\PYG{l+m+mi}{1}\PYG{o}{)}\PYG{o}{,}
-\PYG{k+kd}{end}
 
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} The type of the result depends on the argument *value*}
-\PYG{k}{\PYGZsh{}check} \PYG{n}{dep\PYGZus{}fun\PYGZus{}prop}
+\subsection{Indexed Families}
+\label{\detokenize{A_04_Dependent_Types:indexed-families}}
+\sphinxAtStartPar
+Note that each \sphinxstyleemphasis{n} to to which one applies
+\sphinxstyleemphasis{Q} gives rised to a proposition–a type–that
+\sphinxstyleemphasis{is about} (and in this sense, depends on) \sphinxstyleemphasis{n}.
+Such a types is said to be a \sphinxstyleemphasis{dependent type}.
 
-\PYG{k}{\PYGZsh{}check} \PYG{n}{dep\PYGZus{}fun\PYGZus{}prop} \PYG{l+m+mi}{0}
-\PYG{k}{\PYGZsh{}check} \PYG{n}{dep\PYGZus{}fun\PYGZus{}prop} \PYG{l+m+mi}{1}
-\PYG{k}{\PYGZsh{}check} \PYG{n}{dep\PYGZus{}fun\PYGZus{}prop} \PYG{l+m+mi}{2}
+\sphinxAtStartPar
+Parametric polymorphism, by contrast, arises
+when \sphinxstyleemphasis{types} are parameters. For example, the
+\sphinxstyleemphasis{list} type builder takes an \sphinxstyleemphasis{type} (of list
+elements)  as an argument and reduces to the
+type of lists of elements of that type. On the
+other hand, here the result type depends on a
+data \sphinxstyleemphasis{value}.
 
-\PYG{k}{\PYGZsh{}reduce} \PYG{n}{dep\PYGZus{}fun\PYGZus{}prop} \PYG{l+m+mi}{0}
-\PYG{k}{\PYGZsh{}reduce} \PYG{n}{dep\PYGZus{}fun\PYGZus{}prop} \PYG{l+m+mi}{1}
-\PYG{k}{\PYGZsh{}reduce} \PYG{n}{dep\PYGZus{}fun\PYGZus{}prop} \PYG{l+m+mi}{2}
+\sphinxAtStartPar
+In effect, \sphinxstyleemphasis{Q} associates a separate type with
+each nat value. We say that \sphinxstyleemphasis{Q} defines a family
+of types \sphinxstyleemphasis{indexed by n}.
 
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Q n is a type (proposition) dependent on n}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{Q} \PYG{l+m+mi}{0}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{Q} \PYG{l+m+mi}{1}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{Q} \PYG{l+m+mi}{2}
+\end{sphinxVerbatim}
+
+
+\subsection{Dependent Function Types}
+\label{\detokenize{A_04_Dependent_Types:dependent-function-types}}
+\sphinxAtStartPar
+The next insight to gain is that we can now define
+functions that return \sphinxstyleemphasis{values of dependent types}.
+To continue the preceding example, we define a new
+function that when given \sphinxstyleemphasis{n} returns not the type,
+n = n, but a proof of it: a value of the dependent
+type.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} A function from n : ℕ to *proofs (values)* of *Q n*}
+\PYG{k+kd}{def} \PYG{n}{dep\PYGZus{}func\PYGZus{}prop} \PYG{o}{(}\PYG{n}{n} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{)} \PYG{o}{:} \PYG{n}{Q} \PYG{n}{n} \PYG{o}{:=} \PYG{k+kd}{begin} \PYG{n}{unfold} \PYG{n}{Q} \PYG{k+kd}{end}
+\end{sphinxVerbatim}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k}{\PYGZsh{}check} \PYG{n}{dep\PYGZus{}func\PYGZus{}prop}
+
+\PYG{k}{\PYGZsh{}check} \PYG{n}{dep\PYGZus{}func\PYGZus{}prop} \PYG{l+m+mi}{0}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{dep\PYGZus{}func\PYGZus{}prop} \PYG{l+m+mi}{1}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{dep\PYGZus{}func\PYGZus{}prop} \PYG{l+m+mi}{2}
+
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{dep\PYGZus{}func\PYGZus{}prop} \PYG{l+m+mi}{0}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{dep\PYGZus{}func\PYGZus{}prop} \PYG{l+m+mi}{1}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{dep\PYGZus{}func\PYGZus{}prop} \PYG{l+m+mi}{2}
 
 \PYG{k+kd}{variables}
   \PYG{o}{(}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{)}          \PYG{c+c1}{\PYGZhy{}\PYGZhy{} a *data* type}

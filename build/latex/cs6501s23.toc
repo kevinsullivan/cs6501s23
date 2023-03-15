@@ -102,16 +102,21 @@
 \contentsline {subsection}{\numberline {4.3.5}Exercises}{52}{subsection.4.3.5}
 \contentsline {subsection}{\numberline {4.3.6}Solutions}{52}{subsection.4.3.6}
 \contentsline {section}{\numberline {4.4}Higher\sphinxhyphen {}Order Functions}{53}{section.4.4}
-\contentsline {subsection}{\numberline {4.4.1}Example: \sphinxstyleemphasis {pEval}}{54}{subsection.4.4.1}
-\contentsline {subsection}{\numberline {4.4.2}Function composition}{54}{subsection.4.4.2}
-\contentsline {subsection}{\numberline {4.4.3}Higher\sphinxhyphen {}Order Functions on Lists}{55}{subsection.4.4.3}
-\contentsline {subsubsection}{map}{55}{subsubsection*.21}
-\contentsline {subsubsection}{filter}{55}{subsubsection*.22}
-\contentsline {subsubsection}{fold}{56}{subsubsection*.23}
-\contentsline {subsection}{\numberline {4.4.4}Exercises}{56}{subsection.4.4.4}
-\contentsline {section}{\numberline {4.5}Recursive Proofs}{57}{section.4.5}
-\contentsline {subsection}{\numberline {4.5.1}Introduction}{57}{subsection.4.5.1}
-\contentsline {chapter}{\numberline {5}Dependent Types}{59}{chapter.5}
-\contentsline {section}{\numberline {5.1}Σ Types}{59}{section.5.1}
-\contentsline {section}{\numberline {5.2}Π Types}{59}{section.5.2}
-\contentsline {chapter}{\numberline {6}Index}{61}{chapter.6}
+\contentsline {subsection}{\numberline {4.4.1}In Logic}{53}{subsection.4.4.1}
+\contentsline {subsection}{\numberline {4.4.2}Composition}{54}{subsection.4.4.2}
+\contentsline {subsubsection}{Example}{54}{subsubsection*.21}
+\contentsline {subsubsection}{Notation}{55}{subsubsection*.22}
+\contentsline {subsubsection}{Example With Two Types}{55}{subsubsection*.23}
+\contentsline {subsection}{\numberline {4.4.3}Map}{55}{subsection.4.4.3}
+\contentsline {subsection}{\numberline {4.4.4}Fold}{57}{subsection.4.4.4}
+\contentsline {subsection}{\numberline {4.4.5}Summary}{60}{subsection.4.4.5}
+\contentsline {subsection}{\numberline {4.4.6}Exercises}{60}{subsection.4.4.6}
+\contentsline {section}{\numberline {4.5}Recursive Proofs}{60}{section.4.5}
+\contentsline {subsection}{\numberline {4.5.1}Proof by Induction}{60}{subsection.4.5.1}
+\contentsline {subsection}{\numberline {4.5.2}Inductive Families}{62}{subsection.4.5.2}
+\contentsline {chapter}{\numberline {5}Dependent Types}{65}{chapter.5}
+\contentsline {section}{\numberline {5.1}Σ Types}{65}{section.5.1}
+\contentsline {section}{\numberline {5.2}Π Types}{65}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}Indexed Families}{65}{subsection.5.2.1}
+\contentsline {subsection}{\numberline {5.2.2}Dependent Function Types}{65}{subsection.5.2.2}
+\contentsline {chapter}{\numberline {6}Index}{67}{chapter.6}
