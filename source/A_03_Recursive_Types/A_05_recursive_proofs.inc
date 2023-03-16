@@ -6,6 +6,9 @@ Recursive Proofs
 Proof by Induction
 ------------------
 
+Motivation
+~~~~~~~~~~
+
 There was something notably questionable in the last
 chapter. We defined a *safe* version of *fold* by requiring
 a proof that the value returned for an empty list be a 
@@ -42,6 +45,14 @@ any of the listed functions: here from just nat.add.
   simp [nat.add],
   end
 
+An English version of this 
+proof might go like this: *We're to prove 
+that for any n, n + 0 = n.* Proof: Assume n
+is an arbitrary but specific natural number. 
+By the first rule/axiom defining nat.add we 
+can rewrite n + 0 as n. That's it. As n is
+general, the conjecture, n + 0 = n, is true 
+for all n. 
 What's *not* provided by the definition
 of nat.add is an axiom that stipulates
 zero is a *left* identity for nat.add.
@@ -84,7 +95,12 @@ n. So let's try that.
 
 The problem is that all we know about n'
 is that it's some natural number, and that
-isn't enough to work with to prove the goal. 
+isn't enough to work with to prove the goal.
+That's the probem we solve now.
+
+
+A Solution
+~~~~~~~~~~
 
 What if we knew a little more? What if we
 knew that 0 is a left zero for n' as part
@@ -178,7 +194,80 @@ QED.
                                   -- and we see we can build such a proof for any n
                                   -- therefore 0 is a left identity for addition
 
-A bit more to come. 
+To sum up, what we've shown is that if we have two 
+*little machines* we can construct a proof of the 
+given proposition, let's call it P := (0 + n = n), 
+for any value, n. The first machine produces a proof 
+of P for the case where n = 0. The second machine, 
+given a proof of P for any n' returns a proof for 
+n' + 1. We've show that this is always possible. To 
+construct a proof for any n, we then use the first
+machine to get a proof for 0, then we run the second
+machine n times starting on the proof for 0 to build
+a proof for n. 
+
+The resulting proof object has a recursive structure. 
+Just as we've represented a non-zero natural number,
+n as the successor of some one-smaller natural number,
+n', so here we represent a proof of P for n = n' + 1
+as a term that adds another layer of "proof stuff"
+around a proof of P for n', ultimately terminating 
+with a proof of P for 0, with further sub-structure. 
+apply
+Generalizing
+~~~~~~~~~~~~
+
+Just as we will need a proof that 0 is not only a right
+identity for nat.add (by the first axiom) but also a left
+identity (a theorem proved by induction), so will need a
+proof that nil is not only a right but also a left identity
+for the list append operation.  
+
+Here's the easy case first. From this proof you can infer
+that the list.append operation (with infix notation ++) has
+a rule/axiom that states that l ++ nil := l for any l. 
+
+.. code-block:: lean
+
+  
+  /- 
+  Here's the definition of list.append.
+  It asserts that [] is a left identity axiomatically. 
+  
+  def append : list α → list α → list α
+  | []       l := l
+  | (h :: s) t := h :: (append s t)
+  -/
+  
+  -- proving right identity is trivial just as for addition
+  example (α : Type) : ∀ (l : list α), list.nil ++ l = l :=
+  begin
+  assume l,
+  simp [list.append],
+  end
+
+
+.. code-block:: lean
+
+  def nil_left_ident_app (α : Type) : ∀ (l : list α), l ++ list.nil = l :=
+  begin
+  assume l,
+  cases l with h t,
+  -- base case
+  simp [list.append],   -- uses first rule
+  -- recursive case
+  simp [list.append],   -- why does this work?
+  end 
+  
+  -- Here's another formal demonstration of the same point
+  variables (α : Type) (a : α) (l : list α) 
+  example: list.nil ++ l = l := by simp    -- first rule
+  example : l ++ list.nil  = l := by simp  -- by [simp] lemma in Lean library
+
+
+Induction Axioms
+----------------
+
 
 Inductive Families
 ------------------

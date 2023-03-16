@@ -7,6 +7,9 @@ Recursive Proofs
 Proof by Induction
 ------------------
 
+Motivation
+~~~~~~~~~~
+
 There was something notably questionable in the last
 chapter. We defined a *safe* version of *fold* by requiring
 a proof that the value returned for an empty list be a 
@@ -46,7 +49,7 @@ simp [nat.add],
 end
 -- QUOTE. 
 
-/-
+/- TEXT:
 An English version of this 
 proof might go like this: *We're to prove 
 that for any n, n + 0 = n.* Proof: Assume n
@@ -104,7 +107,12 @@ end
 /- TEXT:
 The problem is that all we know about n'
 is that it's some natural number, and that
-isn't enough to work with to prove the goal. 
+isn't enough to work with to prove the goal.
+That's the probem we solve now.
+
+
+A Solution
+~~~~~~~~~~
 
 What if we knew a little more? What if we
 knew that 0 is a left zero for n' as part
@@ -200,12 +208,110 @@ def zero_left_ident_n : ∀ n, (nat.add 0 n = n)
 -- QUOTE.
 
 /- TEXT:
-A bit more to come. 
+To sum up, what we've shown is that if we have two 
+*little machines* we can construct a proof of the 
+given proposition, let's call it P := (0 + n = n), 
+for any value, n. The first machine produces a proof 
+of P for the case where n = 0. The second machine, 
+given a proof of P for any n' returns a proof for 
+n' + 1. We've show that this is always possible. To 
+construct a proof for any n, we then use the first
+machine to get a proof for 0, then we run the second
+machine n times starting on the proof for 0 to build
+a proof for n. 
+
+The resulting proof object has a recursive structure. 
+Just as we've represented a non-zero natural number,
+n as the successor of some one-smaller natural number,
+n', so here we represent a proof of P for n = n' + 1
+as a term that adds another layer of "proof stuff"
+around a proof of P for n', ultimately terminating 
+with a proof of P for 0, with further sub-structure. 
+apply
 TEXT. -/
 
+/- TEXT:
+Generalizing
+~~~~~~~~~~~~
+
+Just as we will need a proof that 0 is not only a right
+identity for nat.add (by the first axiom) but also a left
+identity (a theorem proved by induction), so will need a
+proof that nil is not only a right but also a left identity
+for the list append operation.  
+
+Here's the easy case first. From this proof you can infer
+that the list.append operation (with infix notation ++) has
+a rule/axiom that states that l ++ nil := l for any l. 
+TEXT. -/
+
+-- QUOTE:
+
+/- 
+Here's the definition of list.append.
+It asserts that [] is a left identity axiomatically. 
+
+def append : list α → list α → list α
+| []       l := l
+| (h :: s) t := h :: (append s t)
+-/
+
+-- proving right identity is trivial just as for addition
+example (α : Type) : ∀ (l : list α), list.nil ++ l = l :=
+begin
+assume l,
+simp [list.append],
+end
+-- QUOTE. 
+
+/-TEXT:
+We run into the same problem as we did before if we take a
+naive approach to trying to prove that nil is also a left
+identity for ++. And the solution is once again to define
+a recursive function by case analysis on l that constructs
+a proof of *nil ++ l = l* for any list l. If l = list.nil,
+the proof of nil ++ nil is given by the first rule of list
+append, otherwise l = (h::t), and we need to prove that
+nil ++ h::t = h::t. By the second axiom of list append,
+we can rewrite nil ++ h::t as h::(nil ++ t), where we can
+obtain (and then us) a proof that nil ++ t = t by recursion,
+terminating when t =nil. 
+
+Fortunately, Lean's library already contains a proof that
+nil is a right identity, and it's annotated as *[simp]*,
+which means that the *simp* tactic will try to use it to
+prove our goal. In other words, we can use [simp] to prove
+the harder case precisely because someone else has already
+done the work for us; and they did it recursively just as
+we did to show that 0 is a right identity for addition. 
+TEXT. -/
+
+-- QUOTE:
+def nil_left_ident_app (α : Type) : ∀ (l : list α), l ++ list.nil = l :=
+begin
+assume l,
+cases l with h t,
+-- base case
+simp [list.append],   -- uses first rule
+-- recursive case
+simp [list.append],   -- why does this work?
+end 
+
+-- Here's another formal demonstration of the same point
+variables (α : Type) (a : α) (l : list α) 
+example: list.nil ++ l = l := by simp    -- first rule
+example : l ++ list.nil  = l := by simp  -- by [simp] lemma in Lean library
+-- QUOTE.
 
 /- TEXT:
 
+Induction Axioms
+----------------
+
+
+TEXT. -/
+
+/- TEXT:
 Inductive Families
 ------------------
 

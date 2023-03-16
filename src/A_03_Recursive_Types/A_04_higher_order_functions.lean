@@ -78,28 +78,17 @@ def xyz_list_nat : (string → nat) → list string → list nat
 -- It seems to work
 #eval xyz_list_nat string.length ["I", "Love", "Math"]
 
-/-
-But we run into the same problem as before if we now want
-to map lists of strings to Boolean values, e.g., reflecting
-whether the length of each string is even (tt) or not (ff).
-Cloning code and editing it to produce another special case
-is really not the best solution.
--/
+
 def map_string_bool : (string → bool) → list string → list bool 
 | f list.nil := list.nil 
 | f (h::t) := f h::map_string_bool f t
 
 -- is_even takes a nat and return tt if it's even else ff
---
 def is_even (n : nat) : bool := n % 2 = 0
 #eval is_even 2
 #eval is_even 3
 
-/-
-Now we can map a function that tells whether a given string
-is of even length or not over any given list of strings to 
-get a corresponding list of tt/ff values.
--/
+
 def is_even_length := is_even ∘ string.length
 #eval map_string_bool is_even_length ["I", "Love", "Math"]
 
@@ -130,23 +119,6 @@ def reduce_prod' : list nat → nat
 
 #eval reduce_prod' [3,2,1]   -- expect 6 got 0!
 
-/- 
-To see what goes wrong, let's unroll the recursion:
-- reduce_prod' [3,2,1] =
-- mul 3 (reduce_prod' [2,1]) =
-- mul 3 (mul 2 (reduce_prod' [1])) =
-- mul 3 (mul 2 (mul 1 (reduce_prod' []))) =
-- mul 3 (mul 2 (mul 1 0)) = 0!
-The problem is now clear, and so is the solution:
-we need to return a different value for the base
-case of an empty list when the binary operation is
-multiplication rather than addition. Specifically,
-we need to return 1 rather than zero. You can now
-probably guess that in general we want to return
-the *identity, or neutral, value* for whatever
-the binary operator is for the base case. Here
-we want to return 1.
--/
 
 def reduce_prod : list nat → nat
 | list.nil := 1
@@ -186,10 +158,8 @@ simp [nat.add]
 end 
 
 -- Now we can safely use fold_nat' 
-#eval fold_nat' nat.add 0 zero_right_id_add [1,2,3]
-
--- This application fails because the proof is wrong
-#eval fold_nat' nat.add 1 zero_right_id_add [1,2,3]
+#eval fold_nat' nat.add 0 zero_right_id_add [1,2,3] -- good
+#eval fold_nat' nat.add 1 zero_right_id_add [1,2,3] -- not good
 
 
 
@@ -205,4 +175,80 @@ def n_ary_add := fold_nat' nat.add 0 zero_right_id_add
 def n_ary_mul := fold_nat' nat.mul 1 sorry
 #eval n_ary_mul [1,2,3,4,5]
 
+
+
+-- Problem #1
+/-
+Let's do some test-driven development here. 
+(1) Define function type
+(2) Write (initially failing) test cases
+(3) Complete implementation and expect test cases to pass
+-/
+def n_ary_append {α : Type} : list (list α) → list α
+
+-- test cases for 0, 1, 2, and more arguments
+example : n_ary_append [] = [] := rfl
+example : n_ary_append [[1,2,3]]] = [1,2,3] := rfl
+example : n_ary_append [[1,2,3],[4,5,6]] = [1,2,3,4,5,6] := rfl
+example : n_ary_append [[1,2,3],[4,5,6],[7,8,9]] = [1,2,3,4,5,6,7,8,9] := rfl
+
+-- Problem #2
+def sum_lengths {α : Type} : list (list α) → nat
+
+example : @sum_lengths nat [] = 0 := rfl
+example : sum_lengths [[1,2,3]] = 3 := rfl
+example : sum_lengths [[1,2,3],[4,5,6]] = 6 := rfl
+example : sum_lengths [[1,2,3],[4,5,6],[7,8,9]] = 9 := rfl
+
+-- Problem #3 
+def even_lengths {α : Type} : list (list α) → bool
+
+example : @even_lengths nat [] = tt := rfl
+example : even_lengths [[1,2,3],[4,5,6],[7,8,9]] = ff := rfl
+example : even_lengths [[1,2,3,4],[4,5,6],[7,8,9]] = ff := rfl
+example : even_lengths [[1,2,3,4],[4,5,6,7],[7,8,9,0]] = tt := rfl
+
+
+
+def all_even' : list ℕ → bool
+| list.nil := tt
+| (h::t) := band (is_even h) (all_even' t)   -- band is &&
+
+-- Seems to work
+#eval all_even' [2,4,6,8]
+#eval all_even' [1,4,6,8]
+
+
+def all_even_op : nat → bool → bool
+| n b := (is_even n) && b
+
+def all_even : list nat → bool
+| list.nil := tt
+| (h::t) := all_even_op h (all_even t)
+
+-- seems to be working
+#eval all_even []       -- expect tt
+#eval all_even [1]      -- expect ff
+#eval all_even [0,2,4]  -- expect tt
+#eval all_even [0,2,5]  -- expect ff
+
+
+def foldr {α β : Type} : _
+  -- op type
+  -- id type
+  -- list type  
+  -- result type
+| _ := _
+| _ := _
+
+def all_even_yay : list nat → bool := 
+  foldr all_even_op 
+
+
+#eval all_even_yay []       -- expect tt
+#eval all_even_yay [1]      -- expect ff
+#eval all_even_yay [0,2,4]  -- expect tt
+#eval all_even_yay [0,2,5]  -- expect ff
+#eval foldr nat.add 0 [1,2,3,4,5] 
+#eval foldr nat.mul 1 [1,2,3,4,5] 
 

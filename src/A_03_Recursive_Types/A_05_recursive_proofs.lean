@@ -10,15 +10,6 @@ assume n,
 simp [nat.add],
 end
 
-/-
-An English version of this 
-proof might go like this: *We're to prove 
-that for any n, n + 0 = n.* Proof: Assume n
-is an arbitrary but specific natural number. 
-By the first rule/axiom defining nat.add we 
-can rewrite n + 0 as n. That's it. As n is
-general, the conjecture, n + 0 = n, is true 
-for all n. 
 
 
 example : ∀ n, nat.add nat.zero n = n :=
@@ -63,6 +54,60 @@ def zero_left_ident_n : ∀ n, (nat.add 0 n = n)
                                 -- and we see we can build such a proof for any n
                                 -- therefore 0 is a left identity for addition
 
+
+
+
+/- 
+Here's the definition of list.append.
+It asserts that [] is a left identity axiomatically. 
+
+def append : list α → list α → list α
+| []       l := l
+| (h :: s) t := h :: (append s t)
+-/
+
+-- proving right identity is trivial just as for addition
+example (α : Type) : ∀ (l : list α), list.nil ++ l = l :=
+begin
+assume l,
+simp [list.append],
+end
+
+/-TEXT:
+We run into the same problem as we did before if we take a
+naive approach to trying to prove that nil is also a left
+identity for ++. And the solution is once again to define
+a recursive function by case analysis on l that constructs
+a proof of *nil ++ l = l* for any list l. If l = list.nil,
+the proof of nil ++ nil is given by the first rule of list
+append, otherwise l = (h::t), and we need to prove that
+nil ++ h::t = h::t. By the second axiom of list append,
+we can rewrite nil ++ h::t as h::(nil ++ t), where we can
+obtain (and then us) a proof that nil ++ t = t by recursion,
+terminating when t =nil. 
+
+Fortunately, Lean's library already contains a proof that
+nil is a right identity, and it's annotated as *[simp]*,
+which means that the *simp* tactic will try to use it to
+prove our goal. In other words, we can use [simp] to prove
+the harder case precisely because someone else has already
+done the work for us; and they did it recursively just as
+we did to show that 0 is a right identity for addition. 
+
+def nil_left_ident_app (α : Type) : ∀ (l : list α), l ++ list.nil = l :=
+begin
+assume l,
+cases l with h t,
+-- base case
+simp [list.append],   -- uses first rule
+-- recursive case
+simp [list.append],   -- why does this work?
+end 
+
+-- Here's another formal demonstration of the same point
+variables (α : Type) (a : α) (l : list α) 
+example: list.nil ++ l = l := by simp    -- first rule
+example : l ++ list.nil  = l := by simp  -- by [simp] lemma in Lean library
 
 
 

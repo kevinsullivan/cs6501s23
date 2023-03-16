@@ -236,29 +236,30 @@ element-wise mapping.
   
   -- It seems to work
   #eval xyz_list_nat string.length ["I", "Love", "Math"]
-  
-  /-
-  But we run into the same problem as before if we now want
-  to map lists of strings to Boolean values, e.g., reflecting
-  whether the length of each string is even (tt) or not (ff).
-  Cloning code and editing it to produce another special case
-  is really not the best solution.
-  -/
+
+But we run into the same problem as before if we now want
+to map lists of strings to Boolean values, e.g., reflecting
+whether the length of each string is even (tt) or not (ff).
+Cloning code and editing it to produce another special case
+is really not the best solution.
+
+.. code-block:: lean
+
   def map_string_bool : (string → bool) → list string → list bool 
   | f list.nil := list.nil 
   | f (h::t) := f h::map_string_bool f t
   
   -- is_even takes a nat and return tt if it's even else ff
-  --
   def is_even (n : nat) : bool := n % 2 = 0
   #eval is_even 2
   #eval is_even 3
-  
-  /-
-  Now we can map a function that tells whether a given string
-  is of even length or not over any given list of strings to 
-  get a corresponding list of tt/ff values.
-  -/
+
+Now we can map a function that tells whether a given string
+is of even length or not over any given list of strings to 
+get a corresponding list of tt/ff values.
+
+.. code-block:: lean
+
   def is_even_length := is_even ∘ string.length
   #eval map_string_bool is_even_length ["I", "Love", "Math"]
 
@@ -310,12 +311,15 @@ be needed, to be selected (by the compler in C++) based
 on the types of the arguments to which the + operator is
 applied.  More on this topic later.
 
-Fold
-----
+Fold: list α → α 
+----------------
 
 We now turn to a very different higher-order function
 appliable to lists. It's called *fold* (or event better, 
-*fold_right*) or *reduce*. 
+*fold_right*) or *reduce*.
+
+Overview
+~~~~~~~~
 
 The fundamental purpose of this operation is to turn a 
 *binary* operation on the values of any given type (e.g., 
@@ -346,6 +350,10 @@ such a program.
   #eval reduce_sum [5,4]        -- sum of two arguments
   #eval reduce_sum [5,4,3,2,1]  -- sum of five arguments
 
+
+Generalizing the binary operation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 It should be clear that we will want to generalize
 the binary operator from nat.add to *any* binary
 operation on natural numbers. For example, we might
@@ -365,25 +373,31 @@ in an attempt to implement n-ary multiplication.
   | (h::t) := nat.mul h (reduce_prod' t)
   
   #eval reduce_prod' [3,2,1]   -- expect 6 got 0!
-  
-  /- 
-  To see what goes wrong, let's unroll the recursion:
-  - reduce_prod' [3,2,1] =
-  - mul 3 (reduce_prod' [2,1]) =
-  - mul 3 (mul 2 (reduce_prod' [1])) =
-  - mul 3 (mul 2 (mul 1 (reduce_prod' []))) =
-  - mul 3 (mul 2 (mul 1 0)) = 0!
-  The problem is now clear, and so is the solution:
-  we need to return a different value for the base
-  case of an empty list when the binary operation is
-  multiplication rather than addition. Specifically,
-  we need to return 1 rather than zero. You can now
-  probably guess that in general we want to return
-  the *identity, or neutral, value* for whatever
-  the binary operator is for the base case. Here
-  we want to return 1.
-  -/
-  
+
+
+Operator-identity inconsistency
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To see what goes wrong, let's unroll the recursion:
+
+- reduce_prod' [3,2,1] =
+- mul 3 (reduce_prod' [2,1]) =
+- mul 3 (mul 2 (reduce_prod' [1])) =
+- mul 3 (mul 2 (mul 1 (reduce_prod' []))) =
+- mul 3 (mul 2 (mul 1 0)) = 0!
+
+The problem is now clear, and so is the solution:
+we need to return a different value for the base
+case of an empty list when the binary operation is
+multiplication rather than addition. Specifically,
+we need to return 1 rather than zero. You can now
+probably guess that in general we want to return
+the *identity, or neutral, value* for whatever
+the binary operator is for the base case. Here
+we want to return 1.
+
+.. code-block:: lean
+
   def reduce_prod : list nat → nat
   | list.nil := 1
   | (h::t) := nat.mul h (reduce_prod t)
@@ -408,6 +422,10 @@ as an actual parameter.
   #eval fold_nat nat.add 0 [1,2,3,4,5]  -- expect 15
   #eval fold_nat nat.mul 1 [1,2,3,4,5]  -- expect 120
 
+
+Enforcing op-id consistency
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 Yet a problem remains. There is nothing in our
 solution that prevents us from passing the wrong
 value for the identity element for the given binary
@@ -420,13 +438,25 @@ element for nat.mul.
 
   #eval fold_nat nat.mul 0 [1,2,3]  -- oops, wrong
 
-We will finish this chapter with a step toward our
+We finish this section with a step toward our
 ultimate solution: we will now construct a version
 of fold_nat (fold_nat') that *enforces consistency*
 between the binary function and identity element
 arguments by requiring, as an additional argument,
 a proof that the putative identity element really
-is one! 
+is one!
+
+In particular, we'll be satisfied for now to prove
+that the given "identity" element really is a *right*
+identity.  That is, we want to prove that for any n,
+op n id (with id on the right) is equal to n. That is,
+we'll require a proof of *∀ (n : nat), op n id = n* as
+an argument to our function.
+
+This is not our complete solution to the problem of 
+enforcing operator-identity consistency, but we'll 
+have to wait until after the next chapter to get to
+that point.
 
 .. code-block:: lean
 
@@ -450,12 +480,14 @@ when it appears as the second argument to nat.add.
   end 
   
   -- Now we can safely use fold_nat' 
-  #eval fold_nat' nat.add 0 zero_right_id_add [1,2,3]
-  
-  -- This application fails because the proof is wrong
-  #eval fold_nat' nat.add 1 zero_right_id_add [1,2,3]
+  #eval fold_nat' nat.add 0 zero_right_id_add [1,2,3] -- good
+  #eval fold_nat' nat.add 1 zero_right_id_add [1,2,3] -- not good
 
-As a closing point, we circle back to the notion that
+
+From binary to n-ary operations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We now circle back to the notion that
 fold generalizes any given binary operator to an n-ary
 operator applicable to any number of arguments as long
 as they're arranged in a list. You can see this idea 
@@ -488,16 +520,8 @@ it out and get something that works but without a proof that
   def n_ary_mul := fold_nat' nat.mul 1 sorry
   #eval n_ary_mul [1,2,3,4,5]
 
-Summary
--------
-
-Higher-order functions are functions that consume functions
-as arguments and/or that return functions as results. In this
-chapter we've produced highly general higher-order functions
-for (1) composition of functions, (2) mapping functions over
-lists to derive new lists, and (3) extending binary operators
-to n-ary operators whose arguments are given as lists of any
-length. 
+It's a good time for a few exercises to prepare for the rest
+of what's to come. 
 
 Exercises
 ---------
@@ -523,3 +547,156 @@ to compute the length of any list.
 3. Write a function without using fold that takes a list of
 lists of α and that returns true if the length of each of 
 the elements lists is even and false otherwise.  
+
+.. code-block:: lean
+
+  
+  -- Problem #1
+  /-
+  Let's do some test-driven development here. 
+  (1) Define function type
+  (2) Write (initially failing) test cases
+  (3) Complete implementation and expect test cases to pass
+  -/
+  def n_ary_append {α : Type} : list (list α) → list α
+  
+  -- test cases for 0, 1, 2, and more arguments
+  example : n_ary_append [] = [] := rfl
+  example : n_ary_append [[1,2,3]]] = [1,2,3] := rfl
+  example : n_ary_append [[1,2,3],[4,5,6]] = [1,2,3,4,5,6] := rfl
+  example : n_ary_append [[1,2,3],[4,5,6],[7,8,9]] = [1,2,3,4,5,6,7,8,9] := rfl
+  
+  -- Problem #2
+  def sum_lengths {α : Type} : list (list α) → nat
+  
+  example : @sum_lengths nat [] = 0 := rfl
+  example : sum_lengths [[1,2,3]] = 3 := rfl
+  example : sum_lengths [[1,2,3],[4,5,6]] = 6 := rfl
+  example : sum_lengths [[1,2,3],[4,5,6],[7,8,9]] = 9 := rfl
+  
+  -- Problem #3 
+  def even_lengths {α : Type} : list (list α) → bool
+  
+  example : @even_lengths nat [] = tt := rfl
+  example : even_lengths [[1,2,3],[4,5,6],[7,8,9]] = ff := rfl
+  example : even_lengths [[1,2,3,4],[4,5,6],[7,8,9]] = ff := rfl
+  example : even_lengths [[1,2,3,4],[4,5,6,7],[7,8,9,0]] = tt := rfl
+
+
+Fold: list α → β
+-------------------
+
+The preceding few exercises all reduce a list of objects of
+one type (α) to a result of another (possibly the same) type
+(β). For example, even_lengths reduces a list of objects of 
+one type, list α (not the same alpha, sorry), and returns a
+value of a different type, bool. 
+
+Can we devise a generalized version of fold that can handle
+all such reductions *in one fell swoop*? The answer is yes,
+but we need to think a bit harder about the nature of the
+binary operation to be extended to an n-ary operation by 
+the application of the fold function.
+
+Returning to our example, the way that the function works 
+when the input list isn't empty is that it applies a binary 
+operation to (a) the *head* of the given list, of type α , 
+and (b) the *result* of folding/reducing the rest of the
+list, which is of type, β, yielding an overall value of the 
+final result type, β. 
+
+Mixed-type binary operations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If we think of all this work as one operation, what is its
+type? Well, it's α → β → β. Again, for example, it would
+compute a result from the head of the list (h : α) and the
+result of reducing the rest of the list (of type β) to yield 
+a final result of type β. 
+
+We can think of this as the type of binary operation that 
+fold is extending to an n-ary version, in general. Let's 
+see this idea in action with a slightly simpler example
+of a folding function: one that takes a list of nat and 
+that returns true if and only if all the numbers in the
+list are even. 
+
+.. code-block:: lean
+
+  def all_even' : list ℕ → bool
+  | list.nil := tt
+  | (h::t) := band (is_even h) (all_even' t)   -- band is &&
+  
+  -- Seems to work
+  #eval all_even' [2,4,6,8]
+  #eval all_even' [1,4,6,8]
+
+Now we'll apply the preceding reasoning to formulate
+what's going on in the second rule as a binary operation.
+
+.. code-block:: lean
+
+  def all_even_op : nat → bool → bool
+  | n b := (is_even n) && b
+  
+  def all_even : list nat → bool
+  | list.nil := tt
+  | (h::t) := all_even_op h (all_even t)
+  
+  -- seems to be working
+  #eval all_even []       -- expect tt
+  #eval all_even [1]      -- expect ff
+  #eval all_even [0,2,4]  -- expect tt
+  #eval all_even [0,2,5]  -- expect ff
+
+Extending such operations
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Ok, so we're finally in a position to formally specify the
+type of any fold operation on lists. We'll call it foldr,
+short for "fold right," given that we combine the head of
+the list, on the left of h::t, with the result of folding 
+its whole *right*-hand tail, t. 
+
+.. code-block:: lean
+
+  def foldr {α β : Type} : _
+    -- op type
+    -- id type
+    -- list type  
+    -- result type
+  | _ := _
+  | _ := _
+  
+  def all_even_yay : list nat → bool := 
+    foldr all_even_op 
+  
+  
+  #eval all_even_yay []       -- expect tt
+  #eval all_even_yay [1]      -- expect ff
+  #eval all_even_yay [0,2,4]  -- expect tt
+  #eval all_even_yay [0,2,5]  -- expect ff
+  #eval foldr nat.add 0 [1,2,3,4,5] 
+  #eval foldr nat.mul 1 [1,2,3,4,5] 
+
+
+Summary
+-------
+In summary, so far in this chapter, we've seen that higher-order
+functions are functions that consume functions as arguments and/or 
+that return functions as results. We've produced highly general 
+higher-order functions for (1) composition of functions, (2) mapping 
+functions over lists to derive new lists, and (3) extending binary 
+operators to n-ary operators whose arguments are given as lists of any
+length. 
+
+Exercises
+---------
+
+
+-- Define an n-ary Boolean "and" function using foldr.
+-- Define an n-ary Boolean "or" function using foldr.
+-- Define an n-ary ℕ addition operator using foldr.
+-- Define an n-ary ℕ multiplication operator using foldr.
+-- Define a function called map-reduce. It should accept list of objects of any type α, a function that converts α objects to β objects, and a binary operation suitable for use by our generalized fold function. As an example, you could use this function to reduce a list of strings to a Boolean value that's true if every string in a list of strings is of even length. First map the list of strings to a list of their lengths, then reduce this list to a Boolean, tt iff all lengths are even.
+
