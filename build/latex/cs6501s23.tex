@@ -81,7 +81,7 @@
 
 
 \title{Computing Foundations}
-\date{Mar 16, 2023}
+\date{Mar 17, 2023}
 \release{1.2.2}
 \author{Kevin Sullivan}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -4777,19 +4777,18 @@ length.
 \subsubsection{Motivation}
 \label{\detokenize{A_03_Recursive_Types:motivation}}
 \sphinxAtStartPar
-There was something notably questionable in the last
-chapter. We defined a \sphinxstyleemphasis{safe} version of \sphinxstyleemphasis{fold} by requiring
-a proof that the value returned for an empty list be a
-\sphinxstyleemphasis{right} (but not a \sphinxstyleemphasis{left}) identity element for the actual
-binary operator parameter given to the fold function.
+In the middle of the last chapter. We defined a \sphinxstyleemphasis{safe}
+version of \sphinxstyleemphasis{fold}  by requiring a proof that the value
+returned for an empty list be a \sphinxstyleemphasis{right} identity element
+for the actual binary operator argument given to the fold
+function: that \sphinxstyleemphasis{∀ n, n + 0 = n.}
 
 \sphinxAtStartPar
-We then found it easy to prove that 0 is indeed a right
-identity for nat.add. They key insight you need to have
-is that it was easy to prove because it’s already given
-to us as an \sphinxstyleemphasis{axiom}. In particular, the first rule in the
-recursive definition of nat.add makes it so. Here’s the
-definition of nat.add from Lean’s core library.
+We also aws that it’s easy to construct such a proof. The
+key insight is that it’s given as an \sphinxstyleemphasis{axiom} of addition.
+In particular, the first rule in the recursive definition
+of nat.add makes it so. Here’s the definition from Lean’s
+core library.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k+kd}{def} \PYG{n}{add} \PYG{o}{:} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat}
@@ -4798,15 +4797,10 @@ definition of nat.add from Lean’s core library.
 \end{sphinxVerbatim}
 
 \sphinxAtStartPar
-Look at the first case/rule: any a added to zero
-is equal to a. This rule establishes that zero is
-a right identity for add.  Here again is our earlier
+Look at the first rule: it stipulates that any value,
+\sphinxstyleemphasis{a}, added to zero is equal to a. This rule establishes that
+zero is a right identity for add.  Here again is our earlier
 statement and proof.
-
-\sphinxAtStartPar
-Note that the \sphinxstyleemphasis{simp} tactict tries to fine, and if
-found applies, rules/axioms from the definition of
-any of the listed functions: here from just nat.add.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k+kd}{example} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{n} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{)}\PYG{o}{,} \PYG{n}{nat.add} \PYG{n}{n} \PYG{l+m+mi}{0} \PYG{n+nb+bp}{=} \PYG{n}{n} \PYG{o}{:=}
@@ -4817,25 +4811,25 @@ any of the listed functions: here from just nat.add.
 \end{sphinxVerbatim}
 
 \sphinxAtStartPar
-An English version of this
-proof might go like this: \sphinxstyleemphasis{We’re to prove
-that for any n, n + 0 = n.} Proof: Assume n
-is an arbitrary but specific natural number.
-By the first rule/axiom defining nat.add we
-can rewrite n + 0 as n. That’s it. As n is
-general, the conjecture, n + 0 = n, is true
-for all n.
-What’s \sphinxstyleemphasis{not} provided by the definition
-of nat.add is an axiom that stipulates
-zero is a \sphinxstyleemphasis{left} identity for nat.add.
-If we try the same proof technique to
-prove \sphinxstyleemphasis{∀ n, 0 + n = n}, with 0 now on
-the left, we can’t! (When writing these
-propositions and proofs, use nat.add in
-a consistent manner instead of 0. It’s
-a complication that’s annoying, but for
-now just follow this simple instruction
-and you’ll be fine.)
+Note that the \sphinxstyleemphasis{simp} tactict tries to find, and if
+found applies, rules/axioms from the definition of
+any of the listed functions: here from just nat.add.
+
+\sphinxAtStartPar
+A natural language version of this proof might go
+like this: \sphinxstyleemphasis{We’re to prove that for any n, n + 0 = n.}
+Proof: By the definition of addition. QED.
+What’s \sphinxstyleemphasis{not} provided by the definition of nat.add is
+an axiom that stipulates that zero is a \sphinxstyleemphasis{left} identity
+for nat.add. To show that zero is \sphinxstyleemphasis{an identity} we need
+to show that both \sphinxstyleemphasis{∀ a, a + 0 = a} and \sphinxstyleemphasis{0 + a = a}.
+
+\sphinxAtStartPar
+The problem is that if we try the same proof technique to
+prove \sphinxstyleemphasis{∀ n, 0 + a = a}, with zero now on the left, it doesn’t
+work. The definition of addition tells us nothing direclty
+about the result when zero is added on the left to a value,
+\sphinxstyleemphasis{a}.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k+kd}{example} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{n}{n}\PYG{o}{,} \PYG{n}{nat.add} \PYG{n}{nat.zero} \PYG{n}{n} \PYG{n+nb+bp}{=} \PYG{n}{n} \PYG{o}{:=}
@@ -4847,9 +4841,8 @@ and you’ll be fine.)
 \end{sphinxVerbatim}
 
 \sphinxAtStartPar
-Looking at what remains to be proved, we
-might consider proof by case analysis on
-n. So let’s try that.
+We might consider proof by case analysis on
+n, but that doesn’t work  So let’s try that.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k+kd}{example} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{n}{n}\PYG{o}{,} \PYG{n}{nat.add} \PYG{n}{nat.zero} \PYG{n}{n} \PYG{n+nb+bp}{=} \PYG{n}{n} \PYG{o}{:=}
@@ -4866,110 +4859,155 @@ n. So let’s try that.
 \PYG{k+kd}{end}
 \end{sphinxVerbatim}
 
-\sphinxAtStartPar
-The problem is that all we know about n’
-is that it’s some natural number, and that
-isn’t enough to work with to prove the goal.
-That’s the probem we solve now.
-
 
 \subsubsection{A Solution}
 \label{\detokenize{A_03_Recursive_Types:a-solution}}
 \sphinxAtStartPar
-What if we knew a little more? What if we
-knew that 0 is a left zero for n’ as part
-of the context in which are to prove that
-it’s a zero for (succ n’)? Would that help?
-
-\sphinxAtStartPar
-It would. Suppose we know that \sphinxstyleemphasis{add 0 n’ = n’}
-and that we want to prive that \sphinxstyleemphasis{add 0 (succ n’)
-= (succ n’)}. Key insight: We can apply the
-\sphinxstyleemphasis{second} axiom of addition,given by the second
-rule in its definition, to rewrite the term,
-\sphinxstyleemphasis{add 0 (succ n’)} to the term \sphinxstyleemphasis{succ (add 0 n’);}
-then we can use the fact that (by assumption)
-0 is a left 0 for n’ to rewrite the term
-\sphinxstyleemphasis{succ (add 0 n’)} to \sphinxstyleemphasis{succ n’.} That’s it.
-We’ve shown that 0 + succ n’ = succ n’.
-
-\sphinxAtStartPar
-But what could possibly justify assuming
-that 0 + n’ = n’ in the first place? Well,
-let’s see if it can be justified informally
-before getting into formalities.
-
-\sphinxAtStartPar
-Let’s start by noting that by the first rule
-of addition, 0 is a left zero for 0. This
-proof gives us a base on which we can now
-construct a proof that 0 is a left zero for 1.
-
-\sphinxAtStartPar
-Details: we want to show that 0 + 1 = 1. That
-is, we want to show that 0 + succ 0 = succ 0.
-By the second rule/axiom of add, the left side
-is succ (0 + 0). \sphinxstyleemphasis{BE SURE YOU UNDERSTAND THIS
-STEP.}  Now yy the first rule, 0 + 0 = 0, so
-we can rewrite succ (0 + 0) to just succ 0.
-With this expression on the left side, all
-thatremains to prove is that succ 0 = succ 0,
-and this is true of course by the reflexivity
-of the equality relation.
-
-\sphinxAtStartPar
-To recap, we proved a “base case” (that
-zero is a left identity for zero) using the
-first axiom of addition. Then we applied the
-second axiom to show that 0 is a left identity
-for 1. With this proof in hand we can apply
-the second axiom \sphinxstyleemphasis{again} to construct a proof
-that zero is left identity for 2. From this
-we can derive that 0 is a left identity for
-3. Indeed to prove that 0 is a left identity
-for \sphinxstyleemphasis{any} n, we start with a proof that it’s
-a left identity for zero using the first
-axiom, then we iteratively apply the second
-axiom n times to prove it’s a left identity
-for \sphinxstyleemphasis{any} n.
-
-\sphinxAtStartPar
-Let’s just program it to make it all clear.
-Out program will take any value n and return
-a proof that 0 is a left identity for it. It
-does this in the reverse order, constructing
-a proof for the case where n is non\sphinxhyphen{}zero, i.e.,
-where n = succ n’ for some n’, and obtaining
-a proof for n’ \sphinxstyleemphasis{by recursion}. The recursive
-calls implement iteration until the base case
-of n = 0 is reached, at which point a proof
-for that case is returned, the recursion
-unwinds, and we’re left with a proof that 0
-is a left identity for that arbitrary n. The
-existence of this function shows that we can
-construct a proof of the proposition that 0
-is a left identity for any n, and so it is
-true \sphinxstyleemphasis{for all} n. And that’s what we wanted.
-QED.
+Let’s take a different approach, starting with
+a problem instance, with zero on the left, that
+we can easily prove: namely when zero is also on
+the right, because in this special case we \sphinxstyleemphasis{can}
+use the first axiom/rule of addition. (Yes, we
+can use rfl instead, but we’re interested to see
+a general approach.)
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} a proof\PYGZhy{}returning function defined by cases}
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} takes any n and returns a proof of 0 + n = n}
-\PYG{k+kd}{def} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}n} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{n}{n}\PYG{o}{,} \PYG{o}{(}\PYG{n}{nat.add} \PYG{l+m+mi}{0} \PYG{n}{n} \PYG{n+nb+bp}{=} \PYG{n}{n}\PYG{o}{)}
-\PYG{n+nb+bp}{|} \PYG{n}{nat.zero} \PYG{o}{:=} \PYG{k+kd}{by} \PYG{n}{simp} \PYG{o}{[}\PYG{n}{nat.add}\PYG{o}{]} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} base case}
-\PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{nat.succ} \PYG{n}{n\PYGZsq{}}\PYG{o}{)} \PYG{o}{:=}              \PYG{c+c1}{\PYGZhy{}\PYGZhy{} recursive case}
-  \PYG{k+kd}{begin}
-  \PYG{n}{simp} \PYG{o}{[}\PYG{n}{nat.add}\PYG{o}{]}\PYG{o}{,}               \PYG{c+c1}{\PYGZhy{}\PYGZhy{} applies second rule and ...}
-                                \PYG{c+c1}{\PYGZhy{}\PYGZhy{} removes succ on each side}
-                                \PYG{c+c1}{\PYGZhy{}\PYGZhy{} by injectivity of constructors}
-                                \PYG{c+c1}{\PYGZhy{}\PYGZhy{} inherent in inductive definitions}
-  \PYG{n}{exact} \PYG{o}{(}\PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}n} \PYG{n}{n\PYGZsq{}}\PYG{o}{)}\PYG{o}{,} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} prove result recursively}
-  \PYG{k+kd}{end}
+\PYG{k+kd}{theorem} \PYG{n}{zero\PYGZus{}left\PYGZus{}id\PYGZus{}zero} \PYG{o}{:} \PYG{n}{nat.zero} \PYG{n+nb+bp}{+} \PYG{n}{nat.zero} \PYG{n+nb+bp}{=} \PYG{n}{nat.zero} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{n}{simp} \PYG{o}{[}\PYG{n}{nat.add}\PYG{o}{]}\PYG{o}{,}
+\PYG{k+kd}{end}
+\end{sphinxVerbatim}
 
+\sphinxAtStartPar
+That was easy. Now the question is whether, with
+this proof in hand, we can now construct a proof
+that 0 + 1 = 1, with zero on the left? We can of
+course prove this using rfl, but we can’t use this
+method to prove that 0 + a = a \sphinxstyleemphasis{for all a}, even
+in principle, because there’s an infinite number
+of natural numbers.
+
+\sphinxAtStartPar
+So let’s see if we can find a method that has the
+potential to generalize to all nat values. Here’s
+the idea: If we can construct a proof for \sphinxstyleemphasis{a = 1}
+(i.e., that 0 + 1 = 1) \sphinxstyleemphasis{from a proof for a = 0},
+which we already have, then maybe we can make this
+method generalize. Let’s see a formal proof then
+discuss is.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{theorem} \PYG{n}{zero\PYGZus{}left\PYGZus{}id\PYGZus{}one} \PYG{o}{:} \PYG{l+m+mi}{0} \PYG{n+nb+bp}{+} \PYG{l+m+mi}{1} \PYG{n+nb+bp}{=} \PYG{l+m+mi}{1} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{c}{/\PYGZhy{}}
+\PYG{c+cm}{K}\PYG{c+cm}{e}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{a}\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{u}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{*}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{*}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{d}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{x}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{m}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{w}\PYG{c+cm}{r}\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{e}
+\PYG{c+cm}{a}\PYG{c+cm}{d}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{0}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{s}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{c}\PYG{c+cm}{ }\PYG{c+cm}{0}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{c}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{0}\PYG{c+cm}{ }\PYG{c+cm}{+}\PYG{c+cm}{ }\PYG{c+cm}{0}\PYG{c+cm}{)}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{P}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{y}
+\PYG{c+cm}{s}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{y}\PYG{c+cm}{o}\PYG{c+cm}{u}\PYG{c+cm}{ }\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{o}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{T}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{w}\PYG{c+cm}{ }\PYG{c+cm}{g}\PYG{c+cm}{o}\PYG{c+cm}{a}\PYG{c+cm}{l}
+\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{u}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{o}\PYG{c+cm}{l}\PYG{c+cm}{l}\PYG{c+cm}{o}\PYG{c+cm}{w}\PYG{c+cm}{s}\PYG{c+cm}{:}
+\PYG{c+cm}{\PYGZhy{}/}
+\PYG{k}{show} \PYG{l+m+mi}{1} \PYG{n+nb+bp}{+} \PYG{o}{(}\PYG{l+m+mi}{0} \PYG{n+nb+bp}{+} \PYG{l+m+mi}{0}\PYG{o}{)} \PYG{n+nb+bp}{=} \PYG{l+m+mi}{1}\PYG{o}{,}
+\PYG{c}{/\PYGZhy{}}
+\PYG{c+cm}{A}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{o}\PYG{c+cm}{w}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{k}\PYG{c+cm}{e}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{a}\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{W}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{u}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}
+\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{a}\PYG{c+cm}{d}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{w}\PYG{c+cm}{r}\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{0}\PYG{c+cm}{ }\PYG{c+cm}{+}\PYG{c+cm}{ }\PYG{c+cm}{0}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{0}\PYG{c+cm}{,}
+\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{o}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{L}\PYG{c+cm}{e}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{n}
+\PYG{c+cm}{b}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{p}\PYG{c+cm}{p}\PYG{c+cm}{l}\PYG{c+cm}{y}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{f}\PYG{c+cm}{l}\PYG{c+cm}{.}
+\PYG{c+cm}{\PYGZhy{}/}
+\PYG{n}{rw} \PYG{n}{zero\PYGZus{}left\PYGZus{}id\PYGZus{}zero}\PYG{o}{,}
+\PYG{c}{/\PYGZhy{}}
+\PYG{c+cm}{W}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{u}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{r}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{0}\PYG{c+cm}{ }\PYG{c+cm}{+}\PYG{c+cm}{ }\PYG{c+cm}{1}\PYG{c+cm}{ }\PYG{c+cm}{=}\PYG{c+cm}{ }\PYG{c+cm}{1}
+\PYG{c+cm}{f}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{m}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{0}\PYG{c+cm}{ }\PYG{c+cm}{+}\PYG{c+cm}{ }\PYG{c+cm}{0}\PYG{c+cm}{ }\PYG{c+cm}{=}\PYG{c+cm}{ }\PYG{c+cm}{0}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{C}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{d}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{g}\PYG{c+cm}{a}\PYG{c+cm}{i}\PYG{c+cm}{n}
+\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{g}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{*}\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{=}\PYG{c+cm}{ }\PYG{c+cm}{2}\PYG{c+cm}{*}\PYG{c+cm}{?}\PYG{c+cm}{ }\PYG{c+cm}{Y}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{.}
+\PYG{c+cm}{\PYGZhy{}/}
+\PYG{k+kd}{end}
+
+\PYG{k+kd}{theorem} \PYG{n}{zero\PYGZus{}left\PYGZus{}id\PYGZus{}two} \PYG{o}{:} \PYG{l+m+mi}{0} \PYG{n+nb+bp}{+} \PYG{l+m+mi}{2} \PYG{n+nb+bp}{=} \PYG{l+m+mi}{2} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} apply second rule of addition}
+\PYG{k}{show} \PYG{l+m+mi}{1} \PYG{n+nb+bp}{+} \PYG{o}{(}\PYG{l+m+mi}{1} \PYG{n+nb+bp}{+} \PYG{l+m+mi}{0}\PYG{o}{)} \PYG{n+nb+bp}{=} \PYG{l+m+mi}{2}\PYG{o}{,}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} apply proof already constructed for *a = 1*}
+\PYG{n}{rewrite} \PYG{n}{zero\PYGZus{}left\PYGZus{}id\PYGZus{}one}\PYG{o}{,}
+\PYG{k+kd}{end}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+Our approach of building a proof for \sphinxstyleemphasis{(a + 1)}
+from a proof for \sphinxstyleemphasis{a} looks good, but clearly we
+can’t give such a derivation for each value of
+\sphinxstyleemphasis{a}! Can we generalize over all possible values
+of \sphinxstyleemphasis{a}?
+
+\sphinxAtStartPar
+We can, actually, and that’s the idea of proof
+by induction. If we have a base proof to start
+with, and from it we can always build a proof
+for the next value of \sphinxstyleemphasis{a}, then by iterating
+that \sphinxstyleemphasis{step} operation (as we did in the examples
+above) then we can build a proof for any \sphinxstyleemphasis{a.}
+To do this we start with the base proof then
+iterate the \sphinxstyleemphasis{step} construction \sphinxstyleemphasis{a} times. So
+let’s see if we can formalize what we mean by
+the \sphinxstyleemphasis{step} operation.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{def} \PYG{n}{left\PYGZus{}id\PYGZus{}step} \PYG{o}{(}\PYG{n}{a\PYGZsq{}} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{)} \PYG{o}{:}
+  \PYG{n}{nat.add} \PYG{l+m+mi}{0} \PYG{n}{a\PYGZsq{}} \PYG{n+nb+bp}{=} \PYG{n}{a\PYGZsq{}} \PYG{n+nb+bp}{→}
+  \PYG{n}{nat.add} \PYG{l+m+mi}{0} \PYG{o}{(}\PYG{n}{a\PYGZsq{}.succ}\PYG{o}{)} \PYG{n+nb+bp}{=} \PYG{o}{(}\PYG{n}{a\PYGZsq{}.succ}\PYG{o}{)} \PYG{o}{:=}
+  \PYG{k+kd}{begin}
+  \PYG{k}{assume} \PYG{n}{induction\PYGZus{}hypothesis}\PYG{o}{,}
+  \PYG{n}{simp} \PYG{o}{[}\PYG{n}{nat.add}\PYG{o}{]}\PYG{o}{,}   \PYG{c+c1}{\PYGZhy{}\PYGZhy{} by second rule for add}
+  \PYG{n}{assumption}\PYG{o}{,}       \PYG{c+c1}{\PYGZhy{}\PYGZhy{} by induction hypothesis}
+  \PYG{k+kd}{end}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+So now we have two proofs: (1) 0 is a left
+identity for 0; (2) \sphinxstyleemphasis{if} 0 is a left identity
+for any natural number, \sphinxstyleemphasis{a’}, then it’s also
+a left identity for \sphinxstyleemphasis{a = a’ + 1}.
+
+\sphinxAtStartPar
+Putting the two proofs together is certainly
+enough us to prove that 0 is also a left identity
+for 1. That in turn should be enough to prove 0
+is a left identity for one. From that proof it’d
+be possible to show it’s a left identity for 2.
+And this process can be iterated to show, in a
+\sphinxstyleemphasis{finite} number of steps, it’s a left identity
+for \sphinxstyleemphasis{any} given natural number value, \sphinxstyleemphasis{a}. And
+\sphinxstyleemphasis{that} finally is enough to deduce that 0 is a
+left identity for \sphinxstyleemphasis{all} natural numbers.
+
+\sphinxAtStartPar
+We can prove this reasoning is correct with a
+function that takes any natural number, \sphinxstyleemphasis{a},
+and that returns a proof that zero is a left
+identity for that particular \sphinxstyleemphasis{a.} Let’s do it.
+The construction is by case analysis on \sphinxstyleemphasis{a} and
+the use of recursion to interate the \sphinxstyleemphasis{step}
+operation \sphinxstyleemphasis{a} times, with the proof for 0 as
+the correct proof in the case of \sphinxstyleemphasis{a = 0}.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{def} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}any\PYGZus{}a} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{a} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{)}\PYG{o}{,} \PYG{o}{(}\PYG{n}{nat.add} \PYG{l+m+mi}{0} \PYG{n}{a} \PYG{n+nb+bp}{=} \PYG{n}{a}\PYG{o}{)}
+\PYG{n+nb+bp}{|} \PYG{l+m+mi}{0} \PYG{o}{:=} \PYG{n}{zero\PYGZus{}left\PYGZus{}id\PYGZus{}zero}
+\PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{nat.succ} \PYG{n}{a\PYGZsq{}}\PYG{o}{)} \PYG{o}{:=} \PYG{o}{(}\PYG{n}{left\PYGZus{}id\PYGZus{}step} \PYG{n}{a\PYGZsq{}} \PYG{o}{(}\PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}any\PYGZus{}a} \PYG{n}{a\PYGZsq{}}\PYG{o}{)}\PYG{o}{)}
+
+\PYG{k}{\PYGZsh{}check} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}any\PYGZus{}a}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+With this universal generalization in hand, we can apply it
+to any particular value of \sphinxstyleemphasis{a} to get a proof that zero is a
+left identity for that particular \sphinxstyleemphasis{a}. Moreover, if we look
+at the proof terms being constructed, it’s clear, even without
+looking at the details, that a proof for \sphinxstyleemphasis{a’ + 1} incorporates
+(is built from) a proof for \sphinxstyleemphasis{a’}.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} eyeball check of the recursive structure of these proofs!}
-\PYG{k}{\PYGZsh{}reduce} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}n} \PYG{l+m+mi}{0}     \PYG{c+c1}{\PYGZhy{}\PYGZhy{} the proof term is unpretty (just eyeball it)}
-\PYG{k}{\PYGZsh{}reduce} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}n} \PYG{l+m+mi}{1}     \PYG{c+c1}{\PYGZhy{}\PYGZhy{} the proof for 1 buids on the proof for 0}
-\PYG{k}{\PYGZsh{}reduce} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}n} \PYG{l+m+mi}{2}     \PYG{c+c1}{\PYGZhy{}\PYGZhy{} the proof for 2 buids on the proof for 1}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}any\PYGZus{}a} \PYG{l+m+mi}{0}     \PYG{c+c1}{\PYGZhy{}\PYGZhy{} the proof term is unpretty (just eyeball it)}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}any\PYGZus{}a} \PYG{l+m+mi}{1}     \PYG{c+c1}{\PYGZhy{}\PYGZhy{} the proof for 1 buids on the proof for 0}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}any\PYGZus{}a} \PYG{l+m+mi}{2}     \PYG{c+c1}{\PYGZhy{}\PYGZhy{} the proof for 2 buids on the proof for 1}
                                 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} and we see we can build such a proof for any n}
                                 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} therefore 0 is a left identity for addition}
 \end{sphinxVerbatim}

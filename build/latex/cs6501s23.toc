@@ -124,11 +124,11 @@
 \contentsline {subsection}{\numberline {4.5.1}Proof by Induction}{62}{subsection.4.5.1}
 \contentsline {subsubsection}{Motivation}{62}{subsubsection*.31}
 \contentsline {subsubsection}{A Solution}{64}{subsubsection*.32}
-\contentsline {subsection}{\numberline {4.5.2}Induction Axioms}{65}{subsection.4.5.2}
-\contentsline {subsection}{\numberline {4.5.3}Inductive Families}{65}{subsection.4.5.3}
-\contentsline {chapter}{\numberline {5}Dependent Types}{67}{chapter.5}
-\contentsline {section}{\numberline {5.1}Σ Types}{67}{section.5.1}
-\contentsline {section}{\numberline {5.2}Π Types}{67}{section.5.2}
-\contentsline {subsection}{\numberline {5.2.1}Indexed Families}{67}{subsection.5.2.1}
-\contentsline {subsection}{\numberline {5.2.2}Dependent Function Types}{67}{subsection.5.2.2}
-\contentsline {chapter}{\numberline {6}Index}{69}{chapter.6}
+\contentsline {subsection}{\numberline {4.5.2}Induction Axioms}{66}{subsection.4.5.2}
+\contentsline {subsection}{\numberline {4.5.3}Inductive Families}{66}{subsection.4.5.3}
+\contentsline {chapter}{\numberline {5}Dependent Types}{69}{chapter.5}
+\contentsline {section}{\numberline {5.1}Σ Types}{69}{section.5.1}
+\contentsline {section}{\numberline {5.2}Π Types}{69}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}Indexed Families}{69}{subsection.5.2.1}
+\contentsline {subsection}{\numberline {5.2.2}Dependent Function Types}{69}{subsection.5.2.2}
+\contentsline {chapter}{\numberline {6}Index}{71}{chapter.6}

@@ -10,18 +10,17 @@ Proof by Induction
 Motivation
 ~~~~~~~~~~
 
-There was something notably questionable in the last
-chapter. We defined a *safe* version of *fold* by requiring
-a proof that the value returned for an empty list be a 
-*right* (but not a *left*) identity element for the actual
-binary operator parameter given to the fold function.
+In the middle of the last chapter. We defined a *safe* 
+version of *fold*  by requiring a proof that the value 
+returned for an empty list be a *right* identity element 
+for the actual binary operator argument given to the fold 
+function: that *∀ n, n + 0 = n.* 
 
-We then found it easy to prove that 0 is indeed a right
-identity for nat.add. They key insight you need to have
-is that it was easy to prove because it's already given
-to us as an *axiom*. In particular, the first rule in the
-recursive definition of nat.add makes it so. Here's the
-definition of nat.add from Lean's core library. 
+We also aws that it's easy to construct such a proof. The
+key insight is that it's given as an *axiom* of addition. 
+In particular, the first rule in the recursive definition
+of nat.add makes it so. Here's the definition from Lean's
+core library. 
 TEXT. -/
 
 -- QUOTE:
@@ -31,14 +30,10 @@ def add : nat → nat → nat
 -- QUOTE. 
 
 /- TEXT:
-Look at the first case/rule: any a added to zero
-is equal to a. This rule establishes that zero is
-a right identity for add.  Here again is our earlier
-statement and proof. 
-
-Note that the *simp* tactict tries to fine, and if 
-found applies, rules/axioms from the definition of 
-any of the listed functions: here from just nat.add. 
+Look at the first rule: it stipulates that any value,
+*a*, added to zero is equal to a. This rule establishes that 
+zero is a right identity for add.  Here again is our earlier
+statement and proof.  
 TEXT. -/
 
 -- QUOTE:
@@ -50,28 +45,26 @@ end
 -- QUOTE. 
 
 /- TEXT:
-An English version of this 
-proof might go like this: *We're to prove 
-that for any n, n + 0 = n.* Proof: Assume n
-is an arbitrary but specific natural number. 
-By the first rule/axiom defining nat.add we 
-can rewrite n + 0 as n. That's it. As n is
-general, the conjecture, n + 0 = n, is true 
-for all n. 
+Note that the *simp* tactict tries to find, and if 
+found applies, rules/axioms from the definition of 
+any of the listed functions: here from just nat.add.
+
+A natural language version of this proof might go
+like this: *We're to prove that for any n, n + 0 = n.* 
+Proof: By the definition of addition. QED. 
 TEXT. -/
 
 /- TEXT: 
-What's *not* provided by the definition
-of nat.add is an axiom that stipulates
-zero is a *left* identity for nat.add.
-If we try the same proof technique to
-prove *∀ n, 0 + n = n*, with 0 now on
-the left, we can't! (When writing these
-propositions and proofs, use nat.add in
-a consistent manner instead of 0. It's 
-a complication that's annoying, but for
-now just follow this simple instruction
-and you'll be fine.)
+What's *not* provided by the definition of nat.add is 
+an axiom that stipulates that zero is a *left* identity
+for nat.add. To show that zero is *an identity* we need
+to show that both *∀ a, a + 0 = a* and *0 + a = a*.
+
+The problem is that if we try the same proof technique to
+prove *∀ n, 0 + a = a*, with zero now on the left, it doesn't 
+work. The definition of addition tells us nothing direclty
+about the result when zero is added on the left to a value,
+*a*. 
 TEXT. -/
 
 -- QUOTE:
@@ -84,9 +77,8 @@ end
 -- QUOTE. 
 
 /- TEXT:
-Looking at what remains to be proved, we
-might consider proof by case analysis on
-n. So let's try that. 
+We might consider proof by case analysis on
+n, but that doesn't work  So let's try that. 
 TEXT. -/
 
 -- QUOTE:
@@ -105,104 +97,158 @@ end
 -- QUOTE. 
 
 /- TEXT:
-The problem is that all we know about n'
-is that it's some natural number, and that
-isn't enough to work with to prove the goal.
-That's the probem we solve now.
-
-
 A Solution
 ~~~~~~~~~~
 
-What if we knew a little more? What if we
-knew that 0 is a left zero for n' as part
-of the context in which are to prove that
-it's a zero for (succ n')? Would that help?
-
-It would. Suppose we know that *add 0 n' = n'*
-and that we want to prive that *add 0 (succ n')
-= (succ n')*. Key insight: We can apply the 
-*second* axiom of addition,given by the second 
-rule in its definition, to rewrite the term, 
-*add 0 (succ n')* to the term *succ (add 0 n');*
-then we can use the fact that (by assumption) 
-0 is a left 0 for n' to rewrite the term 
-*succ (add 0 n')* to *succ n'.* That's it. 
-We've shown that 0 + succ n' = succ n'.
-
-But what could possibly justify assuming 
-that 0 + n' = n' in the first place? Well,
-let's see if it can be justified informally
-before getting into formalities.
-
-Let's start by noting that by the first rule 
-of addition, 0 is a left zero for 0. This
-proof gives us a base on which we can now
-construct a proof that 0 is a left zero for 1. 
-
-Details: we want to show that 0 + 1 = 1. That 
-is, we want to show that 0 + succ 0 = succ 0. 
-By the second rule/axiom of add, the left side 
-is succ (0 + 0). *BE SURE YOU UNDERSTAND THIS
-STEP.*  Now yy the first rule, 0 + 0 = 0, so 
-we can rewrite succ (0 + 0) to just succ 0. 
-With this expression on the left side, all 
-thatremains to prove is that succ 0 = succ 0,
-and this is true of course by the reflexivity 
-of the equality relation. 
-
-To recap, we proved a "base case" (that
-zero is a left identity for zero) using the 
-first axiom of addition. Then we applied the
-second axiom to show that 0 is a left identity
-for 1. With this proof in hand we can apply
-the second axiom *again* to construct a proof
-that zero is left identity for 2. From this
-we can derive that 0 is a left identity for
-3. Indeed to prove that 0 is a left identity
-for *any* n, we start with a proof that it's 
-a left identity for zero using the first
-axiom, then we iteratively apply the second
-axiom n times to prove it's a left identity
-for *any* n. 
-
-Let's just program it to make it all clear.
-Out program will take any value n and return
-a proof that 0 is a left identity for it. It
-does this in the reverse order, constructing
-a proof for the case where n is non-zero, i.e.,
-where n = succ n' for some n', and obtaining 
-a proof for n' *by recursion*. The recursive
-calls implement iteration until the base case
-of n = 0 is reached, at which point a proof
-for that case is returned, the recursion
-unwinds, and we're left with a proof that 0
-is a left identity for that arbitrary n. The
-existence of this function shows that we can
-construct a proof of the proposition that 0
-is a left identity for any n, and so it is
-true *for all* n. And that's what we wanted.
-QED. 
+Let's take a different approach, starting with 
+a problem instance, with zero on the left, that 
+we can easily prove: namely when zero is also on
+the right, because in this special case we *can*
+use the first axiom/rule of addition. (Yes, we
+can use rfl instead, but we're interested to see
+a general approach.)
 TEXT. -/
 
--- QUOTE: 
--- a proof-returning function defined by cases
--- takes any n and returns a proof of 0 + n = n
-def zero_left_ident_n : ∀ n, (nat.add 0 n = n)
-| nat.zero := by simp [nat.add] -- base case
-| (nat.succ n') :=              -- recursive case
-  begin 
-  simp [nat.add],               -- applies second rule and ...
-                                -- removes succ on each side
-                                -- by injectivity of constructors
-                                -- inherent in inductive definitions
-  exact (zero_left_ident_n n'), -- prove result recursively 
-  end 
+-- QUOTE:
+theorem zero_left_id_zero : nat.zero + nat.zero = nat.zero := 
+begin
+simp [nat.add],
+end
+-- QUOTE.
 
+/- TEXT:
+That was easy. Now the question is whether, with 
+this proof in hand, we can now construct a proof 
+that 0 + 1 = 1, with zero on the left? We can of 
+course prove this using rfl, but we can't use this
+method to prove that 0 + a = a *for all a*, even 
+in principle, because there's an infinite number
+of natural numbers.  
+
+So let's see if we can find a method that has the
+potential to generalize to all nat values. Here's 
+the idea: If we can construct a proof for *a = 1* 
+(i.e., that 0 + 1 = 1) *from a proof for a = 0*, 
+which we already have, then maybe we can make this
+method generalize. Let's see a formal proof then
+discuss is.
+TEXT. -/
+
+
+-- QUOTE:
+theorem zero_left_id_one : 0 + 1 = 1 := 
+begin
+/-
+Key idea: use *second* add axiom to rewrite 
+add 0 (succ 0) to succ (0 + 0). Please be very
+sure you understand this point. The new goal
+to prove is thus as follows: 
+-/ 
+show 1 + (0 + 0) = 1,  
+/-
+And now, the second key idea: We can use the
+proof we already have to rewrite 0 + 0 as 0,
+and at that point Lean sees that the proof can
+be finished by applying rfl. 
+-/
+rw zero_left_id_zero,
+/-
+We have thus constructed a proof of 0 + 1 = 1
+from a proof of 0 + 0 = 0. Can we do it again
+to get a proof for *a = 2*? Yes, we can.
+-/
+end  
+
+theorem zero_left_id_two : 0 + 2 = 2 :=
+begin
+-- apply second rule of addition
+show 1 + (1 + 0) = 2,
+-- apply proof already constructed for *a = 1*
+rewrite zero_left_id_one,
+end 
+-- QUOTE.
+
+/- TEXT:
+Our approach of building a proof for *(a + 1)*
+from a proof for *a* looks good, but clearly we
+can't give such a derivation for each value of
+*a*! Can we generalize over all possible values
+of *a*? 
+
+We can, actually, and that's the idea of proof 
+by induction. If we have a base proof to start
+with, and from it we can always build a proof
+for the next value of *a*, then by iterating
+that *step* operation (as we did in the examples
+above) then we can build a proof for any *a.*
+To do this we start with the base proof then 
+iterate the *step* construction *a* times. So
+let's see if we can formalize what we mean by
+the *step* operation. 
+TEXT. -/
+
+-- QUOTE:
+def left_id_step (a' : ℕ) : 
+  nat.add 0 a' = a' → 
+  nat.add 0 (a'.succ) = (a'.succ) :=
+  begin
+  assume induction_hypothesis,
+  simp [nat.add],   -- by second rule for add
+  assumption,       -- by induction hypothesis
+  end
+
+-- QUOTE.
+
+/- TEXT:
+
+So now we have two proofs: (1) 0 is a left 
+identity for 0; (2) *if* 0 is a left identity
+for any natural number, *a'*, then it's also
+a left identity for *a = a' + 1*. 
+
+Putting the two proofs together is certainly 
+enough us to prove that 0 is also a left identity
+for 1. That in turn should be enough to prove 0 
+is a left identity for one. From that proof it'd
+be possible to show it's a left identity for 2.
+And this process can be iterated to show, in a
+*finite* number of steps, it's a left identity 
+for *any* given natural number value, *a*. And
+*that* finally is enough to deduce that 0 is a
+left identity for *all* natural numbers. 
+
+We can prove this reasoning is correct with a 
+function that takes any natural number, *a*, 
+and that returns a proof that zero is a left 
+identity for that particular *a.* Let's do it.
+The construction is by case analysis on *a* and
+the use of recursion to interate the *step* 
+operation *a* times, with the proof for 0 as
+the correct proof in the case of *a = 0*.  
+TEXT. -/
+
+-- QUOTE:
+def zero_left_ident_any_a : ∀ (a : ℕ), (nat.add 0 a = a) 
+| 0 := zero_left_id_zero
+| (nat.succ a') := (left_id_step a' (zero_left_ident_any_a a'))
+
+#check zero_left_ident_any_a
+-- QUOTE. 
+
+/- TEXT:
+With this universal generalization in hand, we can apply it
+to any particular value of *a* to get a proof that zero is a
+left identity for that particular *a*. Moreover, if we look
+at the proof terms being constructed, it's clear, even without
+looking at the details, that a proof for *a' + 1* incorporates
+(is built from) a proof for *a'*.
+TEXT. -/
+
+-- QUOTE:
 -- eyeball check of the recursive structure of these proofs!
-#reduce zero_left_ident_n 0     -- the proof term is unpretty (just eyeball it)
-#reduce zero_left_ident_n 1     -- the proof for 1 buids on the proof for 0
-#reduce zero_left_ident_n 2     -- the proof for 2 buids on the proof for 1
+#reduce zero_left_ident_any_a 0     -- the proof term is unpretty (just eyeball it)
+#reduce zero_left_ident_any_a 1     -- the proof for 1 buids on the proof for 0
+#reduce zero_left_ident_any_a 2     -- the proof for 2 buids on the proof for 1
                                 -- and we see we can build such a proof for any n
                                 -- therefore 0 is a left identity for addition
 -- QUOTE.

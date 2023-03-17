@@ -34,23 +34,67 @@ simp [nat.add],
 end
 
 
--- a proof-returning function defined by cases
--- takes any n and returns a proof of 0 + n = n
-def zero_left_ident_n : ∀ n, (nat.add 0 n = n)
-| nat.zero := by simp [nat.add] -- base case
-| (nat.succ n') :=              -- recursive case
-  begin 
-  simp [nat.add],               -- applies second rule and ...
-                                -- removes succ on each side
-                                -- by injectivity of constructors
-                                -- inherent in inductive definitions
-  exact (zero_left_ident_n n'), -- prove result recursively 
-  end 
+theorem zero_left_id_zero : nat.zero + nat.zero = nat.zero := 
+begin
+simp [nat.add],
+end
+
+
+
+theorem zero_left_id_one : 0 + 1 = 1 := 
+begin
+/-
+Key idea: use *second* add axiom to rewrite 
+add 0 (succ 0) to succ (0 + 0). Please be very
+sure you understand this point. The new goal
+to prove is thus as follows: 
+-/ 
+show 1 + (0 + 0) = 1,  
+/-
+And now, the second key idea: We can use the
+proof we already have to rewrite 0 + 0 as 0,
+and at that point Lean sees that the proof can
+be finished by applying rfl. 
+-/
+rw zero_left_id_zero,
+/-
+We have thus constructed a proof of 0 + 1 = 1
+from a proof of 0 + 0 = 0. Can we do it again
+to get a proof for *a = 2*? Yes, we can.
+-/
+end  
+
+theorem zero_left_id_two : 0 + 2 = 2 :=
+begin
+-- apply second rule of addition
+show 1 + (1 + 0) = 2,
+-- apply proof already constructed for *a = 1*
+rewrite zero_left_id_one,
+end 
+
+
+def left_id_step (a' : ℕ) : 
+  nat.add 0 a' = a' → 
+  nat.add 0 (a'.succ) = (a'.succ) :=
+  begin
+  assume induction_hypothesis,
+  simp [nat.add],   -- by second rule for add
+  assumption,       -- by induction hypothesis
+  end
+
+
+
+def zero_left_ident_any_a : ∀ (a : ℕ), (nat.add 0 a = a) 
+| 0 := zero_left_id_zero
+| (nat.succ a') := (left_id_step a' (zero_left_ident_any_a a'))
+
+#check zero_left_ident_any_a
+
 
 -- eyeball check of the recursive structure of these proofs!
-#reduce zero_left_ident_n 0     -- the proof term is unpretty (just eyeball it)
-#reduce zero_left_ident_n 1     -- the proof for 1 buids on the proof for 0
-#reduce zero_left_ident_n 2     -- the proof for 2 buids on the proof for 1
+#reduce zero_left_ident_any_a 0     -- the proof term is unpretty (just eyeball it)
+#reduce zero_left_ident_any_a 1     -- the proof for 1 buids on the proof for 0
+#reduce zero_left_ident_any_a 2     -- the proof for 2 buids on the proof for 1
                                 -- and we see we can build such a proof for any n
                                 -- therefore 0 is a left identity for addition
 
