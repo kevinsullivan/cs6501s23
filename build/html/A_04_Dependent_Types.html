@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>5. Dependent Types &mdash; CS6501 Spring 2023 1.2.2 documentation</title>
+  <title>Dependent Types &mdash; CS6501 Spring 2023 1.2.2 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
@@ -21,9 +21,7 @@
         <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Index" href="genindex.html" />
-    <link rel="prev" title="4. Recursive Types" href="A_03_Recursive_Types.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -41,20 +39,11 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="A_00_Introduction.html">1. CS6501 Spring 2023</a></li>
 <li class="toctree-l1"><a class="reference internal" href="A_01_Propositional_Logic.html">2. Propositional Logic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="A_02_Constructive_Logic.html">3. Constructive Logic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="A_03_Recursive_Types.html">4. Recursive Types</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">5. Dependent Types</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#types">5.1. &#931; Types</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id1">5.2. &#928; Types</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#indexed-families">5.2.1. Indexed Families</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#dependent-function-types">5.2.2. Dependent Function Types</a></li>
-</ul>
-</li>
-</ul>
-</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
@@ -74,7 +63,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a></li>
-      <li class="breadcrumb-item active"><span class="section-number">5. </span>Dependent Types</li>
+      <li class="breadcrumb-item active">Dependent Types</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/A_04_Dependent_Types.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -85,12 +74,12 @@
            <div itemprop="articleBody">
              
   <section id="dependent-types">
-<span id="introduction"></span><h1><span class="section-number">5. </span>Dependent Types<a class="headerlink" href="#dependent-types" title="Permalink to this heading">&#61633;</a></h1>
+<span id="introduction"></span><h1>Dependent Types<a class="headerlink" href="#dependent-types" title="Permalink to this heading">&#61633;</a></h1>
 <section id="types">
-<h2><span class="section-number">5.1. </span>&#931; Types<a class="headerlink" href="#types" title="Permalink to this heading">&#61633;</a></h2>
+<h2>&#931; Types<a class="headerlink" href="#types" title="Permalink to this heading">&#61633;</a></h2>
 </section>
 <section id="id1">
-<h2><span class="section-number">5.2. </span>&#928; Types<a class="headerlink" href="#id1" title="Permalink to this heading">&#61633;</a></h2>
+<h2>&#928; Types<a class="headerlink" href="#id1" title="Permalink to this heading">&#61633;</a></h2>
 <p>A Pi type associates types with values.
 We define a predicate, Q, as an example
 to use in what follows. Q is true of any
@@ -103,7 +92,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </pre></div>
 </div>
 </div><section id="indexed-families">
-<h3><span class="section-number">5.2.1. </span>Indexed Families<a class="headerlink" href="#indexed-families" title="Permalink to this heading">&#61633;</a></h3>
+<h3>Indexed Families<a class="headerlink" href="#indexed-families" title="Permalink to this heading">&#61633;</a></h3>
 <p>Note that each <em>n</em> to to which one applies
 <em>Q</em> gives rised to a proposition&#8211;a type&#8211;that
 <em>is about</em> (and in this sense, depends on) <em>n</em>.
@@ -128,7 +117,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </div>
 </div></section>
 <section id="dependent-function-types">
-<h3><span class="section-number">5.2.2. </span>Dependent Function Types<a class="headerlink" href="#dependent-function-types" title="Permalink to this heading">&#61633;</a></h3>
+<h3>Dependent Function Types<a class="headerlink" href="#dependent-function-types" title="Permalink to this heading">&#61633;</a></h3>
 <p>The next insight to gain is that we can now define
 functions that return <em>values of dependent types</em>.
 To continue the preceding example, we define a new
@@ -168,10 +157,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="A_03_Recursive_Types.html" class="btn btn-neutral float-left" title="4. Recursive Types" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="genindex.html" class="btn btn-neutral float-right" title="Index" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

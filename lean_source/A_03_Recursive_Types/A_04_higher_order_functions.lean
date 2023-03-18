@@ -347,8 +347,8 @@ TEXT. -/
 
 /- TEXT:
 
-Fold: list α → α 
-----------------
+Fold list: α → α → α  
+--------------------
 
 We now turn to a very different higher-order function
 appliable to lists. It's called *fold* (or event better, 
@@ -614,15 +614,20 @@ Let's do some test-driven development here.
 (3) Complete implementation and expect test cases to pass
 -/
 def n_ary_append {α : Type} : list (list α) → list α
+| [] := []
+| (h::t) := h ++ n_ary_append t
+
 
 -- test cases for 0, 1, 2, and more arguments
-example : n_ary_append [] = [] := rfl
-example : n_ary_append [[1,2,3]]] = [1,2,3] := rfl
+example : @n_ary_append nat [] = [] := rfl
+example : n_ary_append [[1,2,3]] = [1,2,3] := rfl
 example : n_ary_append [[1,2,3],[4,5,6]] = [1,2,3,4,5,6] := rfl
 example : n_ary_append [[1,2,3],[4,5,6],[7,8,9]] = [1,2,3,4,5,6,7,8,9] := rfl
 
 -- Problem #2
 def sum_lengths {α : Type} : list (list α) → nat
+| [] := 0
+| (h::t) := (list.length h) + (sum_lengths t)
 
 example : @sum_lengths nat [] = 0 := rfl
 example : sum_lengths [[1,2,3]] = 3 := rfl
@@ -631,6 +636,8 @@ example : sum_lengths [[1,2,3],[4,5,6],[7,8,9]] = 9 := rfl
 
 -- Problem #3 
 def even_lengths {α : Type} : list (list α) → bool
+| [] := tt
+| (h::t) := (is_even (list.length h)) && (even_lengths t)
 
 example : @even_lengths nat [] = tt := rfl
 example : even_lengths [[1,2,3],[4,5,6],[7,8,9]] = ff := rfl
@@ -640,8 +647,8 @@ example : even_lengths [[1,2,3,4],[4,5,6,7],[7,8,9,0]] = tt := rfl
 
 /- TEXT:
 
-Fold: list α → β
--------------------
+Fold list: α → β → β 
+--------------------
 
 The preceding few exercises all reduce a list of objects of
 one type (α) to a result of another (possibly the same) type
@@ -722,25 +729,28 @@ its whole *right*-hand tail, t.
 TEXT. -/
 
 -- QUOTE:
-def foldr {α β : Type} : _
-  -- op type
-  -- id type
-  -- list type  
-  -- result type
-| _ := _
-| _ := _
+def foldr {α β : Type} : (α → β → β) → β → (list α) → β 
+| op id [] := id
+| op id (h::t) := op h (foldr op id t)
 
-def all_even_yay : list nat → bool := 
-  foldr all_even_op 
+#check @foldr
+
+def all_even_yay : list nat → bool := foldr all_even_op tt
+
+#check all_even_yay
 
 
 #eval all_even_yay []       -- expect tt
 #eval all_even_yay [1]      -- expect ff
 #eval all_even_yay [0,2,4]  -- expect tt
 #eval all_even_yay [0,2,5]  -- expect ff
+
+
 #eval foldr nat.add 0 [1,2,3,4,5] 
 #eval foldr nat.mul 1 [1,2,3,4,5] 
 -- QUOTE.
+
+def any_true : list bool → bool := foldr bor ff 
 
 /- TEXT:
 
@@ -758,10 +768,85 @@ Exercises
 ---------
 
 
--- Define an n-ary Boolean "and" function using foldr.
--- Define an n-ary Boolean "or" function using foldr.
--- Define an n-ary ℕ addition operator using foldr.
--- Define an n-ary ℕ multiplication operator using foldr.
--- Define a function called map-reduce. It should accept list of objects of any type α, a function that converts α objects to β objects, and a binary operation suitable for use by our generalized fold function. As an example, you could use this function to reduce a list of strings to a Boolean value that's true if every string in a list of strings is of even length. First map the list of strings to a list of their lengths, then reduce this list to a Boolean, tt iff all lengths are even.
+- Define an n-ary Boolean "and" function using foldr.
+- Define an n-ary Boolean "or" function using foldr.
+- Define an n-ary ℕ addition operator using foldr.
+- Define an n-ary ℕ multiplication operator using foldr.
+- Define a function called map-reduce. It should accept list of objects of any type α, a function that converts α objects to β objects, and a binary operation suitable for use by our generalized fold function. As an example, you could use this function to reduce a list of strings to a Boolean value that's true if every string in a list of strings is of even length. First map the list of strings to a list of their lengths, then reduce this list to a Boolean, tt iff all lengths are even.
 
 TEXT. -/
+#check nat.add
+/- TEXT:
+Looking forward
+---------------
+
+This chapter introduced the idea that for fold to work 
+correctly, it must be provided both a binary operator, op
+(for now let's assume of type α → α → α), and an identity
+element *for that operator* to be returned as a result for
+an empty list. We saw that unless additional measures are
+taken, we can't prevent inconsistencies between operator
+and identity element values. Then we showed that we can
+enforce consistency by requiring an additional argument,
+namely a proof that *id* really *is* an identity element
+for *op*. 
+
+For id to be an identity element it has to be that for
+any *(a : α), op id a = a* (*id* is a *left* identity) 
+and *op a id = a* (*id* is a *right* identity). We were
+able to prove easily that *0* is a right identity for 
+*nat.add*. The reason this is an easy proof is that it's
+an *axiom* given by the definition of addition.::  
+
+  def add : nat → nat → nat
+    | a  zero     := a
+    | a  (succ b) := succ (add a b)
+
+The first "rule" of addition states that for any *a*,
+*add a 0* reduces to just *a*.  Here's a formal proof
+that zero is a right identity for addition.
+TEXT. -/
+
+-- QUOTE:
+example : ∀ n : nat, nat.add n 0 = n := 
+begin
+assume n,
+by simp [nat.add],
+end
+-- QUOTE.
+
+/- TEXT:
+The problem is that there's no similar axiom proving 
+that zero if a *left* identity for nat addition, so
+we can't use a similar proof.  
+TEXT. -/
+
+-- QUOTE:
+example : ∀ n : nat, nat.add 0 n = n := 
+begin
+assume n,
+simp [nat.add],   -- nope, no rule matches the goal
+end
+-- QUOTE.
+
+/- TEXT:
+The clever mathematician might suggest that we try a 
+proof by case analysis on *n*, but that doesn't work
+either. 
+TEXT. -/
+
+-- QUOTE:
+example : ∀ n : nat, nat.add 0 n = n := 
+begin
+assume n,
+cases n with n',  -- nope, no rule matches the goal
+simp [nat.add],   -- base case is easy
+                  -- but now we're stuck
+end
+-- QUOTE.
+
+/- TEXT:
+In the next chapter, we'll see how to prove this 
+proposition using a method new for us: *proof by induction*.
+TEXT. -/
+

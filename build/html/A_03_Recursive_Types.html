@@ -22,7 +22,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="5. Dependent Types" href="A_04_Dependent_Types.html" />
+    <link rel="next" title="Index" href="genindex.html" />
     <link rel="prev" title="3. Constructive Logic" href="A_02_Constructive_Logic.html" /> 
 </head>
 
@@ -75,7 +75,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#map">4.4.3. Map</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#fold-list">4.4.4. Fold: list &#945; &#8594; &#945;</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fold-list">4.4.4. Fold list: &#945; &#8594; &#945; &#8594; &#945;</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#overview">4.4.4.1. Overview</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#generalizing-the-binary-operation">4.4.4.2. Generalizing the binary operation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#operator-identity-inconsistency">4.4.4.3. Operator-identity inconsistency</a></li>
@@ -84,13 +84,14 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#id4">4.4.5. Exercises</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id5">4.4.6. Fold: list &#945; &#8594; &#946;</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id5">4.4.6. Fold list: &#945; &#8594; &#946; &#8594; &#946;</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#mixed-type-binary-operations">4.4.6.1. Mixed-type binary operations</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#extending-such-operations">4.4.6.2. Extending such operations</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#summary">4.4.7. Summary</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id6">4.4.8. Exercises</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#looking-forward">4.4.9. Looking forward</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#recursive-proofs">4.5. Recursive Proofs</a><ul>
@@ -105,7 +106,6 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="A_04_Dependent_Types.html">5. Dependent Types</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
@@ -858,7 +858,7 @@ on the types of the arguments to which the + operator is
 applied.  More on this topic later.</p>
 </section>
 <section id="fold-list">
-<h3><span class="section-number">4.4.4. </span>Fold: list &#945; &#8594; &#945;<a class="headerlink" href="#fold-list" title="Permalink to this heading">&#61633;</a></h3>
+<h3><span class="section-number">4.4.4. </span>Fold list: &#945; &#8594; &#945; &#8594; &#945;<a class="headerlink" href="#fold-list" title="Permalink to this heading">&#61633;</a></h3>
 <p>We now turn to a very different higher-order function
 appliable to lists. It&#8217;s called <em>fold</em> (or event better,
 <em>fold_right</em>) or <em>reduce</em>.</p>
@@ -1079,7 +1079,7 @@ to compute the length of any list.</p>
 lists of &#945; and that returns true if the length of each of
 the elements lists is even and false otherwise.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20Problem%20%231%0A%2F-%0ALet's%20do%20some%20test-driven%20development%20here.%0A(1)%20Define%20function%20type%0A(2)%20Write%20(initially%20failing)%20test%20cases%0A(3)%20Complete%20implementation%20and%20expect%20test%20cases%20to%20pass%0A-%2F%0Adef%20n_ary_append%20%7B%CE%B1%20%3A%20Type%7D%20%3A%20list%20(list%20%CE%B1)%20%E2%86%92%20list%20%CE%B1%0A%0A--%20test%20cases%20for%200%2C%201%2C%202%2C%20and%20more%20arguments%0Aexample%20%3A%20n_ary_append%20%5B%5D%20%3D%20%5B%5D%20%3A%3D%20rfl%0Aexample%20%3A%20n_ary_append%20%5B%5B1%2C2%2C3%5D%5D%5D%20%3D%20%5B1%2C2%2C3%5D%20%3A%3D%20rfl%0Aexample%20%3A%20n_ary_append%20%5B%5B1%2C2%2C3%5D%2C%5B4%2C5%2C6%5D%5D%20%3D%20%5B1%2C2%2C3%2C4%2C5%2C6%5D%20%3A%3D%20rfl%0Aexample%20%3A%20n_ary_append%20%5B%5B1%2C2%2C3%5D%2C%5B4%2C5%2C6%5D%2C%5B7%2C8%2C9%5D%5D%20%3D%20%5B1%2C2%2C3%2C4%2C5%2C6%2C7%2C8%2C9%5D%20%3A%3D%20rfl%0A%0A--%20Problem%20%232%0Adef%20sum_lengths%20%7B%CE%B1%20%3A%20Type%7D%20%3A%20list%20(list%20%CE%B1)%20%E2%86%92%20nat%0A%0Aexample%20%3A%20%40sum_lengths%20nat%20%5B%5D%20%3D%200%20%3A%3D%20rfl%0Aexample%20%3A%20sum_lengths%20%5B%5B1%2C2%2C3%5D%5D%20%3D%203%20%3A%3D%20rfl%0Aexample%20%3A%20sum_lengths%20%5B%5B1%2C2%2C3%5D%2C%5B4%2C5%2C6%5D%5D%20%3D%206%20%3A%3D%20rfl%0Aexample%20%3A%20sum_lengths%20%5B%5B1%2C2%2C3%5D%2C%5B4%2C5%2C6%5D%2C%5B7%2C8%2C9%5D%5D%20%3D%209%20%3A%3D%20rfl%0A%0A--%20Problem%20%233%0Adef%20even_lengths%20%7B%CE%B1%20%3A%20Type%7D%20%3A%20list%20(list%20%CE%B1)%20%E2%86%92%20bool%0A%0Aexample%20%3A%20%40even_lengths%20nat%20%5B%5D%20%3D%20tt%20%3A%3D%20rfl%0Aexample%20%3A%20even_lengths%20%5B%5B1%2C2%2C3%5D%2C%5B4%2C5%2C6%5D%2C%5B7%2C8%2C9%5D%5D%20%3D%20ff%20%3A%3D%20rfl%0Aexample%20%3A%20even_lengths%20%5B%5B1%2C2%2C3%2C4%5D%2C%5B4%2C5%2C6%5D%2C%5B7%2C8%2C9%5D%5D%20%3D%20ff%20%3A%3D%20rfl%0Aexample%20%3A%20even_lengths%20%5B%5B1%2C2%2C3%2C4%5D%2C%5B4%2C5%2C6%2C7%5D%2C%5B7%2C8%2C9%2C0%5D%5D%20%3D%20tt%20%3A%3D%20rfl" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_551.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20Problem%20%231%0A%2F-%0ALet's%20do%20some%20test-driven%20development%20here.%0A(1)%20Define%20function%20type%0A(2)%20Write%20(initially%20failing)%20test%20cases%0A(3)%20Complete%20implementation%20and%20expect%20test%20cases%20to%20pass%0A-%2F%0Adef%20n_ary_append%20%7B%CE%B1%20%3A%20Type%7D%20%3A%20list%20(list%20%CE%B1)%20%E2%86%92%20list%20%CE%B1%0A%7C%20%5B%5D%20%3A%3D%20%5B%5D%0A%7C%20(h%3A%3At)%20%3A%3D%20h%20%2B%2B%20n_ary_append%20t%0A%0A%0A--%20test%20cases%20for%200%2C%201%2C%202%2C%20and%20more%20arguments%0Aexample%20%3A%20%40n_ary_append%20nat%20%5B%5D%20%3D%20%5B%5D%20%3A%3D%20rfl%0Aexample%20%3A%20n_ary_append%20%5B%5B1%2C2%2C3%5D%5D%20%3D%20%5B1%2C2%2C3%5D%20%3A%3D%20rfl%0Aexample%20%3A%20n_ary_append%20%5B%5B1%2C2%2C3%5D%2C%5B4%2C5%2C6%5D%5D%20%3D%20%5B1%2C2%2C3%2C4%2C5%2C6%5D%20%3A%3D%20rfl%0Aexample%20%3A%20n_ary_append%20%5B%5B1%2C2%2C3%5D%2C%5B4%2C5%2C6%5D%2C%5B7%2C8%2C9%5D%5D%20%3D%20%5B1%2C2%2C3%2C4%2C5%2C6%2C7%2C8%2C9%5D%20%3A%3D%20rfl%0A%0A--%20Problem%20%232%0Adef%20sum_lengths%20%7B%CE%B1%20%3A%20Type%7D%20%3A%20list%20(list%20%CE%B1)%20%E2%86%92%20nat%0A%7C%20%5B%5D%20%3A%3D%200%0A%7C%20(h%3A%3At)%20%3A%3D%20(list.length%20h)%20%2B%20(sum_lengths%20t)%0A%0Aexample%20%3A%20%40sum_lengths%20nat%20%5B%5D%20%3D%200%20%3A%3D%20rfl%0Aexample%20%3A%20sum_lengths%20%5B%5B1%2C2%2C3%5D%5D%20%3D%203%20%3A%3D%20rfl%0Aexample%20%3A%20sum_lengths%20%5B%5B1%2C2%2C3%5D%2C%5B4%2C5%2C6%5D%5D%20%3D%206%20%3A%3D%20rfl%0Aexample%20%3A%20sum_lengths%20%5B%5B1%2C2%2C3%5D%2C%5B4%2C5%2C6%5D%2C%5B7%2C8%2C9%5D%5D%20%3D%209%20%3A%3D%20rfl%0A%0A--%20Problem%20%233%0Adef%20even_lengths%20%7B%CE%B1%20%3A%20Type%7D%20%3A%20list%20(list%20%CE%B1)%20%E2%86%92%20bool%0A%7C%20%5B%5D%20%3A%3D%20tt%0A%7C%20(h%3A%3At)%20%3A%3D%20(is_even%20(list.length%20h))%20%26%26%20(even_lengths%20t)%0A%0Aexample%20%3A%20%40even_lengths%20nat%20%5B%5D%20%3D%20tt%20%3A%3D%20rfl%0Aexample%20%3A%20even_lengths%20%5B%5B1%2C2%2C3%5D%2C%5B4%2C5%2C6%5D%2C%5B7%2C8%2C9%5D%5D%20%3D%20ff%20%3A%3D%20rfl%0Aexample%20%3A%20even_lengths%20%5B%5B1%2C2%2C3%2C4%5D%2C%5B4%2C5%2C6%5D%2C%5B7%2C8%2C9%5D%5D%20%3D%20ff%20%3A%3D%20rfl%0Aexample%20%3A%20even_lengths%20%5B%5B1%2C2%2C3%2C4%5D%2C%5B4%2C5%2C6%2C7%5D%2C%5B7%2C8%2C9%2C0%5D%5D%20%3D%20tt%20%3A%3D%20rfl" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_551.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Problem #1</span>
 <span class="c">/-</span>
 <span class="cm">Let&#39;s do some test-driven development here.</span>
@@ -1088,15 +1088,20 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <span class="cm">(3) Complete implementation and expect test cases to pass</span>
 <span class="cm">-/</span>
 <span class="kd">def</span> <span class="n">n_ary_append</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">:</span> <span class="n">list</span> <span class="o">(</span><span class="n">list</span> <span class="n">&#945;</span><span class="o">)</span> <span class="bp">&#8594;</span> <span class="n">list</span> <span class="n">&#945;</span>
+<span class="bp">|</span> <span class="o">[]</span> <span class="o">:=</span> <span class="o">[]</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">h</span><span class="o">::</span><span class="n">t</span><span class="o">)</span> <span class="o">:=</span> <span class="n">h</span> <span class="bp">++</span> <span class="n">n_ary_append</span> <span class="n">t</span>
+
 
 <span class="c1">-- test cases for 0, 1, 2, and more arguments</span>
-<span class="kd">example</span> <span class="o">:</span> <span class="n">n_ary_append</span> <span class="o">[]</span> <span class="bp">=</span> <span class="o">[]</span> <span class="o">:=</span> <span class="n">rfl</span>
-<span class="kd">example</span> <span class="o">:</span> <span class="n">n_ary_append</span> <span class="o">[[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">]]]</span> <span class="bp">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">]</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="bp">@</span><span class="n">n_ary_append</span> <span class="n">nat</span> <span class="o">[]</span> <span class="bp">=</span> <span class="o">[]</span> <span class="o">:=</span> <span class="n">rfl</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="n">n_ary_append</span> <span class="o">[[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">]]</span> <span class="bp">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">]</span> <span class="o">:=</span> <span class="n">rfl</span>
 <span class="kd">example</span> <span class="o">:</span> <span class="n">n_ary_append</span> <span class="o">[[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">],[</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">,</span><span class="mi">6</span><span class="o">]]</span> <span class="bp">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">,</span><span class="mi">6</span><span class="o">]</span> <span class="o">:=</span> <span class="n">rfl</span>
 <span class="kd">example</span> <span class="o">:</span> <span class="n">n_ary_append</span> <span class="o">[[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">],[</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">,</span><span class="mi">6</span><span class="o">],[</span><span class="mi">7</span><span class="o">,</span><span class="mi">8</span><span class="o">,</span><span class="mi">9</span><span class="o">]]</span> <span class="bp">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">,</span><span class="mi">6</span><span class="o">,</span><span class="mi">7</span><span class="o">,</span><span class="mi">8</span><span class="o">,</span><span class="mi">9</span><span class="o">]</span> <span class="o">:=</span> <span class="n">rfl</span>
 
 <span class="c1">-- Problem #2</span>
 <span class="kd">def</span> <span class="n">sum_lengths</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">:</span> <span class="n">list</span> <span class="o">(</span><span class="n">list</span> <span class="n">&#945;</span><span class="o">)</span> <span class="bp">&#8594;</span> <span class="n">nat</span>
+<span class="bp">|</span> <span class="o">[]</span> <span class="o">:=</span> <span class="mi">0</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">h</span><span class="o">::</span><span class="n">t</span><span class="o">)</span> <span class="o">:=</span> <span class="o">(</span><span class="n">list.length</span> <span class="n">h</span><span class="o">)</span> <span class="bp">+</span> <span class="o">(</span><span class="n">sum_lengths</span> <span class="n">t</span><span class="o">)</span>
 
 <span class="kd">example</span> <span class="o">:</span> <span class="bp">@</span><span class="n">sum_lengths</span> <span class="n">nat</span> <span class="o">[]</span> <span class="bp">=</span> <span class="mi">0</span> <span class="o">:=</span> <span class="n">rfl</span>
 <span class="kd">example</span> <span class="o">:</span> <span class="n">sum_lengths</span> <span class="o">[[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">]]</span> <span class="bp">=</span> <span class="mi">3</span> <span class="o">:=</span> <span class="n">rfl</span>
@@ -1105,6 +1110,8 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 
 <span class="c1">-- Problem #3</span>
 <span class="kd">def</span> <span class="n">even_lengths</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">:</span> <span class="n">list</span> <span class="o">(</span><span class="n">list</span> <span class="n">&#945;</span><span class="o">)</span> <span class="bp">&#8594;</span> <span class="n">bool</span>
+<span class="bp">|</span> <span class="o">[]</span> <span class="o">:=</span> <span class="n">tt</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">h</span><span class="o">::</span><span class="n">t</span><span class="o">)</span> <span class="o">:=</span> <span class="o">(</span><span class="n">is_even</span> <span class="o">(</span><span class="n">list.length</span> <span class="n">h</span><span class="o">))</span> <span class="bp">&amp;&amp;</span> <span class="o">(</span><span class="n">even_lengths</span> <span class="n">t</span><span class="o">)</span>
 
 <span class="kd">example</span> <span class="o">:</span> <span class="bp">@</span><span class="n">even_lengths</span> <span class="n">nat</span> <span class="o">[]</span> <span class="bp">=</span> <span class="n">tt</span> <span class="o">:=</span> <span class="n">rfl</span>
 <span class="kd">example</span> <span class="o">:</span> <span class="n">even_lengths</span> <span class="o">[[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">],[</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">,</span><span class="mi">6</span><span class="o">],[</span><span class="mi">7</span><span class="o">,</span><span class="mi">8</span><span class="o">,</span><span class="mi">9</span><span class="o">]]</span> <span class="bp">=</span> <span class="n">ff</span> <span class="o">:=</span> <span class="n">rfl</span>
@@ -1114,7 +1121,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </div>
 </div></section>
 <section id="id5">
-<h3><span class="section-number">4.4.6. </span>Fold: list &#945; &#8594; &#946;<a class="headerlink" href="#id5" title="Permalink to this heading">&#61633;</a></h3>
+<h3><span class="section-number">4.4.6. </span>Fold list: &#945; &#8594; &#946; &#8594; &#946;<a class="headerlink" href="#id5" title="Permalink to this heading">&#61633;</a></h3>
 <p>The preceding few exercises all reduce a list of objects of
 one type (&#945;) to a result of another (possibly the same) type
 (&#946;). For example, even_lengths reduces a list of objects of
@@ -1145,7 +1152,7 @@ of a folding function: one that takes a list of nat and
 that returns true if and only if all the numbers in the
 list are even.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20all_even'%20%3A%20list%20%E2%84%95%20%E2%86%92%20bool%0A%7C%20list.nil%20%3A%3D%20tt%0A%7C%20(h%3A%3At)%20%3A%3D%20band%20(is_even%20h)%20(all_even'%20t)%20%20%20--%20band%20is%20%26%26%0A%0A--%20Seems%20to%20work%0A%23eval%20all_even'%20%5B2%2C4%2C6%2C8%5D%0A%23eval%20all_even'%20%5B1%2C4%2C6%2C8%5D" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_624.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20all_even'%20%3A%20list%20%E2%84%95%20%E2%86%92%20bool%0A%7C%20list.nil%20%3A%3D%20tt%0A%7C%20(h%3A%3At)%20%3A%3D%20band%20(is_even%20h)%20(all_even'%20t)%20%20%20--%20band%20is%20%26%26%0A%0A--%20Seems%20to%20work%0A%23eval%20all_even'%20%5B2%2C4%2C6%2C8%5D%0A%23eval%20all_even'%20%5B1%2C4%2C6%2C8%5D" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_631.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">all_even&#39;</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#8469;</span> <span class="bp">&#8594;</span> <span class="n">bool</span>
 <span class="bp">|</span> <span class="n">list.nil</span> <span class="o">:=</span> <span class="n">tt</span>
 <span class="bp">|</span> <span class="o">(</span><span class="n">h</span><span class="o">::</span><span class="n">t</span><span class="o">)</span> <span class="o">:=</span> <span class="n">band</span> <span class="o">(</span><span class="n">is_even</span> <span class="n">h</span><span class="o">)</span> <span class="o">(</span><span class="n">all_even&#39;</span> <span class="n">t</span><span class="o">)</span>   <span class="c1">-- band is &amp;&amp;</span>
@@ -1158,7 +1165,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </div><p>Now we&#8217;ll apply the preceding reasoning to formulate
 what&#8217;s going on in the second rule as a binary operation.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20all_even_op%20%3A%20nat%20%E2%86%92%20bool%20%E2%86%92%20bool%0A%7C%20n%20b%20%3A%3D%20(is_even%20n)%20%26%26%20b%0A%0Adef%20all_even%20%3A%20list%20nat%20%E2%86%92%20bool%0A%7C%20list.nil%20%3A%3D%20tt%0A%7C%20(h%3A%3At)%20%3A%3D%20all_even_op%20h%20(all_even%20t)%0A%0A--%20seems%20to%20be%20working%0A%23eval%20all_even%20%5B%5D%20%20%20%20%20%20%20--%20expect%20tt%0A%23eval%20all_even%20%5B1%5D%20%20%20%20%20%20--%20expect%20ff%0A%23eval%20all_even%20%5B0%2C2%2C4%5D%20%20--%20expect%20tt%0A%23eval%20all_even%20%5B0%2C2%2C5%5D%20%20--%20expect%20ff" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_637.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20all_even_op%20%3A%20nat%20%E2%86%92%20bool%20%E2%86%92%20bool%0A%7C%20n%20b%20%3A%3D%20(is_even%20n)%20%26%26%20b%0A%0Adef%20all_even%20%3A%20list%20nat%20%E2%86%92%20bool%0A%7C%20list.nil%20%3A%3D%20tt%0A%7C%20(h%3A%3At)%20%3A%3D%20all_even_op%20h%20(all_even%20t)%0A%0A--%20seems%20to%20be%20working%0A%23eval%20all_even%20%5B%5D%20%20%20%20%20%20%20--%20expect%20tt%0A%23eval%20all_even%20%5B1%5D%20%20%20%20%20%20--%20expect%20ff%0A%23eval%20all_even%20%5B0%2C2%2C4%5D%20%20--%20expect%20tt%0A%23eval%20all_even%20%5B0%2C2%2C5%5D%20%20--%20expect%20ff" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_644.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">all_even_op</span> <span class="o">:</span> <span class="n">nat</span> <span class="bp">&#8594;</span> <span class="n">bool</span> <span class="bp">&#8594;</span> <span class="n">bool</span>
 <span class="bp">|</span> <span class="n">n</span> <span class="n">b</span> <span class="o">:=</span> <span class="o">(</span><span class="n">is_even</span> <span class="n">n</span><span class="o">)</span> <span class="bp">&amp;&amp;</span> <span class="n">b</span>
 
@@ -1182,23 +1189,24 @@ short for &#8220;fold right,&#8221; given that we combine the head of
 the list, on the left of h::t, with the result of folding
 its whole <em>right</em>-hand tail, t.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20foldr%20%7B%CE%B1%20%CE%B2%20%3A%20Type%7D%20%3A%20_%0A%20%20--%20op%20type%0A%20%20--%20id%20type%0A%20%20--%20list%20type%0A%20%20--%20result%20type%0A%7C%20_%20%3A%3D%20_%0A%7C%20_%20%3A%3D%20_%0A%0Adef%20all_even_yay%20%3A%20list%20nat%20%E2%86%92%20bool%20%3A%3D%0A%20%20foldr%20all_even_op%0A%0A%0A%23eval%20all_even_yay%20%5B%5D%20%20%20%20%20%20%20--%20expect%20tt%0A%23eval%20all_even_yay%20%5B1%5D%20%20%20%20%20%20--%20expect%20ff%0A%23eval%20all_even_yay%20%5B0%2C2%2C4%5D%20%20--%20expect%20tt%0A%23eval%20all_even_yay%20%5B0%2C2%2C5%5D%20%20--%20expect%20ff%0A%23eval%20foldr%20nat.add%200%20%5B1%2C2%2C3%2C4%2C5%5D%0A%23eval%20foldr%20nat.mul%201%20%5B1%2C2%2C3%2C4%2C5%5D" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_661.lean">
-try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">foldr</span> <span class="o">{</span><span class="n">&#945;</span> <span class="n">&#946;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">:</span> <span class="n">_</span>
-  <span class="c1">-- op type</span>
-  <span class="c1">-- id type</span>
-  <span class="c1">-- list type</span>
-  <span class="c1">-- result type</span>
-<span class="bp">|</span> <span class="n">_</span> <span class="o">:=</span> <span class="n">_</span>
-<span class="bp">|</span> <span class="n">_</span> <span class="o">:=</span> <span class="n">_</span>
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20foldr%20%7B%CE%B1%20%CE%B2%20%3A%20Type%7D%20%3A%20(%CE%B1%20%E2%86%92%20%CE%B2%20%E2%86%92%20%CE%B2)%20%E2%86%92%20%CE%B2%20%E2%86%92%20(list%20%CE%B1)%20%E2%86%92%20%CE%B2%0A%7C%20op%20id%20%5B%5D%20%3A%3D%20id%0A%7C%20op%20id%20(h%3A%3At)%20%3A%3D%20op%20h%20(foldr%20op%20id%20t)%0A%0A%23check%20%40foldr%0A%0Adef%20all_even_yay%20%3A%20list%20nat%20%E2%86%92%20bool%20%3A%3D%20foldr%20all_even_op%20tt%0A%0A%23check%20all_even_yay%0A%0A%0A%23eval%20all_even_yay%20%5B%5D%20%20%20%20%20%20%20--%20expect%20tt%0A%23eval%20all_even_yay%20%5B1%5D%20%20%20%20%20%20--%20expect%20ff%0A%23eval%20all_even_yay%20%5B0%2C2%2C4%5D%20%20--%20expect%20tt%0A%23eval%20all_even_yay%20%5B0%2C2%2C5%5D%20%20--%20expect%20ff%0A%0A%0A%23eval%20foldr%20nat.add%200%20%5B1%2C2%2C3%2C4%2C5%5D%0A%23eval%20foldr%20nat.mul%201%20%5B1%2C2%2C3%2C4%2C5%5D" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_668.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">foldr</span> <span class="o">{</span><span class="n">&#945;</span> <span class="n">&#946;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">:</span> <span class="o">(</span><span class="n">&#945;</span> <span class="bp">&#8594;</span> <span class="n">&#946;</span> <span class="bp">&#8594;</span> <span class="n">&#946;</span><span class="o">)</span> <span class="bp">&#8594;</span> <span class="n">&#946;</span> <span class="bp">&#8594;</span> <span class="o">(</span><span class="n">list</span> <span class="n">&#945;</span><span class="o">)</span> <span class="bp">&#8594;</span> <span class="n">&#946;</span>
+<span class="bp">|</span> <span class="n">op</span> <span class="n">id</span> <span class="o">[]</span> <span class="o">:=</span> <span class="n">id</span>
+<span class="bp">|</span> <span class="n">op</span> <span class="n">id</span> <span class="o">(</span><span class="n">h</span><span class="o">::</span><span class="n">t</span><span class="o">)</span> <span class="o">:=</span> <span class="n">op</span> <span class="n">h</span> <span class="o">(</span><span class="n">foldr</span> <span class="n">op</span> <span class="n">id</span> <span class="n">t</span><span class="o">)</span>
 
-<span class="kd">def</span> <span class="n">all_even_yay</span> <span class="o">:</span> <span class="n">list</span> <span class="n">nat</span> <span class="bp">&#8594;</span> <span class="n">bool</span> <span class="o">:=</span>
-  <span class="n">foldr</span> <span class="n">all_even_op</span>
+<span class="k">#check</span> <span class="bp">@</span><span class="n">foldr</span>
+
+<span class="kd">def</span> <span class="n">all_even_yay</span> <span class="o">:</span> <span class="n">list</span> <span class="n">nat</span> <span class="bp">&#8594;</span> <span class="n">bool</span> <span class="o">:=</span> <span class="n">foldr</span> <span class="n">all_even_op</span> <span class="n">tt</span>
+
+<span class="k">#check</span> <span class="n">all_even_yay</span>
 
 
 <span class="k">#eval</span> <span class="n">all_even_yay</span> <span class="o">[]</span>       <span class="c1">-- expect tt</span>
 <span class="k">#eval</span> <span class="n">all_even_yay</span> <span class="o">[</span><span class="mi">1</span><span class="o">]</span>      <span class="c1">-- expect ff</span>
 <span class="k">#eval</span> <span class="n">all_even_yay</span> <span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">4</span><span class="o">]</span>  <span class="c1">-- expect tt</span>
 <span class="k">#eval</span> <span class="n">all_even_yay</span> <span class="o">[</span><span class="mi">0</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>  <span class="c1">-- expect ff</span>
+
+
 <span class="k">#eval</span> <span class="n">foldr</span> <span class="n">nat.add</span> <span class="mi">0</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>
 <span class="k">#eval</span> <span class="n">foldr</span> <span class="n">nat.mul</span> <span class="mi">1</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>
 </pre></div>
@@ -1217,11 +1225,79 @@ length.</p>
 </section>
 <section id="id6">
 <h3><span class="section-number">4.4.8. </span>Exercises<a class="headerlink" href="#id6" title="Permalink to this heading">&#61633;</a></h3>
-<p>&#8211; Define an n-ary Boolean &#8220;and&#8221; function using foldr.
-&#8211; Define an n-ary Boolean &#8220;or&#8221; function using foldr.
-&#8211; Define an n-ary &#8469; addition operator using foldr.
-&#8211; Define an n-ary &#8469; multiplication operator using foldr.
-&#8211; Define a function called map-reduce. It should accept list of objects of any type &#945;, a function that converts &#945; objects to &#946; objects, and a binary operation suitable for use by our generalized fold function. As an example, you could use this function to reduce a list of strings to a Boolean value that&#8217;s true if every string in a list of strings is of even length. First map the list of strings to a list of their lengths, then reduce this list to a Boolean, tt iff all lengths are even.</p>
+<ul class="simple">
+<li><p>Define an n-ary Boolean &#8220;and&#8221; function using foldr.</p></li>
+<li><p>Define an n-ary Boolean &#8220;or&#8221; function using foldr.</p></li>
+<li><p>Define an n-ary &#8469; addition operator using foldr.</p></li>
+<li><p>Define an n-ary &#8469; multiplication operator using foldr.</p></li>
+<li><p>Define a function called map-reduce. It should accept list of objects of any type &#945;, a function that converts &#945; objects to &#946; objects, and a binary operation suitable for use by our generalized fold function. As an example, you could use this function to reduce a list of strings to a Boolean value that&#8217;s true if every string in a list of strings is of even length. First map the list of strings to a list of their lengths, then reduce this list to a Boolean, tt iff all lengths are even.</p></li>
+</ul>
+</section>
+<section id="looking-forward">
+<h3><span class="section-number">4.4.9. </span>Looking forward<a class="headerlink" href="#looking-forward" title="Permalink to this heading">&#61633;</a></h3>
+<p>This chapter introduced the idea that for fold to work
+correctly, it must be provided both a binary operator, op
+(for now let&#8217;s assume of type &#945; &#8594; &#945; &#8594; &#945;), and an identity
+element <em>for that operator</em> to be returned as a result for
+an empty list. We saw that unless additional measures are
+taken, we can&#8217;t prevent inconsistencies between operator
+and identity element values. Then we showed that we can
+enforce consistency by requiring an additional argument,
+namely a proof that <em>id</em> really <em>is</em> an identity element
+for <em>op</em>.</p>
+<p>For id to be an identity element it has to be that for
+any <em>(a : &#945;), op id a = a</em> (<em>id</em> is a <em>left</em> identity)
+and <em>op a id = a</em> (<em>id</em> is a <em>right</em> identity). We were
+able to prove easily that <em>0</em> is a right identity for
+<em>nat.add</em>. The reason this is an easy proof is that it&#8217;s
+an <em>axiom</em> given by the definition of addition.:</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20add%20%3A%20nat%20%E2%86%92%20nat%20%E2%86%92%20nat%0A%20%20%7C%20a%20%20zero%20%20%20%20%20%3A%3D%20a%0A%20%20%7C%20a%20%20(succ%20b)%20%3A%3D%20succ%20(add%20a%20b)" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_732.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">add</span> <span class="o">:</span> <span class="n">nat</span> <span class="bp">&#8594;</span> <span class="n">nat</span> <span class="bp">&#8594;</span> <span class="n">nat</span>
+  <span class="bp">|</span> <span class="n">a</span>  <span class="n">zero</span>     <span class="o">:=</span> <span class="n">a</span>
+  <span class="bp">|</span> <span class="n">a</span>  <span class="o">(</span><span class="n">succ</span> <span class="n">b</span><span class="o">)</span> <span class="o">:=</span> <span class="n">succ</span> <span class="o">(</span><span class="n">add</span> <span class="n">a</span> <span class="n">b</span><span class="o">)</span>
+</pre></div>
+</div>
+</div><p>The first &#8220;rule&#8221; of addition states that for any <em>a</em>,
+<em>add a 0</em> reduces to just <em>a</em>.  Here&#8217;s a formal proof
+that zero is a right identity for addition.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=example%20%3A%20%E2%88%80%20n%20%3A%20nat%2C%20nat.add%20n%200%20%3D%20n%20%3A%3D%0Abegin%0Aassume%20n%2C%0Aby%20simp%20%5Bnat.add%5D%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_740.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">example</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="n">n</span> <span class="o">:</span> <span class="n">nat</span><span class="o">,</span> <span class="n">nat.add</span> <span class="n">n</span> <span class="mi">0</span> <span class="bp">=</span> <span class="n">n</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">assume</span> <span class="n">n</span><span class="o">,</span>
+<span class="kd">by</span> <span class="n">simp</span> <span class="o">[</span><span class="n">nat.add</span><span class="o">],</span>
+<span class="kd">end</span>
+</pre></div>
+</div>
+</div><p>The problem is that there&#8217;s no similar axiom proving
+that zero if a <em>left</em> identity for nat addition, so
+we can&#8217;t use a similar proof.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=example%20%3A%20%E2%88%80%20n%20%3A%20nat%2C%20nat.add%200%20n%20%3D%20n%20%3A%3D%0Abegin%0Aassume%20n%2C%0Asimp%20%5Bnat.add%5D%2C%20%20%20--%20nope%2C%20no%20rule%20matches%20the%20goal%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_752.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">example</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="n">n</span> <span class="o">:</span> <span class="n">nat</span><span class="o">,</span> <span class="n">nat.add</span> <span class="mi">0</span> <span class="n">n</span> <span class="bp">=</span> <span class="n">n</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">assume</span> <span class="n">n</span><span class="o">,</span>
+<span class="n">simp</span> <span class="o">[</span><span class="n">nat.add</span><span class="o">],</span>   <span class="c1">-- nope, no rule matches the goal</span>
+<span class="kd">end</span>
+</pre></div>
+</div>
+</div><p>The clever mathematician might suggest that we try a
+proof by case analysis on <em>n</em>, but that doesn&#8217;t work
+either.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=example%20%3A%20%E2%88%80%20n%20%3A%20nat%2C%20nat.add%200%20n%20%3D%20n%20%3A%3D%0Abegin%0Aassume%20n%2C%0Acases%20n%20with%20n'%2C%20%20--%20nope%2C%20no%20rule%20matches%20the%20goal%0Asimp%20%5Bnat.add%5D%2C%20%20%20--%20base%20case%20is%20easy%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20but%20now%20we're%20stuck%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_764.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">example</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="n">n</span> <span class="o">:</span> <span class="n">nat</span><span class="o">,</span> <span class="n">nat.add</span> <span class="mi">0</span> <span class="n">n</span> <span class="bp">=</span> <span class="n">n</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">assume</span> <span class="n">n</span><span class="o">,</span>
+<span class="n">cases</span> <span class="n">n</span> <span class="k">with</span> <span class="n">n&#39;</span><span class="o">,</span>  <span class="c1">-- nope, no rule matches the goal</span>
+<span class="n">simp</span> <span class="o">[</span><span class="n">nat.add</span><span class="o">],</span>   <span class="c1">-- base case is easy</span>
+                  <span class="c1">-- but now we&#39;re stuck</span>
+<span class="kd">end</span>
+</pre></div>
+</div>
+</div><p>In the next chapter, we&#8217;ll see how to prove this
+proposition using a method new for us: <em>proof by induction</em>.</p>
 </section>
 </section>
 <section id="recursive-proofs">
@@ -1238,26 +1314,21 @@ binary operator parameter given to the fold function.</p>
 <p>We then found it easy to prove that 0 is indeed a right
 identity for nat.add. They key insight you need to have
 is that it was easy to prove because it&#8217;s already given
-to us as an <em>axiom</em>. In particular, the first rule in the
-recursive definition of nat.add makes it so. Here&#8217;s the
-definition of nat.add from Lean&#8217;s core library.</p>
+to us as an <em>axiom</em> by the very definition of nat.add.
+In particular, the first rule in this definition states
+exactly that for any <em>a, nat.add a nat.zero = a</em>. Here&#8217;s
+the definition of nat.add from Lean&#8217;s core library:</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20add%20%3A%20nat%20%E2%86%92%20nat%20%E2%86%92%20nat%0A%7C%20a%20%20zero%20%20%20%20%20%3A%3D%20a%0A%7C%20a%20%20(succ%20b)%20%3A%3D%20succ%20(add%20a%20b)" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_25.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20add%20%3A%20nat%20%E2%86%92%20nat%20%E2%86%92%20nat%0A%7C%20a%20%20zero%20%20%20%20%20%3A%3D%20a%0A%7C%20a%20%20(succ%20b)%20%3A%3D%20succ%20(add%20a%20b)" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_26.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">add</span> <span class="o">:</span> <span class="n">nat</span> <span class="bp">&#8594;</span> <span class="n">nat</span> <span class="bp">&#8594;</span> <span class="n">nat</span>
 <span class="bp">|</span> <span class="n">a</span>  <span class="n">zero</span>     <span class="o">:=</span> <span class="n">a</span>
 <span class="bp">|</span> <span class="n">a</span>  <span class="o">(</span><span class="n">succ</span> <span class="n">b</span><span class="o">)</span> <span class="o">:=</span> <span class="n">succ</span> <span class="o">(</span><span class="n">add</span> <span class="n">a</span> <span class="n">b</span><span class="o">)</span>
 </pre></div>
 </div>
-</div><p>Look at the first case/rule: any a added to zero
-is equal to a. This rule establishes that zero is
-a right identity for add.  Here again is our earlier
-statement and proof.</p>
-<p>Note that the <em>simp</em> tactict tries to fine, and if
-found applies, rules/axioms from the definition of
-any of the listed functions: here from just nat.add.</p>
-<div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=example%20%3A%20%E2%88%80%20(n%20%3A%20%E2%84%95)%2C%20nat.add%20n%200%20%3D%20n%20%3A%3D%0Abegin%0Aassume%20n%2C%0Asimp%20%5Bnat.add%5D%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_40.lean">
-try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">example</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">n</span> <span class="o">:</span> <span class="n">&#8469;</span><span class="o">),</span> <span class="n">nat.add</span> <span class="n">n</span> <span class="mi">0</span> <span class="bp">=</span> <span class="n">n</span> <span class="o">:=</span>
+</div><div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20and%20a%20proof%0Aexample%20%3A%20%E2%88%80%20(n%20%3A%20%E2%84%95)%2C%20nat.add%20n%200%20%3D%20n%20%3A%3D%0Abegin%0Aassume%20n%2C%0Asimp%20%5Bnat.add%5D%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_31.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- and a proof</span>
+<span class="kd">example</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">n</span> <span class="o">:</span> <span class="n">&#8469;</span><span class="o">),</span> <span class="n">nat.add</span> <span class="n">n</span> <span class="mi">0</span> <span class="bp">=</span> <span class="n">n</span> <span class="o">:=</span>
 <span class="kd">begin</span>
 <span class="k">assume</span> <span class="n">n</span><span class="o">,</span>
 <span class="n">simp</span> <span class="o">[</span><span class="n">nat.add</span><span class="o">],</span>
@@ -1284,7 +1355,7 @@ a complication that&#8217;s annoying, but for
 now just follow this simple instruction
 and you&#8217;ll be fine.)</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=example%20%3A%20%E2%88%80%20n%2C%20nat.add%20nat.zero%20n%20%3D%20n%20%3A%3D%0Abegin%0Aassume%20n%2C%0Asimp%20%5Bnat.add%5D%2C%0A--%20oops%2C%20that%20didn't%20help%3B%20we're%20stuck!%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_68.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=example%20%3A%20%E2%88%80%20n%2C%20nat.add%20nat.zero%20n%20%3D%20n%20%3A%3D%0Abegin%0Aassume%20n%2C%0Asimp%20%5Bnat.add%5D%2C%0A--%20oops%2C%20that%20didn't%20help%3B%20we're%20stuck!%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_60.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">example</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="n">n</span><span class="o">,</span> <span class="n">nat.add</span> <span class="n">nat.zero</span> <span class="n">n</span> <span class="bp">=</span> <span class="n">n</span> <span class="o">:=</span>
 <span class="kd">begin</span>
 <span class="k">assume</span> <span class="n">n</span><span class="o">,</span>
@@ -1297,7 +1368,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 might consider proof by case analysis on
 n. So let&#8217;s try that.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=example%20%3A%20%E2%88%80%20n%2C%20nat.add%20nat.zero%20n%20%3D%20n%20%3A%3D%0Abegin%0Aassume%20n%2C%0Acases%20n%20with%20n'%2C%0A--%20first%20case%3A%20zero's%20also%20on%20the%20right%0Asimp%20%5Bnat.add%5D%2C%0A--%20second%20case%2C%20argument%20is%20succ%20of%20some%20n'%0A--%20how%20to%20show%200%20%2B%20(succ%20n')%20%3D%20(succ%20n')%0A--%20but%20again%20we're%20stuck%0Asimp%20%5Bnat.add%5D%2C%0A--%20basically%20back%20where%20we%20started%3B%20stuck.%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_81.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=example%20%3A%20%E2%88%80%20n%2C%20nat.add%20nat.zero%20n%20%3D%20n%20%3A%3D%0Abegin%0Aassume%20n%2C%0Acases%20n%20with%20n'%2C%0A--%20first%20case%3A%20zero's%20also%20on%20the%20right%0Asimp%20%5Bnat.add%5D%2C%0A--%20second%20case%2C%20argument%20is%20succ%20of%20some%20n'%0A--%20how%20to%20show%200%20%2B%20(succ%20n')%20%3D%20(succ%20n')%0A--%20but%20again%20we're%20stuck%0Asimp%20%5Bnat.add%5D%2C%0A--%20basically%20back%20where%20we%20started%3B%20stuck.%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_73.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">example</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="n">n</span><span class="o">,</span> <span class="n">nat.add</span> <span class="n">nat.zero</span> <span class="n">n</span> <span class="bp">=</span> <span class="n">n</span> <span class="o">:=</span>
 <span class="kd">begin</span>
 <span class="k">assume</span> <span class="n">n</span><span class="o">,</span>
@@ -1345,7 +1416,7 @@ construct a proof that 0 is a left zero for 1.</p>
 is, we want to show that 0 + succ 0 = succ 0.
 By the second rule/axiom of add, the left side
 is succ (0 + 0). <em>BE SURE YOU UNDERSTAND THIS
-STEP.</em>  Now yy the first rule, 0 + 0 = 0, so
+STEP.</em>  Now by the first rule, 0 + 0 = 0, so
 we can rewrite succ (0 + 0) to just succ 0.
 With this expression on the left side, all
 thatremains to prove is that succ 0 = succ 0,
@@ -1383,7 +1454,7 @@ is a left identity for any n, and so it is
 true <em>for all</em> n. And that&#8217;s what we wanted.
 QED.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20a%20proof-returning%20function%20defined%20by%20cases%0A--%20takes%20any%20n%20and%20returns%20a%20proof%20of%200%20%2B%20n%20%3D%20n%0Adef%20zero_left_ident_n%20%3A%20%E2%88%80%20n%2C%20(nat.add%200%20n%20%3D%20n)%0A%7C%20nat.zero%20%3A%3D%20by%20simp%20%5Bnat.add%5D%20--%20base%20case%0A%7C%20(nat.succ%20n')%20%3A%3D%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20recursive%20case%0A%20%20begin%0A%20%20simp%20%5Bnat.add%5D%2C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20applies%20second%20rule%20and%20...%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20removes%20succ%20on%20each%20side%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20by%20injectivity%20of%20constructors%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20inherent%20in%20inductive%20definitions%0A%20%20exact%20(zero_left_ident_n%20n')%2C%20--%20prove%20result%20recursively%0A%20%20end%0A%0A--%20eyeball%20check%20of%20the%20recursive%20structure%20of%20these%20proofs!%0A%23reduce%20zero_left_ident_n%200%20%20%20%20%20--%20the%20proof%20term%20is%20unpretty%20(just%20eyeball%20it)%0A%23reduce%20zero_left_ident_n%201%20%20%20%20%20--%20the%20proof%20for%201%20buids%20on%20the%20proof%20for%200%0A%23reduce%20zero_left_ident_n%202%20%20%20%20%20--%20the%20proof%20for%202%20buids%20on%20the%20proof%20for%201%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20and%20we%20see%20we%20can%20build%20such%20a%20proof%20for%20any%20n%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20therefore%200%20is%20a%20left%20identity%20for%20addition" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_175.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20a%20proof-returning%20function%20defined%20by%20cases%0A--%20takes%20any%20n%20and%20returns%20a%20proof%20of%200%20%2B%20n%20%3D%20n%0Adef%20zero_left_ident_n%20%3A%20%E2%88%80%20n%2C%20(nat.add%200%20n%20%3D%20n)%0A%7C%20nat.zero%20%3A%3D%20by%20simp%20%5Bnat.add%5D%20--%20base%20case%0A%7C%20(nat.succ%20n')%20%3A%3D%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20recursive%20case%0A%20%20begin%0A%20%20simp%20%5Bnat.add%5D%2C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20applies%20second%20rule%20and%20...%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20removes%20succ%20on%20each%20side%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20by%20injectivity%20of%20constructors%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20inherent%20in%20inductive%20definitions%0A%20%20exact%20(zero_left_ident_n%20n')%2C%20--%20prove%20result%20recursively%0A%20%20end%0A%0A--%20eyeball%20check%20of%20the%20recursive%20structure%20of%20these%20proofs!%0A%23reduce%20zero_left_ident_n%200%20%20%20%20%20--%20the%20proof%20term%20is%20unpretty%20(just%20eyeball%20it)%0A%23reduce%20zero_left_ident_n%201%20%20%20%20%20--%20the%20proof%20for%201%20buids%20on%20the%20proof%20for%200%0A%23reduce%20zero_left_ident_n%202%20%20%20%20%20--%20the%20proof%20for%202%20buids%20on%20the%20proof%20for%201%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20and%20we%20see%20we%20can%20build%20such%20a%20proof%20for%20any%20n%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20therefore%200%20is%20a%20left%20identity%20for%20addition" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_167.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- a proof-returning function defined by cases</span>
 <span class="c1">-- takes any n and returns a proof of 0 + n = n</span>
 <span class="kd">def</span> <span class="n">zero_left_ident_n</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="n">n</span><span class="o">,</span> <span class="o">(</span><span class="n">nat.add</span> <span class="mi">0</span> <span class="n">n</span> <span class="bp">=</span> <span class="n">n</span><span class="o">)</span>
@@ -1435,7 +1506,7 @@ for the list append operation.</p>
 that the list.append operation (with infix notation ++) has
 a rule/axiom that states that l ++ nil := l for any l.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%2F-%0AHere's%20the%20definition%20of%20list.append.%0AIt%20asserts%20that%20%5B%5D%20is%20a%20left%20identity%20axiomatically.%0A%0Adef%20append%20%3A%20list%20%CE%B1%20%E2%86%92%20list%20%CE%B1%20%E2%86%92%20list%20%CE%B1%0A%7C%20%5B%5D%20%20%20%20%20%20%20l%20%3A%3D%20l%0A%7C%20(h%20%3A%3A%20s)%20t%20%3A%3D%20h%20%3A%3A%20(append%20s%20t)%0A-%2F%0A%0A--%20proving%20right%20identity%20is%20trivial%20just%20as%20for%20addition%0Aexample%20(%CE%B1%20%3A%20Type)%20%3A%20%E2%88%80%20(l%20%3A%20list%20%CE%B1)%2C%20list.nil%20%2B%2B%20l%20%3D%20l%20%3A%3D%0Abegin%0Aassume%20l%2C%0Asimp%20%5Blist.append%5D%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_230.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%2F-%0AHere's%20the%20definition%20of%20list.append.%0AIt%20asserts%20that%20%5B%5D%20is%20a%20left%20identity%20axiomatically.%0A%0Adef%20append%20%3A%20list%20%CE%B1%20%E2%86%92%20list%20%CE%B1%20%E2%86%92%20list%20%CE%B1%0A%7C%20%5B%5D%20%20%20%20%20%20%20l%20%3A%3D%20l%0A%7C%20(h%20%3A%3A%20s)%20t%20%3A%3D%20h%20%3A%3A%20(append%20s%20t)%0A-%2F%0A%0A--%20proving%20right%20identity%20is%20trivial%20just%20as%20for%20addition%0Aexample%20(%CE%B1%20%3A%20Type)%20%3A%20%E2%88%80%20(l%20%3A%20list%20%CE%B1)%2C%20list.nil%20%2B%2B%20l%20%3D%20l%20%3A%3D%0Abegin%0Aassume%20l%2C%0Asimp%20%5Blist.append%5D%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_222.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c">/-</span>
 <span class="cm">Here&#39;s the definition of list.append.</span>
 <span class="cm">It asserts that [] is a left identity axiomatically.</span>
@@ -1454,7 +1525,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </pre></div>
 </div>
 </div><div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20nil_left_ident_app%20(%CE%B1%20%3A%20Type)%20%3A%20%E2%88%80%20(l%20%3A%20list%20%CE%B1)%2C%20l%20%2B%2B%20list.nil%20%3D%20l%20%3A%3D%0Abegin%0Aassume%20l%2C%0Acases%20l%20with%20h%20t%2C%0A--%20base%20case%0Asimp%20%5Blist.append%5D%2C%20%20%20--%20uses%20first%20rule%0A--%20recursive%20case%0Asimp%20%5Blist.append%5D%2C%20%20%20--%20why%20does%20this%20work%3F%0Aend%0A%0A--%20Here's%20another%20formal%20demonstration%20of%20the%20same%20point%0Avariables%20(%CE%B1%20%3A%20Type)%20(a%20%3A%20%CE%B1)%20(l%20%3A%20list%20%CE%B1)%0Aexample%3A%20list.nil%20%2B%2B%20l%20%3D%20l%20%3A%3D%20by%20simp%20%20%20%20--%20first%20rule%0Aexample%20%3A%20l%20%2B%2B%20list.nil%20%20%3D%20l%20%3A%3D%20by%20simp%20%20--%20by%20%5Bsimp%5D%20lemma%20in%20Lean%20library" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_250.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20nil_left_ident_app%20(%CE%B1%20%3A%20Type)%20%3A%20%E2%88%80%20(l%20%3A%20list%20%CE%B1)%2C%20l%20%2B%2B%20list.nil%20%3D%20l%20%3A%3D%0Abegin%0Aassume%20l%2C%0Acases%20l%20with%20h%20t%2C%0A--%20base%20case%0Asimp%20%5Blist.append%5D%2C%20%20%20--%20uses%20first%20rule%0A--%20recursive%20case%0Asimp%20%5Blist.append%5D%2C%20%20%20--%20why%20does%20this%20work%3F%0Aend%0A%0A--%20Here's%20another%20formal%20demonstration%20of%20the%20same%20point%0Avariables%20(%CE%B1%20%3A%20Type)%20(a%20%3A%20%CE%B1)%20(l%20%3A%20list%20%CE%B1)%0Aexample%3A%20list.nil%20%2B%2B%20l%20%3D%20l%20%3A%3D%20by%20simp%20%20%20%20--%20first%20rule%0Aexample%20%3A%20l%20%2B%2B%20list.nil%20%20%3D%20l%20%3A%3D%20by%20simp%20%20--%20by%20%5Bsimp%5D%20lemma%20in%20Lean%20library" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_242.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">nil_left_ident_app</span> <span class="o">(</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">l</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span><span class="o">),</span> <span class="n">l</span> <span class="bp">++</span> <span class="n">list.nil</span> <span class="bp">=</span> <span class="n">l</span> <span class="o">:=</span>
 <span class="kd">begin</span>
 <span class="k">assume</span> <span class="n">l</span><span class="o">,</span>
@@ -1480,7 +1551,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <h3><span class="section-number">4.5.3. </span>Inductive Families<a class="headerlink" href="#inductive-families" title="Permalink to this heading">&#61633;</a></h3>
 <p>Coming soon.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=inductive%20le%20(n%20%3A%20nat)%3A%20nat%20%E2%86%92%20Prop%0A--%20n%20is%20an%20implicit%20firt%20argument%20to%20each%20constructor%0A%7C%20refl%20%3A%20le%20%2F-n-%2F%20n%0A%7C%20step%20%3A%20%E2%88%80%20m%2C%20le%20%2F-n-%2F%20m%20%E2%86%92%20le%20%2F-n-%2F%20m.succ%0A%0A--%20you%20can%20see%20it%20in%20the%20types%20of%20the%20constructors%0A%23check%20%40le.refl%0A%23check%20%40le.step%0A%0A%0Aexample%20%3A%20le%200%200%20%3A%3D%0Abegin%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%203%203%20%3A%3D%0Abegin%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%200%201%20%3A%3D%0Abegin%0Aapply%20le.step%2C%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%200%203%20%3A%3D%0Abegin%0Aapply%20le.step%2C%0Aapply%20le.step%2C%0Aapply%20le.step%2C%0Aapply%20le.refl%2C%0Aend%0A%0A--%20here's%20the%20same%20example%20using%20Lean's%20version%20of%20%22le%22%0A--%20it's%20called%20nat.less_than_or_equal%0Aexample%20%3A%200%20%E2%89%A4%203%20%3A%3D%0Abegin%0Aapply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.step%2C%0A--%20apply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.refl%2C%0Aend%0A%0A--%20repeat%20tactical%20goes%20too%20far%3B%20use%20iterate%20instead%0Aexample%20%3A%201%20%E2%89%A4%204%20%3A%3D%0Abegin%0A--%20repeat%20%7Bapply%20nat.less_than_or_equal.step%7D%2C%0Aiterate%203%20%7Bapply%20nat.less_than_or_equal.step%7D%2C%0Aapply%20nat.less_than_or_equal.refl%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_277.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=inductive%20le%20(n%20%3A%20nat)%3A%20nat%20%E2%86%92%20Prop%0A--%20n%20is%20an%20implicit%20firt%20argument%20to%20each%20constructor%0A%7C%20refl%20%3A%20le%20%2F-n-%2F%20n%0A%7C%20step%20%3A%20%E2%88%80%20m%2C%20le%20%2F-n-%2F%20m%20%E2%86%92%20le%20%2F-n-%2F%20m.succ%0A%0A--%20you%20can%20see%20it%20in%20the%20types%20of%20the%20constructors%0A%23check%20%40le.refl%0A%23check%20%40le.step%0A%0A%0Aexample%20%3A%20le%200%200%20%3A%3D%0Abegin%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%203%203%20%3A%3D%0Abegin%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%200%201%20%3A%3D%0Abegin%0Aapply%20le.step%2C%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%200%203%20%3A%3D%0Abegin%0Aapply%20le.step%2C%0Aapply%20le.step%2C%0Aapply%20le.step%2C%0Aapply%20le.refl%2C%0Aend%0A%0A--%20here's%20the%20same%20example%20using%20Lean's%20version%20of%20%22le%22%0A--%20it's%20called%20nat.less_than_or_equal%0Aexample%20%3A%200%20%E2%89%A4%203%20%3A%3D%0Abegin%0Aapply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.step%2C%0A--%20apply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.refl%2C%0Aend%0A%0A--%20repeat%20tactical%20goes%20too%20far%3B%20use%20iterate%20instead%0Aexample%20%3A%201%20%E2%89%A4%204%20%3A%3D%0Abegin%0A--%20repeat%20%7Bapply%20nat.less_than_or_equal.step%7D%2C%0Aiterate%203%20%7Bapply%20nat.less_than_or_equal.step%7D%2C%0Aapply%20nat.less_than_or_equal.refl%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_269.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">inductive</span> <span class="n">le</span> <span class="o">(</span><span class="n">n</span> <span class="o">:</span> <span class="n">nat</span><span class="o">):</span> <span class="n">nat</span> <span class="bp">&#8594;</span> <span class="kt">Prop</span>
 <span class="c1">-- n is an implicit firt argument to each constructor</span>
 <span class="bp">|</span> <span class="n">refl</span> <span class="o">:</span> <span class="n">le</span> <span class="c">/-</span><span class="cm">n-/</span> <span class="n">n</span>
@@ -1544,7 +1615,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="A_02_Constructive_Logic.html" class="btn btn-neutral float-left" title="3. Constructive Logic" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="A_04_Dependent_Types.html" class="btn btn-neutral float-right" title="5. Dependent Types" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="genindex.html" class="btn btn-neutral float-right" title="Index" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

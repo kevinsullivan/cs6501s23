@@ -18,27 +18,19 @@ binary operator parameter given to the fold function.
 We then found it easy to prove that 0 is indeed a right
 identity for nat.add. They key insight you need to have
 is that it was easy to prove because it's already given
-to us as an *axiom*. In particular, the first rule in the
-recursive definition of nat.add makes it so. Here's the
-definition of nat.add from Lean's core library. 
-
-.. code-block:: lean
+to us as an *axiom* by the very definition of nat.add. 
+In particular, the first rule in this definition states
+exactly that for any *a, nat.add a nat.zero = a*. Here's 
+the definition of nat.add from Lean's core library:: 
 
   def add : nat → nat → nat
   | a  zero     := a
   | a  (succ b) := succ (add a b)
 
-Look at the first case/rule: any a added to zero
-is equal to a. This rule establishes that zero is
-a right identity for add.  Here again is our earlier
-statement and proof. 
-
-Note that the *simp* tactict tries to fine, and if 
-found applies, rules/axioms from the definition of 
-any of the listed functions: here from just nat.add. 
 
 .. code-block:: lean
 
+  -- and a proof
   example : ∀ (n : ℕ), nat.add n 0 = n :=
   begin
   assume n,
@@ -132,7 +124,7 @@ Details: we want to show that 0 + 1 = 1. That
 is, we want to show that 0 + succ 0 = succ 0. 
 By the second rule/axiom of add, the left side 
 is succ (0 + 0). *BE SURE YOU UNDERSTAND THIS
-STEP.*  Now yy the first rule, 0 + 0 = 0, so 
+STEP.*  Now by the first rule, 0 + 0 = 0, so 
 we can rewrite succ (0 + 0) to just succ 0. 
 With this expression on the left side, all 
 thatremains to prove is that succ 0 = succ 0,

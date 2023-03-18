@@ -1,9 +1,5 @@
 
-def add : nat → nat → nat
-| a  zero     := a
-| a  (succ b) := succ (add a b)
-
-
+-- and a proof
 example : ∀ (n : ℕ), nat.add n 0 = n :=
 begin
 assume n,

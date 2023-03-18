@@ -185,15 +185,20 @@ Let's do some test-driven development here.
 (3) Complete implementation and expect test cases to pass
 -/
 def n_ary_append {α : Type} : list (list α) → list α
+| [] := []
+| (h::t) := h ++ n_ary_append t
+
 
 -- test cases for 0, 1, 2, and more arguments
-example : n_ary_append [] = [] := rfl
-example : n_ary_append [[1,2,3]]] = [1,2,3] := rfl
+example : @n_ary_append nat [] = [] := rfl
+example : n_ary_append [[1,2,3]] = [1,2,3] := rfl
 example : n_ary_append [[1,2,3],[4,5,6]] = [1,2,3,4,5,6] := rfl
 example : n_ary_append [[1,2,3],[4,5,6],[7,8,9]] = [1,2,3,4,5,6,7,8,9] := rfl
 
 -- Problem #2
 def sum_lengths {α : Type} : list (list α) → nat
+| [] := 0
+| (h::t) := (list.length h) + (sum_lengths t)
 
 example : @sum_lengths nat [] = 0 := rfl
 example : sum_lengths [[1,2,3]] = 3 := rfl
@@ -202,6 +207,8 @@ example : sum_lengths [[1,2,3],[4,5,6],[7,8,9]] = 9 := rfl
 
 -- Problem #3 
 def even_lengths {α : Type} : list (list α) → bool
+| [] := tt
+| (h::t) := (is_even (list.length h)) && (even_lengths t)
 
 example : @even_lengths nat [] = tt := rfl
 example : even_lengths [[1,2,3],[4,5,6],[7,8,9]] = ff := rfl
@@ -233,22 +240,50 @@ def all_even : list nat → bool
 #eval all_even [0,2,5]  -- expect ff
 
 
-def foldr {α β : Type} : _
-  -- op type
-  -- id type
-  -- list type  
-  -- result type
-| _ := _
-| _ := _
+def foldr {α β : Type} : (α → β → β) → β → (list α) → β 
+| op id [] := id
+| op id (h::t) := op h (foldr op id t)
 
-def all_even_yay : list nat → bool := 
-  foldr all_even_op 
+#check @foldr
+
+def all_even_yay : list nat → bool := foldr all_even_op tt
+
+#check all_even_yay
 
 
 #eval all_even_yay []       -- expect tt
 #eval all_even_yay [1]      -- expect ff
 #eval all_even_yay [0,2,4]  -- expect tt
 #eval all_even_yay [0,2,5]  -- expect ff
+
+
 #eval foldr nat.add 0 [1,2,3,4,5] 
 #eval foldr nat.mul 1 [1,2,3,4,5] 
+
+def any_true : list bool → bool := foldr bor ff 
+
+#check nat.add
+
+example : ∀ n : nat, nat.add n 0 = n := 
+begin
+assume n,
+by simp [nat.add],
+end
+
+
+example : ∀ n : nat, nat.add 0 n = n := 
+begin
+assume n,
+simp [nat.add],   -- nope, no rule matches the goal
+end
+
+
+example : ∀ n : nat, nat.add 0 n = n := 
+begin
+assume n,
+cases n with n',  -- nope, no rule matches the goal
+simp [nat.add],   -- base case is easy
+                  -- but now we're stuck
+end
+
 

@@ -10,38 +10,39 @@ Proof by Induction
 Motivation
 ~~~~~~~~~~
 
-There was something notably questionable in the last
-chapter. We defined a *safe* version of *fold* by requiring
-a proof that the value returned for an empty list be a 
-*right* (but not a *left*) identity element for the actual
-binary operator parameter given to the fold function.
+in the last chapter we defined a *safe* version of *fold* 
+by requiring that a proof be given as an argument: that the 
+value returned for an empty list be a right identity for the 
+binary operator argument. In many similar situations we will
+require that a value be both a left and a right identity.
 
-We then found it easy to prove that 0 is indeed a right
-identity for nat.add. They key insight you need to have
-is that it was easy to prove because it's already given
-to us as an *axiom*. In particular, the first rule in the
-recursive definition of nat.add makes it so. Here's the
-definition of nat.add from Lean's core library. 
+We found it easy to prove that nat.zero is indeed a right
+identity for nat.add. So can't we just replicate the proof
+that zero is a right identity to show that it's also a left
+identity? The answer is actually no. 
+
+The reason that it was easy to prove that zero is a right
+identity is because it's already given as an *axiom,* by 
+the very definition of nat.add. In particular, the first 
+rule in this definition states exactly that for any *a, 
+nat.add a nat.zero = a*. Here's the definition of nat.add 
+from Lean's core library. Look at the first case: if zero
+is the second argument to add, we just return the first
+argument.:: 
+
+  def add : nat → nat → nat
+  | a  zero     := a
+  | a  (succ b) := succ (add a b)
+
+And here's the proof we constructed. We assume n is an
+arbitrary natural number, then by the first rule of add,
+nat.add n zero reduces to n, so all that remains to prove
+is that n = n, and Lean automates construction of that
+proof. 
 TEXT. -/
 
 -- QUOTE:
-def add : nat → nat → nat
-| a  zero     := a
-| a  (succ b) := succ (add a b)
--- QUOTE. 
-
-/- TEXT:
-Look at the first case/rule: any a added to zero
-is equal to a. This rule establishes that zero is
-a right identity for add.  Here again is our earlier
-statement and proof. 
-
-Note that the *simp* tactict tries to fine, and if 
-found applies, rules/axioms from the definition of 
-any of the listed functions: here from just nat.add. 
-TEXT. -/
-
--- QUOTE:
+-- and a proof
 example : ∀ (n : ℕ), nat.add n 0 = n :=
 begin
 assume n,
@@ -50,14 +51,9 @@ end
 -- QUOTE. 
 
 /- TEXT:
-An English version of this 
-proof might go like this: *We're to prove 
-that for any n, n + 0 = n.* Proof: Assume n
-is an arbitrary but specific natural number. 
-By the first rule/axiom defining nat.add we 
-can rewrite n + 0 as n. That's it. As n is
-general, the conjecture, n + 0 = n, is true 
-for all n. 
+We could have used rfl instead of simp [nat.add]. 
+We're giving you an approach that will work more 
+generally. 
 TEXT. -/
 
 /- TEXT: 
@@ -144,7 +140,7 @@ Details: we want to show that 0 + 1 = 1. That
 is, we want to show that 0 + succ 0 = succ 0. 
 By the second rule/axiom of add, the left side 
 is succ (0 + 0). *BE SURE YOU UNDERSTAND THIS
-STEP.*  Now yy the first rule, 0 + 0 = 0, so 
+STEP.*  Now by the first rule, 0 + 0 = 0, so 
 we can rewrite succ (0 + 0) to just succ 0. 
 With this expression on the left side, all 
 thatremains to prove is that succ 0 = succ 0,
