@@ -95,8 +95,8 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#recursive-proofs">4.5. Recursive Proofs</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#proof-by-induction">4.5.1. Proof by Induction</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#motivation">4.5.1.1. Motivation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-idea-by-example">4.5.1. The Idea by Example</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#the-problem">4.5.1.1. The Problem</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#a-solution">4.5.1.2. A Solution</a></li>
 </ul>
 </li>
@@ -1302,31 +1302,59 @@ proposition using a method new for us: <em>proof by induction</em>.</p>
 </section>
 <section id="recursive-proofs">
 <h2><span class="section-number">4.5. </span>Recursive Proofs<a class="headerlink" href="#recursive-proofs" title="Permalink to this heading">&#61633;</a></h2>
-<section id="proof-by-induction">
-<h3><span class="section-number">4.5.1. </span>Proof by Induction<a class="headerlink" href="#proof-by-induction" title="Permalink to this heading">&#61633;</a></h3>
-<section id="motivation">
-<h4><span class="section-number">4.5.1.1. </span>Motivation<a class="headerlink" href="#motivation" title="Permalink to this heading">&#61633;</a></h4>
-<p>There was something notably questionable in the last
-chapter. We defined a <em>safe</em> version of <em>fold</em> by requiring
-a proof that the value returned for an empty list be a
-<em>right</em> (but not a <em>left</em>) identity element for the actual
-binary operator parameter given to the fold function.</p>
-<p>We then found it easy to prove that 0 is indeed a right
-identity for nat.add. They key insight you need to have
-is that it was easy to prove because it&#8217;s already given
-to us as an <em>axiom</em> by the very definition of nat.add.
-In particular, the first rule in this definition states
+<p>This chapter you will teach you about proof by induction.</p>
+<p>Proof by induction is a method for constructing proofs of
+universal generalizations, of the form, <em>&#8704; (a : &#945;), P a,</em>
+where &#945; is an arbitrary type and <em>P</em> is a predicate on (and
+thus represents a property of) objects of type &#945;.</p>
+<p>The key idea is that such proofs are in general constructed
+recursively, (1) with proofs of <em>P a</em> for <em>larger</em> values of
+<em>a</em> being constructible in some cases from proofs of <em>P a&#8217;</em>
+for  smaller values of <em>a</em>, and (2) starting from proofs of
+<em>P a</em> for <em>smallest</em> values of <em>a</em>.</p>
+<p>The rest of this chapter will:</p>
+<ul class="simple">
+<li><p>provide a concrete and pecific example of this reasoning and how we can automate it using tools we already have, concluding what is called the induction axiom for natural numbers (arguments to <em>P</em>);</p></li>
+<li><p>see how the concept of an induction axiom generalizes to any inductively defined type, &#945;;</p></li>
+<li><p>introduce the concept of <em>inductive families</em> with recursive constructors;</p></li>
+<li><p>introduce the idea of well founded recursion, meaning that a proof for every value of a type can be constructed starting with smallest values of the type.</p></li>
+<li><p>recognize that some types have no smallest values, making proof by induction inapplicable in these cases</p></li>
+</ul>
+<section id="the-idea-by-example">
+<h3><span class="section-number">4.5.1. </span>The Idea by Example<a class="headerlink" href="#the-idea-by-example" title="Permalink to this heading">&#61633;</a></h3>
+<p>In the last chapter we defined a <em>safe</em> version of <em>fold</em>
+by requiring that a proof be given as an argument: that the
+value returned for an empty list be a right identity for the
+binary operator argument. In many similar situations we will
+require that a value be probably both a left and a right
+identity.</p>
+<p>We found it easy to prove that <em>nat.zero</em> is indeed a right
+identity for <em>nat.add</em>. So can&#8217;t we just replicate the proof
+that zero is a right identity to show that it&#8217;s also a left
+identity? The answer is actually no.</p>
+<p>The reason that it was easy to prove that zero is a right
+identity is because it&#8217;s already given as an <em>axiom,</em> by
+the very definition of <em>nat.add</em>.</p>
+<p>In particular, the first  rule in this definition states
 exactly that for any <em>a, nat.add a nat.zero = a</em>. Here&#8217;s
-the definition of nat.add from Lean&#8217;s core library:</p>
+the definition of <em>nat.add</em> from Lean&#8217;s core library. Look
+at the first case: if zero is the second (right) argument
+to add, we just return the first argument, which makes
+zero a right zero for any natural number first argument.:</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20add%20%3A%20nat%20%E2%86%92%20nat%20%E2%86%92%20nat%0A%7C%20a%20%20zero%20%20%20%20%20%3A%3D%20a%0A%7C%20a%20%20(succ%20b)%20%3A%3D%20succ%20(add%20a%20b)" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_26.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20add%20%3A%20nat%20%E2%86%92%20nat%20%E2%86%92%20nat%0A%7C%20a%20%20zero%20%20%20%20%20%3A%3D%20a%0A%7C%20a%20%20(succ%20b)%20%3A%3D%20succ%20(add%20a%20b)" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_54.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">add</span> <span class="o">:</span> <span class="n">nat</span> <span class="bp">&#8594;</span> <span class="n">nat</span> <span class="bp">&#8594;</span> <span class="n">nat</span>
 <span class="bp">|</span> <span class="n">a</span>  <span class="n">zero</span>     <span class="o">:=</span> <span class="n">a</span>
 <span class="bp">|</span> <span class="n">a</span>  <span class="o">(</span><span class="n">succ</span> <span class="n">b</span><span class="o">)</span> <span class="o">:=</span> <span class="n">succ</span> <span class="o">(</span><span class="n">add</span> <span class="n">a</span> <span class="n">b</span><span class="o">)</span>
 </pre></div>
 </div>
-</div><div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20and%20a%20proof%0Aexample%20%3A%20%E2%88%80%20(n%20%3A%20%E2%84%95)%2C%20nat.add%20n%200%20%3D%20n%20%3A%3D%0Abegin%0Aassume%20n%2C%0Asimp%20%5Bnat.add%5D%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_31.lean">
+</div><p>Here again is the proof we constructed. We assume <em>n</em> is
+an arbitrary natural number. Then by the first rule of add,
+<em>nat.add n zero</em> reduces to <em>n</em>, so all that remains to show
+is that <em>n = n</em>. Lean automates construction of that proof
+using <em>rfl</em>.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20and%20a%20proof%0Aexample%20%3A%20%E2%88%80%20(n%20%3A%20%E2%84%95)%2C%20nat.add%20n%200%20%3D%20n%20%3A%3D%0Abegin%0Aassume%20n%2C%0Asimp%20%5Bnat.add%5D%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_64.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- and a proof</span>
 <span class="kd">example</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">n</span> <span class="o">:</span> <span class="n">&#8469;</span><span class="o">),</span> <span class="n">nat.add</span> <span class="n">n</span> <span class="mi">0</span> <span class="bp">=</span> <span class="n">n</span> <span class="o">:=</span>
 <span class="kd">begin</span>
@@ -1335,40 +1363,37 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <span class="kd">end</span>
 </pre></div>
 </div>
-</div><p>An English version of this
-proof might go like this: <em>We&#8217;re to prove
-that for any n, n + 0 = n.</em> Proof: Assume n
-is an arbitrary but specific natural number.
-By the first rule/axiom defining nat.add we
-can rewrite n + 0 as n. That&#8217;s it. As n is
-general, the conjecture, n + 0 = n, is true
-for all n.
-What&#8217;s <em>not</em> provided by the definition
-of nat.add is an axiom that stipulates
-zero is a <em>left</em> identity for nat.add.
-If we try the same proof technique to
-prove <em>&#8704; n, 0 + n = n</em>, with 0 now on
-the left, we can&#8217;t! (When writing these
-propositions and proofs, use nat.add in
-a consistent manner instead of 0. It&#8217;s
-a complication that&#8217;s annoying, but for
-now just follow this simple instruction
-and you&#8217;ll be fine.)</p>
+</div><p>The <em>simp</em> tactict tries to find, and if found applies,
+rules/axioms from the definition of the listed functions:
+here from just nat.add. We could have used <em>rfl</em> instead
+of <em>simp</em>, but writing the proof in this way emphasizes
+that <em>simplification of expressions using already proven
+or accepted lemmas</em> is a very important maneuver in many
+proofs.</p>
+<section id="the-problem">
+<h4><span class="section-number">4.5.1.1. </span>The Problem<a class="headerlink" href="#the-problem" title="Permalink to this heading">&#61633;</a></h4>
+<p>What&#8217;s <em>not</em> provided by the definition of <em>nat.add</em> is
+an axiom that stipulates that zero is a <em>left</em> identity
+for nat.add. The problem is that if we try the same proof
+technique to now prove <em>&#8704; n, 0 + a = a</em> (with zero now on
+the left), it doesn&#8217;t work! The definition of <em>nat.add</em>
+tells us nothing about the result when zero is added on
+the <em>left</em> to a value, <em>a</em>. Let&#8217;s see what happens when
+we try.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=example%20%3A%20%E2%88%80%20n%2C%20nat.add%20nat.zero%20n%20%3D%20n%20%3A%3D%0Abegin%0Aassume%20n%2C%0Asimp%20%5Bnat.add%5D%2C%0A--%20oops%2C%20that%20didn't%20help%3B%20we're%20stuck!%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_60.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=example%20%3A%20%E2%88%80%20n%2C%20nat.add%20nat.zero%20n%20%3D%20n%20%3A%3D%0Abegin%0Aassume%20n%2C%0Asimp%20%5Bnat.add%5D%2C%0A--%20that%20didn't%20help%3B%20we're%20stuck!%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_93.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">example</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="n">n</span><span class="o">,</span> <span class="n">nat.add</span> <span class="n">nat.zero</span> <span class="n">n</span> <span class="bp">=</span> <span class="n">n</span> <span class="o">:=</span>
 <span class="kd">begin</span>
 <span class="k">assume</span> <span class="n">n</span><span class="o">,</span>
 <span class="n">simp</span> <span class="o">[</span><span class="n">nat.add</span><span class="o">],</span>
-<span class="c1">-- oops, that didn&#39;t help; we&#39;re stuck!</span>
+<span class="c1">-- that didn&#39;t help; we&#39;re stuck!</span>
 <span class="kd">end</span>
 </pre></div>
 </div>
-</div><p>Looking at what remains to be proved, we
-might consider proof by case analysis on
-n. So let&#8217;s try that.</p>
+</div><p>We might instead consider proof by case analysis
+on <em>n</em>. That doesn&#8217;t work either, as we see now.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=example%20%3A%20%E2%88%80%20n%2C%20nat.add%20nat.zero%20n%20%3D%20n%20%3A%3D%0Abegin%0Aassume%20n%2C%0Acases%20n%20with%20n'%2C%0A--%20first%20case%3A%20zero's%20also%20on%20the%20right%0Asimp%20%5Bnat.add%5D%2C%0A--%20second%20case%2C%20argument%20is%20succ%20of%20some%20n'%0A--%20how%20to%20show%200%20%2B%20(succ%20n')%20%3D%20(succ%20n')%0A--%20but%20again%20we're%20stuck%0Asimp%20%5Bnat.add%5D%2C%0A--%20basically%20back%20where%20we%20started%3B%20stuck.%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_73.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=example%20%3A%20%E2%88%80%20n%2C%20nat.add%20nat.zero%20n%20%3D%20n%20%3A%3D%0Abegin%0Aassume%20n%2C%0Acases%20n%20with%20n'%2C%0A--%20first%20case%3A%20zero's%20also%20on%20the%20right%0Asimp%20%5Bnat.add%5D%2C%0A--%20second%20case%2C%20argument%20is%20succ%20of%20some%20n'%0A--%20how%20to%20show%200%20%2B%20(succ%20n')%20%3D%20(succ%20n')%0A--%20but%20again%20we're%20stuck%0Asimp%20%5Bnat.add%5D%2C%0A--%20basically%20back%20where%20we%20started%3B%20stuck.%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_105.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">example</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="n">n</span><span class="o">,</span> <span class="n">nat.add</span> <span class="n">nat.zero</span> <span class="n">n</span> <span class="bp">=</span> <span class="n">n</span> <span class="o">:=</span>
 <span class="kd">begin</span>
 <span class="k">assume</span> <span class="n">n</span><span class="o">,</span>
@@ -1383,100 +1408,197 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <span class="kd">end</span>
 </pre></div>
 </div>
-</div><p>The problem is that all we know about n&#8217;
-is that it&#8217;s some natural number, and that
-isn&#8217;t enough to work with to prove the goal.
-That&#8217;s the probem we solve now.</p>
-</section>
+</div></section>
 <section id="a-solution">
 <h4><span class="section-number">4.5.1.2. </span>A Solution<a class="headerlink" href="#a-solution" title="Permalink to this heading">&#61633;</a></h4>
-<p>What if we knew a little more? What if we
-knew that 0 is a left zero for n&#8217; as part
-of the context in which are to prove that
-it&#8217;s a zero for (succ n&#8217;)? Would that help?</p>
-<p>It would. Suppose we know that <em>add 0 n&#8217; = n&#8217;</em>
-and that we want to prive that <em>add 0 (succ n&#8217;)
-= (succ n&#8217;)</em>. Key insight: We can apply the
-<em>second</em> axiom of addition,given by the second
-rule in its definition, to rewrite the term,
-<em>add 0 (succ n&#8217;)</em> to the term <em>succ (add 0 n&#8217;);</em>
-then we can use the fact that (by assumption)
-0 is a left 0 for n&#8217; to rewrite the term
-<em>succ (add 0 n&#8217;)</em> to <em>succ n&#8217;.</em> That&#8217;s it.
-We&#8217;ve shown that 0 + succ n&#8217; = succ n&#8217;.</p>
-<p>But what could possibly justify assuming
-that 0 + n&#8217; = n&#8217; in the first place? Well,
-let&#8217;s see if it can be justified informally
-before getting into formalities.</p>
-<p>Let&#8217;s start by noting that by the first rule
-of addition, 0 is a left zero for 0. This
-proof gives us a base on which we can now
-construct a proof that 0 is a left zero for 1.</p>
-<p>Details: we want to show that 0 + 1 = 1. That
-is, we want to show that 0 + succ 0 = succ 0.
-By the second rule/axiom of add, the left side
-is succ (0 + 0). <em>BE SURE YOU UNDERSTAND THIS
-STEP.</em>  Now by the first rule, 0 + 0 = 0, so
-we can rewrite succ (0 + 0) to just succ 0.
-With this expression on the left side, all
-thatremains to prove is that succ 0 = succ 0,
-and this is true of course by the reflexivity
-of the equality relation.</p>
-<p>To recap, we proved a &#8220;base case&#8221; (that
-zero is a left identity for zero) using the
-first axiom of addition. Then we applied the
-second axiom to show that 0 is a left identity
-for 1. With this proof in hand we can apply
-the second axiom <em>again</em> to construct a proof
-that zero is left identity for 2. From this
-we can derive that 0 is a left identity for
-3. Indeed to prove that 0 is a left identity
-for <em>any</em> n, we start with a proof that it&#8217;s
-a left identity for zero using the first
-axiom, then we iteratively apply the second
-axiom n times to prove it&#8217;s a left identity
-for <em>any</em> n.</p>
-<p>Let&#8217;s just program it to make it all clear.
-Out program will take any value n and return
-a proof that 0 is a left identity for it. It
-does this in the reverse order, constructing
-a proof for the case where n is non-zero, i.e.,
-where n = succ n&#8217; for some n&#8217;, and obtaining
-a proof for n&#8217; <em>by recursion</em>. The recursive
-calls implement iteration until the base case
-of n = 0 is reached, at which point a proof
-for that case is returned, the recursion
-unwinds, and we&#8217;re left with a proof that 0
-is a left identity for that arbitrary n. The
-existence of this function shows that we can
-construct a proof of the proposition that 0
-is a left identity for any n, and so it is
-true <em>for all</em> n. And that&#8217;s what we wanted.
-QED.</p>
+<p>From basic arithmetic we know it&#8217;s true that
+every natural number, <em>a</em>, has the <em>property</em>
+that <em>0 + a = a,</em> but it&#8217;s also now clear that
+we don&#8217;t yet have the tools to prove that this
+is true. In this section we&#8217;ll present a new
+method, <em>proof by induction,</em> that will close
+this gap.</p>
+<p>To begin, let&#8217;s formally state the <em>property</em>
+that we want to prove is true for every <em>nat</em>.
+As we&#8217;ve seen before, we&#8217;ll formally state the
+property as a predicate, and then we&#8217;ll see a
+way to prove that this predicate is true for
+every natural number.</p>
+<p>Let&#8217;s define <em>(P a)</em> to be the proposition that
+<em>0 + a = a</em>. Our goal will then be to show that
+<em>&#8704; (a : &#8469;), P a.</em></p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20a%20proof-returning%20function%20defined%20by%20cases%0A--%20takes%20any%20n%20and%20returns%20a%20proof%20of%200%20%2B%20n%20%3D%20n%0Adef%20zero_left_ident_n%20%3A%20%E2%88%80%20n%2C%20(nat.add%200%20n%20%3D%20n)%0A%7C%20nat.zero%20%3A%3D%20by%20simp%20%5Bnat.add%5D%20--%20base%20case%0A%7C%20(nat.succ%20n')%20%3A%3D%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20recursive%20case%0A%20%20begin%0A%20%20simp%20%5Bnat.add%5D%2C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20applies%20second%20rule%20and%20...%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20removes%20succ%20on%20each%20side%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20by%20injectivity%20of%20constructors%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20inherent%20in%20inductive%20definitions%0A%20%20exact%20(zero_left_ident_n%20n')%2C%20--%20prove%20result%20recursively%0A%20%20end%0A%0A--%20eyeball%20check%20of%20the%20recursive%20structure%20of%20these%20proofs!%0A%23reduce%20zero_left_ident_n%200%20%20%20%20%20--%20the%20proof%20term%20is%20unpretty%20(just%20eyeball%20it)%0A%23reduce%20zero_left_ident_n%201%20%20%20%20%20--%20the%20proof%20for%201%20buids%20on%20the%20proof%20for%200%0A%23reduce%20zero_left_ident_n%202%20%20%20%20%20--%20the%20proof%20for%202%20buids%20on%20the%20proof%20for%201%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20and%20we%20see%20we%20can%20build%20such%20a%20proof%20for%20any%20n%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20therefore%200%20is%20a%20left%20identity%20for%20addition" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_167.lean">
-try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- a proof-returning function defined by cases</span>
-<span class="c1">-- takes any n and returns a proof of 0 + n = n</span>
-<span class="kd">def</span> <span class="n">zero_left_ident_n</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="n">n</span><span class="o">,</span> <span class="o">(</span><span class="n">nat.add</span> <span class="mi">0</span> <span class="n">n</span> <span class="bp">=</span> <span class="n">n</span><span class="o">)</span>
-<span class="bp">|</span> <span class="n">nat.zero</span> <span class="o">:=</span> <span class="kd">by</span> <span class="n">simp</span> <span class="o">[</span><span class="n">nat.add</span><span class="o">]</span> <span class="c1">-- base case</span>
-<span class="bp">|</span> <span class="o">(</span><span class="n">nat.succ</span> <span class="n">n&#39;</span><span class="o">)</span> <span class="o">:=</span>              <span class="c1">-- recursive case</span>
-  <span class="kd">begin</span>
-  <span class="n">simp</span> <span class="o">[</span><span class="n">nat.add</span><span class="o">],</span>               <span class="c1">-- applies second rule and ...</span>
-                                <span class="c1">-- removes succ on each side</span>
-                                <span class="c1">-- by injectivity of constructors</span>
-                                <span class="c1">-- inherent in inductive definitions</span>
-  <span class="n">exact</span> <span class="o">(</span><span class="n">zero_left_ident_n</span> <span class="n">n&#39;</span><span class="o">),</span> <span class="c1">-- prove result recursively</span>
-  <span class="kd">end</span>
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20P%20(a%20%3A%20%E2%84%95)%20%3A%20Prop%20%3A%3D%200%20%2B%20a%20%3D%20a%0A%0A%23check%20P%20%20%20%20%20%20--%20nat%20%E2%86%92%20Prop%20%20%20--%20property%2Fpredicate" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_142.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">P</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="n">&#8469;</span><span class="o">)</span> <span class="o">:</span> <span class="kt">Prop</span> <span class="o">:=</span> <span class="mi">0</span> <span class="bp">+</span> <span class="n">a</span> <span class="bp">=</span> <span class="n">a</span>
 
-<span class="c1">-- eyeball check of the recursive structure of these proofs!</span>
-<span class="k">#reduce</span> <span class="n">zero_left_ident_n</span> <span class="mi">0</span>     <span class="c1">-- the proof term is unpretty (just eyeball it)</span>
-<span class="k">#reduce</span> <span class="n">zero_left_ident_n</span> <span class="mi">1</span>     <span class="c1">-- the proof for 1 buids on the proof for 0</span>
-<span class="k">#reduce</span> <span class="n">zero_left_ident_n</span> <span class="mi">2</span>     <span class="c1">-- the proof for 2 buids on the proof for 1</span>
-                                <span class="c1">-- and we see we can build such a proof for any n</span>
-                                <span class="c1">-- therefore 0 is a left identity for addition</span>
+<span class="k">#check</span> <span class="n">P</span>      <span class="c1">-- nat &#8594; Prop   -- property/predicate</span>
 </pre></div>
 </div>
-</div><p>To sum up, what we&#8217;ve shown is that if we have two
+</div><p>Let&#8217;s take a different approach, starting with
+a problem instance, with zero on the left, that
+we can easily prove: namely when zero is also on
+the right, because in this special case we <em>can</em>
+use the first axiom/rule of addition. (Yes, we
+can use rfl instead, but we&#8217;re interested to see
+a general approach.)</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=theorem%20p0%20%3A%20P%200%20%3A%3D%0Abegin%0Aunfold%20P%2C%20%20%20%20%20%20%20%20%20--%20expand%20definition%20of%20P%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20Lean%20applies%20def'n%20of%20add%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20and%20rfl%20to%20finish%20off%20proof%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_156.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">theorem</span> <span class="n">p0</span> <span class="o">:</span> <span class="n">P</span> <span class="mi">0</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="n">unfold</span> <span class="n">P</span><span class="o">,</span>         <span class="c1">-- expand definition of P</span>
+                  <span class="c1">-- Lean applies def&#39;n of add</span>
+                  <span class="c1">-- and rfl to finish off proof</span>
+<span class="kd">end</span>
+</pre></div>
+</div>
+</div><p>That was easy but it doesn&#8217;t get us very far. We
+next ask the question, from the value, 0, and our
+proof of (P 0), can we construct a proof of (P 1)?
+In fact we can.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=theorem%20p1%20%3A%20P%201%20%3A%3D%0Abegin%0A--%20add%20proof%20p0%20to%20local%20context%20for%20clarity%0Ahave%20p0%20%3A%3D%20p0%2C%0A--%20unfold%20definition%20of%20P%20in%20P%200%0Aunfold%20P%20at%20p0%2C%0A--%20rewrite%20goal%20by%20def'n%20of%20P%0Ashow%200%20%2B%201%20%3D%201%2C%0A%2F-%0AThe%20challenge%20is%20now%20clear.%20From%20a%20proof%0Athat%200%20is%20a%20left%20identity%20for%200%20can%20we%20build%0Aa%20proof%20that%200%20is%20a%20left%20identity%20for%20one%3F%0AThe%20solution%20relies%20on%20two%20crucial%20insights.%0A%0AFirst%3A%20we%20can%20use%20the%20*second*%20axiom%20of%20*add*%0Ato%20rewrite%20the%20goal%20from%20*add%200%20(succ%201)*%20to%0A*succ%20(add%200%200)*.%20Be%20*sure*%20sure%20you%20understand%0Athis%20point.%20Go%20back%20to%20the%20definition%20of%20*add*%2C%0Alook%20at%20the%20second%20rule%2C%20and%20be%20sure%20you%20see%0Athat%20it%20enables%20exactly%20this%20rewriting.%0AThe%20new%20goal%20to%20prove%20is%20then%3A%3A%0A-%2F%0Ashow%20(1%20%2B%20(0%20%2B%200))%20%3D%201%2C%20%20--%20see%20def'n%20of%20add!%0A%2F-%0ASecond%2C%20we%20can%20use%20our%20proof%2C%20p0%20%3A%20(P%200)%2C%20that%0Azero%20is%20a%20left%20identity%20for%200%20on%20the%20right%2C%20to%0Arewrite%200%20%2B%200%20as%200.%20We're%20then%20left%20with%20the%0Agoal%20to%20show%20that%20*1%20%2B%200%20%3D%201*%2C%20with%20zero%20*on%0Athe%20right*%2C%20which%20Lean%20then%20proves%20for%20us%0Aautomatically%20by%20applying%20the%20first%20rule%20of%0Aaddition.%0A-%2F%0Arw%20p0%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_170.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">theorem</span> <span class="n">p1</span> <span class="o">:</span> <span class="n">P</span> <span class="mi">1</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="c1">-- add proof p0 to local context for clarity</span>
+<span class="k">have</span> <span class="n">p0</span> <span class="o">:=</span> <span class="n">p0</span><span class="o">,</span>
+<span class="c1">-- unfold definition of P in P 0</span>
+<span class="n">unfold</span> <span class="n">P</span> <span class="n">at</span> <span class="n">p0</span><span class="o">,</span>
+<span class="c1">-- rewrite goal by def&#39;n of P</span>
+<span class="k">show</span> <span class="mi">0</span> <span class="bp">+</span> <span class="mi">1</span> <span class="bp">=</span> <span class="mi">1</span><span class="o">,</span>
+<span class="c">/-</span>
+<span class="cm">The challenge is now clear. From a proof</span>
+<span class="cm">that 0 is a left identity for 0 can we build</span>
+<span class="cm">a proof that 0 is a left identity for one?</span>
+<span class="cm">The solution relies on two crucial insights.</span>
+
+<span class="cm">First: we can use the *second* axiom of *add*</span>
+<span class="cm">to rewrite the goal from *add 0 (succ 1)* to</span>
+<span class="cm">*succ (add 0 0)*. Be *sure* sure you understand</span>
+<span class="cm">this point. Go back to the definition of *add*,</span>
+<span class="cm">look at the second rule, and be sure you see</span>
+<span class="cm">that it enables exactly this rewriting.</span>
+<span class="cm">The new goal to prove is then::</span>
+<span class="cm">-/</span>
+<span class="k">show</span> <span class="o">(</span><span class="mi">1</span> <span class="bp">+</span> <span class="o">(</span><span class="mi">0</span> <span class="bp">+</span> <span class="mi">0</span><span class="o">))</span> <span class="bp">=</span> <span class="mi">1</span><span class="o">,</span>  <span class="c1">-- see def&#39;n of add!</span>
+<span class="c">/-</span>
+<span class="cm">Second, we can use our proof, p0 : (P 0), that</span>
+<span class="cm">zero is a left identity for 0 on the right, to</span>
+<span class="cm">rewrite 0 + 0 as 0. We&#39;re then left with the</span>
+<span class="cm">goal to show that *1 + 0 = 1*, with zero *on</span>
+<span class="cm">the right*, which Lean then proves for us</span>
+<span class="cm">automatically by applying the first rule of</span>
+<span class="cm">addition.</span>
+<span class="cm">-/</span>
+<span class="n">rw</span> <span class="n">p0</span><span class="o">,</span>
+<span class="kd">end</span>
+</pre></div>
+</div>
+</div><p>So wow we have proofs for two cases: <em>P 0</em> and
+<em>P 1</em>. Can we pull the same trick again, using
+the proof of <em>P 1</em> to build a proof of <em>(P 2)</em>?
+Yes, we can!</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=theorem%20p2%20%3A%20P%202%20%20%3A%3D%0Abegin%0Ahave%20p1%20%3A%3D%20p1%2C%20%20%20%20--%20just%20for%20clarity%0Aunfold%20P%20at%20p1%2C%0Ashow%201%20%2B%20(0%20%2B%201)%20%3D%202%2C%0Arewrite%20p1%2C%0Aend%0A%0A--%20Wow%2C%20can%20we%20just%20keep%20doing%20this%3F%0A%0Atheorem%20p3%20%3A%20P%203%20%20%3A%3D%0Abegin%0Ahave%20p2%20%3A%3D%20p2%2C%20%20%20%20--%20just%20for%20clarity%0Aunfold%20P%20at%20p2%2C%0Ashow%201%20%2B%20(0%20%2B%202)%20%3D%203%2C%0Arewrite%20p2%2C%0Aend%0A%0Atheorem%20zero_left_id_four%20%3A%20P%204%20%20%3A%3D%0Abegin%0Ahave%20p3%20%3A%3D%20p3%2C%20%20%20%20--%20just%20for%20clarity%0Aunfold%20P%20at%20p3%2C%0Ashow%201%20%2B%20(0%20%2B%203)%20%3D%204%2C%0Arewrite%20p3%2C%0Aend%0A%2F-%20Now%20it%20looks%20like%20that%20from%20any%20nat%2C%20*a'%20%3A%20nat*%2C%0Aand%20a%20proof%20of%20*P%20a'*%20we%20can%20prove%20*P%20(a'%20%2B%201)*.%0A-%2F" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_212.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">theorem</span> <span class="n">p2</span> <span class="o">:</span> <span class="n">P</span> <span class="mi">2</span>  <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">have</span> <span class="n">p1</span> <span class="o">:=</span> <span class="n">p1</span><span class="o">,</span>    <span class="c1">-- just for clarity</span>
+<span class="n">unfold</span> <span class="n">P</span> <span class="n">at</span> <span class="n">p1</span><span class="o">,</span>
+<span class="k">show</span> <span class="mi">1</span> <span class="bp">+</span> <span class="o">(</span><span class="mi">0</span> <span class="bp">+</span> <span class="mi">1</span><span class="o">)</span> <span class="bp">=</span> <span class="mi">2</span><span class="o">,</span>
+<span class="n">rewrite</span> <span class="n">p1</span><span class="o">,</span>
+<span class="kd">end</span>
+
+<span class="c1">-- Wow, can we just keep doing this?</span>
+
+<span class="kd">theorem</span> <span class="n">p3</span> <span class="o">:</span> <span class="n">P</span> <span class="mi">3</span>  <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">have</span> <span class="n">p2</span> <span class="o">:=</span> <span class="n">p2</span><span class="o">,</span>    <span class="c1">-- just for clarity</span>
+<span class="n">unfold</span> <span class="n">P</span> <span class="n">at</span> <span class="n">p2</span><span class="o">,</span>
+<span class="k">show</span> <span class="mi">1</span> <span class="bp">+</span> <span class="o">(</span><span class="mi">0</span> <span class="bp">+</span> <span class="mi">2</span><span class="o">)</span> <span class="bp">=</span> <span class="mi">3</span><span class="o">,</span>
+<span class="n">rewrite</span> <span class="n">p2</span><span class="o">,</span>
+<span class="kd">end</span>
+
+<span class="kd">theorem</span> <span class="n">zero_left_id_four</span> <span class="o">:</span> <span class="n">P</span> <span class="mi">4</span>  <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">have</span> <span class="n">p3</span> <span class="o">:=</span> <span class="n">p3</span><span class="o">,</span>    <span class="c1">-- just for clarity</span>
+<span class="n">unfold</span> <span class="n">P</span> <span class="n">at</span> <span class="n">p3</span><span class="o">,</span>
+<span class="k">show</span> <span class="mi">1</span> <span class="bp">+</span> <span class="o">(</span><span class="mi">0</span> <span class="bp">+</span> <span class="mi">3</span><span class="o">)</span> <span class="bp">=</span> <span class="mi">4</span><span class="o">,</span>
+<span class="n">rewrite</span> <span class="n">p3</span><span class="o">,</span>
+<span class="kd">end</span>
+<span class="c">/-</span><span class="cm"> Now it looks like that from any nat, *a&#39; : nat*,</span>
+<span class="cm">and a proof of *P a&#39;* we can prove *P (a&#39; + 1)*.</span>
+<span class="cm">-/</span>
+</pre></div>
+</div>
+</div><p>Clearly we can&#8217;t write such a proof for each value
+of <em>a&#8217;</em>. The next question is, <em>Can we generalize the
+idea that we can *step up</em> from a proof of <em>P a&#8217;</em> to
+a proof of <em>P (a&#8217;+1)</em> for any value of <em>a&#8217;</em>?  That is,
+can we show <a href="#id7"><span class="problematic" id="id8">*</span></a>&#8704; (a&#8217; : &#8469;), P a&#8217; &#8594; P (a&#8217; + 1)? We can!</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=lemma%20step%20%3A%20%E2%88%80%20(a'%20%3A%20%E2%84%95)%2C%20P%20a'%20%E2%86%92%20P%20(a'.succ)%20%3A%3D%0Abegin%0Aassume%20a'%20ih%2C%0Aunfold%20P%20at%20ih%2C%0Aunfold%20P%2C%0A--%20some%20tedious%20rewriting%20of%20notations%20is%20needed%0A--%20Lean%20confirms%20that%20these%20rewrites%20are%20valid%0Ashow%20nat.add%200%20a'.succ%20%3D%20a'.succ%2C%0A--%20now%20this%20simplification%20works%0Asimp%20%5Bnat.add%5D%2C%0A--%20same%20problem%20again%0Ashow%200%20%2B%20a'%20%3D%20a'%2C%0A%2F-%0AWe've%20thus%20reduced%20the%20original%20goal%20to%20the%0Agoal%20of%20proving%20the%20hypothesis%20that%20we%20have%0Aalready%20assumed%20(implication%20introduction).%0A-%2F%0Aapply%20ih%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_249.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">lemma</span> <span class="n">step</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">a&#39;</span> <span class="o">:</span> <span class="n">&#8469;</span><span class="o">),</span> <span class="n">P</span> <span class="n">a&#39;</span> <span class="bp">&#8594;</span> <span class="n">P</span> <span class="o">(</span><span class="n">a&#39;.succ</span><span class="o">)</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">assume</span> <span class="n">a&#39;</span> <span class="n">ih</span><span class="o">,</span>
+<span class="n">unfold</span> <span class="n">P</span> <span class="n">at</span> <span class="n">ih</span><span class="o">,</span>
+<span class="n">unfold</span> <span class="n">P</span><span class="o">,</span>
+<span class="c1">-- some tedious rewriting of notations is needed</span>
+<span class="c1">-- Lean confirms that these rewrites are valid</span>
+<span class="k">show</span> <span class="n">nat.add</span> <span class="mi">0</span> <span class="n">a&#39;.succ</span> <span class="bp">=</span> <span class="n">a&#39;.succ</span><span class="o">,</span>
+<span class="c1">-- now this simplification works</span>
+<span class="n">simp</span> <span class="o">[</span><span class="n">nat.add</span><span class="o">],</span>
+<span class="c1">-- same problem again</span>
+<span class="k">show</span> <span class="mi">0</span> <span class="bp">+</span> <span class="n">a&#39;</span> <span class="bp">=</span> <span class="n">a&#39;</span><span class="o">,</span>
+<span class="c">/-</span>
+<span class="cm">We&#39;ve thus reduced the original goal to the</span>
+<span class="cm">goal of proving the hypothesis that we have</span>
+<span class="cm">already assumed (implication introduction).</span>
+<span class="cm">-/</span>
+<span class="n">apply</span> <span class="n">ih</span><span class="o">,</span>
+<span class="kd">end</span>
+</pre></div>
+</div>
+</div><p>We don&#8217;t yet have the proof of <em>&#8704; a, P a</em> that
+we seek. What we do have are proofs, <em>p0 : P 0</em>
+and <em>step: &#8704; a&#8217;, P a&#8217; &#8594; P (a&#8217;+1).</em> Moreover we&#8217;ve
+just seen that if we start with <em>p0</em> and apply
+<em>step a</em> times, we can construct a proof of <em>P a</em>
+for any value, <em>a</em>. Of course now we can automate
+that last step by writing a function that does
+just that: take any value, <em>a</em>, start with <em>p0</em>,
+and apply <em>step a</em> times, and end up with a proof
+of <em>P a</em>. The iterative application of <em>step</em> is
+accomplished by recursion.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20pa%20%3A%20%E2%88%80%20(a%20%3A%20%E2%84%95)%2C%20(nat.add%200%20a%20%3D%20a)%0A%7C%200%20%3A%3D%20p0%0A%7C%20(nat.succ%20a')%20%3A%3D%20(step%20a'%20(pa%20a'))%0A%0A%23check%20pa" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_283.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">pa</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="n">&#8469;</span><span class="o">),</span> <span class="o">(</span><span class="n">nat.add</span> <span class="mi">0</span> <span class="n">a</span> <span class="bp">=</span> <span class="n">a</span><span class="o">)</span>
+<span class="bp">|</span> <span class="mi">0</span> <span class="o">:=</span> <span class="n">p0</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">nat.succ</span> <span class="n">a&#39;</span><span class="o">)</span> <span class="o">:=</span> <span class="o">(</span><span class="n">step</span> <span class="n">a&#39;</span> <span class="o">(</span><span class="n">pa</span> <span class="n">a&#39;</span><span class="o">))</span>
+
+<span class="k">#check</span> <span class="n">pa</span>
+</pre></div>
+</div>
+</div><p>&#8211; This function proves &#8704; a, P a. It&#8217;s a universal
+generalization so we can apply it to any specific value
+of <em>a</em> to get a proof that zero is a left identity for that
+particular <em>a</em>.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23reduce%20pa%200%0A%23reduce%20pa%201%0A%23reduce%20pa%202%0A%23reduce%20pa%203" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_296.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#reduce</span> <span class="n">pa</span> <span class="mi">0</span>
+<span class="k">#reduce</span> <span class="n">pa</span> <span class="mi">1</span>
+<span class="k">#reduce</span> <span class="n">pa</span> <span class="mi">2</span>
+<span class="k">#reduce</span> <span class="n">pa</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</div><p>Moreover, by inspecting the (semi-unreadable)
+proof terms, you can see that the proof term for each value,
+<em>a,</em> includes within it a proof term for the next smaller
+value, all the way down to the proof term for zero. Just
+as larger nat values incorporate smaller ones down to zero,
+so do proofs of <em>P a</em> for larger <em>a&#8217;s</em> include smaller
+proofs of <em>P a&#8217;</em> all the way down to a proof of <em>P 0</em>.
+We thus construct proofs of <em>P a</em> for any <em>a</em> inductively.
+And this method is called proof by induction.
+To sum up, what we&#8217;ve shown is that if we have two
 <em>little machines</em> we can construct a proof of the
 given proposition, let&#8217;s call it P := (0 + n = n),
 for any value, n. The first machine produces a proof
@@ -1495,8 +1617,8 @@ as a term that adds another layer of &#8220;proof stuff&#8221;
 around a proof of P for n&#8217;, ultimately terminating
 with a proof of P for 0, with further sub-structure.
 apply
-Generalizing
-~~~~~~~~~~~~</p>
+Other Inductive Types
+~~~~~~~~~~~~~~~~~~~~~</p>
 <p>Just as we will need a proof that 0 is not only a right
 identity for nat.add (by the first axiom) but also a left
 identity (a theorem proved by induction), so will need a
@@ -1506,7 +1628,7 @@ for the list append operation.</p>
 that the list.append operation (with infix notation ++) has
 a rule/axiom that states that l ++ nil := l for any l.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%2F-%0AHere's%20the%20definition%20of%20list.append.%0AIt%20asserts%20that%20%5B%5D%20is%20a%20left%20identity%20axiomatically.%0A%0Adef%20append%20%3A%20list%20%CE%B1%20%E2%86%92%20list%20%CE%B1%20%E2%86%92%20list%20%CE%B1%0A%7C%20%5B%5D%20%20%20%20%20%20%20l%20%3A%3D%20l%0A%7C%20(h%20%3A%3A%20s)%20t%20%3A%3D%20h%20%3A%3A%20(append%20s%20t)%0A-%2F%0A%0A--%20proving%20right%20identity%20is%20trivial%20just%20as%20for%20addition%0Aexample%20(%CE%B1%20%3A%20Type)%20%3A%20%E2%88%80%20(l%20%3A%20list%20%CE%B1)%2C%20list.nil%20%2B%2B%20l%20%3D%20l%20%3A%3D%0Abegin%0Aassume%20l%2C%0Asimp%20%5Blist.append%5D%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_222.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%2F-%0AHere's%20the%20definition%20of%20list.append.%0AIt%20asserts%20that%20%5B%5D%20is%20a%20left%20identity%20axiomatically.%0A%0Adef%20append%20%3A%20list%20%CE%B1%20%E2%86%92%20list%20%CE%B1%20%E2%86%92%20list%20%CE%B1%0A%7C%20%5B%5D%20%20%20%20%20%20%20l%20%3A%3D%20l%0A%7C%20(h%20%3A%3A%20s)%20t%20%3A%3D%20h%20%3A%3A%20(append%20s%20t)%0A-%2F%0A%0A--%20proving%20right%20identity%20is%20trivial%20just%20as%20for%20addition%0Aexample%20(%CE%B1%20%3A%20Type)%20%3A%20%E2%88%80%20(l%20%3A%20list%20%CE%B1)%2C%20list.nil%20%2B%2B%20l%20%3D%20l%20%3A%3D%0Abegin%0Aassume%20l%2C%0Asimp%20%5Blist.append%5D%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_345.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c">/-</span>
 <span class="cm">Here&#39;s the definition of list.append.</span>
 <span class="cm">It asserts that [] is a left identity axiomatically.</span>
@@ -1525,7 +1647,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </pre></div>
 </div>
 </div><div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20nil_left_ident_app%20(%CE%B1%20%3A%20Type)%20%3A%20%E2%88%80%20(l%20%3A%20list%20%CE%B1)%2C%20l%20%2B%2B%20list.nil%20%3D%20l%20%3A%3D%0Abegin%0Aassume%20l%2C%0Acases%20l%20with%20h%20t%2C%0A--%20base%20case%0Asimp%20%5Blist.append%5D%2C%20%20%20--%20uses%20first%20rule%0A--%20recursive%20case%0Asimp%20%5Blist.append%5D%2C%20%20%20--%20why%20does%20this%20work%3F%0Aend%0A%0A--%20Here's%20another%20formal%20demonstration%20of%20the%20same%20point%0Avariables%20(%CE%B1%20%3A%20Type)%20(a%20%3A%20%CE%B1)%20(l%20%3A%20list%20%CE%B1)%0Aexample%3A%20list.nil%20%2B%2B%20l%20%3D%20l%20%3A%3D%20by%20simp%20%20%20%20--%20first%20rule%0Aexample%20%3A%20l%20%2B%2B%20list.nil%20%20%3D%20l%20%3A%3D%20by%20simp%20%20--%20by%20%5Bsimp%5D%20lemma%20in%20Lean%20library" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_242.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20nil_left_ident_app%20(%CE%B1%20%3A%20Type)%20%3A%20%E2%88%80%20(l%20%3A%20list%20%CE%B1)%2C%20l%20%2B%2B%20list.nil%20%3D%20l%20%3A%3D%0Abegin%0Aassume%20l%2C%0Acases%20l%20with%20h%20t%2C%0A--%20base%20case%0Asimp%20%5Blist.append%5D%2C%20%20%20--%20uses%20first%20rule%0A--%20recursive%20case%0Asimp%20%5Blist.append%5D%2C%20%20%20--%20why%20does%20this%20work%3F%0Aend%0A%0A--%20Here's%20another%20formal%20demonstration%20of%20the%20same%20point%0Avariables%20(%CE%B1%20%3A%20Type)%20(a%20%3A%20%CE%B1)%20(l%20%3A%20list%20%CE%B1)%0Aexample%3A%20list.nil%20%2B%2B%20l%20%3D%20l%20%3A%3D%20by%20simp%20%20%20%20--%20first%20rule%0Aexample%20%3A%20l%20%2B%2B%20list.nil%20%20%3D%20l%20%3A%3D%20by%20simp%20%20--%20by%20%5Bsimp%5D%20lemma%20in%20Lean%20library" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_365.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">nil_left_ident_app</span> <span class="o">(</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">l</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span><span class="o">),</span> <span class="n">l</span> <span class="bp">++</span> <span class="n">list.nil</span> <span class="bp">=</span> <span class="n">l</span> <span class="o">:=</span>
 <span class="kd">begin</span>
 <span class="k">assume</span> <span class="n">l</span><span class="o">,</span>
@@ -1546,12 +1668,13 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </section>
 <section id="induction-axioms">
 <h3><span class="section-number">4.5.2. </span>Induction Axioms<a class="headerlink" href="#induction-axioms" title="Permalink to this heading">&#61633;</a></h3>
+<p>YOU MAY STOP READING HERE. THE REMAINDER IS STILL <em>UNDER CONSTRUCTION.</em></p>
 </section>
 <section id="inductive-families">
 <h3><span class="section-number">4.5.3. </span>Inductive Families<a class="headerlink" href="#inductive-families" title="Permalink to this heading">&#61633;</a></h3>
 <p>Coming soon.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=inductive%20le%20(n%20%3A%20nat)%3A%20nat%20%E2%86%92%20Prop%0A--%20n%20is%20an%20implicit%20firt%20argument%20to%20each%20constructor%0A%7C%20refl%20%3A%20le%20%2F-n-%2F%20n%0A%7C%20step%20%3A%20%E2%88%80%20m%2C%20le%20%2F-n-%2F%20m%20%E2%86%92%20le%20%2F-n-%2F%20m.succ%0A%0A--%20you%20can%20see%20it%20in%20the%20types%20of%20the%20constructors%0A%23check%20%40le.refl%0A%23check%20%40le.step%0A%0A%0Aexample%20%3A%20le%200%200%20%3A%3D%0Abegin%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%203%203%20%3A%3D%0Abegin%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%200%201%20%3A%3D%0Abegin%0Aapply%20le.step%2C%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%200%203%20%3A%3D%0Abegin%0Aapply%20le.step%2C%0Aapply%20le.step%2C%0Aapply%20le.step%2C%0Aapply%20le.refl%2C%0Aend%0A%0A--%20here's%20the%20same%20example%20using%20Lean's%20version%20of%20%22le%22%0A--%20it's%20called%20nat.less_than_or_equal%0Aexample%20%3A%200%20%E2%89%A4%203%20%3A%3D%0Abegin%0Aapply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.step%2C%0A--%20apply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.refl%2C%0Aend%0A%0A--%20repeat%20tactical%20goes%20too%20far%3B%20use%20iterate%20instead%0Aexample%20%3A%201%20%E2%89%A4%204%20%3A%3D%0Abegin%0A--%20repeat%20%7Bapply%20nat.less_than_or_equal.step%7D%2C%0Aiterate%203%20%7Bapply%20nat.less_than_or_equal.step%7D%2C%0Aapply%20nat.less_than_or_equal.refl%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_269.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=inductive%20le%20(n%20%3A%20nat)%3A%20nat%20%E2%86%92%20Prop%0A--%20n%20is%20an%20implicit%20firt%20argument%20to%20each%20constructor%0A%7C%20refl%20%3A%20le%20%2F-n-%2F%20n%0A%7C%20step%20%3A%20%E2%88%80%20m%2C%20le%20%2F-n-%2F%20m%20%E2%86%92%20le%20%2F-n-%2F%20m.succ%0A%0A--%20you%20can%20see%20it%20in%20the%20types%20of%20the%20constructors%0A%23check%20%40le.refl%0A%23check%20%40le.step%0A%0A%0Aexample%20%3A%20le%200%200%20%3A%3D%0Abegin%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%203%203%20%3A%3D%0Abegin%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%200%201%20%3A%3D%0Abegin%0Aapply%20le.step%2C%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%200%203%20%3A%3D%0Abegin%0Aapply%20le.step%2C%0Aapply%20le.step%2C%0Aapply%20le.step%2C%0Aapply%20le.refl%2C%0Aend%0A%0A--%20here's%20the%20same%20example%20using%20Lean's%20version%20of%20%22le%22%0A--%20it's%20called%20nat.less_than_or_equal%0Aexample%20%3A%200%20%E2%89%A4%203%20%3A%3D%0Abegin%0Aapply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.step%2C%0A--%20apply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.refl%2C%0Aend%0A%0A--%20repeat%20tactical%20goes%20too%20far%3B%20use%20iterate%20instead%0Aexample%20%3A%201%20%E2%89%A4%204%20%3A%3D%0Abegin%0A--%20repeat%20%7Bapply%20nat.less_than_or_equal.step%7D%2C%0Aiterate%203%20%7Bapply%20nat.less_than_or_equal.step%7D%2C%0Aapply%20nat.less_than_or_equal.refl%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_393.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">inductive</span> <span class="n">le</span> <span class="o">(</span><span class="n">n</span> <span class="o">:</span> <span class="n">nat</span><span class="o">):</span> <span class="n">nat</span> <span class="bp">&#8594;</span> <span class="kt">Prop</span>
 <span class="c1">-- n is an implicit firt argument to each constructor</span>
 <span class="bp">|</span> <span class="n">refl</span> <span class="o">:</span> <span class="n">le</span> <span class="c">/-</span><span class="cm">n-/</span> <span class="n">n</span>
