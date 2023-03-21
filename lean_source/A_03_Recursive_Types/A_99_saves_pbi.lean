@@ -131,7 +131,62 @@ for proofs of universal generalizations over values with
 recursive structures, such as nat, list, tree, or even
 *program*. 
 
-Proof by Induction
 ------------------
+
+
+The resulting proof object has a recursive structure. 
+Just as we've represented a non-zero natural number,
+n as the successor of some one-smaller natural number,
+n', so here we represent a proof of P for n = n' + 1
+as a term that adds another layer of "proof stuff"
+around a proof of P for n', ultimately terminating 
+with a proof of P for 0, with further sub-structure. 
+
+--------
+
+/-
+invalid field notation, type is not of the form (C ...) where C is a constant
+  0
+has type
+  ?m_1
+-/
+lemma dud : ∀ (a : nat), 0 + a = a
+↔ (0:nat).add a = a :=
+begin
+assume a,
+split,
+repeat { 
+  assume h,
+  apply h
+},
+end
+
+-- dumb change of notation lema only
+lemma zero_ident_nat_add_notation :  
+  ∀ (a : ℕ), 
+    (a + 0 = a ∧ 0 + a = a) ↔ 
+    (((0:nat).add a = a) ∧ (nat.add a 0 = a)) :=
+begin
+assume a,
+split,
+
+-- forward (Lean does simplification for us)
+assume h,
+cases h with r0 l0,
+split,
+exact l0,
+exact r0,
+
+-- backward
+assume h,
+cases h with l0 r0,
+split,
+exact r0,
+exact l0,
+end
+-- QUOTE.
+
+
+
 
 -/

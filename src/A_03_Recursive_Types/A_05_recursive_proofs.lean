@@ -1,3 +1,5 @@
+import .A_04_higher_order_functions
+
 
 -- and a proof
 example : ∀ (n : ℕ), nat.add n 0 = n :=
@@ -145,16 +147,67 @@ def pa : ∀ (a : ℕ), (nat.add 0 a = a)
 
 
 
+-- 0 is a left and right identity for nat +
+theorem zero_ident_nat_add :
+  ∀ (a : ℕ), 
+    (0 + a = a) ∧
+    (a + 0 = a) :=
+begin
+assume a,
+split,
+apply pa,  -- inductive case by left_identity theorem
+apply rfl, -- base case is easyend
+end
 
 
-/- 
-Here's the definition of list.append.
-It asserts that [] is a left identity axiomatically. 
+theorem zero_ident_nat_add' : ∀ (a : ℕ), (0:nat).add a = a ∧ a.add 0 = a :=
+begin
+assume a,
+split,
+apply pa,
+apply rfl,
+end
 
-def append : list α → list α → list α
-| []       l := l
-| (h :: s) t := h :: (append s t)
--/
+-- KEVIN: Why these complexities around notation?
+
+
+
+universe u
+
+-- general structure
+structure nat_monoid : Type := mk::
+  (op : nat → nat → nat)
+  (id : ℕ)
+  (e : ∀ a, op id a = a ∧ op a id = a)
+  (assoc: ∀ a b c, op a (op b c) = op (op a b) c)
+
+def nat_add_monoid := nat_monoid.mk   nat.add 0 zero_ident_nat_add' sorry  
+def nat_add_monoid' := nat_monoid.mk  nat.add 1 zero_ident_nat_add' sorry  -- yay caught error
+def nat_mul_monoid := nat_monoid.mk   nat.mul 1 sorry sorry                -- no checking here 
+
+-- EXERCISES: Construct proofs to fill in the *sorry*s.
+
+-- Monoid structure instances 
+#reduce foldr nat_add_monoid.op nat_add_monoid.id [1,2,3,4,5]
+#reduce foldr nat_mul_monoid.op nat_mul_monoid.id [1,2,3,4,5]
+
+
+-- A version of foldr that takes a monoid object and uses its op and e values
+def foldr' {α β : Type} : nat_monoid → list nat → nat
+| (nat_monoid.mk op e _ _) l := foldr op e l
+
+-- Safe use of monoid instances folds
+#reduce foldr' nat_add_monoid [1,2,3,4,5]
+#reduce foldr' nat_mul_monoid [1,2,3,4,5]
+
+
+#check @nat.rec_on
+
+def nat_zero_ident (a : nat): P a := nat.rec_on a p0 step
+#check nat_zero_ident 5
+#reduce nat_zero_ident 5
+
+
 
 -- proving right identity is trivial just as for addition
 example (α : Type) : ∀ (l : list α), list.nil ++ l = l :=
@@ -163,26 +216,6 @@ assume l,
 simp [list.append],
 end
 
-/-TEXT:
-We run into the same problem as we did before if we take a
-naive approach to trying to prove that nil is also a left
-identity for ++. And the solution is once again to define
-a recursive function by case analysis on l that constructs
-a proof of *nil ++ l = l* for any list l. If l = list.nil,
-the proof of nil ++ nil is given by the first rule of list
-append, otherwise l = (h::t), and we need to prove that
-nil ++ h::t = h::t. By the second axiom of list append,
-we can rewrite nil ++ h::t as h::(nil ++ t), where we can
-obtain (and then us) a proof that nil ++ t = t by recursion,
-terminating when t =nil. 
-
-Fortunately, Lean's library already contains a proof that
-nil is a right identity, and it's annotated as *[simp]*,
-which means that the *simp* tactic will try to use it to
-prove our goal. In other words, we can use [simp] to prove
-the harder case precisely because someone else has already
-done the work for us; and they did it recursively just as
-we did to show that 0 is a right identity for addition. 
 
 def nil_left_ident_app (α : Type) : ∀ (l : list α), l ++ list.nil = l :=
 begin

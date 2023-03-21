@@ -81,7 +81,7 @@
 
 
 \title{Computing Foundations}
-\date{Mar 20, 2023}
+\date{Mar 21, 2023}
 \release{1.2.2}
 \author{Kevin Sullivan}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -5203,38 +5203,191 @@ particular \sphinxstyleemphasis{a}.
 \end{sphinxVerbatim}
 
 \sphinxAtStartPar
-Moreover, by inspecting the (semi\sphinxhyphen{}unreadable)
-proof terms, you can see that the proof term for each value,
-\sphinxstyleemphasis{a,} includes within it a proof term for the next smaller
-value, all the way down to the proof term for zero. Just
-as larger nat values incorporate smaller ones down to zero,
-so do proofs of \sphinxstyleemphasis{P a} for larger \sphinxstyleemphasis{a’s} include smaller
-proofs of \sphinxstyleemphasis{P a’} all the way down to a proof of \sphinxstyleemphasis{P 0}.
-We thus construct proofs of \sphinxstyleemphasis{P a} for any \sphinxstyleemphasis{a} inductively.
-And this method is called proof by induction.
-To sum up, what we’ve shown is that if we have two
-\sphinxstyleemphasis{little machines} we can construct a proof of the
-given proposition, let’s call it P := (0 + n = n),
-for any value, n. The first machine produces a proof
-of P for the case where n = 0. The second machine,
-given a proof of P for any n’ returns a proof for
-n’ + 1. We’ve show that this is always possible. To
-construct a proof for any n, we then use the first
-machine to get a proof for 0, then we run the second
-machine n times starting on the proof for 0 to build
-a proof for n.
+Moreover, by inspecting the (semi\sphinxhyphen{}unreadable) proof terms,
+you can see that the proof term for each value, \sphinxstyleemphasis{a,} includes
+within it a proof term for the next smaller value, all the way
+down to the proof term for zero. Just as larger nat values
+are built from, and incorporate, smaller ones, down to zero,
+so do proofs of \sphinxstyleemphasis{P a} for larger value of \sphinxstyleemphasis{a} build on and
+incorporate proofs of \sphinxstyleemphasis{P a’} for smaller values of \sphinxstyleemphasis{a’,} all
+the way down to a proof of \sphinxstyleemphasis{P 0}. We thus construct proofs of
+\sphinxstyleemphasis{P a} for any \sphinxstyleemphasis{a} inductively, just as we define the natural
+numbers themselves inductively. This method is called proof
+by induction.
+
+
+\subsubsection{Summary So Far}
+\label{\detokenize{A_03_Recursive_Types:summary-so-far}}
+\sphinxAtStartPar
+Let’s pull the pieces of this story together. We started by
+specifying a property, \sphinxstyleemphasis{P a := 0 + a = 0}, of natural numbers.
+Then we then proved that \sphinxstyleemphasis{every} natural number, \sphinxstyleemphasis{a}, has this
+property: \sphinxstyleemphasis{∀ (a : ℕ), P a}. The proof relied on two lemmas and
+a procedure that uses both of them.
+\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+First, we constructed a proof \sphinxstyleemphasis{refl : P 0} (0 is a left identity for 0);
+
+\item {} 
+\sphinxAtStartPar
+Second, we proved \sphinxstyleemphasis{step : ∀ a’, P a’ → P (a’ + 1) (from any natural number, *a’,if *we have a proof of *P a’}, then we can derive a proof of P (a’ + 1);
+
+\item {} 
+\sphinxAtStartPar
+Finally these facts prove that every natural number \sphinxstyleemphasis{a} has property \sphinxstyleemphasis{P} by giving a function that constructs a proof of \sphinxstyleemphasis{P a} for any \sphinxstyleemphasis{a};
+
+\item {} 
+\sphinxAtStartPar
+Key idea: apply \sphinxstyleemphasis{step} to \sphinxstyleemphasis{refl a} times (by ordinary recursion) to produce a proof of \sphinxstyleemphasis{P a}.
+
+\end{itemize}
 
 \sphinxAtStartPar
-The resulting proof object has a recursive structure.
-Just as we’ve represented a non\sphinxhyphen{}zero natural number,
-n as the successor of some one\sphinxhyphen{}smaller natural number,
-n’, so here we represent a proof of P for n = n’ + 1
-as a term that adds another layer of “proof stuff”
-around a proof of P for n’, ultimately terminating
-with a proof of P for 0, with further sub\sphinxhyphen{}structure.
-apply
-Other Inductive Types
-\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}
+For our particular definition of \sphinxstyleemphasis{P a} at least, we’ve thus proved this:
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{n+nb+bp}{*}\PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{a} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{)}\PYG{o}{,}
+  \PYG{n}{P} \PYG{l+m+mi}{0} \PYG{n+nb+bp}{→}
+  \PYG{o}{(}\PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{a\PYGZsq{}} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{)}\PYG{o}{,} \PYG{n}{P} \PYG{n}{a\PYGZsq{}} \PYG{n+nb+bp}{→} \PYG{n}{P} \PYG{o}{(}\PYG{n}{a\PYGZsq{}} \PYG{n+nb+bp}{+} \PYG{l+m+mi}{1}\PYG{o}{)}\PYG{o}{)} \PYG{n+nb+bp}{→}
+  \PYG{n}{P} \PYG{n}{a}\PYG{n+nb+bp}{*}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+If \sphinxstyleemphasis{a} is an arbitrary natural number, and if we have a
+proof, \sphinxstyleemphasis{base : P 0,} and if we also have a proof, \sphinxstyleemphasis{step :
+∀ (a’ : ℕ), P a’ → P (a’ + 1)}, then by iteratively applying
+\sphinxstyleemphasis{step} to \sphinxstyleemphasis{base} we can derive a proof of \sphinxstyleemphasis{P a}. As \sphinxstyleemphasis{a}
+was arbitrary, we’ve proved \sphinxstyleemphasis{∀ a, P a.} Moreover, the proofs
+constructed in this way have recursive structures.
+
+\sphinxAtStartPar
+At this point we’ve proved that zero is both a left and a
+right identity for the natural numbers. We can thus say that
+zero is an additive identity (on the left and right) for the
+natural numbers.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 0 is a left and right identity for nat +}
+\PYG{k+kd}{theorem} \PYG{n}{zero\PYGZus{}ident\PYGZus{}nat\PYGZus{}add} \PYG{o}{:}
+  \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{a} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{)}\PYG{o}{,}
+    \PYG{o}{(}\PYG{l+m+mi}{0} \PYG{n+nb+bp}{+} \PYG{n}{a} \PYG{n+nb+bp}{=} \PYG{n}{a}\PYG{o}{)} \PYG{n+nb+bp}{∧}
+    \PYG{o}{(}\PYG{n}{a} \PYG{n+nb+bp}{+} \PYG{l+m+mi}{0} \PYG{n+nb+bp}{=} \PYG{n}{a}\PYG{o}{)} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{a}\PYG{o}{,}
+\PYG{n}{split}\PYG{o}{,}
+\PYG{n}{apply} \PYG{n}{pa}\PYG{o}{,}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} inductive case by left\PYGZus{}identity theorem}
+\PYG{n}{apply} \PYG{n}{rfl}\PYG{o}{,} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} base case is easyend}
+\PYG{k+kd}{end}
+
+
+\PYG{k+kd}{theorem} \PYG{n}{zero\PYGZus{}ident\PYGZus{}nat\PYGZus{}add\PYGZsq{}} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{a} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{)}\PYG{o}{,} \PYG{o}{(}\PYG{l+m+mi}{0}\PYG{o}{:}\PYG{n}{nat}\PYG{o}{)}\PYG{n+nb+bp}{.}\PYG{n}{add} \PYG{n}{a} \PYG{n+nb+bp}{=} \PYG{n}{a} \PYG{n+nb+bp}{∧} \PYG{n}{a.add} \PYG{l+m+mi}{0} \PYG{n+nb+bp}{=} \PYG{n}{a} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{a}\PYG{o}{,}
+\PYG{n}{split}\PYG{o}{,}
+\PYG{n}{apply} \PYG{n}{pa}\PYG{o}{,}
+\PYG{n}{apply} \PYG{n}{rfl}\PYG{o}{,}
+\PYG{k+kd}{end}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} KEVIN: Why these complexities around notation?}
+\end{sphinxVerbatim}
+
+
+\subsubsection{Monoids and Safe Foldr}
+\label{\detokenize{A_03_Recursive_Types:monoids-and-safe-foldr}}
+\sphinxAtStartPar
+This proof is a significant accomplishment. It gives us a
+proof we’ll need to formalize the fundamental mathematical
+concept of a monoid: a structure comprising a collection of
+values (here of some type, α), an associative binary operator
+on such objects, and an identity element \sphinxstyleemphasis{for that operator}.
+
+\sphinxAtStartPar
+We don’t have a proof of associativity of addition, but we do
+now have the tools to prove that nat.add is associative. We’re
+thus close to being able to formally define a monoid structure
+on the natural numbers.
+
+\sphinxAtStartPar
+In particular, we can now define a general structure that we
+can instantiate to formally represent the additive monoid on
+the natural numbers.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{universe} \PYG{n}{u}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} general structure}
+\PYG{k+kd}{structure} \PYG{n}{nat\PYGZus{}monoid} \PYG{o}{:} \PYG{k+kt}{Type} \PYG{o}{:=} \PYG{n}{mk}\PYG{o}{:}\PYG{o}{:}
+  \PYG{o}{(}\PYG{n}{op} \PYG{o}{:} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat}\PYG{o}{)}
+  \PYG{o}{(}\PYG{n}{id} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{)}
+  \PYG{o}{(}\PYG{n}{e} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{n}{a}\PYG{o}{,} \PYG{n}{op} \PYG{n}{id} \PYG{n}{a} \PYG{n+nb+bp}{=} \PYG{n}{a} \PYG{n+nb+bp}{∧} \PYG{n}{op} \PYG{n}{a} \PYG{n}{id} \PYG{n+nb+bp}{=} \PYG{n}{a}\PYG{o}{)}
+  \PYG{o}{(}\PYG{n}{assoc}\PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{n}{a} \PYG{n}{b} \PYG{n}{c}\PYG{o}{,} \PYG{n}{op} \PYG{n}{a} \PYG{o}{(}\PYG{n}{op} \PYG{n}{b} \PYG{n}{c}\PYG{o}{)} \PYG{n+nb+bp}{=} \PYG{n}{op} \PYG{o}{(}\PYG{n}{op} \PYG{n}{a} \PYG{n}{b}\PYG{o}{)} \PYG{n}{c}\PYG{o}{)}
+
+\PYG{k+kd}{def} \PYG{n}{nat\PYGZus{}add\PYGZus{}monoid} \PYG{o}{:=} \PYG{n}{nat\PYGZus{}monoid.mk}   \PYG{n}{nat.add} \PYG{l+m+mi}{0} \PYG{n}{zero\PYGZus{}ident\PYGZus{}nat\PYGZus{}add\PYGZsq{}} \PYG{g+gr}{sorry}
+\PYG{k+kd}{def} \PYG{n}{nat\PYGZus{}add\PYGZus{}monoid\PYGZsq{}} \PYG{o}{:=} \PYG{n}{nat\PYGZus{}monoid.mk}  \PYG{n}{nat.add} \PYG{l+m+mi}{1} \PYG{n}{zero\PYGZus{}ident\PYGZus{}nat\PYGZus{}add\PYGZsq{}} \PYG{g+gr}{sorry}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} yay caught error}
+\PYG{k+kd}{def} \PYG{n}{nat\PYGZus{}mul\PYGZus{}monoid} \PYG{o}{:=} \PYG{n}{nat\PYGZus{}monoid.mk}   \PYG{n}{nat.mul} \PYG{l+m+mi}{1} \PYG{g+gr}{sorry} \PYG{g+gr}{sorry}                \PYG{c+c1}{\PYGZhy{}\PYGZhy{} no checking here}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} EXERCISES: Construct proofs to fill in the *sorry*s.}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Monoid structure instances}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{foldr} \PYG{n}{nat\PYGZus{}add\PYGZus{}monoid.op} \PYG{n}{nat\PYGZus{}add\PYGZus{}monoid.id} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{5}\PYG{o}{]}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{foldr} \PYG{n}{nat\PYGZus{}mul\PYGZus{}monoid.op} \PYG{n}{nat\PYGZus{}mul\PYGZus{}monoid.id} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{5}\PYG{o}{]}
+
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} A version of foldr that takes a monoid object and uses its op and e values}
+\PYG{k+kd}{def} \PYG{n}{foldr\PYGZsq{}} \PYG{o}{\PYGZob{}}\PYG{n}{α} \PYG{n}{β} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{\PYGZcb{}} \PYG{o}{:} \PYG{n}{nat\PYGZus{}monoid} \PYG{n+nb+bp}{→} \PYG{n}{list} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat}
+\PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{nat\PYGZus{}monoid.mk} \PYG{n}{op} \PYG{n}{e} \PYG{n}{\PYGZus{}} \PYG{n}{\PYGZus{}}\PYG{o}{)} \PYG{n}{l} \PYG{o}{:=} \PYG{n}{foldr} \PYG{n}{op} \PYG{n}{e} \PYG{n}{l}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Safe use of monoid instances folds}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{foldr\PYGZsq{}} \PYG{n}{nat\PYGZus{}add\PYGZus{}monoid} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{5}\PYG{o}{]}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{foldr\PYGZsq{}} \PYG{n}{nat\PYGZus{}mul\PYGZus{}monoid} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{5}\PYG{o}{]}
+\end{sphinxVerbatim}
+
+
+\subsubsection{Exercizzes}
+\label{\detokenize{A_03_Recursive_Types:exercizzes}}\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+Construct a proof, nat\_add\_assoc, that nat.add is associative.
+
+\item {} 
+\sphinxAtStartPar
+Construct\_a\_proof, nat\_mul\_ident, that 1 is an identity element for multiplication
+
+\item {} 
+\sphinxAtStartPar
+Construct a proof, nat\_mul\_assoc, that nat.mul is associative.
+
+\item {} 
+\sphinxAtStartPar
+Fill the \sphinxstyleemphasis{sorry} placeholders using these proofs
+
+\end{itemize}
+
+\sphinxAtStartPar
+In the next section, we’ll see how to generalize P
+to any property of natural numbers, and then how to
+generalize proof by induction to other types than
+nat.
+
+
+\subsubsection{Induction Axiom}
+\label{\detokenize{A_03_Recursive_Types:induction-axiom}}
+\sphinxAtStartPar
+The principle we’ve developed is available as an axiom
+generated from the definition of the nat data type. The
+name of the principle is nat.rec\_on. Applying it to the
+smaller lemmas yeilds a proof of the generalization.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k}{\PYGZsh{}check} \PYG{n+nb+bp}{@}\PYG{n}{nat.rec\PYGZus{}on}
+\end{sphinxVerbatim}
+
+
+\subsection{Induction Generalized}
+\label{\detokenize{A_03_Recursive_Types:induction-generalized}}
+\sphinxAtStartPar
+UNDER CONSTRUCTION FROM HERE ON DOWN.
 
 \sphinxAtStartPar
 Just as we will need a proof that 0 is not only a right
@@ -5248,16 +5401,16 @@ Here’s the easy case first. From this proof you can infer
 that the list.append operation (with infix notation ++) has
 a rule/axiom that states that l ++ nil := l for any l.
 
+\sphinxAtStartPar
+Here’s the definition of list.append.
+It asserts that {[}{]} is a left identity axiomatically.
+
+\sphinxAtStartPar
+def append : list α → list α → list α
+| {[}{]}       l := l
+| (h :: s) t := h :: (append s t)
+
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{c}{/\PYGZhy{}}
-\PYG{c+cm}{H}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{f}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{.}\PYG{c+cm}{a}\PYG{c+cm}{p}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{.}
-\PYG{c+cm}{I}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{t}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{[}\PYG{c+cm}{]}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{f}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{x}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{m}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{l}\PYG{c+cm}{y}\PYG{c+cm}{.}
-
-\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{p}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{α}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{α}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{α}
-\PYG{c+cm}{|}\PYG{c+cm}{ }\PYG{c+cm}{[}\PYG{c+cm}{]}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{=}\PYG{c+cm}{ }\PYG{c+cm}{l}
-\PYG{c+cm}{|}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{h}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{=}\PYG{c+cm}{ }\PYG{c+cm}{h}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{a}\PYG{c+cm}{p}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{)}
-\PYG{c+cm}{\PYGZhy{}/}
-
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} proving right identity is trivial just as for addition}
 \PYG{k+kd}{example} \PYG{o}{(}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{)} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{l} \PYG{o}{:} \PYG{n}{list} \PYG{n}{α}\PYG{o}{)}\PYG{o}{,} \PYG{n}{list.nil} \PYG{n+nb+bp}{+}\PYG{n+nb+bp}{+} \PYG{n}{l} \PYG{n+nb+bp}{=} \PYG{n}{l} \PYG{o}{:=}
 \PYG{k+kd}{begin}
@@ -5265,6 +5418,28 @@ a rule/axiom that states that l ++ nil := l for any l.
 \PYG{n}{simp} \PYG{o}{[}\PYG{n}{list.append}\PYG{o}{]}\PYG{o}{,}
 \PYG{k+kd}{end}
 \end{sphinxVerbatim}
+
+\sphinxAtStartPar
+We run into the same problem as we did before if we take a
+naive approach to trying to prove that nil is also a left
+identity for ++. And the solution is once again to define
+a recursive function by case analysis on l that constructs
+a proof of \sphinxstyleemphasis{nil ++ l = l} for any list l. If l = list.nil,
+the proof of nil ++ nil is given by the first rule of list
+append, otherwise l = (h::t), and we need to prove that
+nil ++ h::t = h::t. By the second axiom of list append,
+we can rewrite nil ++ h::t as h::(nil ++ t), where we can
+obtain (and then us) a proof that nil ++ t = t by recursion,
+terminating when t =nil.
+
+\sphinxAtStartPar
+Fortunately, Lean’s library already contains a proof that
+nil is a right identity, and it’s annotated as \sphinxstyleemphasis{{[}simp{]}},
+which means that the \sphinxstyleemphasis{simp} tactic will try to use it to
+prove our goal. In other words, we can use {[}simp{]} to prove
+the harder case precisely because someone else has already
+done the work for us; and they did it recursively just as
+we did to show that 0 is a right identity for addition.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k+kd}{def} \PYG{n}{nil\PYGZus{}left\PYGZus{}ident\PYGZus{}app} \PYG{o}{(}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{)} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{l} \PYG{o}{:} \PYG{n}{list} \PYG{n}{α}\PYG{o}{)}\PYG{o}{,} \PYG{n}{l} \PYG{n+nb+bp}{+}\PYG{n+nb+bp}{+} \PYG{n}{list.nil} \PYG{n+nb+bp}{=} \PYG{n}{l} \PYG{o}{:=}

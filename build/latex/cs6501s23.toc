@@ -125,6 +125,11 @@
 \contentsline {subsection}{\numberline {4.5.1}The Idea by Example}{64}{subsection.4.5.1}
 \contentsline {subsubsection}{The Problem}{65}{subsubsection*.31}
 \contentsline {subsubsection}{A Solution}{65}{subsubsection*.32}
-\contentsline {subsection}{\numberline {4.5.2}Induction Axioms}{69}{subsection.4.5.2}
-\contentsline {subsection}{\numberline {4.5.3}Inductive Families}{69}{subsection.4.5.3}
-\contentsline {chapter}{\numberline {5}Index}{71}{chapter.5}
+\contentsline {subsubsection}{Summary So Far}{68}{subsubsection*.33}
+\contentsline {subsubsection}{Monoids and Safe Foldr}{69}{subsubsection*.34}
+\contentsline {subsubsection}{Exercizzes}{69}{subsubsection*.35}
+\contentsline {subsubsection}{Induction Axiom}{70}{subsubsection*.36}
+\contentsline {subsection}{\numberline {4.5.2}Induction Generalized}{70}{subsection.4.5.2}
+\contentsline {subsection}{\numberline {4.5.3}Induction Axioms}{71}{subsection.4.5.3}
+\contentsline {subsection}{\numberline {4.5.4}Inductive Families}{71}{subsection.4.5.4}
+\contentsline {chapter}{\numberline {5}Index}{73}{chapter.5}
