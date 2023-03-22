@@ -389,20 +389,6 @@ end
 -- QUOTE.
 
 /- TEXT:
-Exercizzes
-~~~~~~~~~~
-
-- Construct a proof, nat_add_assoc, that nat.add is associative.
-- Construct_a_proof, nat_mul_ident, that 1 is an identity element for multiplication
-- Construct a proof, nat_mul_assoc, that nat.mul is associative.
-- Fill the *sorry* placeholders using these proofs
-
-
-In the next section, we'll see how to generalize P 
-to any property of natural numbers, and then how to
-generalize proof by induction to other types than
-nat. 
-
 Induction Axioms
 ~~~~~~~~~~~~~~~~
 
@@ -459,8 +445,8 @@ end
 -- QUOTE.
 
 /- TEXT:
-Exercise
-~~~~~~~~
+Exercises
+~~~~~~~~~
 
 Here from Lean's library is the definition
 of natural number multiplication. Your job 
@@ -489,7 +475,14 @@ _         -- Replace this placeholder with your proof
 end
 -- QUOTE. 
 
-/- TEXT:
+/- TEXT 
+Exercises
+~~~~~~~~~
+
+- Construct a proof, nat_add_assoc, that nat.add is associative.
+- Construct a proof, nat_mul_assoc, that nat.mul is associative.
+
+
 
 Monoids and Foldr
 ~~~~~~~~~~~~~~~~~

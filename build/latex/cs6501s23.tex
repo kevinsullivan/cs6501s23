@@ -5277,33 +5277,6 @@ natural numbers.
 \end{sphinxVerbatim}
 
 
-\subsubsection{Exercizzes}
-\label{\detokenize{A_03_Recursive_Types:exercizzes}}\begin{itemize}
-\item {} 
-\sphinxAtStartPar
-Construct a proof, nat\_add\_assoc, that nat.add is associative.
-
-\item {} 
-\sphinxAtStartPar
-Construct\_a\_proof, nat\_mul\_ident, that 1 is an identity element for multiplication
-
-\item {} 
-\sphinxAtStartPar
-Construct a proof, nat\_mul\_assoc, that nat.mul is associative.
-
-\item {} 
-\sphinxAtStartPar
-Fill the \sphinxstyleemphasis{sorry} placeholders using these proofs
-
-\end{itemize}
-
-\sphinxAtStartPar
-In the next section, we’ll see how to generalize P
-to any property of natural numbers, and then how to
-generalize proof by induction to other types than
-nat.
-
-
 \subsubsection{Induction Axioms}
 \label{\detokenize{A_03_Recursive_Types:induction-axioms}}
 \sphinxAtStartPar
@@ -5354,8 +5327,8 @@ subgoals.
 \end{sphinxVerbatim}
 
 
-\subsubsection{Exercise}
-\label{\detokenize{A_03_Recursive_Types:exercise}}
+\subsubsection{Exercises}
+\label{\detokenize{A_03_Recursive_Types:id9}}
 \sphinxAtStartPar
 Here from Lean’s library is the definition
 of natural number multiplication. Your job
@@ -5382,27 +5355,6 @@ in the missing proof.
 \PYG{n}{\PYGZus{}}         \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Replace this placeholder with your proof}
 \PYG{k+kd}{end}
 \end{sphinxVerbatim}
-
-
-\subsubsection{Monoids and Foldr}
-\label{\detokenize{A_03_Recursive_Types:monoids-and-foldr}}
-\sphinxAtStartPar
-This proof is a significant accomplishment. It gives us a
-proof we’ll need to formalize the fundamental mathematical
-concept of a monoid: a structure comprising a collection of
-values (here of some type, α), an associative binary operator
-on such objects, and an identity element \sphinxstyleemphasis{for that operator}.
-
-\sphinxAtStartPar
-We don’t have a proof of associativity of addition, but we do
-now have the tools to prove that nat.add is associative. We’re
-thus close to being able to formally define a monoid structure
-on the natural numbers.
-
-\sphinxAtStartPar
-In particular, we can now define a general structure that we
-can instantiate to formally represent the additive monoid on
-the natural numbers.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k+kd}{universe} \PYG{n}{u}
@@ -5511,7 +5463,7 @@ we did to show that 0 is a right identity for addition.
 
 
 \subsection{Induction Axioms}
-\label{\detokenize{A_03_Recursive_Types:id9}}
+\label{\detokenize{A_03_Recursive_Types:id10}}
 \sphinxAtStartPar
 YOU MAY STOP READING HERE. THE REMAINDER IS STILL \sphinxstyleemphasis{UNDER CONSTRUCTION.}
 
