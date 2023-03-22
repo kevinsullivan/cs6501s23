@@ -1,10 +1,10 @@
 import .A_04_higher_order_functions
 
 
--- and a proof
-example : ∀ (n : ℕ), nat.add n 0 = n :=
+-- and a proof, zero on the right
+example : ∀ (a : ℕ), nat.add a nat.zero = a :=
 begin
-assume n,
+assume a,
 simp [nat.add],
 end
 
@@ -32,7 +32,9 @@ simp [nat.add],
 end
 
 
-def P (a : ℕ) : Prop := 0 + a = a
+
+-- The property we want to prove is universal
+def P (a : ℕ) : Prop := nat.add nat.zero a = a
 
 #check P      -- nat → Prop   -- property/predicate
 
@@ -40,74 +42,49 @@ def P (a : ℕ) : Prop := 0 + a = a
 theorem p0 : P 0 := 
 begin
 unfold P,         -- expand definition of P
-                  -- Lean applies def'n of add
-                  -- and rfl to finish off proof
+simp [nat.add],        -- rfl to finish off proof
+
 end
 
 
+#check p0
 
 theorem p1 : P 1 := 
 begin
--- add proof p0 to local context for clarity
-have p0 := p0,
--- unfold definition of P in P 0
-unfold P at p0,
--- rewrite goal by def'n of P
-show 0 + 1 = 1,
-/-
-The challenge is now clear. From a proof
-that 0 is a left identity for 0 can we build
-a proof that 0 is a left identity for one?
-The solution relies on two crucial insights.
-
-First: we can use the *second* axiom of *add*
-to rewrite the goal from *add 0 (succ 1)* to 
-*succ (add 0 0)*. Be *sure* sure you understand
-this point. Go back to the definition of *add*,
-look at the second rule, and be sure you see 
-that it enables exactly this rewriting. 
-The new goal to prove is then:: 
--/ 
-show (1 + (0 + 0)) = 1,  -- see def'n of add!
-/-
-Second, we can use our proof, p0 : (P 0), that 
-zero is a left identity for 0 on the right, to 
-rewrite 0 + 0 as 0. We're then left with the 
-goal to show that *1 + 0 = 1*, with zero *on 
-the right*, which Lean then proves for us 
-automatically by applying the first rule of 
-addition. 
--/
-rw p0,
-end  
+unfold P,
+have ih := p0,
+unfold P at ih,
+show nat.succ (nat.add nat.zero nat.zero) = 1, -- first rule of add
+rw ih,
+end
 
 
 theorem p2 : P 2  :=
 begin
-have p1 := p1,    -- just for clarity
-unfold P at p1,
-show 1 + (0 + 1) = 2,
-rewrite p1,
+unfold P,
+have ih := p1,
+show 1 + (0 + 1) = 2, -- second rule of add
+unfold P at ih,       -- use ih, Lean automation
 end 
 
 -- Wow, can we just keep doing this?
 
 theorem p3 : P 3  :=
 begin
-have p2 := p2,    -- just for clarity
-unfold P at p2,
+unfold P,
+have ih := p2,    -- just for clarity
 show 1 + (0 + 2) = 3,
-rewrite p2,
+unfold P at ih,
 end 
 
-theorem zero_left_id_four : P 4  :=
+theorem p4 : P 4  :=
 begin
-have p3 := p3,    -- just for clarity
-unfold P at p3,
+have ih := p3,    -- just for clarity
 show 1 + (0 + 3) = 4,
-rewrite p3,
+unfold P at ih,
 end 
-/- Now it looks like that from any nat, *a' : nat*, 
+
+/- It looks like that from any nat, *a' : nat*, 
 and a proof of *P a'* we can prove *P (a' + 1)*.
 -/
 
@@ -133,30 +110,33 @@ apply ih,
 end
 
 
-def pa : ∀ (a : ℕ), (nat.add 0 a = a) 
+-- formerly called pa (in class)
+def zero_left_ident_add : ∀ (a : ℕ), (nat.add 0 a = a) 
 | 0 := p0
-| (nat.succ a') := (step a' (pa a'))
+| (nat.succ a') := (step a' (zero_left_ident_add a'))
 
-#check pa   
+#check zero_left_ident_add  
+-- ∀ (a : ℕ), 0.add a = a!
 
 
-#reduce pa 0
-#reduce pa 1
-#reduce pa 2
-#reduce pa 3
+
+#reduce zero_left_ident_add 0
+#reduce zero_left_ident_add 1
+#reduce zero_left_ident_add 2
+#reduce zero_left_ident_add 3
 
 
 
 -- 0 is a left and right identity for nat +
 theorem zero_ident_nat_add :
   ∀ (a : ℕ), 
-    (0 + a = a) ∧
-    (a + 0 = a) :=
+    (nat.add 0 a = a) ∧
+    (nat.add a 0 = a) :=
 begin
 assume a,
 split,
-apply pa,  -- inductive case by left_identity theorem
-apply rfl, -- base case is easyend
+apply zero_left_ident_add,  -- inductive case
+simp [nat.add],             -- base case is easyend
 end
 
 
@@ -164,12 +144,59 @@ theorem zero_ident_nat_add' : ∀ (a : ℕ), (0:nat).add a = a ∧ a.add 0 = a :
 begin
 assume a,
 split,
-apply pa,
+apply zero_left_ident_add,
 apply rfl,
 end
 
--- KEVIN: Why these complexities around notation?
 
+
+-- The induction principle for natural numbers.
+#check @nat.rec_on
+
+-- Applying nat.rec_on 
+def nat_zero_ident (a : nat) : P a := nat.rec_on a p0 step
+#check nat_zero_ident 5
+#reduce nat_zero_ident 5  -- proof terms often "unreadable"
+
+
+example : ∀ a, P a :=
+begin
+assume a,
+apply nat.rec_on a,
+exact rfl,    -- base case
+exact step,   -- we use already proven lemma
+end
+
+-- You can also use Lean's *induction tactic*.
+example : ∀ a, P a :=
+begin
+assume a,
+induction a with a' ih, -- applies axiom
+exact rfl,              -- base case
+unfold P,               -- inductive case
+unfold P at ih,
+simp [nat.add],
+assumption,
+end
+
+
+#check nat.mul
+/-
+def mul : nat → nat → nat
+| a 0     := 0
+| a (b+1) := (mul a b) + a
+-/
+
+-- 
+def mul_one_left_ident_prop := ∀ a, nat.mul 1 a = a
+def mul_one_right_ident_prop := ∀ a, nat.mul a 1 = a
+def mul_one_ident_prop := mul_one_right_ident_prop ∧ mul_one_left_ident_prop
+
+theorem mul_one_ident : mul_one_ident_prop :=
+begin
+split,
+_         -- Replace this placeholder with your proof
+end
 
 
 universe u
@@ -200,12 +227,6 @@ def foldr' {α β : Type} : nat_monoid → list nat → nat
 #reduce foldr' nat_add_monoid [1,2,3,4,5]
 #reduce foldr' nat_mul_monoid [1,2,3,4,5]
 
-
-#check @nat.rec_on
-
-def nat_zero_ident (a : nat): P a := nat.rec_on a p0 step
-#check nat_zero_ident 5
-#reduce nat_zero_ident 5
 
 
 

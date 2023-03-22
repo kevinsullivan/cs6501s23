@@ -174,7 +174,7 @@ TEXT. -/
 theorem p0 : P 0 := 
 begin
 unfold P,         -- expand definition of P
-apply rfl,        -- rfl to finish off proof
+simp [nat.add],        -- rfl to finish off proof
 
 end
 -- QUOTE.
@@ -233,7 +233,7 @@ show 1 + (0 + 2) = 3,
 unfold P at ih,
 end 
 
-theorem zero_left_id_four : P 4  :=
+theorem p4 : P 4  :=
 begin
 have ih := p3,    -- just for clarity
 show 1 + (0 + 3) = 4,
@@ -290,25 +290,28 @@ accomplished by recursion.
 TEXT. -/
 
 -- QUOTE:
-def pa : ∀ (a : ℕ), (nat.add 0 a = a) 
+-- formerly called pa (in class)
+def zero_left_ident_add : ∀ (a : ℕ), (nat.add 0 a = a) 
 | 0 := p0
-| (nat.succ a') := (step a' (pa a'))
+| (nat.succ a') := (step a' (zero_left_ident_add a'))
 
-#check pa   
+#check zero_left_ident_add  
+-- ∀ (a : ℕ), 0.add a = a!
+
 -- QUOTE. 
 
 /- TEXT:
 -- This function proves ∀ a, P a. It's a universal
-generalization so we can apply it to any specific value
+generalization, so we can apply it to any specific value
 of *a* to get a proof that zero is a left identity for that
 particular *a*.  
 TEXT. -/
 
 -- QUOTE:
-#reduce pa 0
-#reduce pa 1
-#reduce pa 2
-#reduce pa 3
+#reduce zero_left_ident_add 0
+#reduce zero_left_ident_add 1
+#reduce zero_left_ident_add 2
+#reduce zero_left_ident_add 3
 -- QUOTE.
 
 /- TEXT:
@@ -365,13 +368,13 @@ TEXT. -/
 -- 0 is a left and right identity for nat +
 theorem zero_ident_nat_add :
   ∀ (a : ℕ), 
-    (0 + a = a) ∧
-    (a + 0 = a) :=
+    (nat.add 0 a = a) ∧
+    (nat.add a 0 = a) :=
 begin
 assume a,
 split,
-apply pa,  -- inductive case by left_identity theorem
-apply rfl, -- base case is easyend
+apply zero_left_ident_add,  -- inductive case
+simp [nat.add],             -- base case is easyend
 end
 
 
@@ -379,18 +382,117 @@ theorem zero_ident_nat_add' : ∀ (a : ℕ), (0:nat).add a = a ∧ a.add 0 = a :
 begin
 assume a,
 split,
-apply pa,
+apply zero_left_ident_add,
 apply rfl,
 end
-
--- KEVIN: Why these complexities around notation?
 
 -- QUOTE.
 
 /- TEXT:
+Exercizzes
+~~~~~~~~~~
 
-Monoids and Safe Foldr
-~~~~~~~~~~~~~~~~~~~~~~
+- Construct a proof, nat_add_assoc, that nat.add is associative.
+- Construct_a_proof, nat_mul_ident, that 1 is an identity element for multiplication
+- Construct a proof, nat_mul_assoc, that nat.mul is associative.
+- Fill the *sorry* placeholders using these proofs
+
+
+In the next section, we'll see how to generalize P 
+to any property of natural numbers, and then how to
+generalize proof by induction to other types than
+nat. 
+
+Induction Axioms
+~~~~~~~~~~~~~~~~
+
+The principle we've developed is available as an axiom 
+generated from the definition of the nat data type. The
+name of the principle is *nat.rec_on*. Applying it to the
+smaller lemmas yeilds a proof of the generalization. 
+
+If you prove the lemmas first, in a bottom-up proof style,
+you can just apply the induction principle to a value, *a*,
+and to the two proofs, to get a proof of *P a*. Or you can
+apply the axiom giving only nat value as an argument while
+leaving the proof arguments to be provided as proofs of 
+subgoals. 
+TEXT. -/
+
+-- QUOTE:
+-- The induction principle for natural numbers.
+#check @nat.rec_on
+-- QUOTE.
+
+-- Applying nat.rec_on 
+def nat_zero_ident (a : nat) : P a := nat.rec_on a p0 step
+#check nat_zero_ident 5
+#reduce nat_zero_ident 5  -- proof terms often "unreadable"
+
+/- TEXT:
+A top-down approach is more typical, wherein we apply the 
+induction axiom for natural numbers to construct the overall
+proof we need, leaving the smaller lemmas to be proved as
+subgoals. 
+TEXT. -/
+
+-- QUOTE:
+example : ∀ a, P a :=
+begin
+assume a,
+apply nat.rec_on a,
+exact rfl,    -- base case
+exact step,   -- we use already proven lemma
+end
+
+-- You can also use Lean's *induction tactic*.
+example : ∀ a, P a :=
+begin
+assume a,
+induction a with a' ih, -- applies axiom
+exact rfl,              -- base case
+unfold P,               -- inductive case
+unfold P at ih,
+simp [nat.add],
+assumption,
+end
+-- QUOTE.
+
+/- TEXT:
+Exercise
+~~~~~~~~
+
+Here from Lean's library is the definition
+of natural number multiplication. Your job 
+is to prove that 1 is an identity (left and
+right identity) for nat multiplication. Fill
+in the missing proof.
+TEXT. -/
+
+-- QUOTE:
+#check nat.mul
+/-
+def mul : nat → nat → nat
+| a 0     := 0
+| a (b+1) := (mul a b) + a
+-/
+
+-- 
+def mul_one_left_ident_prop := ∀ a, nat.mul 1 a = a
+def mul_one_right_ident_prop := ∀ a, nat.mul a 1 = a
+def mul_one_ident_prop := mul_one_right_ident_prop ∧ mul_one_left_ident_prop
+
+theorem mul_one_ident : mul_one_ident_prop :=
+begin
+split,
+_         -- Replace this placeholder with your proof
+end
+-- QUOTE. 
+
+/- TEXT:
+
+Monoids and Foldr
+~~~~~~~~~~~~~~~~~
 
 This proof is a significant accomplishment. It gives us a
 proof we'll need to formalize the fundamental mathematical 
@@ -436,76 +538,6 @@ def foldr' {α β : Type} : nat_monoid → list nat → nat
 -- Safe use of monoid instances folds
 #reduce foldr' nat_add_monoid [1,2,3,4,5]
 #reduce foldr' nat_mul_monoid [1,2,3,4,5]
--- QUOTE.
-
-/- TEXT:
-Exercizzes
-~~~~~~~~~~
-
-- Construct a proof, nat_add_assoc, that nat.add is associative.
-- Construct_a_proof, nat_mul_ident, that 1 is an identity element for multiplication
-- Construct a proof, nat_mul_assoc, that nat.mul is associative.
-- Fill the *sorry* placeholders using these proofs
-
-
-In the next section, we'll see how to generalize P 
-to any property of natural numbers, and then how to
-generalize proof by induction to other types than
-nat. 
-
-Induction Axiom
-~~~~~~~~~~~~~~~
-
-The principle we've developed is available as an axiom 
-generated from the definition of the nat data type. The
-name of the principle is nat.rec_on. Applying it to the
-smaller lemmas yeilds a proof of the generalization.
-TEXT. -/
-
--- QUOTE:
-#check @nat.rec_on
--- QUOTE.
-
-def nat_zero_ident (a : nat): P a := nat.rec_on a p0 step
-#check nat_zero_ident 5
-#reduce nat_zero_ident 5
-
-/- TEXT:
-In our development so far, we've built a proof of ∀ a, P a,
-by induction, in a *bottom-up* manner, first developing the
-necessary lemmas and then putting them together with a recursive
-function definition. 
-
-A more typical approach would be to use a top-down approach,
-wherein we apply the induction axiom (for natural numbers)
-to construct the overall proof we need, leaving the smaller
-lemma proofs to be filled in in subsequent steps.
-TEXT. -/
-
--- QUOTE:
-example : ∀ a, P a :=
-begin
-assume a,
-apply nat.rec_on a,
-exact rfl,    -- base case
-exact step,   -- we use already proven lemma
-end
--- QUOTE.
-
-/-
-It's even easier to use Lean's *induction tactic*.
--/
-
--- QUOTE:
-example : ∀ a, P a :=
-begin
-assume a,
-induction a,
-exact rfl,    -- base case
-unfold P,
-unfold P at a_ih,
-simp [nat.add],
-end
 -- QUOTE.
 
 
