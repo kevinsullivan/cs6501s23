@@ -432,6 +432,27 @@ in the missing proof.
   _         -- Replace this placeholder with your proof
   end
 
+- Construct a proof, nat_add_assoc, that nat.add is associative.
+- Construct a proof, nat_mul_assoc, that nat.mul is associative.
+
+
+Monoids and Foldr
+~~~~~~~~~~~~~~~~~
+
+This proof is a significant accomplishment. It gives us a
+proof we'll need to formalize the fundamental mathematical 
+concept of a monoid: a structure comprising a collection of 
+values (here of some type, α), an associative binary operator 
+on such objects, and an identity element *for that operator*.  
+
+We don't have a proof of associativity of addition, but we do
+now have the tools to prove that nat.add is associative. We're
+thus close to being able to formally define a monoid structure
+on the natural numbers. 
+
+In particular, we can now define a general structure that we
+can instantiate to formally represent the additive monoid on 
+the natural numbers.
 
 .. code-block:: lean
 

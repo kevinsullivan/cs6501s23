@@ -475,13 +475,9 @@ _         -- Replace this placeholder with your proof
 end
 -- QUOTE. 
 
-/- TEXT 
-Exercises
-~~~~~~~~~
-
+/- TEXT:
 - Construct a proof, nat_add_assoc, that nat.add is associative.
 - Construct a proof, nat_mul_assoc, that nat.mul is associative.
-
 
 
 Monoids and Foldr

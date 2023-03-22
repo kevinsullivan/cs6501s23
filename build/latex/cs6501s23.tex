@@ -5355,6 +5355,37 @@ in the missing proof.
 \PYG{n}{\PYGZus{}}         \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Replace this placeholder with your proof}
 \PYG{k+kd}{end}
 \end{sphinxVerbatim}
+\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+Construct a proof, nat\_add\_assoc, that nat.add is associative.
+
+\item {} 
+\sphinxAtStartPar
+Construct a proof, nat\_mul\_assoc, that nat.mul is associative.
+
+\end{itemize}
+
+
+\subsubsection{Monoids and Foldr}
+\label{\detokenize{A_03_Recursive_Types:monoids-and-foldr}}
+\sphinxAtStartPar
+This proof is a significant accomplishment. It gives us a
+proof we’ll need to formalize the fundamental mathematical
+concept of a monoid: a structure comprising a collection of
+values (here of some type, α), an associative binary operator
+on such objects, and an identity element \sphinxstyleemphasis{for that operator}.
+
+\sphinxAtStartPar
+We don’t have a proof of associativity of addition, but we do
+now have the tools to prove that nat.add is associative. We’re
+thus close to being able to formally define a monoid structure
+on the natural numbers.
+
+\sphinxAtStartPar
+In particular, we can now define a general structure that we
+can instantiate to formally represent the additive monoid on
+the natural numbers.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k+kd}{universe} \PYG{n}{u}
