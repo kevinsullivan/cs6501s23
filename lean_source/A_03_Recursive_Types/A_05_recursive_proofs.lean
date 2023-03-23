@@ -469,6 +469,7 @@ TEXT. -/
 -- QUOTE:
 example : ∀ a, P a :=
 begin
+unfold P,
 assume a,
 apply nat.rec_on a,
 exact rfl,    -- base case
@@ -479,10 +480,9 @@ end
 example : ∀ a, P a :=
 begin
 assume a,
+unfold P,
 induction a with a' ih, -- applies axiom
 exact rfl,              -- base case
-unfold P,               -- inductive case
-unfold P at ih,
 simp [nat.add],
 assumption,
 end
@@ -521,6 +521,7 @@ simp [nat.mul],
 -- inductive case
 simp [nat.mul],
 rw ih,
+
 -- right conjunct: nat.mul a 1 = a
 simp [nat.mul],
 apply zero_left_ident_add_nat,
@@ -542,7 +543,7 @@ theorem nat_add_assoc :
     nat.add (nat.add a b) c :=
 begin
 assume a b c,
-induction c with a' ih,
+induction c with c' ih,
 
 -- base lemma
 simp [nat.add],
@@ -567,13 +568,15 @@ simp [nat.mul],
 simp [nat.mul],
 rw <- ih,
 have mul_distrib_add_nat_left : 
-  ∀ x y z, nat.mul x (nat.add y z) = nat.add (nat.mul x y) (nat.mul x z) := 
+  ∀ x y z, 
+    nat.mul x (nat.add y z) = 
+    nat.add (nat.mul x y) (nat.mul x z) := 
     sorry,
 apply mul_distrib_add_nat_left,
 end
 -- QUOTE.
 
-theorem mul_distrib_add_nat_left : 
+lemma mul_distrib_add_nat_left : 
   ∀ x y z, 
     nat.mul x (nat.add y z) = 
     nat.add (nat.mul x y) (nat.mul x z) := sorry
@@ -588,16 +591,17 @@ Monoids and Foldr
 We don't yet have a proof of associativity of addition, but we 
 do now have the tools to prove that nat.add is associative. In 
 particular, we can now define a general structure that we can 
-instantiate to formally represent the additive monoid on the natural numbers.
+instantiate to formally represent the additive monoid on the 
+natural numbers.
 TEXT. -/
 
 -- QUOTE:
 universe u
 
 -- general structure
-structure nat_monoid : Type := mk::
-  (op : nat → nat → nat)
-  (id : ℕ)
+structure nat_monoid {α : Type} : Type := mk::
+  (op : α  → α  → α )
+  (id : α )
   (e : ∀ a, op id a = a ∧ op a id = a)
   (assoc: ∀ a b c, op a (op b c) = op (op a b) c)
 
