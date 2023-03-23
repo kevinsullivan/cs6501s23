@@ -808,7 +808,7 @@ that zero is a right identity for addition.
 TEXT. -/
 
 -- QUOTE:
-example : ∀ n : nat, nat.add n 0 = n := 
+theorem zero_right_ident_add_nat : ∀ n : nat, nat.add n 0 = n := 
 begin
 assume n,
 by simp [nat.add],
