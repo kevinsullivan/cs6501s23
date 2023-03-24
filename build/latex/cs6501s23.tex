@@ -81,7 +81,7 @@
 
 
 \title{Computing Foundations}
-\date{Mar 22, 2023}
+\date{Mar 24, 2023}
 \release{1.2.2}
 \author{Kevin Sullivan}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -4825,7 +4825,7 @@ The first “rule” of addition states that for any \sphinxstyleemphasis{a},
 that zero is a right identity for addition.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{k+kd}{example} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{n}{n} \PYG{o}{:} \PYG{n}{nat}\PYG{o}{,} \PYG{n}{nat.add} \PYG{n}{n} \PYG{l+m+mi}{0} \PYG{n+nb+bp}{=} \PYG{n}{n} \PYG{o}{:=}
+\PYG{k+kd}{theorem} \PYG{n}{zero\PYGZus{}right\PYGZus{}ident\PYGZus{}add\PYGZus{}nat} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{n}{n} \PYG{o}{:} \PYG{n}{nat}\PYG{o}{,} \PYG{n}{nat.add} \PYG{n}{n} \PYG{l+m+mi}{0} \PYG{n+nb+bp}{=} \PYG{n}{n} \PYG{o}{:=}
 \PYG{k+kd}{begin}
 \PYG{k}{assume} \PYG{n}{n}\PYG{o}{,}
 \PYG{k+kd}{by} \PYG{n}{simp} \PYG{o}{[}\PYG{n}{nat.add}\PYG{o}{]}\PYG{o}{,}
@@ -5101,8 +5101,6 @@ a proof of P 2? Yes, we can!
 \PYG{n}{unfold} \PYG{n}{P} \PYG{n}{at} \PYG{n}{ih}\PYG{o}{,}       \PYG{c+c1}{\PYGZhy{}\PYGZhy{} use ih, Lean automation}
 \PYG{k+kd}{end}
 
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Wow, can we just keep doing this?}
-
 \PYG{k+kd}{theorem} \PYG{n}{p3} \PYG{o}{:} \PYG{n}{P} \PYG{l+m+mi}{3}  \PYG{o}{:=}
 \PYG{k+kd}{begin}
 \PYG{n}{unfold} \PYG{n}{P}\PYG{o}{,}
@@ -5167,43 +5165,40 @@ accomplished by recursion.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} formerly called pa (in class)}
-\PYG{k+kd}{def} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}add} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{a} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{)}\PYG{o}{,} \PYG{o}{(}\PYG{n}{nat.add} \PYG{l+m+mi}{0} \PYG{n}{a} \PYG{n+nb+bp}{=} \PYG{n}{a}\PYG{o}{)}
+\PYG{k+kd}{def} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}add\PYGZus{}nat} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{a} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{)}\PYG{o}{,} \PYG{o}{(}\PYG{n}{nat.add} \PYG{l+m+mi}{0} \PYG{n}{a} \PYG{n+nb+bp}{=} \PYG{n}{a}\PYG{o}{)}
 \PYG{n+nb+bp}{|} \PYG{l+m+mi}{0} \PYG{o}{:=} \PYG{n}{p0}
-\PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{nat.succ} \PYG{n}{a\PYGZsq{}}\PYG{o}{)} \PYG{o}{:=} \PYG{o}{(}\PYG{n}{step} \PYG{n}{a\PYGZsq{}} \PYG{o}{(}\PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}add} \PYG{n}{a\PYGZsq{}}\PYG{o}{)}\PYG{o}{)}
-
-\PYG{k}{\PYGZsh{}check} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}add}
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} ∀ (a : ℕ), 0.add a = a!}
+\PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{nat.succ} \PYG{n}{a\PYGZsq{}}\PYG{o}{)} \PYG{o}{:=} \PYG{o}{(}\PYG{n}{step} \PYG{n}{a\PYGZsq{}} \PYG{o}{(}\PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}add\PYGZus{}nat} \PYG{n}{a\PYGZsq{}}\PYG{o}{)}\PYG{o}{)}
 \end{sphinxVerbatim}
 
 \sphinxAtStartPar
-– This function proves ∀ a, P a. It’s a universal
-generalization, so we can apply it to any specific value
-of \sphinxstyleemphasis{a} to get a proof that zero is a left identity for that
-particular \sphinxstyleemphasis{a}.
+The function, zero\_left\_ident\_add, proves ∀ a, P a!
+It’s a universal generalization, so we can apply it to any
+specific value of \sphinxstyleemphasis{a} to get a proof that zero is a left
+identity for that particular \sphinxstyleemphasis{a}.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{k}{\PYGZsh{}reduce} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}add} \PYG{l+m+mi}{0}
-\PYG{k}{\PYGZsh{}reduce} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}add} \PYG{l+m+mi}{1}
-\PYG{k}{\PYGZsh{}reduce} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}add} \PYG{l+m+mi}{2}
-\PYG{k}{\PYGZsh{}reduce} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}add} \PYG{l+m+mi}{3}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}add\PYGZus{}nat} \PYG{l+m+mi}{0}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}add\PYGZus{}nat} \PYG{l+m+mi}{1}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}add\PYGZus{}nat} \PYG{l+m+mi}{2}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}add\PYGZus{}nat} \PYG{l+m+mi}{3}
 \end{sphinxVerbatim}
 
 \sphinxAtStartPar
-Moreover, by inspecting the (semi\sphinxhyphen{}unreadable) proof terms,
-you can see that the proof term for each value, \sphinxstyleemphasis{a,} includes
-within it a proof term for the next smaller value, all the way
-down to the proof term for zero. Just as larger nat values
-are built from, and incorporate, smaller ones, down to zero,
-so do proofs of \sphinxstyleemphasis{P a} for larger value of \sphinxstyleemphasis{a} build on and
-incorporate proofs of \sphinxstyleemphasis{P a’} for smaller values of \sphinxstyleemphasis{a’,} all
-the way down to a proof of \sphinxstyleemphasis{P 0}. We thus construct proofs of
-\sphinxstyleemphasis{P a} for any \sphinxstyleemphasis{a} inductively, just as we define the natural
-numbers themselves inductively. This method is called proof
-by induction.
+Moreover, by inspecting the (semi\sphinxhyphen{}unreadable) proof
+terms, you can see that the proof term for each value,
+\sphinxstyleemphasis{a,} includes within it a proof term for the next smaller
+value, all the way down to the proof term for zero. Just
+as larger nat values are built from, and incorporate,
+smaller ones, down to zero, so do proofs of \sphinxstyleemphasis{P a} for
+larger value of \sphinxstyleemphasis{a} build on and incorporate proofs of
+\sphinxstyleemphasis{P a’} for smaller values of \sphinxstyleemphasis{a’,} all the way down to
+a proof of \sphinxstyleemphasis{P 0}. We thus construct proofs of \sphinxstyleemphasis{P a} for
+any \sphinxstyleemphasis{a} inductively, just as we define the natural numbers
+themselves inductively. This method is called \sphinxstyleemphasis{proof by
+induction}.
+Summary: Proof by Induction
+\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}
 
-
-\subsubsection{Summary So Far}
-\label{\detokenize{A_03_Recursive_Types:summary-so-far}}
 \sphinxAtStartPar
 Let’s pull the pieces of this story together. We started by
 specifying a property, \sphinxstyleemphasis{P a := 0 + a = 0}, of natural numbers.
@@ -5252,29 +5247,86 @@ At this point we’ve proved that zero is both a left and a
 right identity for the natural numbers. We can thus say that
 zero is an additive identity (on the left and right) for the
 natural numbers.
+Theorem: 0 is identity for ⟨ℕ, +⟩
+\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} 0 is a left and right identity for nat +}
-\PYG{k+kd}{theorem} \PYG{n}{zero\PYGZus{}ident\PYGZus{}nat\PYGZus{}add} \PYG{o}{:}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} We now have that zero is an *additive identity for ℕ*}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}add\PYGZus{}nat}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{zero\PYGZus{}right\PYGZus{}ident\PYGZus{}add\PYGZus{}nat}
+
+\PYG{k+kd}{theorem} \PYG{n}{zero\PYGZus{}ident\PYGZus{}add\PYGZus{}nat} \PYG{o}{:}
   \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{a} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{)}\PYG{o}{,}
-    \PYG{o}{(}\PYG{n}{nat.add} \PYG{l+m+mi}{0} \PYG{n}{a} \PYG{n+nb+bp}{=} \PYG{n}{a}\PYG{o}{)} \PYG{n+nb+bp}{∧}
-    \PYG{o}{(}\PYG{n}{nat.add} \PYG{n}{a} \PYG{l+m+mi}{0} \PYG{n+nb+bp}{=} \PYG{n}{a}\PYG{o}{)} \PYG{o}{:=}
+    \PYG{n}{nat.add} \PYG{n}{nat.zero} \PYG{n}{a} \PYG{n+nb+bp}{=} \PYG{n}{a} \PYG{n+nb+bp}{∧}
+    \PYG{n}{nat.add} \PYG{n}{a} \PYG{n}{nat.zero} \PYG{n+nb+bp}{=} \PYG{n}{a} \PYG{o}{:=}
 \PYG{k+kd}{begin}
-\PYG{k}{assume} \PYG{n}{a}\PYG{o}{,}
+\PYG{n}{intro} \PYG{n}{a}\PYG{o}{,}
 \PYG{n}{split}\PYG{o}{,}
-\PYG{n}{apply} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}add}\PYG{o}{,}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} inductive case}
-\PYG{n}{simp} \PYG{o}{[}\PYG{n}{nat.add}\PYG{o}{]}\PYG{o}{,}             \PYG{c+c1}{\PYGZhy{}\PYGZhy{} base case is easyend}
-\PYG{k+kd}{end}
-
-
-\PYG{k+kd}{theorem} \PYG{n}{zero\PYGZus{}ident\PYGZus{}nat\PYGZus{}add\PYGZsq{}} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{a} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{)}\PYG{o}{,} \PYG{o}{(}\PYG{l+m+mi}{0}\PYG{o}{:}\PYG{n}{nat}\PYG{o}{)}\PYG{n+nb+bp}{.}\PYG{n}{add} \PYG{n}{a} \PYG{n+nb+bp}{=} \PYG{n}{a} \PYG{n+nb+bp}{∧} \PYG{n}{a.add} \PYG{l+m+mi}{0} \PYG{n+nb+bp}{=} \PYG{n}{a} \PYG{o}{:=}
-\PYG{k+kd}{begin}
-\PYG{k}{assume} \PYG{n}{a}\PYG{o}{,}
-\PYG{n}{split}\PYG{o}{,}
-\PYG{n}{apply} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}add}\PYG{o}{,}
-\PYG{n}{apply} \PYG{n}{rfl}\PYG{o}{,}
+\PYG{n}{apply} \PYG{o}{(}\PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}add\PYGZus{}nat} \PYG{n}{a}\PYG{o}{)}\PYG{o}{,}
+\PYG{n}{apply} \PYG{o}{(}\PYG{n}{zero\PYGZus{}right\PYGZus{}ident\PYGZus{}add\PYGZus{}nat} \PYG{n}{a}\PYG{o}{)}\PYG{o}{,}
 \PYG{k+kd}{end}
 \end{sphinxVerbatim}
+
+\sphinxAtStartPar
+We’ve now made a major advance toward being able to formalize
+our first important algebraic structure, that of a \sphinxstyleemphasis{monoid}.
+In particular, we’re now well along to showing that ⟨ℕ, 0, +⟩
+is a monoid. We still have some unresolved issues to address,
+however.
+\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+To be a monoid, the given binary operator must be associative
+
+\item {} 
+\sphinxAtStartPar
+We’ll want monoids with other binary operations, e.g., ⟨ℕ, 1, {\color{red}\bfseries{}*}⟩
+
+\item {} 
+\sphinxAtStartPar
+We’ll want monoids over other types, e.g, ⟨list α, {[}{]}, append⟩
+
+\end{itemize}
+
+\sphinxAtStartPar
+Many of the proofs we’ll need will rely on the induction method.
+To get there, we need to understand how induction is a \sphinxstyleemphasis{general}
+method of proof construction. It generalizes:
+\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+from the property of \sphinxstyleemphasis{having 0 as an identity for +} to any property of natural numbers
+
+\item {} 
+\sphinxAtStartPar
+from properties involving natural number to properties involving other types (e.g., list)
+
+\end{itemize}
+
+\sphinxAtStartPar
+The plan going forward is:
+\begin{itemize}
+\item {} 
+\sphinxAtStartPar
+induction axioms (recursive proof building functions) \sphinxstyleemphasis{in general}
+
+\item {} 
+\sphinxAtStartPar
+a proof that nat + is associative, giving us what we need for a ⟨ℕ, +, 0⟩ monoid
+
+\item {} 
+\sphinxAtStartPar
+proofs that 1 is a * identity, and that * associative, giving us a ⟨ℕ, {\color{red}\bfseries{}*}, 1⟩ monoid
+
+\item {} 
+\sphinxAtStartPar
+generalize to other types, with ⟨list α, append, {[}{]}⟩ as a monoid on lists example
+
+\item {} 
+\sphinxAtStartPar
+a final version of foldr, extending the binary operation of any monoid to n\sphinxhyphen{}ary
+
+\end{itemize}
 
 
 \subsubsection{Induction Axioms}
@@ -5307,6 +5359,7 @@ subgoals.
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k+kd}{example} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{n}{a}\PYG{o}{,} \PYG{n}{P} \PYG{n}{a} \PYG{o}{:=}
 \PYG{k+kd}{begin}
+\PYG{n}{unfold} \PYG{n}{P}\PYG{o}{,}
 \PYG{k}{assume} \PYG{n}{a}\PYG{o}{,}
 \PYG{n}{apply} \PYG{n}{nat.rec\PYGZus{}on} \PYG{n}{a}\PYG{o}{,}
 \PYG{n}{exact} \PYG{n}{rfl}\PYG{o}{,}    \PYG{c+c1}{\PYGZhy{}\PYGZhy{} base case}
@@ -5317,18 +5370,17 @@ subgoals.
 \PYG{k+kd}{example} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{n}{a}\PYG{o}{,} \PYG{n}{P} \PYG{n}{a} \PYG{o}{:=}
 \PYG{k+kd}{begin}
 \PYG{k}{assume} \PYG{n}{a}\PYG{o}{,}
+\PYG{n}{unfold} \PYG{n}{P}\PYG{o}{,}
 \PYG{n}{induction} \PYG{n}{a} \PYG{k}{with} \PYG{n}{a\PYGZsq{}} \PYG{n}{ih}\PYG{o}{,} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} applies axiom}
 \PYG{n}{exact} \PYG{n}{rfl}\PYG{o}{,}              \PYG{c+c1}{\PYGZhy{}\PYGZhy{} base case}
-\PYG{n}{unfold} \PYG{n}{P}\PYG{o}{,}               \PYG{c+c1}{\PYGZhy{}\PYGZhy{} inductive case}
-\PYG{n}{unfold} \PYG{n}{P} \PYG{n}{at} \PYG{n}{ih}\PYG{o}{,}
 \PYG{n}{simp} \PYG{o}{[}\PYG{n}{nat.add}\PYG{o}{]}\PYG{o}{,}
 \PYG{n}{assumption}\PYG{o}{,}
 \PYG{k+kd}{end}
 \end{sphinxVerbatim}
 
 
-\subsubsection{Exercises}
-\label{\detokenize{A_03_Recursive_Types:id9}}
+\subsubsection{Examples}
+\label{\detokenize{A_03_Recursive_Types:examples}}
 \sphinxAtStartPar
 Here from Lean’s library is the definition
 of natural number multiplication. Your job
@@ -5344,64 +5396,103 @@ in the missing proof.
 \PYG{c+cm}{|}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{b}\PYG{c+cm}{+}\PYG{c+cm}{1}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{=}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{m}\PYG{c+cm}{u}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{+}\PYG{c+cm}{ }\PYG{c+cm}{a}
 \PYG{c+cm}{\PYGZhy{}/}
 
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{}}
-\PYG{k+kd}{def} \PYG{n}{mul\PYGZus{}one\PYGZus{}left\PYGZus{}ident\PYGZus{}prop} \PYG{o}{:=} \PYG{n+nb+bp}{∀} \PYG{n}{a}\PYG{o}{,} \PYG{n}{nat.mul} \PYG{l+m+mi}{1} \PYG{n}{a} \PYG{n+nb+bp}{=} \PYG{n}{a}
-\PYG{k+kd}{def} \PYG{n}{mul\PYGZus{}one\PYGZus{}right\PYGZus{}ident\PYGZus{}prop} \PYG{o}{:=} \PYG{n+nb+bp}{∀} \PYG{n}{a}\PYG{o}{,} \PYG{n}{nat.mul} \PYG{n}{a} \PYG{l+m+mi}{1} \PYG{n+nb+bp}{=} \PYG{n}{a}
-\PYG{k+kd}{def} \PYG{n}{mul\PYGZus{}one\PYGZus{}ident\PYGZus{}prop} \PYG{o}{:=} \PYG{n}{mul\PYGZus{}one\PYGZus{}right\PYGZus{}ident\PYGZus{}prop} \PYG{n+nb+bp}{∧} \PYG{n}{mul\PYGZus{}one\PYGZus{}left\PYGZus{}ident\PYGZus{}prop}
-
-\PYG{k+kd}{theorem} \PYG{n}{mul\PYGZus{}one\PYGZus{}ident} \PYG{o}{:} \PYG{n}{mul\PYGZus{}one\PYGZus{}ident\PYGZus{}prop} \PYG{o}{:=}
+\PYG{k+kd}{theorem} \PYG{n}{mul\PYGZus{}one\PYGZus{}ident\PYGZus{}nat} \PYG{o}{:}
+    \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{a} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{)}\PYG{o}{,}
+    \PYG{o}{(}\PYG{n}{nat.mul} \PYG{l+m+mi}{1} \PYG{n}{a} \PYG{n+nb+bp}{=} \PYG{n}{a}\PYG{o}{)} \PYG{n+nb+bp}{∧}
+    \PYG{o}{(}\PYG{n}{nat.mul} \PYG{n}{a} \PYG{l+m+mi}{1} \PYG{n+nb+bp}{=} \PYG{n}{a}\PYG{o}{)}  \PYG{o}{:=}
 \PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{a}\PYG{o}{,}
 \PYG{n}{split}\PYG{o}{,}
-\PYG{n}{\PYGZus{}}         \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Replace this placeholder with your proof}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} left conjunct: nat.mul 1 a = a}
+\PYG{n}{induction} \PYG{n}{a} \PYG{k}{with} \PYG{n}{a\PYGZsq{}} \PYG{n}{ih}\PYG{o}{,}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} base case}
+\PYG{n}{simp} \PYG{o}{[}\PYG{n}{nat.mul}\PYG{o}{]}\PYG{o}{,}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} inductive case}
+\PYG{n}{simp} \PYG{o}{[}\PYG{n}{nat.mul}\PYG{o}{]}\PYG{o}{,}
+\PYG{n}{rw} \PYG{n}{ih}\PYG{o}{,}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} right conjunct: nat.mul a 1 = a}
+\PYG{n}{simp} \PYG{o}{[}\PYG{n}{nat.mul}\PYG{o}{]}\PYG{o}{,}
+\PYG{n}{apply} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}add\PYGZus{}nat}\PYG{o}{,}
 \PYG{k+kd}{end}
+
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Construct a proof, nat\PYGZus{}add\PYGZus{}assoc, that nat.add is associative.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Construct a proof, nat\PYGZus{}mul\PYGZus{}assoc, that nat.mul is associative.}
+
+
+\PYG{k+kd}{theorem} \PYG{n}{nat\PYGZus{}add\PYGZus{}assoc} \PYG{o}{:}
+  \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{a} \PYG{n}{b} \PYG{n}{c}\PYG{o}{)}\PYG{o}{,}
+    \PYG{n}{nat.add} \PYG{n}{a} \PYG{o}{(}\PYG{n}{nat.add} \PYG{n}{b} \PYG{n}{c}\PYG{o}{)} \PYG{n+nb+bp}{=}
+    \PYG{n}{nat.add} \PYG{o}{(}\PYG{n}{nat.add} \PYG{n}{a} \PYG{n}{b}\PYG{o}{)} \PYG{n}{c} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{a} \PYG{n}{b} \PYG{n}{c}\PYG{o}{,}
+\PYG{n}{induction} \PYG{n}{c} \PYG{k}{with} \PYG{n}{c\PYGZsq{}} \PYG{n}{ih}\PYG{o}{,}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} base lemma}
+\PYG{n}{simp} \PYG{o}{[}\PYG{n}{nat.add}\PYG{o}{]}\PYG{o}{,}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} induction lemma}
+\PYG{n}{simp} \PYG{o}{[}\PYG{n}{nat.add}\PYG{o}{]}\PYG{o}{,}
+\PYG{n}{assumption}\PYG{o}{,}
+\PYG{k+kd}{end}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Yay, that\PYGZsq{}s really cool!}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} EXERCISE: Prove that nat.mul is associative}
+
+\PYG{k+kd}{theorem} \PYG{n}{nat\PYGZus{}mul\PYGZus{}assoc} \PYG{o}{:}
+  \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{a} \PYG{n}{b} \PYG{n}{c} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{)}\PYG{o}{,} \PYG{n}{nat.mul} \PYG{n}{a} \PYG{o}{(}\PYG{n}{nat.mul} \PYG{n}{b} \PYG{n}{c}\PYG{o}{)} \PYG{n+nb+bp}{=} \PYG{n}{nat.mul} \PYG{o}{(}\PYG{n}{nat.mul} \PYG{n}{a} \PYG{n}{b}\PYG{o}{)} \PYG{n}{c} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{k}{assume} \PYG{n}{a} \PYG{n}{b} \PYG{n}{c}\PYG{o}{,}
+\PYG{n}{induction} \PYG{n}{c} \PYG{k}{with} \PYG{n}{c\PYGZsq{}} \PYG{n}{ih}\PYG{o}{,}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} base case}
+\PYG{n}{simp} \PYG{o}{[}\PYG{n}{nat.mul}\PYG{o}{]}\PYG{o}{,}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} inductive case}
+\PYG{n}{simp} \PYG{o}{[}\PYG{n}{nat.mul}\PYG{o}{]}\PYG{o}{,}
+\PYG{n}{rw} \PYG{n+nb+bp}{\PYGZlt{}}\PYG{n+nb+bp}{\PYGZhy{}} \PYG{n}{ih}\PYG{o}{,}
+\PYG{k}{have} \PYG{n}{mul\PYGZus{}distrib\PYGZus{}add\PYGZus{}nat\PYGZus{}left} \PYG{o}{:}
+  \PYG{n+nb+bp}{∀} \PYG{n}{x} \PYG{n}{y} \PYG{n}{z}\PYG{o}{,}
+    \PYG{n}{nat.mul} \PYG{n}{x} \PYG{o}{(}\PYG{n}{nat.add} \PYG{n}{y} \PYG{n}{z}\PYG{o}{)} \PYG{n+nb+bp}{=}
+    \PYG{n}{nat.add} \PYG{o}{(}\PYG{n}{nat.mul} \PYG{n}{x} \PYG{n}{y}\PYG{o}{)} \PYG{o}{(}\PYG{n}{nat.mul} \PYG{n}{x} \PYG{n}{z}\PYG{o}{)} \PYG{o}{:=}
+    \PYG{g+gr}{sorry}\PYG{o}{,}
+\PYG{n}{apply} \PYG{n}{mul\PYGZus{}distrib\PYGZus{}add\PYGZus{}nat\PYGZus{}left}\PYG{o}{,}
+\PYG{k+kd}{end}
+
+
+\PYG{k+kd}{lemma} \PYG{n}{mul\PYGZus{}distrib\PYGZus{}add\PYGZus{}nat\PYGZus{}left} \PYG{o}{:}
+  \PYG{n+nb+bp}{∀} \PYG{n}{x} \PYG{n}{y} \PYG{n}{z}\PYG{o}{,}
+    \PYG{n}{nat.mul} \PYG{n}{x} \PYG{o}{(}\PYG{n}{nat.add} \PYG{n}{y} \PYG{n}{z}\PYG{o}{)} \PYG{n+nb+bp}{=}
+    \PYG{n}{nat.add} \PYG{o}{(}\PYG{n}{nat.mul} \PYG{n}{x} \PYG{n}{y}\PYG{o}{)} \PYG{o}{(}\PYG{n}{nat.mul} \PYG{n}{x} \PYG{n}{z}\PYG{o}{)} \PYG{o}{:=} \PYG{g+gr}{sorry}
 \end{sphinxVerbatim}
-\begin{itemize}
-\item {} 
-\sphinxAtStartPar
-Construct a proof, nat\_add\_assoc, that nat.add is associative.
-
-\item {} 
-\sphinxAtStartPar
-Construct a proof, nat\_mul\_assoc, that nat.mul is associative.
-
-\end{itemize}
 
 
 \subsubsection{Monoids and Foldr}
 \label{\detokenize{A_03_Recursive_Types:monoids-and-foldr}}
 \sphinxAtStartPar
-This proof is a significant accomplishment. It gives us a
-proof we’ll need to formalize the fundamental mathematical
-concept of a monoid: a structure comprising a collection of
-values (here of some type, α), an associative binary operator
-on such objects, and an identity element \sphinxstyleemphasis{for that operator}.
-
-\sphinxAtStartPar
-We don’t have a proof of associativity of addition, but we do
-now have the tools to prove that nat.add is associative. We’re
-thus close to being able to formally define a monoid structure
-on the natural numbers.
-
-\sphinxAtStartPar
-In particular, we can now define a general structure that we
-can instantiate to formally represent the additive monoid on
-the natural numbers.
+We can now define a general structure that we can instantiate to
+formally represent either and additive or a multiplicative monoid
+on the natural numbers. Indeed, we can generalize this definition
+to a monoid on values of any type for which a suitable operator and
+identity element can be defined.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k+kd}{universe} \PYG{n}{u}
 
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} general structure}
-\PYG{k+kd}{structure} \PYG{n}{nat\PYGZus{}monoid} \PYG{o}{:} \PYG{k+kt}{Type} \PYG{o}{:=} \PYG{n}{mk}\PYG{o}{:}\PYG{o}{:}
-  \PYG{o}{(}\PYG{n}{op} \PYG{o}{:} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat}\PYG{o}{)}
-  \PYG{o}{(}\PYG{n}{id} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{)}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} general structure (not we\PYGZsq{}ve removed \PYGZdq{}nat\PYGZdq{} from the name)}
+\PYG{k+kd}{structure} \PYG{n}{monoid} \PYG{o}{\PYGZob{}}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{\PYGZcb{}} \PYG{o}{:} \PYG{k+kt}{Type} \PYG{o}{:=} \PYG{n}{mk}\PYG{o}{:}\PYG{o}{:}
+  \PYG{o}{(}\PYG{n}{op} \PYG{o}{:} \PYG{n}{α}  \PYG{n+nb+bp}{→} \PYG{n}{α}  \PYG{n+nb+bp}{→} \PYG{n}{α} \PYG{o}{)}
+  \PYG{o}{(}\PYG{n}{id} \PYG{o}{:} \PYG{n}{α} \PYG{o}{)}
   \PYG{o}{(}\PYG{n}{e} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{n}{a}\PYG{o}{,} \PYG{n}{op} \PYG{n}{id} \PYG{n}{a} \PYG{n+nb+bp}{=} \PYG{n}{a} \PYG{n+nb+bp}{∧} \PYG{n}{op} \PYG{n}{a} \PYG{n}{id} \PYG{n+nb+bp}{=} \PYG{n}{a}\PYG{o}{)}
   \PYG{o}{(}\PYG{n}{assoc}\PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{n}{a} \PYG{n}{b} \PYG{n}{c}\PYG{o}{,} \PYG{n}{op} \PYG{n}{a} \PYG{o}{(}\PYG{n}{op} \PYG{n}{b} \PYG{n}{c}\PYG{o}{)} \PYG{n+nb+bp}{=} \PYG{n}{op} \PYG{o}{(}\PYG{n}{op} \PYG{n}{a} \PYG{n}{b}\PYG{o}{)} \PYG{n}{c}\PYG{o}{)}
 
-\PYG{k+kd}{def} \PYG{n}{nat\PYGZus{}add\PYGZus{}monoid} \PYG{o}{:=} \PYG{n}{nat\PYGZus{}monoid.mk}   \PYG{n}{nat.add} \PYG{l+m+mi}{0} \PYG{n}{zero\PYGZus{}ident\PYGZus{}nat\PYGZus{}add\PYGZsq{}} \PYG{g+gr}{sorry}
-\PYG{k+kd}{def} \PYG{n}{nat\PYGZus{}add\PYGZus{}monoid\PYGZsq{}} \PYG{o}{:=} \PYG{n}{nat\PYGZus{}monoid.mk}  \PYG{n}{nat.add} \PYG{l+m+mi}{1} \PYG{n}{zero\PYGZus{}ident\PYGZus{}nat\PYGZus{}add\PYGZsq{}} \PYG{g+gr}{sorry}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} yay caught error}
-\PYG{k+kd}{def} \PYG{n}{nat\PYGZus{}mul\PYGZus{}monoid} \PYG{o}{:=} \PYG{n}{nat\PYGZus{}monoid.mk}   \PYG{n}{nat.mul} \PYG{l+m+mi}{1} \PYG{g+gr}{sorry} \PYG{g+gr}{sorry}                \PYG{c+c1}{\PYGZhy{}\PYGZhy{} no checking here}
+\PYG{k+kd}{def} \PYG{n}{nat\PYGZus{}add\PYGZus{}monoid} \PYG{o}{:=} \PYG{n}{monoid.mk} \PYG{n}{nat.add} \PYG{l+m+mi}{0} \PYG{n}{zero\PYGZus{}ident\PYGZus{}add\PYGZus{}nat} \PYG{n}{nat\PYGZus{}add\PYGZus{}assoc}
+\PYG{k+kd}{def} \PYG{n}{nat\PYGZus{}add\PYGZus{}monoid\PYGZsq{}} \PYG{o}{:=} \PYG{n}{monoid.mk} \PYG{n}{nat.add} \PYG{l+m+mi}{1} \PYG{n}{zero\PYGZus{}ident\PYGZus{}add\PYGZus{}nat} \PYG{n}{nat\PYGZus{}add\PYGZus{}assoc} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} caught error}
+\PYG{k+kd}{def} \PYG{n}{nat\PYGZus{}mul\PYGZus{}monoid} \PYG{o}{:=} \PYG{n}{monoid.mk} \PYG{n}{nat.mul} \PYG{l+m+mi}{1} \PYG{n}{mul\PYGZus{}one\PYGZus{}ident\PYGZus{}nat} \PYG{n}{nat\PYGZus{}mul\PYGZus{}assoc}   \PYG{c+c1}{\PYGZhy{}\PYGZhy{} sorry}
 
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} EXERCISES: Construct proofs to fill in the *sorry*s.}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{nat\PYGZus{}add\PYGZus{}monoid}
+\PYG{k}{\PYGZsh{}reduce} \PYG{n}{nat\PYGZus{}mul\PYGZus{}monoid}
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Monoid structure instances}
 \PYG{k}{\PYGZsh{}reduce} \PYG{n}{foldr} \PYG{n}{nat\PYGZus{}add\PYGZus{}monoid.op} \PYG{n}{nat\PYGZus{}add\PYGZus{}monoid.id} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{5}\PYG{o}{]}
@@ -5409,35 +5500,49 @@ the natural numbers.
 
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} A version of foldr that takes a monoid object and uses its op and e values}
-\PYG{k+kd}{def} \PYG{n}{foldr\PYGZsq{}} \PYG{o}{\PYGZob{}}\PYG{n}{α} \PYG{n}{β} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{\PYGZcb{}} \PYG{o}{:} \PYG{n}{nat\PYGZus{}monoid} \PYG{n+nb+bp}{→} \PYG{n}{list} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat}
-\PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{nat\PYGZus{}monoid.mk} \PYG{n}{op} \PYG{n}{e} \PYG{n}{\PYGZus{}} \PYG{n}{\PYGZus{}}\PYG{o}{)} \PYG{n}{l} \PYG{o}{:=} \PYG{n}{foldr} \PYG{n}{op} \PYG{n}{e} \PYG{n}{l}
+\PYG{k+kd}{def} \PYG{n}{foldr\PYGZsq{}} \PYG{o}{\PYGZob{}}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{\PYGZcb{}} \PYG{o}{:} \PYG{n+nb+bp}{@}\PYG{n}{monoid} \PYG{n}{α} \PYG{n+nb+bp}{→} \PYG{n}{list} \PYG{n}{α} \PYG{n+nb+bp}{→} \PYG{n}{α}
+\PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{monoid.mk} \PYG{n}{op} \PYG{n}{e} \PYG{n}{\PYGZus{}} \PYG{n}{\PYGZus{}}\PYG{o}{)} \PYG{n}{l} \PYG{o}{:=} \PYG{n}{foldr} \PYG{n}{op} \PYG{n}{e} \PYG{n}{l}
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Safe use of monoid instances folds}
 \PYG{k}{\PYGZsh{}reduce} \PYG{n}{foldr\PYGZsq{}} \PYG{n}{nat\PYGZus{}add\PYGZus{}monoid} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{5}\PYG{o}{]}
 \PYG{k}{\PYGZsh{}reduce} \PYG{n}{foldr\PYGZsq{}} \PYG{n}{nat\PYGZus{}mul\PYGZus{}monoid} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{,}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{5}\PYG{o}{]}
 \end{sphinxVerbatim}
 
-
-\subsection{Induction Generalized}
-\label{\detokenize{A_03_Recursive_Types:induction-generalized}}
 \sphinxAtStartPar
-UNDER CONSTRUCTION FROM HERE ON DOWN.
+If we ignore the fact that we don’t yet have proofs of the
+monoid laws for ⟨list α, {[}{]}, list.append⟩ we can actually go
+ahead and see that it’s going to work.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{def} \PYG{n}{monoid\PYGZus{}list\PYGZus{}append\PYGZsq{}} \PYG{o}{\PYGZob{}}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{\PYGZcb{}}\PYG{o}{:} \PYG{n+nb+bp}{@}\PYG{n}{monoid} \PYG{o}{(}\PYG{n}{list} \PYG{n}{α}\PYG{o}{)} \PYG{o}{:=}
+  \PYG{n}{monoid.mk} \PYG{n}{list.append} \PYG{o}{[}\PYG{o}{]} \PYG{n}{\PYGZus{}} \PYG{n}{\PYGZus{}}
+
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{foldr\PYGZsq{}} \PYG{n}{monoid\PYGZus{}list\PYGZus{}append\PYGZsq{}} \PYG{o}{[}\PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{]}\PYG{o}{,}\PYG{o}{[}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{5}\PYG{o}{,}\PYG{l+m+mi}{6}\PYG{o}{]}\PYG{o}{,}\PYG{o}{[}\PYG{l+m+mi}{7}\PYG{o}{,}\PYG{l+m+mi}{8}\PYG{o}{,}\PYG{l+m+mi}{9}\PYG{o}{]}\PYG{o}{]}
+\end{sphinxVerbatim}
 
 \sphinxAtStartPar
-Just as we will need a proof that 0 is not only a right
-identity for nat.add (by the first axiom) but also a left
-identity (a theorem proved by induction), so will need a
-proof that nil is not only a right but also a left identity
-for the list append operation.
+All that remains is to provide the requisite proofs that
+append and nil satisfy the \sphinxstyleemphasis{monoid laws}. Unlike the proofs
+of identities and associativity for natural number operations,
+however, we now need to show that {[}{]} is an identity for \sphinxstyleemphasis{list}
+append. If only proof by induction worked as well for lists as
+for natural numbers! As we’ll see next, we’re in luck.
+Generalizing from Induction on ℕ
+\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}
 
 \sphinxAtStartPar
-Here’s the easy case first. From this proof you can infer
-that the list.append operation (with infix notation ++) has
-a rule/axiom that states that l ++ nil := l for any l.
+Our next task is to construct a \sphinxstyleemphasis{cerified} monoid over
+lists of values of any type with append as the \sphinxstyleemphasis{add}
+operator and \sphinxstyleemphasis{list.nil} ({[}{]}) as the identity. Once again
+we’ll have to show \sphinxstyleemphasis{{[}{]}} is both a left and right identity
+for append, where one proof is by the definition of append
+and the other is by induction. We’ll also need a proof
+that \sphinxstyleemphasis{list.append} is associative: {\color{red}\bfseries{}*}∀ (l m n : list α),
+(l ++ m) ++ n = l ++ (m ++ n).
 
 \sphinxAtStartPar
 Here’s the definition of list.append.
-It asserts that {[}{]} is a left identity axiomatically.
+You can see it defines {[}{]} as a left identity for any list.
 
 \sphinxAtStartPar
 def append : list α → list α → list α
@@ -5445,8 +5550,7 @@ def append : list α → list α → list α
 | (h :: s) t := h :: (append s t)
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} proving right identity is trivial just as for addition}
-\PYG{k+kd}{example} \PYG{o}{(}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{)} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{l} \PYG{o}{:} \PYG{n}{list} \PYG{n}{α}\PYG{o}{)}\PYG{o}{,} \PYG{n}{list.nil} \PYG{n+nb+bp}{+}\PYG{n+nb+bp}{+} \PYG{n}{l} \PYG{n+nb+bp}{=} \PYG{n}{l} \PYG{o}{:=}
+\PYG{k+kd}{theorem} \PYG{n}{nil\PYGZus{}left\PYGZus{}ident\PYGZus{}append\PYGZus{}list} \PYG{o}{(}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{)} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{l} \PYG{o}{:} \PYG{n}{list} \PYG{n}{α}\PYG{o}{)}\PYG{o}{,} \PYG{n}{list.nil} \PYG{n+nb+bp}{+}\PYG{n+nb+bp}{+} \PYG{n}{l} \PYG{n+nb+bp}{=} \PYG{n}{l} \PYG{o}{:=}
 \PYG{k+kd}{begin}
 \PYG{k}{assume} \PYG{n}{l}\PYG{o}{,}
 \PYG{n}{simp} \PYG{o}{[}\PYG{n}{list.append}\PYG{o}{]}\PYG{o}{,}
@@ -5476,14 +5580,13 @@ done the work for us; and they did it recursively just as
 we did to show that 0 is a right identity for addition.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{k+kd}{def} \PYG{n}{nil\PYGZus{}left\PYGZus{}ident\PYGZus{}app} \PYG{o}{(}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{)} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{l} \PYG{o}{:} \PYG{n}{list} \PYG{n}{α}\PYG{o}{)}\PYG{o}{,} \PYG{n}{l} \PYG{n+nb+bp}{+}\PYG{n+nb+bp}{+} \PYG{n}{list.nil} \PYG{n+nb+bp}{=} \PYG{n}{l} \PYG{o}{:=}
+\PYG{k+kd}{def} \PYG{n}{nil\PYGZus{}right\PYGZus{}ident\PYGZus{}append} \PYG{o}{(}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{)} \PYG{o}{:}
+  \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{l} \PYG{o}{:} \PYG{n}{list} \PYG{n}{α}\PYG{o}{)}\PYG{o}{,} \PYG{n}{l} \PYG{n+nb+bp}{+}\PYG{n+nb+bp}{+} \PYG{o}{[}\PYG{o}{]} \PYG{n+nb+bp}{=} \PYG{n}{l} \PYG{o}{:=}
 \PYG{k+kd}{begin}
 \PYG{k}{assume} \PYG{n}{l}\PYG{o}{,}
-\PYG{n}{cases} \PYG{n}{l} \PYG{k}{with} \PYG{n}{h} \PYG{n}{t}\PYG{o}{,}
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} base case}
-\PYG{n}{simp} \PYG{o}{[}\PYG{n}{list.append}\PYG{o}{]}\PYG{o}{,}   \PYG{c+c1}{\PYGZhy{}\PYGZhy{} uses first rule}
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} recursive case}
-\PYG{n}{simp} \PYG{o}{[}\PYG{n}{list.append}\PYG{o}{]}\PYG{o}{,}   \PYG{c+c1}{\PYGZhy{}\PYGZhy{} why does this work?}
+\PYG{n}{induction} \PYG{n}{l}\PYG{o}{,}
+\PYG{n}{simp} \PYG{o}{[}\PYG{n}{list.append}\PYG{o}{]}\PYG{o}{,}
+\PYG{n}{simp}\PYG{o}{,}
 \PYG{k+kd}{end}
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Here\PYGZsq{}s another formal demonstration of the same point}
@@ -5494,7 +5597,7 @@ we did to show that 0 is a right identity for addition.
 
 
 \subsection{Induction Axioms}
-\label{\detokenize{A_03_Recursive_Types:id10}}
+\label{\detokenize{A_03_Recursive_Types:id15}}
 \sphinxAtStartPar
 YOU MAY STOP READING HERE. THE REMAINDER IS STILL \sphinxstyleemphasis{UNDER CONSTRUCTION.}
 

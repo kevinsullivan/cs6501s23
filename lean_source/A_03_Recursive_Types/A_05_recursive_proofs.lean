@@ -223,8 +223,6 @@ show 1 + (0 + 1) = 2, -- second rule of add
 unfold P at ih,       -- use ih, Lean automation
 end 
 
--- Wow, can we just keep doing this?
-
 theorem p3 : P 3  :=
 begin
 unfold P,
@@ -294,9 +292,10 @@ TEXT. -/
 def zero_left_ident_add_nat : ∀ (a : ℕ), (nat.add 0 a = a) 
 | 0 := p0
 | (nat.succ a') := (step a' (zero_left_ident_add_nat a'))
+-- QUOTE.
 
 /- TEXT:
--- The function, zero_left_ident_add, proves ∀ a, P a! 
+The function, zero_left_ident_add, proves ∀ a, P a! 
 It's a universal generalization, so we can apply it to any 
 specific value of *a* to get a proof that zero is a left 
 identity for that particular *a*.  
@@ -489,7 +488,8 @@ end
 -- QUOTE.
 
 /- TEXT:
-Examples:   -- Formerly exercises
+Examples  
+~~~~~~~~
 
 Here from Lean's library is the definition
 of natural number multiplication. Your job 
@@ -497,6 +497,7 @@ is to prove that 1 is an identity (left and
 right identity) for nat multiplication. Fill
 in the missing proof.
 TEXT. -/
+
 
 -- QUOTE:
 #check nat.mul
@@ -528,14 +529,9 @@ apply zero_left_ident_add_nat,
 end
 
 
-/- TEXT:
+-- Construct a proof, nat_add_assoc, that nat.add is associative.
+-- Construct a proof, nat_mul_assoc, that nat.mul is associative.
 
-- Construct a proof, nat_add_assoc, that nat.add is associative.
-- Construct a proof, nat_mul_assoc, that nat.mul is associative.
-
-TEXT. -/
-
--- QUOTE:
 
 theorem nat_add_assoc : 
   ∀ (a b c), 
@@ -574,40 +570,41 @@ have mul_distrib_add_nat_left :
     sorry,
 apply mul_distrib_add_nat_left,
 end
--- QUOTE.
+
 
 lemma mul_distrib_add_nat_left : 
   ∀ x y z, 
     nat.mul x (nat.add y z) = 
     nat.add (nat.mul x y) (nat.mul x z) := sorry
 
--- EXERCISE:
+-- QUOTE.
 
 /- TEXT:
 
 Monoids and Foldr
 ~~~~~~~~~~~~~~~~~
 
-We don't yet have a proof of associativity of addition, but we 
-do now have the tools to prove that nat.add is associative. In 
-particular, we can now define a general structure that we can 
-instantiate to formally represent the additive monoid on the 
-natural numbers.
+We can now define a general structure that we can instantiate to 
+formally represent either and additive or a multiplicative monoid 
+on the natural numbers. Indeed, we can generalize this definition
+to a monoid on values of any type for which a suitable operator and
+identity element can be defined.
+
 TEXT. -/
 
 -- QUOTE:
 universe u
 
--- general structure
-structure nat_monoid {α : Type} : Type := mk::
+-- general structure (not we've removed "nat" from the name)
+structure monoid {α : Type} : Type := mk::
   (op : α  → α  → α )
   (id : α )
   (e : ∀ a, op id a = a ∧ op a id = a)
   (assoc: ∀ a b c, op a (op b c) = op (op a b) c)
 
-def nat_add_monoid := nat_monoid.mk nat.add 0 zero_ident_add_nat nat_add_assoc  
-def nat_add_monoid' := nat_monoid.mk nat.add 1 zero_ident_add_nat nat_add_assoc -- caught error
-def nat_mul_monoid := nat_monoid.mk nat.mul 1 mul_one_ident_nat nat_mul_assoc   -- sorry 
+def nat_add_monoid := monoid.mk nat.add 0 zero_ident_add_nat nat_add_assoc  
+def nat_add_monoid' := monoid.mk nat.add 1 zero_ident_add_nat nat_add_assoc -- caught error
+def nat_mul_monoid := monoid.mk nat.mul 1 mul_one_ident_nat nat_mul_assoc   -- sorry 
 
 #reduce nat_add_monoid
 #reduce nat_mul_monoid
@@ -618,31 +615,52 @@ def nat_mul_monoid := nat_monoid.mk nat.mul 1 mul_one_ident_nat nat_mul_assoc   
 
 
 -- A version of foldr that takes a monoid object and uses its op and e values
-def foldr' {α β : Type} : nat_monoid → list nat → nat
-| (nat_monoid.mk op e _ _) l := foldr op e l
+def foldr' {α : Type} : @monoid α → list α → α  
+| (monoid.mk op e _ _) l := foldr op e l
 
 -- Safe use of monoid instances folds
 #reduce foldr' nat_add_monoid [1,2,3,4,5]
 #reduce foldr' nat_mul_monoid [1,2,3,4,5]
 -- QUOTE.
 
+/- TEXT:
+If we ignore the fact that we don't yet have proofs of the
+monoid laws for ⟨list α, [], list.append⟩ we can actually go
+ahead and see that it's going to work.
+TEXT. -/
+
+-- QUOTE:
+def monoid_list_append' {α : Type}: @monoid (list α) :=
+  monoid.mk list.append [] _ _
+
+#eval foldr' monoid_list_append' [[1,2,3],[4,5,6],[7,8,9]]
+-- QUOTE.
+
+/- TEXT:
+All that remains is to provide the requisite proofs that 
+append and nil satisfy the *monoid laws*. Unlike the proofs
+of identities and associativity for natural number operations,
+however, we now need to show that [] is an identity for *list*
+append. If only proof by induction worked as well for lists as
+for natural numbers! As we'll see next, we're in luck. 
+TEXT. -/
 
 
 /- TEXT:
 Generalizing from Induction on ℕ
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Our next task is to construct the monoid over lists
-of values of any type with append as the *add* operator
-and *list.nil* ([]) as the identity. Once again we'll 
-have to show *[]* is both a left and right identity for
-append, where one proof is by the definition of append
+Our next task is to construct a *cerified* monoid over 
+lists of values of any type with append as the *add* 
+operator and *list.nil* ([]) as the identity. Once again 
+we'll have to show *[]* is both a left and right identity 
+for append, where one proof is by the definition of append
 and the other is by induction. We'll also need a proof
 that *list.append* is associative: *∀ (l m n : list α), 
 (l ++ m) ++ n = l ++ (m ++ n).  
 
 Here's the definition of list.append.
-It asserts that [] is a left identity axiomatically. 
+You can see it defines [] as a left identity for any list. 
 
 def append : list α → list α → list α
 | []       l := l
@@ -650,7 +668,6 @@ def append : list α → list α → list α
 TEXT. -/
 
 -- QUOTE:
--- proving left identity is trivial just as for addition
 theorem nil_left_ident_append_list (α : Type) : ∀ (l : list α), list.nil ++ l = l :=
 begin
 assume l,

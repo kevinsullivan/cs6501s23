@@ -264,7 +264,7 @@ def any_true : list bool → bool := foldr bor ff
 
 #check nat.add
 
-example : ∀ n : nat, nat.add n 0 = n := 
+theorem zero_right_ident_add_nat : ∀ n : nat, nat.add n 0 = n := 
 begin
 assume n,
 by simp [nat.add],

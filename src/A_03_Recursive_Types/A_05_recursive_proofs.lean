@@ -67,8 +67,6 @@ show 1 + (0 + 1) = 2, -- second rule of add
 unfold P at ih,       -- use ih, Lean automation
 end 
 
--- Wow, can we just keep doing this?
-
 theorem p3 : P 3  :=
 begin
 unfold P,
@@ -111,41 +109,56 @@ end
 
 
 -- formerly called pa (in class)
-def zero_left_ident_add : ∀ (a : ℕ), (nat.add 0 a = a) 
+def zero_left_ident_add_nat : ∀ (a : ℕ), (nat.add 0 a = a) 
 | 0 := p0
-| (nat.succ a') := (step a' (zero_left_ident_add a'))
-
-#check zero_left_ident_add  
--- ∀ (a : ℕ), 0.add a = a!
+| (nat.succ a') := (step a' (zero_left_ident_add_nat a'))
 
 
-
-#reduce zero_left_ident_add 0
-#reduce zero_left_ident_add 1
-#reduce zero_left_ident_add 2
-#reduce zero_left_ident_add 3
+#reduce zero_left_ident_add_nat 0
+#reduce zero_left_ident_add_nat 1
+#reduce zero_left_ident_add_nat 2
+#reduce zero_left_ident_add_nat 3
 
 
 
--- 0 is a left and right identity for nat +
-theorem zero_ident_nat_add :
-  ∀ (a : ℕ), 
-    (nat.add 0 a = a) ∧
-    (nat.add a 0 = a) :=
+#check @nat.rec_on
+
+
+def base_fac := 1
+
+def step_fac : nat → nat → nat 
+| n' fac_n' := (n' + 1) * fac_n'
+
+def fac (n : nat) : nat :=
 begin
-assume a,
-split,
-apply zero_left_ident_add,  -- inductive case
-simp [nat.add],             -- base case is easyend
+apply nat.rec_on n,
+exact base_fac,
+exact step_fac,
 end
 
+def fac' : ℕ → ℕ 
+| 0 := 1
+| (nat.succ n') := (nat.succ n') * fac' n'
 
-theorem zero_ident_nat_add' : ∀ (a : ℕ), (0:nat).add a = a ∧ a.add 0 = a :=
-begin
-assume a,
+#eval fac' 5
+
+#eval fac 5
+
+
+
+-- We now have that zero is an *additive identity for ℕ*
+#check zero_left_ident_add_nat
+#check zero_right_ident_add_nat
+
+theorem zero_ident_add_nat : 
+  ∀ (a : ℕ), 
+    nat.add nat.zero a = a ∧
+    nat.add a nat.zero = a :=
+begin 
+intro a,
 split,
-apply zero_left_ident_add,
-apply rfl,
+apply (zero_left_ident_add_nat a),
+apply (zero_right_ident_add_nat a),
 end
 
 
@@ -161,6 +174,7 @@ def nat_zero_ident (a : nat) : P a := nat.rec_on a p0 step
 
 example : ∀ a, P a :=
 begin
+unfold P,
 assume a,
 apply nat.rec_on a,
 exact rfl,    -- base case
@@ -171,13 +185,13 @@ end
 example : ∀ a, P a :=
 begin
 assume a,
+unfold P,
 induction a with a' ih, -- applies axiom
 exact rfl,              -- base case
-unfold P,               -- inductive case
-unfold P at ih,
 simp [nat.add],
 assumption,
 end
+
 
 
 #check nat.mul
@@ -187,32 +201,93 @@ def mul : nat → nat → nat
 | a (b+1) := (mul a b) + a
 -/
 
--- 
-def mul_one_left_ident_prop := ∀ a, nat.mul 1 a = a
-def mul_one_right_ident_prop := ∀ a, nat.mul a 1 = a
-def mul_one_ident_prop := mul_one_right_ident_prop ∧ mul_one_left_ident_prop
-
-theorem mul_one_ident : mul_one_ident_prop :=
+theorem mul_one_ident_nat : 
+    ∀ (a : ℕ), 
+    (nat.mul 1 a = a) ∧
+    (nat.mul a 1 = a)  :=
 begin
+assume a,
 split,
-_         -- Replace this placeholder with your proof
+
+-- left conjunct: nat.mul 1 a = a
+induction a with a' ih,
+-- base case
+simp [nat.mul], 
+-- inductive case
+simp [nat.mul],
+rw ih,
+
+-- right conjunct: nat.mul a 1 = a
+simp [nat.mul],
+apply zero_left_ident_add_nat,
 end
+
+
+-- Construct a proof, nat_add_assoc, that nat.add is associative.
+-- Construct a proof, nat_mul_assoc, that nat.mul is associative.
+
+
+theorem nat_add_assoc : 
+  ∀ (a b c), 
+    nat.add a (nat.add b c) =
+    nat.add (nat.add a b) c :=
+begin
+assume a b c,
+induction c with c' ih,
+
+-- base lemma
+simp [nat.add],
+
+-- induction lemma
+simp [nat.add],
+assumption,
+end
+
+-- Yay, that's really cool!
+
+-- EXERCISE: Prove that nat.mul is associative
+
+theorem nat_mul_assoc : 
+  ∀ (a b c : ℕ), nat.mul a (nat.mul b c) = nat.mul (nat.mul a b) c :=
+begin
+assume a b c,
+induction c with c' ih,
+-- base case
+simp [nat.mul],
+-- inductive case
+simp [nat.mul],
+rw <- ih,
+have mul_distrib_add_nat_left : 
+  ∀ x y z, 
+    nat.mul x (nat.add y z) = 
+    nat.add (nat.mul x y) (nat.mul x z) := 
+    sorry,
+apply mul_distrib_add_nat_left,
+end
+
+
+lemma mul_distrib_add_nat_left : 
+  ∀ x y z, 
+    nat.mul x (nat.add y z) = 
+    nat.add (nat.mul x y) (nat.mul x z) := sorry
+
 
 
 universe u
 
--- general structure
-structure nat_monoid : Type := mk::
-  (op : nat → nat → nat)
-  (id : ℕ)
+-- general structure (not we've removed "nat" from the name)
+structure monoid {α : Type} : Type := mk::
+  (op : α  → α  → α )
+  (id : α )
   (e : ∀ a, op id a = a ∧ op a id = a)
   (assoc: ∀ a b c, op a (op b c) = op (op a b) c)
 
-def nat_add_monoid := nat_monoid.mk   nat.add 0 zero_ident_nat_add' sorry  
-def nat_add_monoid' := nat_monoid.mk  nat.add 1 zero_ident_nat_add' sorry  -- yay caught error
-def nat_mul_monoid := nat_monoid.mk   nat.mul 1 sorry sorry                -- no checking here 
+def nat_add_monoid := monoid.mk nat.add 0 zero_ident_add_nat nat_add_assoc  
+def nat_add_monoid' := monoid.mk nat.add 1 zero_ident_add_nat nat_add_assoc -- caught error
+def nat_mul_monoid := monoid.mk nat.mul 1 mul_one_ident_nat nat_mul_assoc   -- sorry 
 
--- EXERCISES: Construct proofs to fill in the *sorry*s.
+#reduce nat_add_monoid
+#reduce nat_mul_monoid
 
 -- Monoid structure instances 
 #reduce foldr nat_add_monoid.op nat_add_monoid.id [1,2,3,4,5]
@@ -220,32 +295,36 @@ def nat_mul_monoid := nat_monoid.mk   nat.mul 1 sorry sorry                -- no
 
 
 -- A version of foldr that takes a monoid object and uses its op and e values
-def foldr' {α β : Type} : nat_monoid → list nat → nat
-| (nat_monoid.mk op e _ _) l := foldr op e l
+def foldr' {α : Type} : @monoid α → list α → α  
+| (monoid.mk op e _ _) l := foldr op e l
 
 -- Safe use of monoid instances folds
 #reduce foldr' nat_add_monoid [1,2,3,4,5]
 #reduce foldr' nat_mul_monoid [1,2,3,4,5]
 
 
+def monoid_list_append' {α : Type}: @monoid (list α) :=
+  monoid.mk list.append [] _ _
+
+#eval foldr' monoid_list_append' [[1,2,3],[4,5,6],[7,8,9]]
 
 
--- proving right identity is trivial just as for addition
-example (α : Type) : ∀ (l : list α), list.nil ++ l = l :=
+
+
+theorem nil_left_ident_append_list (α : Type) : ∀ (l : list α), list.nil ++ l = l :=
 begin
 assume l,
 simp [list.append],
 end
 
 
-def nil_left_ident_app (α : Type) : ∀ (l : list α), l ++ list.nil = l :=
+def nil_right_ident_append (α : Type) : 
+  ∀ (l : list α), l ++ [] = l :=
 begin
 assume l,
-cases l with h t,
--- base case
-simp [list.append],   -- uses first rule
--- recursive case
-simp [list.append],   -- why does this work?
+induction l,
+simp [list.append],
+simp,
 end 
 
 -- Here's another formal demonstration of the same point
