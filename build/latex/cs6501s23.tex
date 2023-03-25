@@ -81,7 +81,7 @@
 
 
 \title{Computing Foundations}
-\date{Mar 24, 2023}
+\date{Mar 25, 2023}
 \release{1.2.2}
 \author{Kevin Sullivan}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -5196,9 +5196,10 @@ a proof of \sphinxstyleemphasis{P 0}. We thus construct proofs of \sphinxstyleem
 any \sphinxstyleemphasis{a} inductively, just as we define the natural numbers
 themselves inductively. This method is called \sphinxstyleemphasis{proof by
 induction}.
-Summary: Proof by Induction
-\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}
 
+
+\subsubsection{Summary: Proof by Induction}
+\label{\detokenize{A_03_Recursive_Types:summary-proof-by-induction}}
 \sphinxAtStartPar
 Let’s pull the pieces of this story together. We started by
 specifying a property, \sphinxstyleemphasis{P a := 0 + a = 0}, of natural numbers.
@@ -5247,9 +5248,35 @@ At this point we’ve proved that zero is both a left and a
 right identity for the natural numbers. We can thus say that
 zero is an additive identity (on the left and right) for the
 natural numbers.
-Theorem: 0 is identity for ⟨ℕ, +⟩
-\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}
 
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k}{\PYGZsh{}check} \PYG{n+nb+bp}{@}\PYG{n}{nat.rec\PYGZus{}on}
+
+
+\PYG{k+kd}{def} \PYG{n}{base\PYGZus{}fac} \PYG{o}{:=} \PYG{l+m+mi}{1}
+
+\PYG{k+kd}{def} \PYG{n}{step\PYGZus{}fac} \PYG{o}{:} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat} \PYG{n+nb+bp}{→} \PYG{n}{nat}
+\PYG{n+nb+bp}{|} \PYG{n}{n\PYGZsq{}} \PYG{n}{fac\PYGZus{}n\PYGZsq{}} \PYG{o}{:=} \PYG{o}{(}\PYG{n}{n\PYGZsq{}} \PYG{n+nb+bp}{+} \PYG{l+m+mi}{1}\PYG{o}{)} \PYG{n+nb+bp}{*} \PYG{n}{fac\PYGZus{}n\PYGZsq{}}
+
+\PYG{k+kd}{def} \PYG{n}{fac} \PYG{o}{(}\PYG{n}{n} \PYG{o}{:} \PYG{n}{nat}\PYG{o}{)} \PYG{o}{:} \PYG{n}{nat} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{n}{apply} \PYG{n}{nat.rec\PYGZus{}on} \PYG{n}{n}\PYG{o}{,}
+\PYG{n}{exact} \PYG{n}{base\PYGZus{}fac}\PYG{o}{,}
+\PYG{n}{exact} \PYG{n}{step\PYGZus{}fac}\PYG{o}{,}
+\PYG{k+kd}{end}
+
+\PYG{k+kd}{def} \PYG{n}{fac\PYGZsq{}} \PYG{o}{:} \PYG{n}{ℕ} \PYG{n+nb+bp}{→} \PYG{n}{ℕ}
+\PYG{n+nb+bp}{|} \PYG{l+m+mi}{0} \PYG{o}{:=} \PYG{l+m+mi}{1}
+\PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{nat.succ} \PYG{n}{n\PYGZsq{}}\PYG{o}{)} \PYG{o}{:=} \PYG{o}{(}\PYG{n}{nat.succ} \PYG{n}{n\PYGZsq{}}\PYG{o}{)} \PYG{n+nb+bp}{*} \PYG{n}{fac\PYGZsq{}} \PYG{n}{n\PYGZsq{}}
+
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{fac\PYGZsq{}} \PYG{l+m+mi}{5}
+
+\PYG{k}{\PYGZsh{}eval} \PYG{n}{fac} \PYG{l+m+mi}{5}
+\end{sphinxVerbatim}
+
+
+\subsubsection{Theorem: 0 is identity for ⟨ℕ, +⟩}
+\label{\detokenize{A_03_Recursive_Types:theorem-0-is-identity-for}}
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} We now have that zero is an *additive identity for ℕ*}
 \PYG{k}{\PYGZsh{}check} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}add\PYGZus{}nat}
@@ -5329,8 +5356,8 @@ a final version of foldr, extending the binary operation of any monoid to n\sphi
 \end{itemize}
 
 
-\subsubsection{Induction Axioms}
-\label{\detokenize{A_03_Recursive_Types:induction-axioms}}
+\subsubsection{Induction Axiom for ℕ}
+\label{\detokenize{A_03_Recursive_Types:induction-axiom-for}}
 \sphinxAtStartPar
 The principle we’ve developed is available as an axiom
 generated from the definition of the nat data type. The
@@ -5379,14 +5406,13 @@ subgoals.
 \end{sphinxVerbatim}
 
 
-\subsubsection{Examples}
-\label{\detokenize{A_03_Recursive_Types:examples}}
+\subsubsection{Theorem: 1 is identity for ⟨ℕ, {\color{red}\bfseries{}*}⟩}
+\label{\detokenize{A_03_Recursive_Types:theorem-1-is-identity-for}}
 \sphinxAtStartPar
 Here from Lean’s library is the definition
 of natural number multiplication. Your job
 is to prove that 1 is an identity (left and
-right identity) for nat multiplication. Fill
-in the missing proof.
+right identity) for ⟨ℕ, {\color{red}\bfseries{}*}⟩. Fill in the missing proof.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k}{\PYGZsh{}check} \PYG{n}{nat.mul}
@@ -5416,12 +5442,17 @@ in the missing proof.
 \PYG{n}{simp} \PYG{o}{[}\PYG{n}{nat.mul}\PYG{o}{]}\PYG{o}{,}
 \PYG{n}{apply} \PYG{n}{zero\PYGZus{}left\PYGZus{}ident\PYGZus{}add\PYGZus{}nat}\PYG{o}{,}
 \PYG{k+kd}{end}
+\end{sphinxVerbatim}
 
 
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Construct a proof, nat\PYGZus{}add\PYGZus{}assoc, that nat.add is associative.}
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Construct a proof, nat\PYGZus{}mul\PYGZus{}assoc, that nat.mul is associative.}
+\subsubsection{Theorems: + and * on ℕ are associative}
+\label{\detokenize{A_03_Recursive_Types:theorems-and-on-are-associative}}
+\sphinxAtStartPar
+In this section we’ll first construct a proof, nat\_add\_assoc,
+that nat.add is associative, then we’ll do the same, under the
+name, nat\_mul\_assoc, showing that nat.mul is associative, too.
 
-
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k+kd}{theorem} \PYG{n}{nat\PYGZus{}add\PYGZus{}assoc} \PYG{o}{:}
   \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{a} \PYG{n}{b} \PYG{n}{c}\PYG{o}{)}\PYG{o}{,}
     \PYG{n}{nat.add} \PYG{n}{a} \PYG{o}{(}\PYG{n}{nat.add} \PYG{n}{b} \PYG{n}{c}\PYG{o}{)} \PYG{n+nb+bp}{=}
@@ -5442,6 +5473,15 @@ in the missing proof.
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} EXERCISE: Prove that nat.mul is associative}
 
+\PYG{c}{/\PYGZhy{}}
+\PYG{c+cm}{I}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{m}\PYG{c+cm}{i}\PYG{c+cm}{d}\PYG{c+cm}{d}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{r}\PYG{c+cm}{y}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{m}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{e}\PYG{c+cm}{d}
+\PYG{c+cm}{f}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{m}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{y}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{h}\PYG{c+cm}{o}\PYG{c+cm}{w}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{d}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{d}
+\PYG{c+cm}{m}\PYG{c+cm}{u}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{o}\PYG{c+cm}{l}\PYG{c+cm}{l}\PYG{c+cm}{o}\PYG{c+cm}{w}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{d}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{r}\PYG{c+cm}{i}\PYG{c+cm}{b}\PYG{c+cm}{u}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{a}\PYG{c+cm}{w}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{m}\PYG{c+cm}{u}\PYG{c+cm}{l}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{p}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{f}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{r}
+\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{u}\PYG{c+cm}{m}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{W}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{x}\PYG{c+cm}{a}\PYG{c+cm}{m}\PYG{c+cm}{p}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{h}\PYG{c+cm}{o}\PYG{c+cm}{w}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{s}\PYG{c+cm}{u}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{a}
+\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{m}\PYG{c+cm}{m}\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{u}\PYG{c+cm}{s}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{r}\PYG{c+cm}{y}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{w}\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{i}\PYG{c+cm}{l}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{g}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{.}\PYG{c+cm}{ }\PYG{c+cm}{T}\PYG{c+cm}{h}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{g}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{s}
+\PYG{c+cm}{y}\PYG{c+cm}{o}\PYG{c+cm}{u}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{a}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{p}\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{a}\PYG{c+cm}{c}\PYG{c+cm}{h}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{p}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{d}\PYG{c+cm}{o}\PYG{c+cm}{w}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{r}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{j}\PYG{c+cm}{u}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{k}\PYG{c+cm}{e}
+\PYG{c+cm}{y}\PYG{c+cm}{o}\PYG{c+cm}{u}\PYG{c+cm}{ }\PYG{c+cm}{m}\PYG{c+cm}{i}\PYG{c+cm}{g}\PYG{c+cm}{h}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{o}\PYG{c+cm}{l}\PYG{c+cm}{l}\PYG{c+cm}{o}\PYG{c+cm}{w}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{ }\PYG{c+cm}{d}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{c}\PYG{c+cm}{i}\PYG{c+cm}{p}\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{o}\PYG{c+cm}{p}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{d}\PYG{c+cm}{o}\PYG{c+cm}{w}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{g}\PYG{c+cm}{r}\PYG{c+cm}{a}\PYG{c+cm}{m}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{r}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{.}
+\PYG{c+cm}{\PYGZhy{}/}
 \PYG{k+kd}{theorem} \PYG{n}{nat\PYGZus{}mul\PYGZus{}assoc} \PYG{o}{:}
   \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{a} \PYG{n}{b} \PYG{n}{c} \PYG{o}{:} \PYG{n}{ℕ}\PYG{o}{)}\PYG{o}{,} \PYG{n}{nat.mul} \PYG{n}{a} \PYG{o}{(}\PYG{n}{nat.mul} \PYG{n}{b} \PYG{n}{c}\PYG{o}{)} \PYG{n+nb+bp}{=} \PYG{n}{nat.mul} \PYG{o}{(}\PYG{n}{nat.mul} \PYG{n}{a} \PYG{n}{b}\PYG{o}{)} \PYG{n}{c} \PYG{o}{:=}
 \PYG{k+kd}{begin}
@@ -5460,7 +5500,7 @@ in the missing proof.
 \PYG{n}{apply} \PYG{n}{mul\PYGZus{}distrib\PYGZus{}add\PYGZus{}nat\PYGZus{}left}\PYG{o}{,}
 \PYG{k+kd}{end}
 
-
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} We leave the proof of left distributivity as an exercise (not trivial)}
 \PYG{k+kd}{lemma} \PYG{n}{mul\PYGZus{}distrib\PYGZus{}add\PYGZus{}nat\PYGZus{}left} \PYG{o}{:}
   \PYG{n+nb+bp}{∀} \PYG{n}{x} \PYG{n}{y} \PYG{n}{z}\PYG{o}{,}
     \PYG{n}{nat.mul} \PYG{n}{x} \PYG{o}{(}\PYG{n}{nat.add} \PYG{n}{y} \PYG{n}{z}\PYG{o}{)} \PYG{n+nb+bp}{=}
@@ -5515,7 +5555,7 @@ ahead and see that it’s going to work.
 
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k+kd}{def} \PYG{n}{monoid\PYGZus{}list\PYGZus{}append\PYGZsq{}} \PYG{o}{\PYGZob{}}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{\PYGZcb{}}\PYG{o}{:} \PYG{n+nb+bp}{@}\PYG{n}{monoid} \PYG{o}{(}\PYG{n}{list} \PYG{n}{α}\PYG{o}{)} \PYG{o}{:=}
-  \PYG{n}{monoid.mk} \PYG{n}{list.append} \PYG{o}{[}\PYG{o}{]} \PYG{n}{\PYGZus{}} \PYG{n}{\PYGZus{}}
+  \PYG{n}{monoid.mk} \PYG{n}{list.append} \PYG{o}{[}\PYG{o}{]} \PYG{g+gr}{sorry} \PYG{g+gr}{sorry}
 
 \PYG{k}{\PYGZsh{}eval} \PYG{n}{foldr\PYGZsq{}} \PYG{n}{monoid\PYGZus{}list\PYGZus{}append\PYGZsq{}} \PYG{o}{[}\PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{,}\PYG{l+m+mi}{3}\PYG{o}{]}\PYG{o}{,}\PYG{o}{[}\PYG{l+m+mi}{4}\PYG{o}{,}\PYG{l+m+mi}{5}\PYG{o}{,}\PYG{l+m+mi}{6}\PYG{o}{]}\PYG{o}{,}\PYG{o}{[}\PYG{l+m+mi}{7}\PYG{o}{,}\PYG{l+m+mi}{8}\PYG{o}{,}\PYG{l+m+mi}{9}\PYG{o}{]}\PYG{o}{]}
 \end{sphinxVerbatim}
@@ -5525,31 +5565,190 @@ All that remains is to provide the requisite proofs that
 append and nil satisfy the \sphinxstyleemphasis{monoid laws}. Unlike the proofs
 of identities and associativity for natural number operations,
 however, we now need to show that {[}{]} is an identity for \sphinxstyleemphasis{list}
-append. If only proof by induction worked as well for lists as
-for natural numbers! As we’ll see next, we’re in luck.
-Generalizing from Induction on ℕ
-\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}\textasciitilde{}
+append and that append is associative. If proof by induction
+worked as well for lists as for natural numbers we’d be all
+set. As we’ll see next, we’re in luck.
+
+
+\subsection{Induction Axioms}
+\label{\detokenize{A_03_Recursive_Types:induction-axioms}}
+\sphinxAtStartPar
+In this chapter, we will meet the idea that there is
+an induction axiom for \sphinxstyleemphasis{every} inductive definition.
+We’ll start by showing that our reasoning about 0
+being an identity for nat.add extends directly to
+showing that {[}{]} is an identity (left and right) for
+list.append. We’ll then discuss the general case.
+
+
+\subsubsection{Theorem: {[}{]} list append identity}
+\label{\detokenize{A_03_Recursive_Types:theorem-list-append-identity}}
+\sphinxAtStartPar
+Our overall aim is to show that ⟨list α, {[}{]}, ++⟩ is
+a monoid. Then we’ll be able to use foldr to extend
+++ to an operation that will append any number of
+lists as long as they are themselves arranged in a
+list of lists.
 
 \sphinxAtStartPar
-Our next task is to construct a \sphinxstyleemphasis{cerified} monoid over
-lists of values of any type with append as the \sphinxstyleemphasis{add}
-operator and \sphinxstyleemphasis{list.nil} ({[}{]}) as the identity. Once again
-we’ll have to show \sphinxstyleemphasis{{[}{]}} is both a left and right identity
-for append, where one proof is by the definition of append
-and the other is by induction. We’ll also need a proof
-that \sphinxstyleemphasis{list.append} is associative: {\color{red}\bfseries{}*}∀ (l m n : list α),
-(l ++ m) ++ n = l ++ (m ++ n).
+We therefore need to show that {[}{]} is an identity on
+the left and right for append (++), and that append
+is associative. Let’s take the first theorem here:
+{[}{]} is an identity for ++.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} To be proved}
+\PYG{k+kd}{theorem} \PYG{n}{nil\PYGZus{}identity\PYGZus{}append\PYGZus{}list} \PYG{o}{\PYGZob{}}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type} \PYG{n}{u}\PYG{o}{\PYGZcb{}}\PYG{o}{:}
+  \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{l} \PYG{o}{:} \PYG{n}{list} \PYG{n}{α}\PYG{o}{)}\PYG{o}{,}
+    \PYG{n}{list.append} \PYG{n}{list.nil} \PYG{n}{l} \PYG{n+nb+bp}{=} \PYG{n}{l} \PYG{n+nb+bp}{∧}
+    \PYG{n}{list.append} \PYG{n}{l} \PYG{n}{list.nil} \PYG{n+nb+bp}{=} \PYG{n}{l} \PYG{o}{:=} \PYG{g+gr}{sorry}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Here again is the definition list.append (++).}
+\PYG{k}{\PYGZsh{}check} \PYG{n+nb+bp}{@}\PYG{n}{list.append}
+\PYG{c}{/\PYGZhy{}}
+\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{p}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{α}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{α}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{α}
+\PYG{c+cm}{|}\PYG{c+cm}{ }\PYG{c+cm}{[}\PYG{c+cm}{]}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{=}\PYG{c+cm}{ }\PYG{c+cm}{l}
+\PYG{c+cm}{|}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{h}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{=}\PYG{c+cm}{ }\PYG{c+cm}{h}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{a}\PYG{c+cm}{p}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{)}
+\PYG{c+cm}{\PYGZhy{}/}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+By definition, list.nil is a left identity, but as
+with nat.add, there’s no rule telling us that {[}{]} is
+a right identity. It thus appears (and is the case)
+that we will have to prove that {[}{]} is an identity on
+the right by induction.
+
+\sphinxAtStartPar
+Let’s think about what the induction will look like.
+It will be induction on the left argument to append.
+First we’ll need a proof that {[}{]} is a right identity
+for {[}{]} on the left. Then we’ll need to show that \sphinxstyleemphasis{if}
+for any list, l’ on the left, {[}{]} is a right identity
+for l’ then it’s a right identity for any one\sphinxhyphen{}larger
+list. Such a one\sphinxhyphen{}larger list can be any list, hd::l’,
+where hd could be any element of type α.
+
+\sphinxAtStartPar
+Let’s start with a bottom\sphinxhyphen{}up approach. We’ll begin
+by formally defining the \sphinxstyleemphasis{property} of lists that
+we want to show is universal, that {[}{]} is a right
+identity for any list, l.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k+kd}{def} \PYG{n}{list\PYGZus{}nil\PYGZus{}right\PYGZus{}ident\PYGZus{}for} \PYG{o}{\PYGZob{}}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type} \PYG{n}{u}\PYG{o}{\PYGZcb{}} \PYG{o}{(}\PYG{n}{l} \PYG{o}{:} \PYG{n}{list} \PYG{n}{α}\PYG{o}{)} \PYG{o}{:=}
+  \PYG{n}{list.append} \PYG{n}{l} \PYG{o}{[}\PYG{o}{]} \PYG{n+nb+bp}{=} \PYG{n}{l}
+
+
+\PYG{k+kd}{lemma} \PYG{n}{list\PYGZus{}base} \PYG{o}{\PYGZob{}}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type} \PYG{n}{u}\PYG{o}{\PYGZcb{}} \PYG{o}{:}
+  \PYG{n}{list\PYGZus{}nil\PYGZus{}right\PYGZus{}ident\PYGZus{}for} \PYG{o}{(}\PYG{o}{[}\PYG{o}{]} \PYG{o}{:} \PYG{n}{list} \PYG{n}{α}\PYG{o}{)} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} unfold list\PYGZus{}nil\PYGZus{}right\PYGZus{}ident\PYGZus{}for,}
+\PYG{n}{exact} \PYG{n}{rfl}\PYG{o}{,}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} Lean unfolds name automatically here}
+\PYG{k+kd}{end}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Now let\PYGZsq{}s prove a step lemma.}
+\PYG{k}{\PYGZsh{}check} \PYG{n+nb+bp}{@}\PYG{n}{list.rec\PYGZus{}on}
+
+\PYG{k+kd}{lemma} \PYG{n}{list\PYGZus{}step} \PYG{o}{\PYGZob{}}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type} \PYG{n}{u}\PYG{o}{\PYGZcb{}} \PYG{o}{:}
+  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} given any new head element, hd}
+  \PYG{o}{(}\PYG{n+nb+bp}{Π} \PYG{o}{(}\PYG{n}{hd} \PYG{o}{:} \PYG{n}{α}\PYG{o}{)}
+  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} and any existing list, l\PYGZsq{}}
+     \PYG{o}{(}\PYG{n}{l\PYGZsq{}} \PYG{o}{:} \PYG{n}{list} \PYG{n}{α}\PYG{o}{)}\PYG{o}{,}
+  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} if [] is a right identity for l\PYGZsq{}}
+     \PYG{n}{list\PYGZus{}nil\PYGZus{}right\PYGZus{}ident\PYGZus{}for} \PYG{n}{l\PYGZsq{}} \PYG{n+nb+bp}{→}
+  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} then it\PYGZsq{}s a right identity for one\PYGZhy{}bigger list}
+     \PYG{n}{list\PYGZus{}nil\PYGZus{}right\PYGZus{}ident\PYGZus{}for} \PYG{o}{(}\PYG{n}{hd} \PYG{o}{:}\PYG{o}{:} \PYG{n}{l\PYGZsq{}}\PYG{o}{)}\PYG{o}{)} \PYG{o}{:=}
+\PYG{k+kd}{begin}
+\PYG{n}{unfold} \PYG{n}{list\PYGZus{}nil\PYGZus{}right\PYGZus{}ident\PYGZus{}for}\PYG{o}{,}
+\PYG{k}{assume} \PYG{n}{hd} \PYG{n}{l\PYGZsq{}} \PYG{n}{ih}\PYG{o}{,}
+\PYG{n}{simp} \PYG{o}{[}\PYG{n}{list.append}\PYG{o}{]}\PYG{o}{,} \PYG{c+c1}{\PYGZhy{}\PYGZhy{} simplify using second rule of append}
+\PYG{n}{assumption}\PYG{o}{,}         \PYG{c+c1}{\PYGZhy{}\PYGZhy{} the induction hypothesis finishes it off QED}
+\PYG{k+kd}{end}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Now we build a recursive function to return proof for any l}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{list\PYGZus{}base}
+
+\PYG{k+kd}{def} \PYG{n}{nil\PYGZus{}right\PYGZus{}ident\PYGZus{}append\PYGZus{}list\PYGZsq{}} \PYG{o}{\PYGZob{}}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{\PYGZcb{}} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{l\PYGZsq{}} \PYG{o}{:} \PYG{n}{list} \PYG{n}{α}\PYG{o}{)}\PYG{o}{,} \PYG{n}{list.append} \PYG{n}{l\PYGZsq{}} \PYG{o}{[}\PYG{o}{]} \PYG{n+nb+bp}{=} \PYG{n}{l\PYGZsq{}}
+\PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{list.nil}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{list\PYGZus{}base}
+\PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{h}\PYG{o}{:}\PYG{o}{:}\PYG{n}{t}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{list\PYGZus{}step} \PYG{n}{h} \PYG{n}{t} \PYG{o}{(}\PYG{n}{nil\PYGZus{}right\PYGZus{}ident\PYGZus{}append\PYGZus{}list\PYGZsq{}} \PYG{n}{t}\PYG{o}{)}
+\end{sphinxVerbatim}
+
+
+\subsubsection{Induction Axiom for Lists}
+\label{\detokenize{A_03_Recursive_Types:induction-axiom-for-lists}}
+\sphinxAtStartPar
+We see again that there’s nothing myseterious about proof by induction.
+If we have base values/proofs and step functions to build next\sphinxhyphen{}bigger
+ones, and we can have a function that (using recursion on these elements)
+computes a value/proof for any given input value, and thus for all values
+of the input type.
+
+\sphinxAtStartPar
+Proof by induction is done by functions that compute results using
+recursion on given base values and step functions.  Every inductive
+axiom can be understood as a proof of universal generalization that
+asserts that every value of some input type has a corresponging result
+value of type. These return values can be proofs of properties or they
+can be function return values of any type.
+
+\sphinxAtStartPar
+Let’s look at and compare and contrast the induction axioms (they’re
+just higher order functions!) for the nat and list α types. We’ll then
+show how the same ideas developed in the last example apply directly
+as well to induction on list values.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k}{\PYGZsh{}check} \PYG{n+nb+bp}{@}\PYG{n}{list.rec\PYGZus{}on}
+\PYG{c}{/\PYGZhy{}}
+\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{.}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{\PYGZus{}}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{:}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{Π}\PYG{c+cm}{ }\PYG{c+cm}{\PYGZob{}}\PYG{c+cm}{m}\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{ℕ}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{S}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{u}\PYG{c+cm}{\PYGZus{}}\PYG{c+cm}{1}\PYG{c+cm}{\PYGZcb{}}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{v}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{u}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{ℕ}\PYG{c+cm}{)}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{p}\PYG{c+cm}{u}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{g}\PYG{c+cm}{u}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{v}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{u}\PYG{c+cm}{e}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{m}\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{0}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{s}\PYG{c+cm}{w}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{e}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{Π}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{ℕ}\PYG{c+cm}{)}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{e}\PYG{c+cm}{p}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{h}\PYG{c+cm}{i}\PYG{c+cm}{g}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{!}\PYG{c+cm}{)}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{m}\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{ }\PYG{c+cm}{→}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{m}\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{.}\PYG{c+cm}{s}\PYG{c+cm}{u}\PYG{c+cm}{c}\PYG{c+cm}{c}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{→}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{m}\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{v}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{u}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{s}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}
+\PYG{c+cm}{\PYGZhy{}/}
+
+\PYG{k}{\PYGZsh{}check} \PYG{n+nb+bp}{@}\PYG{n}{list.rec\PYGZus{}on}
+\PYG{c}{/\PYGZhy{}}
+\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{.}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{\PYGZus{}}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{:}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{Π}\PYG{c+cm}{ }\PYG{c+cm}{\PYGZob{}}\PYG{c+cm}{T}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{T}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{u}\PYG{c+cm}{\PYGZus{}}\PYG{c+cm}{2}\PYG{c+cm}{\PYGZcb{}}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZob{}}\PYG{c+cm}{m}\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{T}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{S}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{u}\PYG{c+cm}{\PYGZus{}}\PYG{c+cm}{1}\PYG{c+cm}{\PYGZcb{}}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{y}\PYG{c+cm}{p}\PYG{c+cm}{e}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{T}\PYG{c+cm}{)}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{p}\PYG{c+cm}{u}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{r}\PYG{c+cm}{g}\PYG{c+cm}{u}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{v}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{u}\PYG{c+cm}{e}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{m}\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{.}\PYG{c+cm}{n}\PYG{c+cm}{i}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{o}\PYG{c+cm}{o}\PYG{c+cm}{f}\PYG{c+cm}{/}\PYG{c+cm}{v}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{u}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{c}\PYG{c+cm}{a}\PYG{c+cm}{s}\PYG{c+cm}{e}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{Π}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{h}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{T}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{e}\PYG{c+cm}{p}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{c}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{u}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{a}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{t}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{t}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{T}\PYG{c+cm}{)}\PYG{c+cm}{,}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{m}\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{→}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{m}\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{h}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{l}\PYG{c+cm}{)}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{→}
+\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{m}\PYG{c+cm}{o}\PYG{c+cm}{t}\PYG{c+cm}{i}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{\PYGZhy{}}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{t}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{v}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{u}\PYG{c+cm}{e}\PYG{c+cm}{,}\PYG{c+cm}{ }\PYG{c+cm}{b}\PYG{c+cm}{y}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{c}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{s}\PYG{c+cm}{i}\PYG{c+cm}{o}\PYG{c+cm}{n}
+
+
+\PYG{c+cm}{Q}\PYG{c+cm}{U}\PYG{c+cm}{E}\PYG{c+cm}{S}\PYG{c+cm}{T}\PYG{c+cm}{I}\PYG{c+cm}{O}\PYG{c+cm}{N}\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{W}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{e}\PYG{c+cm}{w}\PYG{c+cm}{ }\PYG{c+cm}{e}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{m}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{p}\PYG{c+cm}{r}\PYG{c+cm}{e}\PYG{c+cm}{s}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{u}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{s}
+\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{n}\PYG{c+cm}{\PYGZsq{}}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{v}\PYG{c+cm}{o}\PYG{c+cm}{l}\PYG{c+cm}{v}\PYG{c+cm}{e}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{i}\PYG{c+cm}{n}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{h}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{r}\PYG{c+cm}{u}\PYG{c+cm}{l}\PYG{c+cm}{e}\PYG{c+cm}{ }\PYG{c+cm}{f}\PYG{c+cm}{o}\PYG{c+cm}{r}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{a}\PYG{c+cm}{t}\PYG{c+cm}{u}\PYG{c+cm}{r}\PYG{c+cm}{a}\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{n}\PYG{c+cm}{u}\PYG{c+cm}{m}\PYG{c+cm}{b}\PYG{c+cm}{e}\PYG{c+cm}{r}\PYG{c+cm}{s}\PYG{c+cm}{?}
+\end{sphinxVerbatim}
+
+\sphinxAtStartPar
+Once again we’ll have to show \sphinxstyleemphasis{{[}{]}} is both a left and
+right identity for append, where one proof is by the
+definition of append and the other is by induction. We’ll
+also need a proof that \sphinxstyleemphasis{list.append} is associative:
+{\color{red}\bfseries{}*}∀ (l m n : list α), (l ++ m) ++ n = l ++ (m ++ n).
 
 \sphinxAtStartPar
 Here’s the definition of list.append.
 You can see it defines {[}{]} as a left identity for any list.
 
-\sphinxAtStartPar
-def append : list α → list α → list α
-| {[}{]}       l := l
-| (h :: s) t := h :: (append s t)
-
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c}{/\PYGZhy{}}
+\PYG{c+cm}{d}\PYG{c+cm}{e}\PYG{c+cm}{f}\PYG{c+cm}{ }\PYG{c+cm}{a}\PYG{c+cm}{p}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{α}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{α}\PYG{c+cm}{ }\PYG{c+cm}{→}\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{i}\PYG{c+cm}{s}\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{α}
+\PYG{c+cm}{|}\PYG{c+cm}{ }\PYG{c+cm}{[}\PYG{c+cm}{]}\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{ }\PYG{c+cm}{l}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{=}\PYG{c+cm}{ }\PYG{c+cm}{l}
+\PYG{c+cm}{|}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{h}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{)}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{=}\PYG{c+cm}{ }\PYG{c+cm}{h}\PYG{c+cm}{ }\PYG{c+cm}{:}\PYG{c+cm}{:}\PYG{c+cm}{ }\PYG{c+cm}{(}\PYG{c+cm}{a}\PYG{c+cm}{p}\PYG{c+cm}{p}\PYG{c+cm}{e}\PYG{c+cm}{n}\PYG{c+cm}{d}\PYG{c+cm}{ }\PYG{c+cm}{s}\PYG{c+cm}{ }\PYG{c+cm}{t}\PYG{c+cm}{)}
+\PYG{c+cm}{\PYGZhy{}/}
+
+
 \PYG{k+kd}{theorem} \PYG{n}{nil\PYGZus{}left\PYGZus{}ident\PYGZus{}append\PYGZus{}list} \PYG{o}{(}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{)} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{l} \PYG{o}{:} \PYG{n}{list} \PYG{n}{α}\PYG{o}{)}\PYG{o}{,} \PYG{n}{list.nil} \PYG{n+nb+bp}{+}\PYG{n+nb+bp}{+} \PYG{n}{l} \PYG{n+nb+bp}{=} \PYG{n}{l} \PYG{o}{:=}
 \PYG{k+kd}{begin}
 \PYG{k}{assume} \PYG{n}{l}\PYG{o}{,}
@@ -5570,15 +5769,6 @@ we can rewrite nil ++ h::t as h::(nil ++ t), where we can
 obtain (and then us) a proof that nil ++ t = t by recursion,
 terminating when t =nil.
 
-\sphinxAtStartPar
-Fortunately, Lean’s library already contains a proof that
-nil is a right identity, and it’s annotated as \sphinxstyleemphasis{{[}simp{]}},
-which means that the \sphinxstyleemphasis{simp} tactic will try to use it to
-prove our goal. In other words, we can use {[}simp{]} to prove
-the harder case precisely because someone else has already
-done the work for us; and they did it recursively just as
-we did to show that 0 is a right identity for addition.
-
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k+kd}{def} \PYG{n}{nil\PYGZus{}right\PYGZus{}ident\PYGZus{}append} \PYG{o}{(}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{)} \PYG{o}{:}
   \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{l} \PYG{o}{:} \PYG{n}{list} \PYG{n}{α}\PYG{o}{)}\PYG{o}{,} \PYG{n}{l} \PYG{n+nb+bp}{+}\PYG{n+nb+bp}{+} \PYG{o}{[}\PYG{o}{]} \PYG{n+nb+bp}{=} \PYG{n}{l} \PYG{o}{:=}
@@ -5588,18 +5778,7 @@ we did to show that 0 is a right identity for addition.
 \PYG{n}{simp} \PYG{o}{[}\PYG{n}{list.append}\PYG{o}{]}\PYG{o}{,}
 \PYG{n}{simp}\PYG{o}{,}
 \PYG{k+kd}{end}
-
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Here\PYGZsq{}s another formal demonstration of the same point}
-\PYG{k+kd}{variables} \PYG{o}{(}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{)} \PYG{o}{(}\PYG{n}{a} \PYG{o}{:} \PYG{n}{α}\PYG{o}{)} \PYG{o}{(}\PYG{n}{l} \PYG{o}{:} \PYG{n}{list} \PYG{n}{α}\PYG{o}{)}
-\PYG{k+kd}{example}\PYG{o}{:} \PYG{n}{list.nil} \PYG{n+nb+bp}{+}\PYG{n+nb+bp}{+} \PYG{n}{l} \PYG{n+nb+bp}{=} \PYG{n}{l} \PYG{o}{:=} \PYG{k+kd}{by} \PYG{n}{simp}    \PYG{c+c1}{\PYGZhy{}\PYGZhy{} first rule}
-\PYG{k+kd}{example} \PYG{o}{:} \PYG{n}{l} \PYG{n+nb+bp}{+}\PYG{n+nb+bp}{+} \PYG{n}{list.nil}  \PYG{n+nb+bp}{=} \PYG{n}{l} \PYG{o}{:=} \PYG{k+kd}{by} \PYG{n}{simp}  \PYG{c+c1}{\PYGZhy{}\PYGZhy{} by [simp] lemma in Lean library}
 \end{sphinxVerbatim}
-
-
-\subsection{Induction Axioms}
-\label{\detokenize{A_03_Recursive_Types:id15}}
-\sphinxAtStartPar
-YOU MAY STOP READING HERE. THE REMAINDER IS STILL \sphinxstyleemphasis{UNDER CONSTRUCTION.}
 
 
 \subsection{Inductive Families}

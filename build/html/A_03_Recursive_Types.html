@@ -98,12 +98,19 @@
 <li class="toctree-l3"><a class="reference internal" href="#the-idea-by-example">4.5.1. The Idea by Example</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#the-problem">4.5.1.1. The Problem</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#a-solution">4.5.1.2. A Solution</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#induction-axioms">4.5.1.3. Induction Axioms</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#examples">4.5.1.4. Examples</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#monoids-and-foldr">4.5.1.5. Monoids and Foldr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#summary-proof-by-induction">4.5.1.3. Summary: Proof by Induction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#theorem-0-is-identity-for">4.5.1.4. Theorem: 0 is identity for &#10216;&#8469;, +&#10217;</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#induction-axiom-for">4.5.1.5. Induction Axiom for &#8469;</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#theorem-1-is-identity-for">4.5.1.6. Theorem: 1 is identity for &#10216;&#8469;, *&#10217;</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#theorems-and-on-are-associative">4.5.1.7. Theorems: + and * on &#8469; are associative</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#monoids-and-foldr">4.5.1.8. Monoids and Foldr</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id15">4.5.2. Induction Axioms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#induction-axioms">4.5.2. Induction Axioms</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#theorem-list-append-identity">4.5.2.1. Theorem: [] list append identity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#induction-axiom-for-lists">4.5.2.2. Induction Axiom for Lists</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#inductive-families">4.5.3. Inductive Families</a></li>
 </ul>
 </li>
@@ -1431,7 +1438,7 @@ every natural number.</p>
 <em>0 + a = a</em>. Our goal will then be to show that
 <em>&#8704; (a : &#8469;), P a.</em></p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20The%20property%20we%20want%20to%20prove%20is%20universal%0Adef%20P%20(a%20%3A%20%E2%84%95)%20%3A%20Prop%20%3A%3D%20nat.add%20nat.zero%20a%20%3D%20a%0A%0A%23check%20P%20%20%20%20%20%20--%20nat%20%E2%86%92%20Prop%20%20%20--%20property%2Fpredicate" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_142.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20The%20property%20we%20want%20to%20prove%20is%20universal%0Adef%20P%20(a%20%3A%20%E2%84%95)%20%3A%20Prop%20%3A%3D%20nat.add%20nat.zero%20a%20%3D%20a%0A%0A%23check%20P%20%20%20%20%20%20--%20nat%20%E2%86%92%20Prop%20%20%20--%20property%2Fpredicate" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_143.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- The property we want to prove is universal</span>
 <span class="kd">def</span> <span class="n">P</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="n">&#8469;</span><span class="o">)</span> <span class="o">:</span> <span class="kt">Prop</span> <span class="o">:=</span> <span class="n">nat.add</span> <span class="n">nat.zero</span> <span class="n">a</span> <span class="bp">=</span> <span class="n">a</span>
 
@@ -1446,7 +1453,7 @@ use the first axiom/rule of addition. (Yes, we
 can use rfl instead, but we&#8217;re interested to see
 a general approach.)</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=theorem%20p0%20%3A%20P%200%20%3A%3D%0Abegin%0Aunfold%20P%2C%20%20%20%20%20%20%20%20%20--%20expand%20definition%20of%20P%0Asimp%20%5Bnat.add%5D%2C%20%20%20%20%20%20%20%20--%20rfl%20to%20finish%20off%20proof%0A%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_158.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=theorem%20p0%20%3A%20P%200%20%3A%3D%0Abegin%0Aunfold%20P%2C%20%20%20%20%20%20%20%20%20--%20expand%20definition%20of%20P%0Asimp%20%5Bnat.add%5D%2C%20%20%20%20%20%20%20%20--%20rfl%20to%20finish%20off%20proof%0A%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_159.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">theorem</span> <span class="n">p0</span> <span class="o">:</span> <span class="n">P</span> <span class="mi">0</span> <span class="o">:=</span>
 <span class="kd">begin</span>
 <span class="n">unfold</span> <span class="n">P</span><span class="o">,</span>         <span class="c1">-- expand definition of P</span>
@@ -1460,7 +1467,7 @@ next ask the question, from the value, 0, and our
 proof of (P 0), can we construct a proof of (P 1)?
 In fact we can.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=theorem%20p1%20%3A%20P%201%20%3A%3D%0Abegin%0Aunfold%20P%2C%0Ahave%20ih%20%3A%3D%20p0%2C%0Aunfold%20P%20at%20ih%2C%0Ashow%20nat.succ%20(nat.add%20nat.zero%20nat.zero)%20%3D%201%2C%20--%20first%20rule%20of%20add%0Arw%20ih%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_172.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=theorem%20p1%20%3A%20P%201%20%3A%3D%0Abegin%0Aunfold%20P%2C%0Ahave%20ih%20%3A%3D%20p0%2C%0Aunfold%20P%20at%20ih%2C%0Ashow%20nat.succ%20(nat.add%20nat.zero%20nat.zero)%20%3D%201%2C%20--%20first%20rule%20of%20add%0Arw%20ih%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_173.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">theorem</span> <span class="n">p1</span> <span class="o">:</span> <span class="n">P</span> <span class="mi">1</span> <span class="o">:=</span>
 <span class="kd">begin</span>
 <span class="n">unfold</span> <span class="n">P</span><span class="o">,</span>
@@ -1483,7 +1490,7 @@ polish off the proof.</p>
 for one! So from a proof of P 1, can we now build
 a proof of P 2? Yes, we can!</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=theorem%20p2%20%3A%20P%202%20%20%3A%3D%0Abegin%0Aunfold%20P%2C%0Ahave%20ih%20%3A%3D%20p1%2C%0Ashow%201%20%2B%20(0%20%2B%201)%20%3D%202%2C%20--%20second%20rule%20of%20add%0Aunfold%20P%20at%20ih%2C%20%20%20%20%20%20%20--%20use%20ih%2C%20Lean%20automation%0Aend%0A%0Atheorem%20p3%20%3A%20P%203%20%20%3A%3D%0Abegin%0Aunfold%20P%2C%0Ahave%20ih%20%3A%3D%20p2%2C%20%20%20%20--%20just%20for%20clarity%0Ashow%201%20%2B%20(0%20%2B%202)%20%3D%203%2C%0Aunfold%20P%20at%20ih%2C%0Aend%0A%0Atheorem%20p4%20%3A%20P%204%20%20%3A%3D%0Abegin%0Ahave%20ih%20%3A%3D%20p3%2C%20%20%20%20--%20just%20for%20clarity%0Ashow%201%20%2B%20(0%20%2B%203)%20%3D%204%2C%0Aunfold%20P%20at%20ih%2C%0Aend%0A%0A%2F-%20It%20looks%20like%20that%20from%20any%20nat%2C%20*a'%20%3A%20nat*%2C%0Aand%20a%20proof%20of%20*P%20a'*%20we%20can%20prove%20*P%20(a'%20%2B%201)*.%0A-%2F" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_196.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=theorem%20p2%20%3A%20P%202%20%20%3A%3D%0Abegin%0Aunfold%20P%2C%0Ahave%20ih%20%3A%3D%20p1%2C%0Ashow%201%20%2B%20(0%20%2B%201)%20%3D%202%2C%20--%20second%20rule%20of%20add%0Aunfold%20P%20at%20ih%2C%20%20%20%20%20%20%20--%20use%20ih%2C%20Lean%20automation%0Aend%0A%0Atheorem%20p3%20%3A%20P%203%20%20%3A%3D%0Abegin%0Aunfold%20P%2C%0Ahave%20ih%20%3A%3D%20p2%2C%20%20%20%20--%20just%20for%20clarity%0Ashow%201%20%2B%20(0%20%2B%202)%20%3D%203%2C%0Aunfold%20P%20at%20ih%2C%0Aend%0A%0Atheorem%20p4%20%3A%20P%204%20%20%3A%3D%0Abegin%0Ahave%20ih%20%3A%3D%20p3%2C%20%20%20%20--%20just%20for%20clarity%0Ashow%201%20%2B%20(0%20%2B%203)%20%3D%204%2C%0Aunfold%20P%20at%20ih%2C%0Aend%0A%0A%2F-%20It%20looks%20like%20that%20from%20any%20nat%2C%20*a'%20%3A%20nat*%2C%0Aand%20a%20proof%20of%20*P%20a'*%20we%20can%20prove%20*P%20(a'%20%2B%201)*.%0A-%2F" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_197.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">theorem</span> <span class="n">p2</span> <span class="o">:</span> <span class="n">P</span> <span class="mi">2</span>  <span class="o">:=</span>
 <span class="kd">begin</span>
 <span class="n">unfold</span> <span class="n">P</span><span class="o">,</span>
@@ -1518,7 +1525,7 @@ idea that we can *step up</em> from a proof of <em>P a&#8217;</em> to
 a proof of <em>P (a&#8217;+1)</em> for any value of <em>a&#8217;</em>?  That is,
 can we show <a href="#id7"><span class="problematic" id="id8">*</span></a>&#8704; (a&#8217; : &#8469;), P a&#8217; &#8594; P (a&#8217; + 1)? We can!</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=lemma%20step%20%3A%20%E2%88%80%20(a'%20%3A%20%E2%84%95)%2C%20P%20a'%20%E2%86%92%20P%20(a'.succ)%20%3A%3D%0Abegin%0Aassume%20a'%20ih%2C%0Aunfold%20P%20at%20ih%2C%0Aunfold%20P%2C%0A--%20some%20tedious%20rewriting%20of%20notations%20is%20needed%0A--%20Lean%20confirms%20that%20these%20rewrites%20are%20valid%0Ashow%20nat.add%200%20a'.succ%20%3D%20a'.succ%2C%0A--%20now%20this%20simplification%20works%0Asimp%20%5Bnat.add%5D%2C%0A--%20same%20problem%20again%0Ashow%200%20%2B%20a'%20%3D%20a'%2C%0A%2F-%0AWe've%20thus%20reduced%20the%20original%20goal%20to%20the%0Agoal%20of%20proving%20the%20hypothesis%20that%20we%20have%0Aalready%20assumed%20(implication%20introduction).%0A-%2F%0Aapply%20ih%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_231.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=lemma%20step%20%3A%20%E2%88%80%20(a'%20%3A%20%E2%84%95)%2C%20P%20a'%20%E2%86%92%20P%20(a'.succ)%20%3A%3D%0Abegin%0Aassume%20a'%20ih%2C%0Aunfold%20P%20at%20ih%2C%0Aunfold%20P%2C%0A--%20some%20tedious%20rewriting%20of%20notations%20is%20needed%0A--%20Lean%20confirms%20that%20these%20rewrites%20are%20valid%0Ashow%20nat.add%200%20a'.succ%20%3D%20a'.succ%2C%0A--%20now%20this%20simplification%20works%0Asimp%20%5Bnat.add%5D%2C%0A--%20same%20problem%20again%0Ashow%200%20%2B%20a'%20%3D%20a'%2C%0A%2F-%0AWe've%20thus%20reduced%20the%20original%20goal%20to%20the%0Agoal%20of%20proving%20the%20hypothesis%20that%20we%20have%0Aalready%20assumed%20(implication%20introduction).%0A-%2F%0Aapply%20ih%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_232.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">lemma</span> <span class="n">step</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">a&#39;</span> <span class="o">:</span> <span class="n">&#8469;</span><span class="o">),</span> <span class="n">P</span> <span class="n">a&#39;</span> <span class="bp">&#8594;</span> <span class="n">P</span> <span class="o">(</span><span class="n">a&#39;.succ</span><span class="o">)</span> <span class="o">:=</span>
 <span class="kd">begin</span>
 <span class="k">assume</span> <span class="n">a&#39;</span> <span class="n">ih</span><span class="o">,</span>
@@ -1552,7 +1559,7 @@ and apply <em>step a</em> times, and end up with a proof
 of <em>P a</em>. The iterative application of <em>step</em> is
 accomplished by recursion.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20formerly%20called%20pa%20(in%20class)%0Adef%20zero_left_ident_add_nat%20%3A%20%E2%88%80%20(a%20%3A%20%E2%84%95)%2C%20(nat.add%200%20a%20%3D%20a)%0A%7C%200%20%3A%3D%20p0%0A%7C%20(nat.succ%20a')%20%3A%3D%20(step%20a'%20(zero_left_ident_add_nat%20a'))" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_265.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20formerly%20called%20pa%20(in%20class)%0Adef%20zero_left_ident_add_nat%20%3A%20%E2%88%80%20(a%20%3A%20%E2%84%95)%2C%20(nat.add%200%20a%20%3D%20a)%0A%7C%200%20%3A%3D%20p0%0A%7C%20(nat.succ%20a')%20%3A%3D%20(step%20a'%20(zero_left_ident_add_nat%20a'))" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_266.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- formerly called pa (in class)</span>
 <span class="kd">def</span> <span class="n">zero_left_ident_add_nat</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="n">&#8469;</span><span class="o">),</span> <span class="o">(</span><span class="n">nat.add</span> <span class="mi">0</span> <span class="n">a</span> <span class="bp">=</span> <span class="n">a</span><span class="o">)</span>
 <span class="bp">|</span> <span class="mi">0</span> <span class="o">:=</span> <span class="n">p0</span>
@@ -1564,7 +1571,7 @@ It&#8217;s a universal generalization, so we can apply it to any
 specific value of <em>a</em> to get a proof that zero is a left
 identity for that particular <em>a</em>.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23reduce%20zero_left_ident_add_nat%200%0A%23reduce%20zero_left_ident_add_nat%201%0A%23reduce%20zero_left_ident_add_nat%202%0A%23reduce%20zero_left_ident_add_nat%203" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_277.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23reduce%20zero_left_ident_add_nat%200%0A%23reduce%20zero_left_ident_add_nat%201%0A%23reduce%20zero_left_ident_add_nat%202%0A%23reduce%20zero_left_ident_add_nat%203" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_278.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#reduce</span> <span class="n">zero_left_ident_add_nat</span> <span class="mi">0</span>
 <span class="k">#reduce</span> <span class="n">zero_left_ident_add_nat</span> <span class="mi">1</span>
 <span class="k">#reduce</span> <span class="n">zero_left_ident_add_nat</span> <span class="mi">2</span>
@@ -1582,9 +1589,10 @@ larger value of <em>a</em> build on and incorporate proofs of
 a proof of <em>P 0</em>. We thus construct proofs of <em>P a</em> for
 any <em>a</em> inductively, just as we define the natural numbers
 themselves inductively. This method is called <em>proof by
-induction</em>.
-Summary: Proof by Induction
-~~~~~~~~~~~~~~~~~~~~~~~~~~~</p>
+induction</em>.</p>
+</section>
+<section id="summary-proof-by-induction">
+<h4><span class="section-number">4.5.1.3. </span>Summary: Proof by Induction<a class="headerlink" href="#summary-proof-by-induction" title="Permalink to this heading">&#61633;</a></h4>
 <p>Let&#8217;s pull the pieces of this story together. We started by
 specifying a property, <em>P a := 0 + a = 0</em>, of natural numbers.
 Then we then proved that <em>every</em> natural number, <em>a</em>, has this
@@ -1598,7 +1606,7 @@ a procedure that uses both of them.</p>
 </ul>
 <p>For our particular definition of <em>P a</em> at least, we&#8217;ve thus proved this:</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=*%E2%88%80%20(a%20%3A%20%E2%84%95)%2C%0A%20%20P%200%20%E2%86%92%0A%20%20(%E2%88%80%20(a'%20%3A%20%E2%84%95)%2C%20P%20a'%20%E2%86%92%20P%20(a'%20%2B%201))%20%E2%86%92%0A%20%20P%20a*" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_312.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=*%E2%88%80%20(a%20%3A%20%E2%84%95)%2C%0A%20%20P%200%20%E2%86%92%0A%20%20(%E2%88%80%20(a'%20%3A%20%E2%84%95)%2C%20P%20a'%20%E2%86%92%20P%20(a'%20%2B%201))%20%E2%86%92%0A%20%20P%20a*" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_314.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="bp">*&#8704;</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="n">&#8469;</span><span class="o">),</span>
   <span class="n">P</span> <span class="mi">0</span> <span class="bp">&#8594;</span>
   <span class="o">(</span><span class="bp">&#8704;</span> <span class="o">(</span><span class="n">a&#39;</span> <span class="o">:</span> <span class="n">&#8469;</span><span class="o">),</span> <span class="n">P</span> <span class="n">a&#39;</span> <span class="bp">&#8594;</span> <span class="n">P</span> <span class="o">(</span><span class="n">a&#39;</span> <span class="bp">+</span> <span class="mi">1</span><span class="o">))</span> <span class="bp">&#8594;</span>
@@ -1614,11 +1622,38 @@ constructed in this way have recursive structures.</p>
 <p>At this point we&#8217;ve proved that zero is both a left and a
 right identity for the natural numbers. We can thus say that
 zero is an additive identity (on the left and right) for the
-natural numbers.
-Theorem: 0 is identity for &#10216;&#8469;, +&#10217;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</p>
+natural numbers.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20We%20now%20have%20that%20zero%20is%20an%20*additive%20identity%20for%20%E2%84%95*%0A%23check%20zero_left_ident_add_nat%0A%23check%20zero_right_ident_add_nat%0A%0Atheorem%20zero_ident_add_nat%20%3A%0A%20%20%E2%88%80%20(a%20%3A%20%E2%84%95)%2C%0A%20%20%20%20nat.add%20nat.zero%20a%20%3D%20a%20%E2%88%A7%0A%20%20%20%20nat.add%20a%20nat.zero%20%3D%20a%20%3A%3D%0Abegin%0Aintro%20a%2C%0Asplit%2C%0Aapply%20(zero_left_ident_add_nat%20a)%2C%0Aapply%20(zero_right_ident_add_nat%20a)%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_331.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20%40nat.rec_on%0A%0A%0Adef%20base_fac%20%3A%3D%201%0A%0Adef%20step_fac%20%3A%20nat%20%E2%86%92%20nat%20%E2%86%92%20nat%0A%7C%20n'%20fac_n'%20%3A%3D%20(n'%20%2B%201)%20*%20fac_n'%0A%0Adef%20fac%20(n%20%3A%20nat)%20%3A%20nat%20%3A%3D%0Abegin%0Aapply%20nat.rec_on%20n%2C%0Aexact%20base_fac%2C%0Aexact%20step_fac%2C%0Aend%0A%0Adef%20fac'%20%3A%20%E2%84%95%20%E2%86%92%20%E2%84%95%0A%7C%200%20%3A%3D%201%0A%7C%20(nat.succ%20n')%20%3A%3D%20(nat.succ%20n')%20*%20fac'%20n'%0A%0A%23eval%20fac'%205%0A%0A%23eval%20fac%205" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_331.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="bp">@</span><span class="n">nat.rec_on</span>
+
+
+<span class="kd">def</span> <span class="n">base_fac</span> <span class="o">:=</span> <span class="mi">1</span>
+
+<span class="kd">def</span> <span class="n">step_fac</span> <span class="o">:</span> <span class="n">nat</span> <span class="bp">&#8594;</span> <span class="n">nat</span> <span class="bp">&#8594;</span> <span class="n">nat</span>
+<span class="bp">|</span> <span class="n">n&#39;</span> <span class="n">fac_n&#39;</span> <span class="o">:=</span> <span class="o">(</span><span class="n">n&#39;</span> <span class="bp">+</span> <span class="mi">1</span><span class="o">)</span> <span class="bp">*</span> <span class="n">fac_n&#39;</span>
+
+<span class="kd">def</span> <span class="n">fac</span> <span class="o">(</span><span class="n">n</span> <span class="o">:</span> <span class="n">nat</span><span class="o">)</span> <span class="o">:</span> <span class="n">nat</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="n">apply</span> <span class="n">nat.rec_on</span> <span class="n">n</span><span class="o">,</span>
+<span class="n">exact</span> <span class="n">base_fac</span><span class="o">,</span>
+<span class="n">exact</span> <span class="n">step_fac</span><span class="o">,</span>
+<span class="kd">end</span>
+
+<span class="kd">def</span> <span class="n">fac&#39;</span> <span class="o">:</span> <span class="n">&#8469;</span> <span class="bp">&#8594;</span> <span class="n">&#8469;</span>
+<span class="bp">|</span> <span class="mi">0</span> <span class="o">:=</span> <span class="mi">1</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">nat.succ</span> <span class="n">n&#39;</span><span class="o">)</span> <span class="o">:=</span> <span class="o">(</span><span class="n">nat.succ</span> <span class="n">n&#39;</span><span class="o">)</span> <span class="bp">*</span> <span class="n">fac&#39;</span> <span class="n">n&#39;</span>
+
+<span class="k">#eval</span> <span class="n">fac&#39;</span> <span class="mi">5</span>
+
+<span class="k">#eval</span> <span class="n">fac</span> <span class="mi">5</span>
+</pre></div>
+</div>
+</div></section>
+<section id="theorem-0-is-identity-for">
+<h4><span class="section-number">4.5.1.4. </span>Theorem: 0 is identity for &#10216;&#8469;, +&#10217;<a class="headerlink" href="#theorem-0-is-identity-for" title="Permalink to this heading">&#61633;</a></h4>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20We%20now%20have%20that%20zero%20is%20an%20*additive%20identity%20for%20%E2%84%95*%0A%23check%20zero_left_ident_add_nat%0A%23check%20zero_right_ident_add_nat%0A%0Atheorem%20zero_ident_add_nat%20%3A%0A%20%20%E2%88%80%20(a%20%3A%20%E2%84%95)%2C%0A%20%20%20%20nat.add%20nat.zero%20a%20%3D%20a%20%E2%88%A7%0A%20%20%20%20nat.add%20a%20nat.zero%20%3D%20a%20%3A%3D%0Abegin%0Aintro%20a%2C%0Asplit%2C%0Aapply%20(zero_left_ident_add_nat%20a)%2C%0Aapply%20(zero_right_ident_add_nat%20a)%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_362.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- We now have that zero is an *additive identity for &#8469;*</span>
 <span class="k">#check</span> <span class="n">zero_left_ident_add_nat</span>
 <span class="k">#check</span> <span class="n">zero_right_ident_add_nat</span>
@@ -1661,8 +1696,8 @@ method of proof construction. It generalizes:</p>
 <li><p>a final version of foldr, extending the binary operation of any monoid to n-ary</p></li>
 </ul>
 </section>
-<section id="induction-axioms">
-<h4><span class="section-number">4.5.1.3. </span>Induction Axioms<a class="headerlink" href="#induction-axioms" title="Permalink to this heading">&#61633;</a></h4>
+<section id="induction-axiom-for">
+<h4><span class="section-number">4.5.1.5. </span>Induction Axiom for &#8469;<a class="headerlink" href="#induction-axiom-for" title="Permalink to this heading">&#61633;</a></h4>
 <p>The principle we&#8217;ve developed is available as an axiom
 generated from the definition of the nat data type. The
 name of the principle is <em>nat.rec_on</em>. Applying it to the
@@ -1674,7 +1709,7 @@ apply the axiom giving only nat value as an argument while
 leaving the proof arguments to be provided as proofs of
 subgoals.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20The%20induction%20principle%20for%20natural%20numbers.%0A%23check%20%40nat.rec_on" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_387.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20The%20induction%20principle%20for%20natural%20numbers.%0A%23check%20%40nat.rec_on" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_419.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- The induction principle for natural numbers.</span>
 <span class="k">#check</span> <span class="bp">@</span><span class="n">nat.rec_on</span>
 </pre></div>
@@ -1684,7 +1719,7 @@ induction axiom for natural numbers to construct the overall
 proof we need, leaving the smaller lemmas to be proved as
 subgoals.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=example%20%3A%20%E2%88%80%20a%2C%20P%20a%20%3A%3D%0Abegin%0Aunfold%20P%2C%0Aassume%20a%2C%0Aapply%20nat.rec_on%20a%2C%0Aexact%20rfl%2C%20%20%20%20--%20base%20case%0Aexact%20step%2C%20%20%20--%20we%20use%20already%20proven%20lemma%0Aend%0A%0A--%20You%20can%20also%20use%20Lean's%20*induction%20tactic*.%0Aexample%20%3A%20%E2%88%80%20a%2C%20P%20a%20%3A%3D%0Abegin%0Aassume%20a%2C%0Aunfold%20P%2C%0Ainduction%20a%20with%20a'%20ih%2C%20--%20applies%20axiom%0Aexact%20rfl%2C%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20base%20case%0Asimp%20%5Bnat.add%5D%2C%0Aassumption%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_397.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=example%20%3A%20%E2%88%80%20a%2C%20P%20a%20%3A%3D%0Abegin%0Aunfold%20P%2C%0Aassume%20a%2C%0Aapply%20nat.rec_on%20a%2C%0Aexact%20rfl%2C%20%20%20%20--%20base%20case%0Aexact%20step%2C%20%20%20--%20we%20use%20already%20proven%20lemma%0Aend%0A%0A--%20You%20can%20also%20use%20Lean's%20*induction%20tactic*.%0Aexample%20%3A%20%E2%88%80%20a%2C%20P%20a%20%3A%3D%0Abegin%0Aassume%20a%2C%0Aunfold%20P%2C%0Ainduction%20a%20with%20a'%20ih%2C%20--%20applies%20axiom%0Aexact%20rfl%2C%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20base%20case%0Asimp%20%5Bnat.add%5D%2C%0Aassumption%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_429.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">example</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="n">a</span><span class="o">,</span> <span class="n">P</span> <span class="n">a</span> <span class="o">:=</span>
 <span class="kd">begin</span>
 <span class="n">unfold</span> <span class="n">P</span><span class="o">,</span>
@@ -1707,15 +1742,14 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </pre></div>
 </div>
 </div></section>
-<section id="examples">
-<h4><span class="section-number">4.5.1.4. </span>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">&#61633;</a></h4>
+<section id="theorem-1-is-identity-for">
+<h4><span class="section-number">4.5.1.6. </span>Theorem: 1 is identity for &#10216;&#8469;, <a href="#id13"><span class="problematic" id="id14">*</span></a>&#10217;<a class="headerlink" href="#theorem-1-is-identity-for" title="Permalink to this heading">&#61633;</a></h4>
 <p>Here from Lean&#8217;s library is the definition
 of natural number multiplication. Your job
 is to prove that 1 is an identity (left and
-right identity) for nat multiplication. Fill
-in the missing proof.</p>
+right identity) for &#10216;&#8469;, <a href="#id15"><span class="problematic" id="id16">*</span></a>&#10217;. Fill in the missing proof.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20nat.mul%0A%2F-%0Adef%20mul%20%3A%20nat%20%E2%86%92%20nat%20%E2%86%92%20nat%0A%7C%20a%200%20%20%20%20%20%3A%3D%200%0A%7C%20a%20(b%2B1)%20%3A%3D%20(mul%20a%20b)%20%2B%20a%0A-%2F%0A%0Atheorem%20mul_one_ident_nat%20%3A%0A%20%20%20%20%E2%88%80%20(a%20%3A%20%E2%84%95)%2C%0A%20%20%20%20(nat.mul%201%20a%20%3D%20a)%20%E2%88%A7%0A%20%20%20%20(nat.mul%20a%201%20%3D%20a)%20%20%3A%3D%0Abegin%0Aassume%20a%2C%0Asplit%2C%0A%0A--%20left%20conjunct%3A%20nat.mul%201%20a%20%3D%20a%0Ainduction%20a%20with%20a'%20ih%2C%0A--%20base%20case%0Asimp%20%5Bnat.mul%5D%2C%0A--%20inductive%20case%0Asimp%20%5Bnat.mul%5D%2C%0Arw%20ih%2C%0A%0A--%20right%20conjunct%3A%20nat.mul%20a%201%20%3D%20a%0Asimp%20%5Bnat.mul%5D%2C%0Aapply%20zero_left_ident_add_nat%2C%0Aend%0A%0A%0A--%20Construct%20a%20proof%2C%20nat_add_assoc%2C%20that%20nat.add%20is%20associative.%0A--%20Construct%20a%20proof%2C%20nat_mul_assoc%2C%20that%20nat.mul%20is%20associative.%0A%0A%0Atheorem%20nat_add_assoc%20%3A%0A%20%20%E2%88%80%20(a%20b%20c)%2C%0A%20%20%20%20nat.add%20a%20(nat.add%20b%20c)%20%3D%0A%20%20%20%20nat.add%20(nat.add%20a%20b)%20c%20%3A%3D%0Abegin%0Aassume%20a%20b%20c%2C%0Ainduction%20c%20with%20c'%20ih%2C%0A%0A--%20base%20lemma%0Asimp%20%5Bnat.add%5D%2C%0A%0A--%20induction%20lemma%0Asimp%20%5Bnat.add%5D%2C%0Aassumption%2C%0Aend%0A%0A--%20Yay%2C%20that's%20really%20cool!%0A%0A--%20EXERCISE%3A%20Prove%20that%20nat.mul%20is%20associative%0A%0Atheorem%20nat_mul_assoc%20%3A%0A%20%20%E2%88%80%20(a%20b%20c%20%3A%20%E2%84%95)%2C%20nat.mul%20a%20(nat.mul%20b%20c)%20%3D%20nat.mul%20(nat.mul%20a%20b)%20c%20%3A%3D%0Abegin%0Aassume%20a%20b%20c%2C%0Ainduction%20c%20with%20c'%20ih%2C%0A--%20base%20case%0Asimp%20%5Bnat.mul%5D%2C%0A--%20inductive%20case%0Asimp%20%5Bnat.mul%5D%2C%0Arw%20%3C-%20ih%2C%0Ahave%20mul_distrib_add_nat_left%20%3A%0A%20%20%E2%88%80%20x%20y%20z%2C%0A%20%20%20%20nat.mul%20x%20(nat.add%20y%20z)%20%3D%0A%20%20%20%20nat.add%20(nat.mul%20x%20y)%20(nat.mul%20x%20z)%20%3A%3D%0A%20%20%20%20sorry%2C%0Aapply%20mul_distrib_add_nat_left%2C%0Aend%0A%0A%0Alemma%20mul_distrib_add_nat_left%20%3A%0A%20%20%E2%88%80%20x%20y%20z%2C%0A%20%20%20%20nat.mul%20x%20(nat.add%20y%20z)%20%3D%0A%20%20%20%20nat.add%20(nat.mul%20x%20y)%20(nat.mul%20x%20z)%20%3A%3D%20sorry" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_428.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20nat.mul%0A%2F-%0Adef%20mul%20%3A%20nat%20%E2%86%92%20nat%20%E2%86%92%20nat%0A%7C%20a%200%20%20%20%20%20%3A%3D%200%0A%7C%20a%20(b%2B1)%20%3A%3D%20(mul%20a%20b)%20%2B%20a%0A-%2F%0A%0Atheorem%20mul_one_ident_nat%20%3A%0A%20%20%20%20%E2%88%80%20(a%20%3A%20%E2%84%95)%2C%0A%20%20%20%20(nat.mul%201%20a%20%3D%20a)%20%E2%88%A7%0A%20%20%20%20(nat.mul%20a%201%20%3D%20a)%20%20%3A%3D%0Abegin%0Aassume%20a%2C%0Asplit%2C%0A%0A--%20left%20conjunct%3A%20nat.mul%201%20a%20%3D%20a%0Ainduction%20a%20with%20a'%20ih%2C%0A--%20base%20case%0Asimp%20%5Bnat.mul%5D%2C%0A--%20inductive%20case%0Asimp%20%5Bnat.mul%5D%2C%0Arw%20ih%2C%0A%0A--%20right%20conjunct%3A%20nat.mul%20a%201%20%3D%20a%0Asimp%20%5Bnat.mul%5D%2C%0Aapply%20zero_left_ident_add_nat%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_460.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="n">nat.mul</span>
 <span class="c">/-</span>
 <span class="cm">def mul : nat &#8594; nat &#8594; nat</span>
@@ -1743,13 +1777,17 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <span class="n">simp</span> <span class="o">[</span><span class="n">nat.mul</span><span class="o">],</span>
 <span class="n">apply</span> <span class="n">zero_left_ident_add_nat</span><span class="o">,</span>
 <span class="kd">end</span>
-
-
-<span class="c1">-- Construct a proof, nat_add_assoc, that nat.add is associative.</span>
-<span class="c1">-- Construct a proof, nat_mul_assoc, that nat.mul is associative.</span>
-
-
-<span class="kd">theorem</span> <span class="n">nat_add_assoc</span> <span class="o">:</span>
+</pre></div>
+</div>
+</div></section>
+<section id="theorems-and-on-are-associative">
+<h4><span class="section-number">4.5.1.7. </span>Theorems: + and * on &#8469; are associative<a class="headerlink" href="#theorems-and-on-are-associative" title="Permalink to this heading">&#61633;</a></h4>
+<p>In this section we&#8217;ll first construct a proof, nat_add_assoc,
+that nat.add is associative, then we&#8217;ll do the same, under the
+name, nat_mul_assoc, showing that nat.mul is associative, too.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=theorem%20nat_add_assoc%20%3A%0A%20%20%E2%88%80%20(a%20b%20c)%2C%0A%20%20%20%20nat.add%20a%20(nat.add%20b%20c)%20%3D%0A%20%20%20%20nat.add%20(nat.add%20a%20b)%20c%20%3A%3D%0Abegin%0Aassume%20a%20b%20c%2C%0Ainduction%20c%20with%20c'%20ih%2C%0A%0A--%20base%20lemma%0Asimp%20%5Bnat.add%5D%2C%0A%0A--%20induction%20lemma%0Asimp%20%5Bnat.add%5D%2C%0Aassumption%2C%0Aend%0A%0A--%20Yay%2C%20that's%20really%20cool!%0A%0A--%20EXERCISE%3A%20Prove%20that%20nat.mul%20is%20associative%0A%0A%2F-%0AIn%20the%20middle%20of%20trying%20to%20prove%20this%20theorem%2C%20we%20run%20into%20the%20need%0Afor%20another%20theorem%2C%20not%20yet%20proved%3A%20one%20that%20shows%20that%20nat%20add%20and%0Amul%20follow%20the%20distributive%20law%20for%20multiplication%20on%20the%20left%20over%0Aa%20sum.%20We%20present%20here%20an%20example%20of%20how%20one%20can%20assume%20a%20proof%20of%20a%0Alemma%20using%20sorry%2C%20with%20the%20intent%20of%20filling%20it%20in%20later.%20This%20gives%0Ayou%20a%20practical%20approach%20to%20top-down%20proof%20construction%2C%20just%20like%0Ayou%20might%20follow%20a%20discipline%20of%20top-down%20program%20construction.%0A-%2F%0Atheorem%20nat_mul_assoc%20%3A%0A%20%20%E2%88%80%20(a%20b%20c%20%3A%20%E2%84%95)%2C%20nat.mul%20a%20(nat.mul%20b%20c)%20%3D%20nat.mul%20(nat.mul%20a%20b)%20c%20%3A%3D%0Abegin%0Aassume%20a%20b%20c%2C%0Ainduction%20c%20with%20c'%20ih%2C%0A--%20base%20case%0Asimp%20%5Bnat.mul%5D%2C%0A--%20inductive%20case%0Asimp%20%5Bnat.mul%5D%2C%0Arw%20%3C-%20ih%2C%0Ahave%20mul_distrib_add_nat_left%20%3A%0A%20%20%E2%88%80%20x%20y%20z%2C%0A%20%20%20%20nat.mul%20x%20(nat.add%20y%20z)%20%3D%0A%20%20%20%20nat.add%20(nat.mul%20x%20y)%20(nat.mul%20x%20z)%20%3A%3D%0A%20%20%20%20sorry%2C%0Aapply%20mul_distrib_add_nat_left%2C%0Aend%0A%0A--%20We%20leave%20the%20proof%20of%20left%20distributivity%20as%20an%20exercise%20(not%20trivial)%0Alemma%20mul_distrib_add_nat_left%20%3A%0A%20%20%E2%88%80%20x%20y%20z%2C%0A%20%20%20%20nat.mul%20x%20(nat.add%20y%20z)%20%3D%0A%20%20%20%20nat.add%20(nat.mul%20x%20y)%20(nat.mul%20x%20z)%20%3A%3D%20sorry" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_499.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">theorem</span> <span class="n">nat_add_assoc</span> <span class="o">:</span>
   <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">a</span> <span class="n">b</span> <span class="n">c</span><span class="o">),</span>
     <span class="n">nat.add</span> <span class="n">a</span> <span class="o">(</span><span class="n">nat.add</span> <span class="n">b</span> <span class="n">c</span><span class="o">)</span> <span class="bp">=</span>
     <span class="n">nat.add</span> <span class="o">(</span><span class="n">nat.add</span> <span class="n">a</span> <span class="n">b</span><span class="o">)</span> <span class="n">c</span> <span class="o">:=</span>
@@ -1769,6 +1807,15 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 
 <span class="c1">-- EXERCISE: Prove that nat.mul is associative</span>
 
+<span class="c">/-</span>
+<span class="cm">In the middle of trying to prove this theorem, we run into the need</span>
+<span class="cm">for another theorem, not yet proved: one that shows that nat add and</span>
+<span class="cm">mul follow the distributive law for multiplication on the left over</span>
+<span class="cm">a sum. We present here an example of how one can assume a proof of a</span>
+<span class="cm">lemma using sorry, with the intent of filling it in later. This gives</span>
+<span class="cm">you a practical approach to top-down proof construction, just like</span>
+<span class="cm">you might follow a discipline of top-down program construction.</span>
+<span class="cm">-/</span>
 <span class="kd">theorem</span> <span class="n">nat_mul_assoc</span> <span class="o">:</span>
   <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">a</span> <span class="n">b</span> <span class="n">c</span> <span class="o">:</span> <span class="n">&#8469;</span><span class="o">),</span> <span class="n">nat.mul</span> <span class="n">a</span> <span class="o">(</span><span class="n">nat.mul</span> <span class="n">b</span> <span class="n">c</span><span class="o">)</span> <span class="bp">=</span> <span class="n">nat.mul</span> <span class="o">(</span><span class="n">nat.mul</span> <span class="n">a</span> <span class="n">b</span><span class="o">)</span> <span class="n">c</span> <span class="o">:=</span>
 <span class="kd">begin</span>
@@ -1787,7 +1834,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <span class="n">apply</span> <span class="n">mul_distrib_add_nat_left</span><span class="o">,</span>
 <span class="kd">end</span>
 
-
+<span class="c1">-- We leave the proof of left distributivity as an exercise (not trivial)</span>
 <span class="kd">lemma</span> <span class="n">mul_distrib_add_nat_left</span> <span class="o">:</span>
   <span class="bp">&#8704;</span> <span class="n">x</span> <span class="n">y</span> <span class="n">z</span><span class="o">,</span>
     <span class="n">nat.mul</span> <span class="n">x</span> <span class="o">(</span><span class="n">nat.add</span> <span class="n">y</span> <span class="n">z</span><span class="o">)</span> <span class="bp">=</span>
@@ -1796,14 +1843,14 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </div>
 </div></section>
 <section id="monoids-and-foldr">
-<h4><span class="section-number">4.5.1.5. </span>Monoids and Foldr<a class="headerlink" href="#monoids-and-foldr" title="Permalink to this heading">&#61633;</a></h4>
+<h4><span class="section-number">4.5.1.8. </span>Monoids and Foldr<a class="headerlink" href="#monoids-and-foldr" title="Permalink to this heading">&#61633;</a></h4>
 <p>We can now define a general structure that we can instantiate to
 formally represent either and additive or a multiplicative monoid
 on the natural numbers. Indeed, we can generalize this definition
 to a monoid on values of any type for which a suitable operator and
 identity element can be defined.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=universe%20u%0A%0A--%20general%20structure%20(not%20we've%20removed%20%22nat%22%20from%20the%20name)%0Astructure%20monoid%20%7B%CE%B1%20%3A%20Type%7D%20%3A%20Type%20%3A%3D%20mk%3A%3A%0A%20%20(op%20%3A%20%CE%B1%20%20%E2%86%92%20%CE%B1%20%20%E2%86%92%20%CE%B1%20)%0A%20%20(id%20%3A%20%CE%B1%20)%0A%20%20(e%20%3A%20%E2%88%80%20a%2C%20op%20id%20a%20%3D%20a%20%E2%88%A7%20op%20a%20id%20%3D%20a)%0A%20%20(assoc%3A%20%E2%88%80%20a%20b%20c%2C%20op%20a%20(op%20b%20c)%20%3D%20op%20(op%20a%20b)%20c)%0A%0Adef%20nat_add_monoid%20%3A%3D%20monoid.mk%20nat.add%200%20zero_ident_add_nat%20nat_add_assoc%0Adef%20nat_add_monoid'%20%3A%3D%20monoid.mk%20nat.add%201%20zero_ident_add_nat%20nat_add_assoc%20--%20caught%20error%0Adef%20nat_mul_monoid%20%3A%3D%20monoid.mk%20nat.mul%201%20mul_one_ident_nat%20nat_mul_assoc%20%20%20--%20sorry%0A%0A%23reduce%20nat_add_monoid%0A%23reduce%20nat_mul_monoid%0A%0A--%20Monoid%20structure%20instances%0A%23reduce%20foldr%20nat_add_monoid.op%20nat_add_monoid.id%20%5B1%2C2%2C3%2C4%2C5%5D%0A%23reduce%20foldr%20nat_mul_monoid.op%20nat_mul_monoid.id%20%5B1%2C2%2C3%2C4%2C5%5D%0A%0A%0A--%20A%20version%20of%20foldr%20that%20takes%20a%20monoid%20object%20and%20uses%20its%20op%20and%20e%20values%0Adef%20foldr'%20%7B%CE%B1%20%3A%20Type%7D%20%3A%20%40monoid%20%CE%B1%20%E2%86%92%20list%20%CE%B1%20%E2%86%92%20%CE%B1%0A%7C%20(monoid.mk%20op%20e%20_%20_)%20l%20%3A%3D%20foldr%20op%20e%20l%0A%0A--%20Safe%20use%20of%20monoid%20instances%20folds%0A%23reduce%20foldr'%20nat_add_monoid%20%5B1%2C2%2C3%2C4%2C5%5D%0A%23reduce%20foldr'%20nat_mul_monoid%20%5B1%2C2%2C3%2C4%2C5%5D" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_519.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=universe%20u%0A%0A--%20general%20structure%20(not%20we've%20removed%20%22nat%22%20from%20the%20name)%0Astructure%20monoid%20%7B%CE%B1%20%3A%20Type%7D%20%3A%20Type%20%3A%3D%20mk%3A%3A%0A%20%20(op%20%3A%20%CE%B1%20%20%E2%86%92%20%CE%B1%20%20%E2%86%92%20%CE%B1%20)%0A%20%20(id%20%3A%20%CE%B1%20)%0A%20%20(e%20%3A%20%E2%88%80%20a%2C%20op%20id%20a%20%3D%20a%20%E2%88%A7%20op%20a%20id%20%3D%20a)%0A%20%20(assoc%3A%20%E2%88%80%20a%20b%20c%2C%20op%20a%20(op%20b%20c)%20%3D%20op%20(op%20a%20b)%20c)%0A%0Adef%20nat_add_monoid%20%3A%3D%20monoid.mk%20nat.add%200%20zero_ident_add_nat%20nat_add_assoc%0Adef%20nat_add_monoid'%20%3A%3D%20monoid.mk%20nat.add%201%20zero_ident_add_nat%20nat_add_assoc%20--%20caught%20error%0Adef%20nat_mul_monoid%20%3A%3D%20monoid.mk%20nat.mul%201%20mul_one_ident_nat%20nat_mul_assoc%20%20%20--%20sorry%0A%0A%23reduce%20nat_add_monoid%0A%23reduce%20nat_mul_monoid%0A%0A--%20Monoid%20structure%20instances%0A%23reduce%20foldr%20nat_add_monoid.op%20nat_add_monoid.id%20%5B1%2C2%2C3%2C4%2C5%5D%0A%23reduce%20foldr%20nat_mul_monoid.op%20nat_mul_monoid.id%20%5B1%2C2%2C3%2C4%2C5%5D%0A%0A%0A--%20A%20version%20of%20foldr%20that%20takes%20a%20monoid%20object%20and%20uses%20its%20op%20and%20e%20values%0Adef%20foldr'%20%7B%CE%B1%20%3A%20Type%7D%20%3A%20%40monoid%20%CE%B1%20%E2%86%92%20list%20%CE%B1%20%E2%86%92%20%CE%B1%0A%7C%20(monoid.mk%20op%20e%20_%20_)%20l%20%3A%3D%20foldr%20op%20e%20l%0A%0A--%20Safe%20use%20of%20monoid%20instances%20folds%0A%23reduce%20foldr'%20nat_add_monoid%20%5B1%2C2%2C3%2C4%2C5%5D%0A%23reduce%20foldr'%20nat_mul_monoid%20%5B1%2C2%2C3%2C4%2C5%5D" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_566.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">universe</span> <span class="n">u</span>
 
 <span class="c1">-- general structure (not we&#39;ve removed &quot;nat&quot; from the name)</span>
@@ -1838,9 +1885,9 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 monoid laws for &#10216;list &#945;, [], list.append&#10217; we can actually go
 ahead and see that it&#8217;s going to work.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20monoid_list_append'%20%7B%CE%B1%20%3A%20Type%7D%3A%20%40monoid%20(list%20%CE%B1)%20%3A%3D%0A%20%20monoid.mk%20list.append%20%5B%5D%20_%20_%0A%0A%23eval%20foldr'%20monoid_list_append'%20%5B%5B1%2C2%2C3%5D%2C%5B4%2C5%2C6%5D%2C%5B7%2C8%2C9%5D%5D" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_554.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20monoid_list_append'%20%7B%CE%B1%20%3A%20Type%7D%3A%20%40monoid%20(list%20%CE%B1)%20%3A%3D%0A%20%20monoid.mk%20list.append%20%5B%5D%20sorry%20sorry%0A%0A%23eval%20foldr'%20monoid_list_append'%20%5B%5B1%2C2%2C3%5D%2C%5B4%2C5%2C6%5D%2C%5B7%2C8%2C9%5D%5D" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_601.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">monoid_list_append&#39;</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}:</span> <span class="bp">@</span><span class="n">monoid</span> <span class="o">(</span><span class="n">list</span> <span class="n">&#945;</span><span class="o">)</span> <span class="o">:=</span>
-  <span class="n">monoid.mk</span> <span class="n">list.append</span> <span class="o">[]</span> <span class="n">_</span> <span class="n">_</span>
+  <span class="n">monoid.mk</span> <span class="n">list.append</span> <span class="o">[]</span> <span class="gr">sorry</span> <span class="gr">sorry</span>
 
 <span class="k">#eval</span> <span class="n">foldr&#39;</span> <span class="n">monoid_list_append&#39;</span> <span class="o">[[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">],[</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">,</span><span class="mi">6</span><span class="o">],[</span><span class="mi">7</span><span class="o">,</span><span class="mi">8</span><span class="o">,</span><span class="mi">9</span><span class="o">]]</span>
 </pre></div>
@@ -1849,26 +1896,172 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 append and nil satisfy the <em>monoid laws</em>. Unlike the proofs
 of identities and associativity for natural number operations,
 however, we now need to show that [] is an identity for <em>list</em>
-append. If only proof by induction worked as well for lists as
-for natural numbers! As we&#8217;ll see next, we&#8217;re in luck.
-Generalizing from Induction on &#8469;
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</p>
-<p>Our next task is to construct a <em>cerified</em> monoid over
-lists of values of any type with append as the <em>add</em>
-operator and <em>list.nil</em> ([]) as the identity. Once again
-we&#8217;ll have to show <em>[]</em> is both a left and right identity
-for append, where one proof is by the definition of append
-and the other is by induction. We&#8217;ll also need a proof
-that <em>list.append</em> is associative: <a href="#id13"><span class="problematic" id="id14">*</span></a>&#8704; (l m n : list &#945;),
-(l ++ m) ++ n = l ++ (m ++ n).</p>
+append and that append is associative. If proof by induction
+worked as well for lists as for natural numbers we&#8217;d be all
+set. As we&#8217;ll see next, we&#8217;re in luck.</p>
+</section>
+</section>
+<section id="induction-axioms">
+<h3><span class="section-number">4.5.2. </span>Induction Axioms<a class="headerlink" href="#induction-axioms" title="Permalink to this heading">&#61633;</a></h3>
+<p>In this chapter, we will meet the idea that there is
+an induction axiom for <em>every</em> inductive definition.
+We&#8217;ll start by showing that our reasoning about 0
+being an identity for nat.add extends directly to
+showing that [] is an identity (left and right) for
+list.append. We&#8217;ll then discuss the general case.</p>
+<section id="theorem-list-append-identity">
+<h4><span class="section-number">4.5.2.1. </span>Theorem: [] list append identity<a class="headerlink" href="#theorem-list-append-identity" title="Permalink to this heading">&#61633;</a></h4>
+<p>Our overall aim is to show that &#10216;list &#945;, [], ++&#10217; is
+a monoid. Then we&#8217;ll be able to use foldr to extend
+++ to an operation that will append any number of
+lists as long as they are themselves arranged in a
+list of lists.</p>
+<p>We therefore need to show that [] is an identity on
+the left and right for append (++), and that append
+is associative. Let&#8217;s take the first theorem here:
+[] is an identity for ++.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20To%20be%20proved%0Atheorem%20nil_identity_append_list%20%7B%CE%B1%20%3A%20Type%20u%7D%3A%0A%20%20%E2%88%80%20(l%20%3A%20list%20%CE%B1)%2C%0A%20%20%20%20list.append%20list.nil%20l%20%3D%20l%20%E2%88%A7%0A%20%20%20%20list.append%20l%20list.nil%20%3D%20l%20%3A%3D%20sorry%0A%0A--%20Here%20again%20is%20the%20definition%20list.append%20(%2B%2B).%0A%23check%20%40list.append%0A%2F-%0Adef%20append%20%3A%20list%20%CE%B1%20%E2%86%92%20list%20%CE%B1%20%E2%86%92%20list%20%CE%B1%0A%7C%20%5B%5D%20%20%20%20%20%20%20l%20%3A%3D%20l%0A%7C%20(h%20%3A%3A%20s)%20t%20%3A%3D%20h%20%3A%3A%20(append%20s%20t)%0A-%2F" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_640.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- To be proved</span>
+<span class="kd">theorem</span> <span class="n">nil_identity_append_list</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span> <span class="n">u</span><span class="o">}:</span>
+  <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">l</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span><span class="o">),</span>
+    <span class="n">list.append</span> <span class="n">list.nil</span> <span class="n">l</span> <span class="bp">=</span> <span class="n">l</span> <span class="bp">&#8743;</span>
+    <span class="n">list.append</span> <span class="n">l</span> <span class="n">list.nil</span> <span class="bp">=</span> <span class="n">l</span> <span class="o">:=</span> <span class="gr">sorry</span>
+
+<span class="c1">-- Here again is the definition list.append (++).</span>
+<span class="k">#check</span> <span class="bp">@</span><span class="n">list.append</span>
+<span class="c">/-</span>
+<span class="cm">def append : list &#945; &#8594; list &#945; &#8594; list &#945;</span>
+<span class="cm">| []       l := l</span>
+<span class="cm">| (h :: s) t := h :: (append s t)</span>
+<span class="cm">-/</span>
+</pre></div>
+</div>
+</div><p>By definition, list.nil is a left identity, but as
+with nat.add, there&#8217;s no rule telling us that [] is
+a right identity. It thus appears (and is the case)
+that we will have to prove that [] is an identity on
+the right by induction.</p>
+<p>Let&#8217;s think about what the induction will look like.
+It will be induction on the left argument to append.
+First we&#8217;ll need a proof that [] is a right identity
+for [] on the left. Then we&#8217;ll need to show that <em>if</em>
+for any list, l&#8217; on the left, [] is a right identity
+for l&#8217; then it&#8217;s a right identity for any one-larger
+list. Such a one-larger list can be any list, hd::l&#8217;,
+where hd could be any element of type &#945;.</p>
+<p>Let&#8217;s start with a bottom-up approach. We&#8217;ll begin
+by formally defining the <em>property</em> of lists that
+we want to show is universal, that [] is a right
+identity for any list, l.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20list_nil_right_ident_for%20%7B%CE%B1%20%3A%20Type%20u%7D%20(l%20%3A%20list%20%CE%B1)%20%3A%3D%0A%20%20list.append%20l%20%5B%5D%20%3D%20l%0A%0A%0Alemma%20list_base%20%7B%CE%B1%20%3A%20Type%20u%7D%20%3A%0A%20%20list_nil_right_ident_for%20(%5B%5D%20%3A%20list%20%CE%B1)%20%3A%3D%0Abegin%0A--%20unfold%20list_nil_right_ident_for%2C%0Aexact%20rfl%2C%20%20--%20Lean%20unfolds%20name%20automatically%20here%0Aend%0A%0A--%20Now%20let's%20prove%20a%20step%20lemma.%0A%23check%20%40list.rec_on%0A%0Alemma%20list_step%20%7B%CE%B1%20%3A%20Type%20u%7D%20%3A%0A%20%20--%20given%20any%20new%20head%20element%2C%20hd%0A%20%20(%CE%A0%20(hd%20%3A%20%CE%B1)%0A%20%20--%20and%20any%20existing%20list%2C%20l'%0A%20%20%20%20%20(l'%20%3A%20list%20%CE%B1)%2C%0A%20%20--%20if%20%5B%5D%20is%20a%20right%20identity%20for%20l'%0A%20%20%20%20%20list_nil_right_ident_for%20l'%20%E2%86%92%0A%20%20--%20then%20it's%20a%20right%20identity%20for%20one-bigger%20list%0A%20%20%20%20%20list_nil_right_ident_for%20(hd%20%3A%3A%20l'))%20%3A%3D%0Abegin%0Aunfold%20list_nil_right_ident_for%2C%0Aassume%20hd%20l'%20ih%2C%0Asimp%20%5Blist.append%5D%2C%20--%20simplify%20using%20second%20rule%20of%20append%0Aassumption%2C%20%20%20%20%20%20%20%20%20--%20the%20induction%20hypothesis%20finishes%20it%20off%20QED%0Aend%0A%0A--%20Now%20we%20build%20a%20recursive%20function%20to%20return%20proof%20for%20any%20l%0A%23check%20list_base%0A%0Adef%20nil_right_ident_append_list'%20%7B%CE%B1%20%3A%20Type%7D%20%3A%20%E2%88%80%20(l'%20%3A%20list%20%CE%B1)%2C%20list.append%20l'%20%5B%5D%20%3D%20l'%0A%7C%20(list.nil)%20%3A%3D%20list_base%0A%7C%20(h%3A%3At)%20%3A%3D%20list_step%20h%20t%20(nil_right_ident_append_list'%20t)" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_676.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">list_nil_right_ident_for</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span> <span class="n">u</span><span class="o">}</span> <span class="o">(</span><span class="n">l</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span><span class="o">)</span> <span class="o">:=</span>
+  <span class="n">list.append</span> <span class="n">l</span> <span class="o">[]</span> <span class="bp">=</span> <span class="n">l</span>
+
+
+<span class="kd">lemma</span> <span class="n">list_base</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span> <span class="n">u</span><span class="o">}</span> <span class="o">:</span>
+  <span class="n">list_nil_right_ident_for</span> <span class="o">([]</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span><span class="o">)</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="c1">-- unfold list_nil_right_ident_for,</span>
+<span class="n">exact</span> <span class="n">rfl</span><span class="o">,</span>  <span class="c1">-- Lean unfolds name automatically here</span>
+<span class="kd">end</span>
+
+<span class="c1">-- Now let&#39;s prove a step lemma.</span>
+<span class="k">#check</span> <span class="bp">@</span><span class="n">list.rec_on</span>
+
+<span class="kd">lemma</span> <span class="n">list_step</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span> <span class="n">u</span><span class="o">}</span> <span class="o">:</span>
+  <span class="c1">-- given any new head element, hd</span>
+  <span class="o">(</span><span class="bp">&#928;</span> <span class="o">(</span><span class="n">hd</span> <span class="o">:</span> <span class="n">&#945;</span><span class="o">)</span>
+  <span class="c1">-- and any existing list, l&#39;</span>
+     <span class="o">(</span><span class="n">l&#39;</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span><span class="o">),</span>
+  <span class="c1">-- if [] is a right identity for l&#39;</span>
+     <span class="n">list_nil_right_ident_for</span> <span class="n">l&#39;</span> <span class="bp">&#8594;</span>
+  <span class="c1">-- then it&#39;s a right identity for one-bigger list</span>
+     <span class="n">list_nil_right_ident_for</span> <span class="o">(</span><span class="n">hd</span> <span class="o">::</span> <span class="n">l&#39;</span><span class="o">))</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="n">unfold</span> <span class="n">list_nil_right_ident_for</span><span class="o">,</span>
+<span class="k">assume</span> <span class="n">hd</span> <span class="n">l&#39;</span> <span class="n">ih</span><span class="o">,</span>
+<span class="n">simp</span> <span class="o">[</span><span class="n">list.append</span><span class="o">],</span> <span class="c1">-- simplify using second rule of append</span>
+<span class="n">assumption</span><span class="o">,</span>         <span class="c1">-- the induction hypothesis finishes it off QED</span>
+<span class="kd">end</span>
+
+<span class="c1">-- Now we build a recursive function to return proof for any l</span>
+<span class="k">#check</span> <span class="n">list_base</span>
+
+<span class="kd">def</span> <span class="n">nil_right_ident_append_list&#39;</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">l&#39;</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span><span class="o">),</span> <span class="n">list.append</span> <span class="n">l&#39;</span> <span class="o">[]</span> <span class="bp">=</span> <span class="n">l&#39;</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">list.nil</span><span class="o">)</span> <span class="o">:=</span> <span class="n">list_base</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">h</span><span class="o">::</span><span class="n">t</span><span class="o">)</span> <span class="o">:=</span> <span class="n">list_step</span> <span class="n">h</span> <span class="n">t</span> <span class="o">(</span><span class="n">nil_right_ident_append_list&#39;</span> <span class="n">t</span><span class="o">)</span>
+</pre></div>
+</div>
+</div></section>
+<section id="induction-axiom-for-lists">
+<h4><span class="section-number">4.5.2.2. </span>Induction Axiom for Lists<a class="headerlink" href="#induction-axiom-for-lists" title="Permalink to this heading">&#61633;</a></h4>
+<p>We see again that there&#8217;s nothing myseterious about proof by induction.
+If we have base values/proofs and step functions to build next-bigger
+ones, and we can have a function that (using recursion on these elements)
+computes a value/proof for any given input value, and thus for all values
+of the input type.</p>
+<p>Proof by induction is done by functions that compute results using
+recursion on given base values and step functions.  Every inductive
+axiom can be understood as a proof of universal generalization that
+asserts that every value of some input type has a corresponging result
+value of type. These return values can be proofs of properties or they
+can be function return values of any type.</p>
+<p>Let&#8217;s look at and compare and contrast the induction axioms (they&#8217;re
+just higher order functions!) for the nat and list &#945; types. We&#8217;ll then
+show how the same ideas developed in the last example apply directly
+as well to induction on list values.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20%40list.rec_on%0A%2F-%0Anat.rec_on%20%3A%0A%20%20%CE%A0%20%7Bmotive%20%3A%20%E2%84%95%20%E2%86%92%20Sort%20u_1%7D%20%20%20--%20property%20or%20return%20value%20type%0A%20%20%20%20(n%20%3A%20%E2%84%95)%2C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20input%20argument%20value%0A%20%20%20%20motive%200%20%E2%86%92%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20answer%20for%20base%20case%0A%20%20%20%20(%CE%A0%20('n%20%3A%20%E2%84%95)%2C%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20step%20function%20(higher-order!)%0A%20%20%20%20%20%20motive%20n'%20%E2%86%92%0A%20%20%20%20%20%20motive%20n'.succ%0A%20%20%20%20)%20%E2%86%92%0A%20%20motive%20n%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20return%20values%2C%20by%20recursion%0A-%2F%0A%0A%23check%20%40list.rec_on%0A%2F-%0Alist.rec_on%20%3A%0A%20%20%CE%A0%20%7BT%20%3A%20Type%20u_2%7D%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20for%20any%20list%20element%20type%0A%20%20%20%20%7Bmotive%20%3A%20list%20T%20%E2%86%92%20Sort%20u_1%7D%20%20--%20property%20or%20return%20type%0A%20%20%20%20(n%20%3A%20list%20T)%2C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20input%20argument%20value%0A%20%20%20%20motive%20list.nil%20%E2%86%92%20%20%20%20%20%20%20%20%20%20%20%20%20--%20proof%2Fvalue%20for%20base%20case%0A%20%20%20%20(%CE%A0%20(hd%20%3A%20T)%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20step%20function%3A%20understand%20it%0A%20%20%20%20%20%20%20(tl%20%3A%20list%20T)%2C%0A%20%20%20%20%20%20%20motive%20tl%20%E2%86%92%0A%20%20%20%20%20%20%20motive%20(hd%20%3A%3A%20tl))%20%E2%86%92%0A%20%20motive%20n%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20return%20value%2C%20by%20recursion%0A%0A%0AQUESTION%3A%20What%20new%20element%20is%20present%20in%20the%20rule%20for%20lists%0Athat%20isn't%20involved%20in%20the%20rule%20for%20natural%20numbers%3F" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_737.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="bp">@</span><span class="n">list.rec_on</span>
+<span class="c">/-</span>
+<span class="cm">nat.rec_on :</span>
+<span class="cm">  &#928; {motive : &#8469; &#8594; Sort u_1}   -- property or return value type</span>
+<span class="cm">    (n : &#8469;),                  -- input argument value</span>
+<span class="cm">    motive 0 &#8594;                -- answer for base case</span>
+<span class="cm">    (&#928; (&#39;n : &#8469;),              -- step function (higher-order!)</span>
+<span class="cm">      motive n&#39; &#8594;</span>
+<span class="cm">      motive n&#39;.succ</span>
+<span class="cm">    ) &#8594;</span>
+<span class="cm">  motive n                    -- return values, by recursion</span>
+<span class="cm">-/</span>
+
+<span class="k">#check</span> <span class="bp">@</span><span class="n">list.rec_on</span>
+<span class="c">/-</span>
+<span class="cm">list.rec_on :</span>
+<span class="cm">  &#928; {T : Type u_2}                -- for any list element type</span>
+<span class="cm">    {motive : list T &#8594; Sort u_1}  -- property or return type</span>
+<span class="cm">    (n : list T),                 -- input argument value</span>
+<span class="cm">    motive list.nil &#8594;             -- proof/value for base case</span>
+<span class="cm">    (&#928; (hd : T)                   -- step function: understand it</span>
+<span class="cm">       (tl : list T),</span>
+<span class="cm">       motive tl &#8594;</span>
+<span class="cm">       motive (hd :: tl)) &#8594;</span>
+<span class="cm">  motive n                        -- return value, by recursion</span>
+
+
+<span class="cm">QUESTION: What new element is present in the rule for lists</span>
+<span class="cm">that isn&#39;t involved in the rule for natural numbers?</span>
+</pre></div>
+</div>
+</div><p>Once again we&#8217;ll have to show <em>[]</em> is both a left and
+right identity for append, where one proof is by the
+definition of append and the other is by induction. We&#8217;ll
+also need a proof that <em>list.append</em> is associative:
+<a href="#id17"><span class="problematic" id="id18">*</span></a>&#8704; (l m n : list &#945;), (l ++ m) ++ n = l ++ (m ++ n).</p>
 <p>Here&#8217;s the definition of list.append.
 You can see it defines [] as a left identity for any list.</p>
-<p>def append : list &#945; &#8594; list &#945; &#8594; list &#945;
-| []       l := l
-| (h :: s) t := h :: (append s t)</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=theorem%20nil_left_ident_append_list%20(%CE%B1%20%3A%20Type)%20%3A%20%E2%88%80%20(l%20%3A%20list%20%CE%B1)%2C%20list.nil%20%2B%2B%20l%20%3D%20l%20%3A%3D%0Abegin%0Aassume%20l%2C%0Asimp%20%5Blist.append%5D%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_586.lean">
-try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">theorem</span> <span class="n">nil_left_ident_append_list</span> <span class="o">(</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">l</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span><span class="o">),</span> <span class="n">list.nil</span> <span class="bp">++</span> <span class="n">l</span> <span class="bp">=</span> <span class="n">l</span> <span class="o">:=</span>
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%2F-%0Adef%20append%20%3A%20list%20%CE%B1%20%E2%86%92%20list%20%CE%B1%20%E2%86%92%20list%20%CE%B1%0A%7C%20%5B%5D%20%20%20%20%20%20%20l%20%3A%3D%20l%0A%7C%20(h%20%3A%3A%20s)%20t%20%3A%3D%20h%20%3A%3A%20(append%20s%20t)%0A-%2F%0A%0A%0Atheorem%20nil_left_ident_append_list%20(%CE%B1%20%3A%20Type)%20%3A%20%E2%88%80%20(l%20%3A%20list%20%CE%B1)%2C%20list.nil%20%2B%2B%20l%20%3D%20l%20%3A%3D%0Abegin%0Aassume%20l%2C%0Asimp%20%5Blist.append%5D%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_778.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c">/-</span>
+<span class="cm">def append : list &#945; &#8594; list &#945; &#8594; list &#945;</span>
+<span class="cm">| []       l := l</span>
+<span class="cm">| (h :: s) t := h :: (append s t)</span>
+<span class="cm">-/</span>
+
+
+<span class="kd">theorem</span> <span class="n">nil_left_ident_append_list</span> <span class="o">(</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">l</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span><span class="o">),</span> <span class="n">list.nil</span> <span class="bp">++</span> <span class="n">l</span> <span class="bp">=</span> <span class="n">l</span> <span class="o">:=</span>
 <span class="kd">begin</span>
 <span class="k">assume</span> <span class="n">l</span><span class="o">,</span>
 <span class="n">simp</span> <span class="o">[</span><span class="n">list.append</span><span class="o">],</span>
@@ -1886,15 +2079,8 @@ nil ++ h::t = h::t. By the second axiom of list append,
 we can rewrite nil ++ h::t as h::(nil ++ t), where we can
 obtain (and then us) a proof that nil ++ t = t by recursion,
 terminating when t =nil.</p>
-<p>Fortunately, Lean&#8217;s library already contains a proof that
-nil is a right identity, and it&#8217;s annotated as <em>[simp]</em>,
-which means that the <em>simp</em> tactic will try to use it to
-prove our goal. In other words, we can use [simp] to prove
-the harder case precisely because someone else has already
-done the work for us; and they did it recursively just as
-we did to show that 0 is a right identity for addition.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20nil_right_ident_append%20(%CE%B1%20%3A%20Type)%20%3A%0A%20%20%E2%88%80%20(l%20%3A%20list%20%CE%B1)%2C%20l%20%2B%2B%20%5B%5D%20%3D%20l%20%3A%3D%0Abegin%0Aassume%20l%2C%0Ainduction%20l%2C%0Asimp%20%5Blist.append%5D%2C%0Asimp%2C%0Aend%0A%0A--%20Here's%20another%20formal%20demonstration%20of%20the%20same%20point%0Avariables%20(%CE%B1%20%3A%20Type)%20(a%20%3A%20%CE%B1)%20(l%20%3A%20list%20%CE%B1)%0Aexample%3A%20list.nil%20%2B%2B%20l%20%3D%20l%20%3A%3D%20by%20simp%20%20%20%20--%20first%20rule%0Aexample%20%3A%20l%20%2B%2B%20list.nil%20%20%3D%20l%20%3A%3D%20by%20simp%20%20--%20by%20%5Bsimp%5D%20lemma%20in%20Lean%20library" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_614.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20nil_right_ident_append%20(%CE%B1%20%3A%20Type)%20%3A%0A%20%20%E2%88%80%20(l%20%3A%20list%20%CE%B1)%2C%20l%20%2B%2B%20%5B%5D%20%3D%20l%20%3A%3D%0Abegin%0Aassume%20l%2C%0Ainduction%20l%2C%0Asimp%20%5Blist.append%5D%2C%0Asimp%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_805.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">nil_right_ident_append</span> <span class="o">(</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">:</span>
   <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">l</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span><span class="o">),</span> <span class="n">l</span> <span class="bp">++</span> <span class="o">[]</span> <span class="bp">=</span> <span class="n">l</span> <span class="o">:=</span>
 <span class="kd">begin</span>
@@ -1903,24 +2089,15 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <span class="n">simp</span> <span class="o">[</span><span class="n">list.append</span><span class="o">],</span>
 <span class="n">simp</span><span class="o">,</span>
 <span class="kd">end</span>
-
-<span class="c1">-- Here&#39;s another formal demonstration of the same point</span>
-<span class="kd">variables</span> <span class="o">(</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="n">&#945;</span><span class="o">)</span> <span class="o">(</span><span class="n">l</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span><span class="o">)</span>
-<span class="kd">example</span><span class="o">:</span> <span class="n">list.nil</span> <span class="bp">++</span> <span class="n">l</span> <span class="bp">=</span> <span class="n">l</span> <span class="o">:=</span> <span class="kd">by</span> <span class="n">simp</span>    <span class="c1">-- first rule</span>
-<span class="kd">example</span> <span class="o">:</span> <span class="n">l</span> <span class="bp">++</span> <span class="n">list.nil</span>  <span class="bp">=</span> <span class="n">l</span> <span class="o">:=</span> <span class="kd">by</span> <span class="n">simp</span>  <span class="c1">-- by [simp] lemma in Lean library</span>
 </pre></div>
 </div>
 </div></section>
-</section>
-<section id="id15">
-<h3><span class="section-number">4.5.2. </span>Induction Axioms<a class="headerlink" href="#id15" title="Permalink to this heading">&#61633;</a></h3>
-<p>YOU MAY STOP READING HERE. THE REMAINDER IS STILL <em>UNDER CONSTRUCTION.</em></p>
 </section>
 <section id="inductive-families">
 <h3><span class="section-number">4.5.3. </span>Inductive Families<a class="headerlink" href="#inductive-families" title="Permalink to this heading">&#61633;</a></h3>
 <p>Coming soon.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=inductive%20le%20(n%20%3A%20nat)%3A%20nat%20%E2%86%92%20Prop%0A--%20n%20is%20an%20implicit%20firt%20argument%20to%20each%20constructor%0A%7C%20refl%20%3A%20le%20%2F-n-%2F%20n%0A%7C%20step%20%3A%20%E2%88%80%20m%2C%20le%20%2F-n-%2F%20m%20%E2%86%92%20le%20%2F-n-%2F%20m.succ%0A%0A--%20you%20can%20see%20it%20in%20the%20types%20of%20the%20constructors%0A%23check%20%40le.refl%0A%23check%20%40le.step%0A%0A%0Aexample%20%3A%20le%200%200%20%3A%3D%0Abegin%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%203%203%20%3A%3D%0Abegin%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%200%201%20%3A%3D%0Abegin%0Aapply%20le.step%2C%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%200%203%20%3A%3D%0Abegin%0Aapply%20le.step%2C%0Aapply%20le.step%2C%0Aapply%20le.step%2C%0Aapply%20le.refl%2C%0Aend%0A%0A--%20here's%20the%20same%20example%20using%20Lean's%20version%20of%20%22le%22%0A--%20it's%20called%20nat.less_than_or_equal%0Aexample%20%3A%200%20%E2%89%A4%203%20%3A%3D%0Abegin%0Aapply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.step%2C%0A--%20apply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.refl%2C%0Aend%0A%0A--%20repeat%20tactical%20goes%20too%20far%3B%20use%20iterate%20instead%0Aexample%20%3A%201%20%E2%89%A4%204%20%3A%3D%0Abegin%0A--%20repeat%20%7Bapply%20nat.less_than_or_equal.step%7D%2C%0Aiterate%203%20%7Bapply%20nat.less_than_or_equal.step%7D%2C%0Aapply%20nat.less_than_or_equal.refl%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_641.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=inductive%20le%20(n%20%3A%20nat)%3A%20nat%20%E2%86%92%20Prop%0A--%20n%20is%20an%20implicit%20firt%20argument%20to%20each%20constructor%0A%7C%20refl%20%3A%20le%20%2F-n-%2F%20n%0A%7C%20step%20%3A%20%E2%88%80%20m%2C%20le%20%2F-n-%2F%20m%20%E2%86%92%20le%20%2F-n-%2F%20m.succ%0A%0A--%20you%20can%20see%20it%20in%20the%20types%20of%20the%20constructors%0A%23check%20%40le.refl%0A%23check%20%40le.step%0A%0A%0Aexample%20%3A%20le%200%200%20%3A%3D%0Abegin%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%203%203%20%3A%3D%0Abegin%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%200%201%20%3A%3D%0Abegin%0Aapply%20le.step%2C%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%200%203%20%3A%3D%0Abegin%0Aapply%20le.step%2C%0Aapply%20le.step%2C%0Aapply%20le.step%2C%0Aapply%20le.refl%2C%0Aend%0A%0A--%20here's%20the%20same%20example%20using%20Lean's%20version%20of%20%22le%22%0A--%20it's%20called%20nat.less_than_or_equal%0Aexample%20%3A%200%20%E2%89%A4%203%20%3A%3D%0Abegin%0Aapply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.step%2C%0A--%20apply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.refl%2C%0Aend%0A%0A--%20repeat%20tactical%20goes%20too%20far%3B%20use%20iterate%20instead%0Aexample%20%3A%201%20%E2%89%A4%204%20%3A%3D%0Abegin%0A--%20repeat%20%7Bapply%20nat.less_than_or_equal.step%7D%2C%0Aiterate%203%20%7Bapply%20nat.less_than_or_equal.step%7D%2C%0Aapply%20nat.less_than_or_equal.refl%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_822.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">inductive</span> <span class="n">le</span> <span class="o">(</span><span class="n">n</span> <span class="o">:</span> <span class="n">nat</span><span class="o">):</span> <span class="n">nat</span> <span class="bp">&#8594;</span> <span class="kt">Prop</span>
 <span class="c1">-- n is an implicit firt argument to each constructor</span>
 <span class="bp">|</span> <span class="n">refl</span> <span class="o">:</span> <span class="n">le</span> <span class="c">/-</span><span class="cm">n-/</span> <span class="n">n</span>
