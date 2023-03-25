@@ -125,12 +125,19 @@
 \contentsline {subsection}{\numberline {4.5.1}The Idea by Example}{64}{subsection.4.5.1}
 \contentsline {subsubsection}{The Problem}{65}{subsubsection*.31}
 \contentsline {subsubsection}{A Solution}{65}{subsubsection*.32}
+<<<<<<< HEAD
 \contentsline {subsubsection}{Summary: Proof by Induction}{67}{subsubsection*.33}
 \contentsline {subsubsection}{Theorem: 0 is identity for ⟨ℕ, +⟩}{68}{subsubsection*.34}
 \contentsline {subsubsection}{Induction Axiom for ℕ}{69}{subsubsection*.35}
 \contentsline {subsubsection}{Theorem: 1 is identity for ⟨ℕ, {\color {red}\bfseries {}*}⟩}{70}{subsubsection*.36}
 \contentsline {subsubsection}{Theorems: + and * on ℕ are associative}{70}{subsubsection*.37}
 \contentsline {subsubsection}{Monoids and Foldr}{71}{subsubsection*.38}
+=======
+\contentsline {subsubsection}{Theorem: 0 is identity for ⟨ℕ, +⟩}{68}{subsubsection*.33}
+\contentsline {subsubsection}{Induction Axioms}{69}{subsubsection*.34}
+\contentsline {subsubsection}{Examples}{69}{subsubsection*.35}
+\contentsline {subsubsection}{Monoids and Foldr}{71}{subsubsection*.36}
+>>>>>>> 2d5754fd10db03d7232d9a8f5f05741fcd424ad2
 \contentsline {subsection}{\numberline {4.5.2}Induction Axioms}{72}{subsection.4.5.2}
 \contentsline {subsubsection}{Theorem: {[}{]} list append identity}{72}{subsubsection*.39}
 \contentsline {subsubsection}{Induction Axiom for Lists}{74}{subsubsection*.40}
