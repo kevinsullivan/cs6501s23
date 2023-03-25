@@ -428,12 +428,6 @@ simp [list.append],
 simp,
 end
 
-/- Text:
-
-Theorem: monoid ⟨list,[],++⟩ 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Text. -/
 
 
 inductive le (n : nat): nat → Prop 

@@ -818,6 +818,23 @@ terminating when t =nil.
   end
 
 
+Theorem: monoid (list α)
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+The work you've done until now should have you prepared to finish off
+the definition of a monoid instance for list α, [], list.append. You need
+the following:
+
+- a proof that list.append is associative
+- to package up the elements you now have into a finished monoid instance
+- tests passing this monoid to foldr to see it doing the right things
+
+This is your homework. You should try it by yourself, for sure, and put strong
+effort into solving it. If you end up fruitlessly stuck, you may go ahead and
+talk to others, but take the minimal input needed to get unstuck. Maximize your
+learning and understanding.
+
+
 Inductive Families
 ------------------
 

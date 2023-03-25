@@ -134,5 +134,6 @@
 \contentsline {subsection}{\numberline {4.5.2}Induction Axioms}{72}{subsection.4.5.2}
 \contentsline {subsubsection}{Theorem: {[}{]} list append identity}{72}{subsubsection*.39}
 \contentsline {subsubsection}{Induction Axiom for Lists}{74}{subsubsection*.40}
+\contentsline {subsubsection}{Theorem: monoid (list α)}{75}{subsubsection*.41}
 \contentsline {subsection}{\numberline {4.5.3}Inductive Families}{75}{subsection.4.5.3}
 \contentsline {chapter}{\numberline {5}Index}{77}{chapter.5}
