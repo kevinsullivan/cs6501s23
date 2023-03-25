@@ -383,8 +383,10 @@ def fac' : ℕ → ℕ
 
 
 /- TEXT:
+
 Theorem: 0 is identity for ⟨ℕ, +⟩ 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 TEXT. -/
 
 -- QUOTE:
