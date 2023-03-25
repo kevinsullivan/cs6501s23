@@ -325,8 +325,10 @@ At this point we've proved that zero is both a left and a
 right identity for the natural numbers. We can thus say that
 zero is an additive identity (on the left and right) for the
 natural numbers.  
+
 Theorem: 0 is identity for ⟨ℕ, +⟩ 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 .. code-block:: lean
 
