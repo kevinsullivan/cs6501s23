@@ -538,8 +538,8 @@ end
 
 /- TEXT:
 
-Theorems: + and * on ℕ are associative
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Theorems: ℕ + and * associative
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In this section we'll first construct a proof, nat_add_assoc, 
 that nat.add is associative, then we'll do the same, under the
@@ -772,10 +772,12 @@ end
 def nil_right_ident_append_list' {α : Type} : ∀ (l' : list α), list.append l' [] = l'
 | (list.nil) := list_base
 | (h::t) := list_step h t (nil_right_ident_append_list' t)
--- QUOTE.
 
 -- Seems to work!
 #check nil_right_ident_append_list' [1,2]
+
+-- QUOTE.
+
 
 /- TEXT:
 
@@ -884,6 +886,26 @@ simp [list.append],
 simp,
 end
 -- QUOTE.
+
+/- Text:
+
+Theorem: monoid ⟨list,[],++⟩ 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+
+The work you've done until now should have you prepared to finish off
+the definition of a monoid instance for list α, [], list.append. You need
+the following:
+
+- a proof that list.append is associative
+- to package up the elements you now have into a finished monoid instance
+- tests passing this monoid to foldr to see it doing the right things
+
+This is your homework. You should try it by yourself, for sure, and put strong
+effort into solving it. If you end up fruitlessly stuck, you may go ahead and
+talk to others, but take the minimal input needed to get unstuck. Maximize your
+learning and understanding.
+
+Text. -/
 
 /- TEXT:
 

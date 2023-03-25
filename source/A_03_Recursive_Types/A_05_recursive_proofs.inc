@@ -488,8 +488,8 @@ right identity) for ⟨ℕ, *⟩. Fill in the missing proof.
   end
 
 
-Theorems: + and * on ℕ are associative
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Theorems: ℕ + and * associative
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In this section we'll first construct a proof, nat_add_assoc, 
 that nat.add is associative, then we'll do the same, under the
@@ -711,6 +711,10 @@ identity for any list, l.
   def nil_right_ident_append_list' {α : Type} : ∀ (l' : list α), list.append l' [] = l'
   | (list.nil) := list_base
   | (h::t) := list_step h t (nil_right_ident_append_list' t)
+  
+  -- Seems to work!
+  #check nil_right_ident_append_list' [1,2]
+  
 
 
 Induction Axiom for Lists

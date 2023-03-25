@@ -371,6 +371,8 @@ def nil_right_ident_append_list' {α : Type} : ∀ (l' : list α), list.append l
 #check nil_right_ident_append_list' [1,2]
 
 
+
+
 #check @list.rec_on
 /-
 nat.rec_on :                    
@@ -425,6 +427,13 @@ induction l,
 simp [list.append],
 simp,
 end
+
+/- Text:
+
+Theorem: monoid ⟨list,[],++⟩ 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Text. -/
 
 
 inductive le (n : nat): nat → Prop 

@@ -5445,8 +5445,8 @@ right identity) for ⟨ℕ, {\color{red}\bfseries{}*}⟩. Fill in the missing pr
 \end{sphinxVerbatim}
 
 
-\subsubsection{Theorems: + and * on ℕ are associative}
-\label{\detokenize{A_03_Recursive_Types:theorems-and-on-are-associative}}
+\subsubsection{Theorems: ℕ + and * associative}
+\label{\detokenize{A_03_Recursive_Types:theorems-and-associative}}
 \sphinxAtStartPar
 In this section we’ll first construct a proof, nat\_add\_assoc,
 that nat.add is associative, then we’ll do the same, under the
@@ -5672,6 +5672,9 @@ identity for any list, l.
 \PYG{k+kd}{def} \PYG{n}{nil\PYGZus{}right\PYGZus{}ident\PYGZus{}append\PYGZus{}list\PYGZsq{}} \PYG{o}{\PYGZob{}}\PYG{n}{α} \PYG{o}{:} \PYG{k+kt}{Type}\PYG{o}{\PYGZcb{}} \PYG{o}{:} \PYG{n+nb+bp}{∀} \PYG{o}{(}\PYG{n}{l\PYGZsq{}} \PYG{o}{:} \PYG{n}{list} \PYG{n}{α}\PYG{o}{)}\PYG{o}{,} \PYG{n}{list.append} \PYG{n}{l\PYGZsq{}} \PYG{o}{[}\PYG{o}{]} \PYG{n+nb+bp}{=} \PYG{n}{l\PYGZsq{}}
 \PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{list.nil}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{list\PYGZus{}base}
 \PYG{n+nb+bp}{|} \PYG{o}{(}\PYG{n}{h}\PYG{o}{:}\PYG{o}{:}\PYG{n}{t}\PYG{o}{)} \PYG{o}{:=} \PYG{n}{list\PYGZus{}step} \PYG{n}{h} \PYG{n}{t} \PYG{o}{(}\PYG{n}{nil\PYGZus{}right\PYGZus{}ident\PYGZus{}append\PYGZus{}list\PYGZsq{}} \PYG{n}{t}\PYG{o}{)}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Seems to work!}
+\PYG{k}{\PYGZsh{}check} \PYG{n}{nil\PYGZus{}right\PYGZus{}ident\PYGZus{}append\PYGZus{}list\PYGZsq{}} \PYG{o}{[}\PYG{l+m+mi}{1}\PYG{o}{,}\PYG{l+m+mi}{2}\PYG{o}{]}
 \end{sphinxVerbatim}
 
 
