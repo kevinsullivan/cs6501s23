@@ -328,7 +328,6 @@ right identity for the natural numbers. We can thus say that
 zero is an additive identity (on the left and right) for the
 natural numbers.  
 
-<<<<<<< HEAD
 .. code-block:: lean
 
   
@@ -356,8 +355,6 @@ natural numbers.
   #eval fac 5
 
 
-=======
->>>>>>> 2d5754fd10db03d7232d9a8f5f05741fcd424ad2
 Theorem: 0 is identity for ⟨ℕ, +⟩ 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
