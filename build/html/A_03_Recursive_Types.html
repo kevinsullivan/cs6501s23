@@ -115,6 +115,12 @@
 <li class="toctree-l3"><a class="reference internal" href="#inductive-families">4.5.3. Inductive Families</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#monoids">4.6. Monoids</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#where-we-ve-gotten-to">4.6.1. Where we&#8217;ve gotten to</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#associating-values-with-types">4.6.2. Associating values with types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#under-construction">4.6.3. Under Construction</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -2116,11 +2122,11 @@ learning and understanding.</p>
 <h3><span class="section-number">4.5.3. </span>Inductive Families<a class="headerlink" href="#inductive-families" title="Permalink to this heading">&#61633;</a></h3>
 <p>Coming soon.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=inductive%20le%20(n%20%3A%20nat)%3A%20nat%20%E2%86%92%20Prop%0A--%20n%20is%20an%20implicit%20firt%20argument%20to%20each%20constructor%0A%7C%20refl%20%3A%20le%20%2F-n-%2F%20n%0A%7C%20step%20%3A%20%E2%88%80%20m%2C%20le%20%2F-n-%2F%20m%20%E2%86%92%20le%20%2F-n-%2F%20m.succ%0A%0A--%20you%20can%20see%20it%20in%20the%20types%20of%20the%20constructors%0A%23check%20%40le.refl%0A%23check%20%40le.step%0A%0A%0Aexample%20%3A%20le%200%200%20%3A%3D%0Abegin%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%203%203%20%3A%3D%0Abegin%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%200%201%20%3A%3D%0Abegin%0Aapply%20le.step%2C%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%200%203%20%3A%3D%0Abegin%0Aapply%20le.step%2C%0Aapply%20le.step%2C%0Aapply%20le.step%2C%0Aapply%20le.refl%2C%0Aend%0A%0A--%20here's%20the%20same%20example%20using%20Lean's%20version%20of%20%22le%22%0A--%20it's%20called%20nat.less_than_or_equal%0Aexample%20%3A%200%20%E2%89%A4%203%20%3A%3D%0Abegin%0Aapply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.step%2C%0A--%20apply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.refl%2C%0Aend%0A%0A--%20repeat%20tactical%20goes%20too%20far%3B%20use%20iterate%20instead%0Aexample%20%3A%201%20%E2%89%A4%204%20%3A%3D%0Abegin%0A--%20repeat%20%7Bapply%20nat.less_than_or_equal.step%7D%2C%0Aiterate%203%20%7Bapply%20nat.less_than_or_equal.step%7D%2C%0Aapply%20nat.less_than_or_equal.refl%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_843.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=inductive%20le%20(n%20%3A%20nat)%3A%20nat%20%E2%86%92%20Prop%0A--%20n%20is%20an%20implicit%20firt%20argument%20to%20each%20constructor%0A%7C%20refl%20%3A%20le%20(n)%20n%0A%7C%20step%20%3A%20%E2%88%80%20m%2C%20le%20(n)%20m%20%E2%86%92%20le%20(n)%20m.succ%0A%0A--%20you%20can%20see%20it%20in%20the%20types%20of%20the%20constructors%0A%23check%20%40le.refl%0A%23check%20%40le.step%0A%0A%0Aexample%20%3A%20le%200%200%20%3A%3D%0Abegin%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%203%203%20%3A%3D%0Abegin%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%200%201%20%3A%3D%0Abegin%0Aapply%20le.step%2C%0Aapply%20le.refl%2C%0Aend%0A%0Aexample%20%3A%20le%200%203%20%3A%3D%0Abegin%0Aapply%20le.step%2C%0Aapply%20le.step%2C%0Aapply%20le.step%2C%0Aapply%20le.refl%2C%0Aend%0A%0A--%20here's%20the%20same%20example%20using%20Lean's%20version%20of%20%22le%22%0A--%20it's%20called%20nat.less_than_or_equal%0Aexample%20%3A%200%20%E2%89%A4%203%20%3A%3D%0Abegin%0Aapply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.step%2C%0A--%20apply%20nat.less_than_or_equal.step%2C%0Aapply%20nat.less_than_or_equal.refl%2C%0Aend%0A%0A--%20repeat%20tactical%20goes%20too%20far%3B%20use%20iterate%20instead%0Aexample%20%3A%201%20%E2%89%A4%204%20%3A%3D%0Abegin%0A--%20repeat%20%7Bapply%20nat.less_than_or_equal.step%7D%2C%0Aiterate%203%20%7Bapply%20nat.less_than_or_equal.step%7D%2C%0Aapply%20nat.less_than_or_equal.refl%2C%0Aend" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_842.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">inductive</span> <span class="n">le</span> <span class="o">(</span><span class="n">n</span> <span class="o">:</span> <span class="n">nat</span><span class="o">):</span> <span class="n">nat</span> <span class="bp">&#8594;</span> <span class="kt">Prop</span>
 <span class="c1">-- n is an implicit firt argument to each constructor</span>
-<span class="bp">|</span> <span class="n">refl</span> <span class="o">:</span> <span class="n">le</span> <span class="c">/-</span><span class="cm">n-/</span> <span class="n">n</span>
-<span class="bp">|</span> <span class="n">step</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="n">m</span><span class="o">,</span> <span class="n">le</span> <span class="c">/-</span><span class="cm">n-/</span> <span class="n">m</span> <span class="bp">&#8594;</span> <span class="n">le</span> <span class="c">/-</span><span class="cm">n-/</span> <span class="n">m.succ</span>
+<span class="bp">|</span> <span class="n">refl</span> <span class="o">:</span> <span class="n">le</span> <span class="o">(</span><span class="n">n</span><span class="o">)</span> <span class="n">n</span>
+<span class="bp">|</span> <span class="n">step</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="n">m</span><span class="o">,</span> <span class="n">le</span> <span class="o">(</span><span class="n">n</span><span class="o">)</span> <span class="n">m</span> <span class="bp">&#8594;</span> <span class="n">le</span> <span class="o">(</span><span class="n">n</span><span class="o">)</span> <span class="n">m.succ</span>
 
 <span class="c1">-- you can see it in the types of the constructors</span>
 <span class="k">#check</span> <span class="bp">@</span><span class="n">le.refl</span>
@@ -2172,6 +2178,106 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </pre></div>
 </div>
 </div></section>
+</section>
+<section id="monoids">
+<h2><span class="section-number">4.6. </span>Monoids<a class="headerlink" href="#monoids" title="Permalink to this heading">&#61633;</a></h2>
+<p>This chapter has taught you about proof by induction. Our need
+for this proof construction method was created by our need for
+proofs of some basic properties of all natural numbers: namely,
+for any <em>a</em>, <em>0</em> is both a left and a right identity; and for any
+<em>a, b,</em> and <em>c,</em> that <em>a + b + c = (a + b) + c</em>. (As application
+is left associative we omit explicit parentheses in <em>(b + c)</em>.)</p>
+<p>The for these proofs in turn was driven by our need to specify
+what it means to be a monoid, so that we could pass values of a
+<em>monoid</em> type to our favorite higher-order function, <em>foldr</em>,
+rather than separate <em>operator</em> and <em>identity</em> arguments.</p>
+<p>We now finish off this chapter by completing our task to specify
+that it means in the abstract to be a <em>monoid</em> and how that will
+enable us to define a version of <em>foldr</em> that wil works for any
+monoid: extending its binary operator to an <em>n-ary</em> operator on
+a list of argument values.</p>
+<p>We&#8217;ll start with where we&#8217;ve gotten to up to now, and will then
+take it the rest of the way from there.</p>
+<section id="where-we-ve-gotten-to">
+<h3><span class="section-number">4.6.1. </span>Where we&#8217;ve gotten to<a class="headerlink" href="#where-we-ve-gotten-to" title="Permalink to this heading">&#61633;</a></h3>
+<p>The concept of a <em>monoid</em> is a simple but important example of
+an algebraic structure. This chapter will explain how better to
+formalize such structures in Lean, settings patterns for more
+abstract mathematics and for certain generalized programming
+concepts as well.</p>
+<p>We defined a monoid type with one constructor (mk), polymorphic
+in the type element type, withan associative binary operator,
+<em>op</em>, and an identity element, <em>e</em>, for <em>op</em>.</p>
+<p>In this version the names <em>id</em> and <em>e</em> switched from our earlier
+version. The letter <em>e</em> is often used to represent an identity
+element, so we made that switch here.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=structure%20monoid'%20%7B%CE%B1%20%3A%20Type%7D%20%3A%20Type%20%3A%3D%20mk%3A%3A%0A%20%20--%20data%20values%0A%20%20(op%20%3A%20%CE%B1%20%20%E2%86%92%20%CE%B1%20%20%E2%86%92%20%CE%B1%20)%20%20%20--%20data%0A%20%20(e%20%3A%20%CE%B1%20)%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20data%0A%20%20--%20statements%20and%20proofs%20of%20laws%0A%20%20(ident%20%3A%20%E2%88%80%20a%2C%20op%20e%20a%20%3D%20a%20%E2%88%A7%20op%20a%20e%20%3D%20a)%0A%20%20(assoc%3A%20%E2%88%80%20a%20b%20c%2C%20op%20a%20(op%20b%20c)%20%3D%20op%20(op%20a%20b)%20c)" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_44.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">structure</span> <span class="n">monoid&#39;</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">:</span> <span class="kt">Type</span> <span class="o">:=</span> <span class="n">mk</span><span class="o">::</span>
+  <span class="c1">-- data values</span>
+  <span class="o">(</span><span class="n">op</span> <span class="o">:</span> <span class="n">&#945;</span>  <span class="bp">&#8594;</span> <span class="n">&#945;</span>  <span class="bp">&#8594;</span> <span class="n">&#945;</span> <span class="o">)</span>   <span class="c1">-- data</span>
+  <span class="o">(</span><span class="n">e</span> <span class="o">:</span> <span class="n">&#945;</span> <span class="o">)</span>              <span class="c1">-- data</span>
+  <span class="c1">-- statements and proofs of laws</span>
+  <span class="o">(</span><span class="n">ident</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="n">a</span><span class="o">,</span> <span class="n">op</span> <span class="n">e</span> <span class="n">a</span> <span class="bp">=</span> <span class="n">a</span> <span class="bp">&#8743;</span> <span class="n">op</span> <span class="n">a</span> <span class="n">e</span> <span class="bp">=</span> <span class="n">a</span><span class="o">)</span>
+  <span class="o">(</span><span class="n">assoc</span><span class="o">:</span> <span class="bp">&#8704;</span> <span class="n">a</span> <span class="n">b</span> <span class="n">c</span><span class="o">,</span> <span class="n">op</span> <span class="n">a</span> <span class="o">(</span><span class="n">op</span> <span class="n">b</span> <span class="n">c</span><span class="o">)</span> <span class="bp">=</span> <span class="n">op</span> <span class="o">(</span><span class="n">op</span> <span class="n">a</span> <span class="n">b</span><span class="o">)</span> <span class="n">c</span><span class="o">)</span>
+</pre></div>
+</div>
+</div><p>With a monoid type defined, we then defined several <em>instances,</em>
+one for each monoid of interest: &#10216;nat, +, 0&#10217;,  &#10216;nat, *, 1&#10217;, and
+<em>&#10216;list, ++, []&#10217;</em>. Here that is again using gour improved monoid
+definition just above.
+Next we implemented a first version of foldr taking any monoid as an argument.
+Here&#8217;s a version improved only in presentation. The function type specification
+clearly expresses what foldr does: given a monoid, m, it returns an n-nary operator
+of type list &#945; &#8594; &#945;. Second, here for the first time we introduce Lean&#8217;s match value
+with &lt;patterns&gt; end construct. It lets you do case analysis via pattern matching on
+any value or multiple values anywhere an expression is expected in Lean. The syntax
+is match _ with | case := return | case := return | &#8230; end  (first is | optional)</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20foldr%20%7B%CE%B1%20%3A%20Type%7D%20(m%20%3A%20%40monoid'%20%CE%B1)%20%3A%20list%20%CE%B1%20%E2%86%92%20%CE%B1%0A%7C%20list.nil%20%3A%3D%20match%20m%20with%20(monoid'.mk%20op%20e%20_%20_)%20%3A%3D%20e%20end%0A%7C%20(h%3A%3At)%20%3A%3D%20match%20m%20with%20(monoid'.mk%20op%20e%20_%20_)%20%3A%3D%20m.op%20h%20(foldr%20t)%20end" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_68.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">foldr</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">(</span><span class="n">m</span> <span class="o">:</span> <span class="bp">@</span><span class="n">monoid&#39;</span> <span class="n">&#945;</span><span class="o">)</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span> <span class="bp">&#8594;</span> <span class="n">&#945;</span>
+<span class="bp">|</span> <span class="n">list.nil</span> <span class="o">:=</span> <span class="k">match</span> <span class="n">m</span> <span class="k">with</span> <span class="o">(</span><span class="n">monoid&#39;.mk</span> <span class="n">op</span> <span class="n">e</span> <span class="n">_</span> <span class="n">_</span><span class="o">)</span> <span class="o">:=</span> <span class="n">e</span> <span class="kd">end</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">h</span><span class="o">::</span><span class="n">t</span><span class="o">)</span> <span class="o">:=</span> <span class="k">match</span> <span class="n">m</span> <span class="k">with</span> <span class="o">(</span><span class="n">monoid&#39;.mk</span> <span class="n">op</span> <span class="n">e</span> <span class="n">_</span> <span class="n">_</span><span class="o">)</span> <span class="o">:=</span> <span class="n">m.op</span> <span class="n">h</span> <span class="o">(</span><span class="n">foldr</span> <span class="n">t</span><span class="o">)</span> <span class="kd">end</span>
+</pre></div>
+</div>
+</div><p>Here are examples, first as we&#8217;ve seen previously, but then, using partial
+evaluation to clearly show how foldr extends the binary operation of any
+monoid to an n-ary version taking its arguments from a list data structure.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20Safe%20use%20of%20monoid%20instances%20folds%0A%23reduce%20foldr%20nat_add_monoid%20%5B1%2C2%2C3%2C4%2C5%5D%0A%23reduce%20foldr%20nat_mul_monoid%20%5B1%2C2%2C3%2C4%2C5%5D%0A%23reduce%20foldr%20monoid_list_append'%20%5B%5B1%2C2%2C3%5D%2C%5B4%2C5%2C6%5D%2C%5B7%2C8%2C9%5D%5D%0A%0A--%20Defining%20n-ary%20operators(partial%20evaluation)%0Adef%20nat_add_n%20%3A%3D%20foldr%20nat_add_monoid%0Adef%20nat_mul_n%20%3A%3D%20foldr%20nat_mul_monoid%0Adef%20list_app_n%20%7B%CE%B1%20%3A%20Type%7D%20%3A%3D%20foldr%20(%40monoid_list_append'%20%CE%B1)%20%20--%20study%20this%0A%0A--%20Applying%20n-ary%20versions%20of%20binary%20operators%20to%20*lists*%20of%20argument%20values%0A%23eval%20nat_add_n%20%5B1%2C2%2C3%2C4%2C5%2C6%2C7%2C8%2C9%2C10%5D%0A%23eval%20nat_mul_n%20%5B1%2C2%2C3%2C4%2C5%2C6%2C7%2C8%2C9%2C10%5D%0A%23eval%20list_app_n%20%5B%5B1%2C2%2C3%5D%2C%5B4%2C5%2C6%5D%2C%5B7%2C8%2C9%5D%5D%0A%23eval%20list_app_n%20%5B%20%5B%22Hello%22%2C%20%22%2C%20%22%2C%20%22Logic!%22%5D%2C%20%5B%22You%22%2C%20%22%20%22%2C%20%22are%22%2C%20%22%20%22%2C%20%22Cool!%22%5D%5D" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_78.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Safe use of monoid instances folds</span>
+<span class="k">#reduce</span> <span class="n">foldr</span> <span class="n">nat_add_monoid</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>
+<span class="k">#reduce</span> <span class="n">foldr</span> <span class="n">nat_mul_monoid</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>
+<span class="k">#reduce</span> <span class="n">foldr</span> <span class="n">monoid_list_append&#39;</span> <span class="o">[[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">],[</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">,</span><span class="mi">6</span><span class="o">],[</span><span class="mi">7</span><span class="o">,</span><span class="mi">8</span><span class="o">,</span><span class="mi">9</span><span class="o">]]</span>
+
+<span class="c1">-- Defining n-ary operators(partial evaluation)</span>
+<span class="kd">def</span> <span class="n">nat_add_n</span> <span class="o">:=</span> <span class="n">foldr</span> <span class="n">nat_add_monoid</span>
+<span class="kd">def</span> <span class="n">nat_mul_n</span> <span class="o">:=</span> <span class="n">foldr</span> <span class="n">nat_mul_monoid</span>
+<span class="kd">def</span> <span class="n">list_app_n</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">:=</span> <span class="n">foldr</span> <span class="o">(</span><span class="bp">@</span><span class="n">monoid_list_append&#39;</span> <span class="n">&#945;</span><span class="o">)</span>  <span class="c1">-- study this</span>
+
+<span class="c1">-- Applying n-ary versions of binary operators to *lists* of argument values</span>
+<span class="k">#eval</span> <span class="n">nat_add_n</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">,</span><span class="mi">6</span><span class="o">,</span><span class="mi">7</span><span class="o">,</span><span class="mi">8</span><span class="o">,</span><span class="mi">9</span><span class="o">,</span><span class="mi">10</span><span class="o">]</span>
+<span class="k">#eval</span> <span class="n">nat_mul_n</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">,</span><span class="mi">6</span><span class="o">,</span><span class="mi">7</span><span class="o">,</span><span class="mi">8</span><span class="o">,</span><span class="mi">9</span><span class="o">,</span><span class="mi">10</span><span class="o">]</span>
+<span class="k">#eval</span> <span class="n">list_app_n</span> <span class="o">[[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">],[</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">,</span><span class="mi">6</span><span class="o">],[</span><span class="mi">7</span><span class="o">,</span><span class="mi">8</span><span class="o">,</span><span class="mi">9</span><span class="o">]]</span>
+<span class="k">#eval</span> <span class="n">list_app_n</span> <span class="o">[</span> <span class="o">[</span><span class="s2">&quot;Hello&quot;</span><span class="o">,</span> <span class="s2">&quot;, &quot;</span><span class="o">,</span> <span class="s2">&quot;Logic!&quot;</span><span class="o">],</span> <span class="o">[</span><span class="s2">&quot;You&quot;</span><span class="o">,</span> <span class="s2">&quot; &quot;</span><span class="o">,</span> <span class="s2">&quot;are&quot;</span><span class="o">,</span> <span class="s2">&quot; &quot;</span><span class="o">,</span> <span class="s2">&quot;Cool!&quot;</span><span class="o">]]</span>
+</pre></div>
+</div>
+</div><p>Exercise: Define monoid instances for Boolean &amp;&amp; and Boolean ||
+operators, and use them as arguments to foldr to define their
+n-ary extensions.</p>
+</section>
+<section id="associating-values-with-types">
+<h3><span class="section-number">4.6.2. </span>Associating values with types<a class="headerlink" href="#associating-values-with-types" title="Permalink to this heading">&#61633;</a></h3>
+<p>Under construction.</p>
+</section>
+<section id="under-construction">
+<h3><span class="section-number">4.6.3. </span>Under Construction<a class="headerlink" href="#under-construction" title="Permalink to this heading">&#61633;</a></h3>
+<p>In the last chapter we started on this project. This chapter will
+finish it off with the introduction, explanation, and demonstration
+of typeclasses as a mechanism for associating monoid values, such
+as <em>&#10216;nat, +, 0&#10217;, &#10216;nat, *, 1&#10217;,</em> and <em>&#10216;list, ++, []&#10217;</em>, with element
+types such as nat and list.</p>
+</section>
 </section>
 </section>
 

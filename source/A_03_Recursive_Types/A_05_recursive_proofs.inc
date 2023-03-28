@@ -834,7 +834,6 @@ effort into solving it. If you end up fruitlessly stuck, you may go ahead and
 talk to others, but take the minimal input needed to get unstuck. Maximize your
 learning and understanding.
 
-
 Inductive Families
 ------------------
 
@@ -844,8 +843,8 @@ Coming soon.
 
   inductive le (n : nat): nat → Prop 
   -- n is an implicit firt argument to each constructor
-  | refl : le /-n-/ n     
-  | step : ∀ m, le /-n-/ m → le /-n-/ m.succ
+  | refl : le (n) n     
+  | step : ∀ m, le (n) m → le (n) m.succ
   
   -- you can see it in the types of the constructors
   #check @le.refl

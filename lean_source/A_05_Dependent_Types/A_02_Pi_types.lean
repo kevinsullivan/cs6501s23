@@ -1,5 +1,31 @@
 /- TEXT:
 
+Introduction
+------------
+
+This chapter has explained the concept and the means of constructing proofs of
+logical propositions (as well as values of computational types) of the form, 
+*∀ (a : α), P a*, 
+
+In the logical case, *P* is a predicate, P : α → Prop, *a* is a value of type 
+*α*, and *P a* is thus a proposition that depends on *a*. A proof, *all_a_Pa*, 
+of *∀ (a : α), P a,*  is thus a function that, applied to any *a : α,* returns 
+a proof of *P a*.
+
+What is notable is that the *type* of the return value depends on the *value* 
+of the argument to the function. We've seen plenty of examples like this, even
+from near the start of the course. What we have now is the conceptual framework
+and language to give a name to what we're seeing here: dependent types. The
+return type is a dependent type in that it depends on the value of the argument
+to the function itself. 
+
+We have not yet seen *computation* examples of dependent types but we soon 
+will. As an example, we can define *∀ (n : nat), n_list n* to be a function
+of *n* that returns a value of a type *n_list n*, of *n-length* lists of ℕ.
+For example, if applied to the value, 3, this function could return [0,0,0],
+or [1,2,3] but not [0,0], or [0,0,0,0].
+
+
 Π Types
 -------
 

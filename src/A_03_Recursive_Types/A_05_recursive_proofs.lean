@@ -430,10 +430,12 @@ end
 
 
 
+
+
 inductive le (n : nat): nat → Prop 
 -- n is an implicit firt argument to each constructor
-| refl : le /-n-/ n     
-| step : ∀ m, le /-n-/ m → le /-n-/ m.succ
+| refl : le (n) n     
+| step : ∀ m, le (n) m → le (n) m.succ
 
 -- you can see it in the types of the constructors
 #check @le.refl
