@@ -122,7 +122,16 @@
 <li class="toctree-l4"><a class="reference internal" href="#associating-values-with-types">4.6.1.3. Associating values with types</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id27">4.6.2. Typeclasses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id27">4.6.2. Typeclasses</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#typeclass-types">4.6.2.1. Typeclass types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typeclass-instances">4.6.2.2. Typeclass instances</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#monoid-specific-foldr-operations">4.6.2.3. Monoid-specific foldr operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#constraining-type-arguments">4.6.2.4. Constraining type arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#a-default-value-typeclass">4.6.2.5. A default value typeclass</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#operator-overloading">4.6.2.6. Operator overloading</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#structure-inheritance">4.6.2.7. Structure inheritance</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -2393,14 +2402,16 @@ are not talking about <em>type</em> inference, but <em>value</em> inference.</p>
 <p>The typeclass mechanism of Lean, first implemented for Haskell,
 provides exactly this capability. The basic idea is that if we
 annotate the add_monoid&#8217; structure definition with <em>[class]</em> we
-tell Lean to keep a table of monoid instance values, indexed by
-the element type &#945;, which it can then use later on to look up
-(infer) the monoid <em>instance</em> values that should be passed to
-various applications of foldr.</p>
+tell Lean to in effect keep a table of monoid instance values,
+indexed by the element type &#945;, which it can then use later on
+to look up (infer) the monoid <em>instance</em> values that should be
+passed to various applications of foldr.</p>
+<section id="typeclass-types">
+<h4><span class="section-number">4.6.2.1. </span>Typeclass types<a class="headerlink" href="#typeclass-types" title="Permalink to this heading">&#61633;</a></h4>
 <p>Rather than declaring <em>structure mul_monoid&#8217;</em> we would declare
 <em>&#64;[class] structure mul_monoid</em>, or just <em>class mul_monoid</em>.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%40%5Bclass%5D%20structure%20mul_monoid%20(%CE%B1%20%3A%20Type)%20%3A%20Type%20%3A%3D%20mk%3A%3A%0A%20%20(op%20%3A%20%CE%B1%20%20%E2%86%92%20%CE%B1%20%20%E2%86%92%20%CE%B1%20)%20%20%20--%20data%0A%20%20(e%20%3A%20%CE%B1%20)%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20data%0A%20%20(ident%20%3A%20%E2%88%80%20a%2C%20op%20e%20a%20%3D%20a%20%E2%88%A7%20op%20a%20e%20%3D%20a)%0A%20%20(assoc%3A%20%E2%88%80%20a%20b%20c%2C%20op%20a%20(op%20b%20c)%20%3D%20op%20(op%20a%20b)%20c)%0A%0A--%20unfortunate%20but%20unavoidable%20duplication%0Aclass%20add_monoid%20(%CE%B1%20%3A%20Type)%20%3A%20Type%20%3A%3D%20mk%3A%3A%0A%20%20(op%20%3A%20%CE%B1%20%20%E2%86%92%20%CE%B1%20%20%E2%86%92%20%CE%B1%20)%20%20%20--%20data%0A%20%20(e%20%3A%20%CE%B1%20)%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20data%0A%20%20(ident%20%3A%20%E2%88%80%20a%2C%20op%20e%20a%20%3D%20a%20%E2%88%A7%20op%20a%20e%20%3D%20a)%0A%20%20(assoc%3A%20%E2%88%80%20a%20b%20c%2C%20op%20a%20(op%20b%20c)%20%3D%20op%20(op%20a%20b)%20c)" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_242.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%40%5Bclass%5D%20structure%20mul_monoid%20(%CE%B1%20%3A%20Type)%20%3A%20Type%20%3A%3D%20mk%3A%3A%0A%20%20(op%20%3A%20%CE%B1%20%20%E2%86%92%20%CE%B1%20%20%E2%86%92%20%CE%B1%20)%20%20%20--%20data%0A%20%20(e%20%3A%20%CE%B1%20)%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20data%0A%20%20(ident%20%3A%20%E2%88%80%20a%2C%20op%20e%20a%20%3D%20a%20%E2%88%A7%20op%20a%20e%20%3D%20a)%0A%20%20(assoc%3A%20%E2%88%80%20a%20b%20c%2C%20op%20a%20(op%20b%20c)%20%3D%20op%20(op%20a%20b)%20c)%0A%0A--%20unfortunate%20but%20unavoidable%20duplication%0Aclass%20add_monoid%20(%CE%B1%20%3A%20Type)%20%3A%20Type%20%3A%3D%20mk%3A%3A%0A%20%20(op%20%3A%20%CE%B1%20%20%E2%86%92%20%CE%B1%20%20%E2%86%92%20%CE%B1%20)%20%20%20--%20data%0A%20%20(e%20%3A%20%CE%B1%20)%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20data%0A%20%20(ident%20%3A%20%E2%88%80%20a%2C%20op%20e%20a%20%3D%20a%20%E2%88%A7%20op%20a%20e%20%3D%20a)%0A%20%20(assoc%3A%20%E2%88%80%20a%20b%20c%2C%20op%20a%20(op%20b%20c)%20%3D%20op%20(op%20a%20b)%20c)" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_245.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">@[class]</span> <span class="kd">structure</span> <span class="n">mul_monoid</span> <span class="o">(</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">:</span> <span class="kt">Type</span> <span class="o">:=</span> <span class="n">mk</span><span class="o">::</span>
   <span class="o">(</span><span class="n">op</span> <span class="o">:</span> <span class="n">&#945;</span>  <span class="bp">&#8594;</span> <span class="n">&#945;</span>  <span class="bp">&#8594;</span> <span class="n">&#945;</span> <span class="o">)</span>   <span class="c1">-- data</span>
   <span class="o">(</span><span class="n">e</span> <span class="o">:</span> <span class="n">&#945;</span> <span class="o">)</span>              <span class="c1">-- data</span>
@@ -2419,15 +2430,19 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 a structure whose instances are to be indexed by type values,
 &#945;. When we define an instance, we annotate it with &#64;[instance]
 or just use the <em>instance</em> keyword.</p>
+</section>
+<section id="typeclass-instances">
+<h4><span class="section-number">4.6.2.2. </span>Typeclass instances<a class="headerlink" href="#typeclass-instances" title="Permalink to this heading">&#61633;</a></h4>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%40%5Binstance%5D%20def%20nat_add_monoid%20%3A%3D%20add_monoid.mk%20nat.add%200%20sorry%20sorry%20--%20zero_ident_add_nat%20nat_add_assoc%0Ainstance%20nat_mul_monoid%20%3A%3D%20mul_monoid.mk%20nat.mul%201%20sorry%20sorry%20--%20mul_one_ident_nat%20nat_mul_assoc%0Ainstance%20monoid_list_append%20%7B%CE%B1%20%3A%20Type%7D%20%3A%20%40add_monoid%20(list%20%CE%B1)%20%3A%3D%20add_monoid.mk%20list.append%20%5B%5D%20sorry%20sorry" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_262.lean">
-try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">@[instance]</span> <span class="kd">def</span> <span class="n">nat_add_monoid</span> <span class="o">:=</span> <span class="n">add_monoid.mk</span> <span class="n">nat.add</span> <span class="mi">0</span> <span class="gr">sorry</span> <span class="gr">sorry</span> <span class="c1">-- zero_ident_add_nat nat_add_assoc</span>
-<span class="kd">instance</span> <span class="n">nat_mul_monoid</span> <span class="o">:=</span> <span class="n">mul_monoid.mk</span> <span class="n">nat.mul</span> <span class="mi">1</span> <span class="gr">sorry</span> <span class="gr">sorry</span> <span class="c1">-- mul_one_ident_nat nat_mul_assoc</span>
-<span class="kd">instance</span> <span class="n">monoid_list_append</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">:</span> <span class="bp">@</span><span class="n">add_monoid</span> <span class="o">(</span><span class="n">list</span> <span class="n">&#945;</span><span class="o">)</span> <span class="o">:=</span> <span class="n">add_monoid.mk</span> <span class="n">list.append</span> <span class="o">[]</span> <span class="gr">sorry</span> <span class="gr">sorry</span>
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%40%5Binstance%5D%20def%20nat_add_monoid%20%3A%20add_monoid%20nat%20%3A%3D%20add_monoid.mk%20nat.add%200%20sorry%20sorry%20--%20zero_ident_add_nat%20nat_add_assoc%0Ainstance%20list_append_monoid%20%7B%CE%B1%20%3A%20Type%7D%20%3A%20%40add_monoid%20(list%20%CE%B1)%20%3A%3D%20add_monoid.mk%20list.append%20%5B%5D%20sorry%20sorry" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_268.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">@[instance]</span> <span class="kd">def</span> <span class="n">nat_add_monoid</span> <span class="o">:</span> <span class="n">add_monoid</span> <span class="n">nat</span> <span class="o">:=</span> <span class="n">add_monoid.mk</span> <span class="n">nat.add</span> <span class="mi">0</span> <span class="gr">sorry</span> <span class="gr">sorry</span> <span class="c1">-- zero_ident_add_nat nat_add_assoc</span>
+<span class="kd">instance</span> <span class="n">list_append_monoid</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">:</span> <span class="bp">@</span><span class="n">add_monoid</span> <span class="o">(</span><span class="n">list</span> <span class="n">&#945;</span><span class="o">)</span> <span class="o">:=</span> <span class="n">add_monoid.mk</span> <span class="n">list.append</span> <span class="o">[]</span> <span class="gr">sorry</span> <span class="gr">sorry</span>
 </pre></div>
 </div>
-</div><div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20%20mul_foldr%20%7B%CE%B1%20%3A%20Type%7D%20%5Bm%20%3A%20mul_monoid%20%CE%B1%5D%20%3A%20list%20%CE%B1%20%E2%86%92%20%CE%B1%0A%7C%20list.nil%20%3A%3D%20match%20m%20with%20(mul_monoid.mk%20op%20e%20_%20_)%20%3A%3D%20e%20end%0A%7C%20(h%3A%3At)%20%3A%3D%20match%20m%20with%20(mul_monoid.mk%20op%20e%20_%20_)%20%3A%3D%20m.op%20h%20(mul_foldr%20t)%20end%0A%0Adef%20%20add_foldr%20%7B%CE%B1%20%3A%20Type%7D%20%5Bm%20%3A%20add_monoid%20%CE%B1%5D%20%3A%20list%20%CE%B1%20%E2%86%92%20%CE%B1%0A%7C%20list.nil%20%3A%3D%20match%20m%20with%20(add_monoid.mk%20op%20e%20_%20_)%20%3A%3D%20e%20end%0A%7C%20(h%3A%3At)%20%3A%3D%20match%20m%20with%20(add_monoid.mk%20op%20e%20_%20_)%20%3A%3D%20m.op%20h%20(add_foldr%20t)%20end" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_269.lean">
+</div><p>Finally, we use <em>square</em> brackets to tell Lean to infer typeclass instances
+at function application time. Here are revised versions of our foldr functions.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20%20mul_foldr%20%7B%CE%B1%20%3A%20Type%7D%20%5Bm%20%3A%20mul_monoid%20%CE%B1%5D%20%3A%20list%20%CE%B1%20%E2%86%92%20%CE%B1%0A%7C%20list.nil%20%3A%3D%20match%20m%20with%20(mul_monoid.mk%20op%20e%20_%20_)%20%3A%3D%20e%20end%0A%7C%20(h%3A%3At)%20%3A%3D%20match%20m%20with%20(mul_monoid.mk%20op%20e%20_%20_)%20%3A%3D%20m.op%20h%20(mul_foldr%20t)%20end%0A%0Adef%20%20add_foldr%20%7B%CE%B1%20%3A%20Type%7D%20%5Bm%20%3A%20add_monoid%20%CE%B1%5D%20%3A%20list%20%CE%B1%20%E2%86%92%20%CE%B1%0A%7C%20list.nil%20%3A%3D%20match%20m%20with%20(add_monoid.mk%20op%20e%20_%20_)%20%3A%3D%20e%20end%0A%7C%20(h%3A%3At)%20%3A%3D%20match%20m%20with%20(add_monoid.mk%20op%20e%20_%20_)%20%3A%3D%20m.op%20h%20(add_foldr%20t)%20end" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_276.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span>  <span class="n">mul_foldr</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">[</span><span class="n">m</span> <span class="o">:</span> <span class="n">mul_monoid</span> <span class="n">&#945;</span><span class="o">]</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span> <span class="bp">&#8594;</span> <span class="n">&#945;</span>
 <span class="bp">|</span> <span class="n">list.nil</span> <span class="o">:=</span> <span class="k">match</span> <span class="n">m</span> <span class="k">with</span> <span class="o">(</span><span class="n">mul_monoid.mk</span> <span class="n">op</span> <span class="n">e</span> <span class="n">_</span> <span class="n">_</span><span class="o">)</span> <span class="o">:=</span> <span class="n">e</span> <span class="kd">end</span>
 <span class="bp">|</span> <span class="o">(</span><span class="n">h</span><span class="o">::</span><span class="n">t</span><span class="o">)</span> <span class="o">:=</span> <span class="k">match</span> <span class="n">m</span> <span class="k">with</span> <span class="o">(</span><span class="n">mul_monoid.mk</span> <span class="n">op</span> <span class="n">e</span> <span class="n">_</span> <span class="n">_</span><span class="o">)</span> <span class="o">:=</span> <span class="n">m.op</span> <span class="n">h</span> <span class="o">(</span><span class="n">mul_foldr</span> <span class="n">t</span><span class="o">)</span> <span class="kd">end</span>
@@ -2437,45 +2452,154 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <span class="bp">|</span> <span class="o">(</span><span class="n">h</span><span class="o">::</span><span class="n">t</span><span class="o">)</span> <span class="o">:=</span> <span class="k">match</span> <span class="n">m</span> <span class="k">with</span> <span class="o">(</span><span class="n">add_monoid.mk</span> <span class="n">op</span> <span class="n">e</span> <span class="n">_</span> <span class="n">_</span><span class="o">)</span> <span class="o">:=</span> <span class="n">m.op</span> <span class="n">h</span> <span class="o">(</span><span class="n">add_foldr</span> <span class="n">t</span><span class="o">)</span> <span class="kd">end</span>
 </pre></div>
 </div>
-</div><p>Now we can apply foldr functions without having to give explict monoid
+</div></section>
+<section id="monoid-specific-foldr-operations">
+<h4><span class="section-number">4.6.2.3. </span>Monoid-specific foldr operations<a class="headerlink" href="#monoid-specific-foldr-operations" title="Permalink to this heading">&#61633;</a></h4>
+<p>Now we can apply foldr functions without having to give explict monoid
 instance arguments.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23eval%20add_foldr%20%5B1%2C2%2C3%2C4%2C5%5D%0A%23eval%20add_foldr%20%5B%5B1%2C2%2C3%5D%2C%5B4%2C5%2C6%5D%2C%5B7%2C8%2C9%5D%5D%0A%23eval%20mul_foldr%20%5B1%2C2%2C3%2C4%2C5%5D" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_282.lean">
-try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#eval</span> <span class="n">add_foldr</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>
-<span class="k">#eval</span> <span class="n">add_foldr</span> <span class="o">[[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">],[</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">,</span><span class="mi">6</span><span class="o">],[</span><span class="mi">7</span><span class="o">,</span><span class="mi">8</span><span class="o">,</span><span class="mi">9</span><span class="o">]]</span>
-<span class="k">#eval</span> <span class="n">mul_foldr</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23eval%20add_foldr%20%5B1%2C2%2C3%2C4%2C5%5D%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20op%20%3D%20nat.add%0A%23eval%20add_foldr%20%5B%5B1%2C2%2C3%5D%2C%5B4%2C5%2C6%5D%2C%5B7%2C8%2C9%5D%5D%20%20%20--%20op%20%3D%20list.append%0A%23eval%20mul_foldr%20%5B1%2C2%2C3%2C4%2C5%5D%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20error%3A%20no%20instance%20available!" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_293.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#eval</span> <span class="n">add_foldr</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>                 <span class="c1">-- op = nat.add</span>
+<span class="k">#eval</span> <span class="n">add_foldr</span> <span class="o">[[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">],[</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">,</span><span class="mi">6</span><span class="o">],[</span><span class="mi">7</span><span class="o">,</span><span class="mi">8</span><span class="o">,</span><span class="mi">9</span><span class="o">]]</span>   <span class="c1">-- op = list.append</span>
+<span class="k">#eval</span> <span class="n">mul_foldr</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>                 <span class="c1">-- error: no instance available!</span>
 </pre></div>
 </div>
-</div><p>To finish this section, let&#8217;s give another English reading
-of the type specification of our foldr operations. We&#8217;ll take
-mul_foldr as an example.</p>
+</div></section>
+<section id="constraining-type-arguments">
+<h4><span class="section-number">4.6.2.4. </span>Constraining type arguments<a class="headerlink" href="#constraining-type-arguments" title="Permalink to this heading">&#61633;</a></h4>
+<p>The next idea we&#8217;ll make explicit is that typeclass arguments
+can be used to constrain type arguments, specifically to types
+for which a typeclass instance for the particular type has been
+defined. To start, let&#8217;s give another English reading of the type
+specification of our foldr operations. We&#8217;ll take  mul_foldr as
+an example.</p>
 <ul class="simple">
 <li><p>def  mul_foldr {&#945; : Type} [m : mul_monoid &#945;] : list &#945; &#8594; &#945;</p></li>
 </ul>
 <p>We can now read this as follows: The mul_foldr operation takes
-any element type, &#945;, <em>as long as &#945; has a multiplicative monoid
-structure,</em> along with a list of &#945; elements. It then returns a
-value of the &#945; type. In other words, the requirement that there
-be a typeclass instance for &#945; imposes a key <em>constraint</em> on the
-<em>type values</em> that can be passed to foldr. You can only apply
-foldr to a list of values of type &#945; if &#945; has the structure of
-a multiplicative monoid.</p>
+as its first (implicit) argument, any element type, &#945;, <em>as long
+as &#945; has been &#8220;imbued with&#8221; a multiplicative monoid structure.</em>
+Then if given a list of &#945; elements it returns a reduced value
+of the &#945; type.</p>
+<p>In other words, the requirement that there be a typeclass
+instance for &#945; imposes a <em>constraint</em> on the <em>type values</em>
+that can be passed to foldr. You can only apply mul_foldr to
+a  list of values of type &#945; if &#945; has been given the structure
+of a multiplicative monoid (by the definition of a suitable
+monoid typeclass instance).</p>
 <p>Let&#8217;s see what happens if we try to apply mul_foldr to a list
 of values of a type, &#945;, for which we have not yet defined a
 monoid structure. As you will guess, Lean will tell us that
 it can&#8217;t infer a required typeclass instance.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23eval%20mul_foldr%20%5Btt%2Cff%2Ctt%5D" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_309.lean">
-try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#eval</span> <span class="n">mul_foldr</span> <span class="o">[</span><span class="n">tt</span><span class="o">,</span><span class="n">ff</span><span class="o">,</span><span class="n">tt</span><span class="o">]</span>
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=instance%20nat_mul_monoid%20%3A%3D%0A%20%20mul_monoid.mk%20nat.mul%201%20sorry%20sorry%0Ainstance%20bool_mul_monoid%20%3A%20mul_monoid%20bool%20%3A%3D%0A%20%20mul_monoid.mk%20band%20tt%20sorry%20sorry%0A%0A%23check%20mul_monoid%0A%23check%20add_monoid%0A%23eval%20mul_foldr%20%5Btt%2Cff%2Ctt%5D%0A%23eval%20add_foldr%20%5Btt%2Cff%2Ctt%5D%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20error%3A%20no%20instance%0A%0A%0A--%20Exercise%3A%20define%20a%20typeclass%20instance%20to%20fix%20this%20error." target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_331.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">instance</span> <span class="n">nat_mul_monoid</span> <span class="o">:=</span>
+  <span class="n">mul_monoid.mk</span> <span class="n">nat.mul</span> <span class="mi">1</span> <span class="gr">sorry</span> <span class="gr">sorry</span>
+<span class="kd">instance</span> <span class="n">bool_mul_monoid</span> <span class="o">:</span> <span class="n">mul_monoid</span> <span class="n">bool</span> <span class="o">:=</span>
+  <span class="n">mul_monoid.mk</span> <span class="n">band</span> <span class="n">tt</span> <span class="gr">sorry</span> <span class="gr">sorry</span>
+
+<span class="k">#check</span> <span class="n">mul_monoid</span>
+<span class="k">#check</span> <span class="n">add_monoid</span>
+<span class="k">#eval</span> <span class="n">mul_foldr</span> <span class="o">[</span><span class="n">tt</span><span class="o">,</span><span class="n">ff</span><span class="o">,</span><span class="n">tt</span><span class="o">]</span>
+<span class="k">#eval</span> <span class="n">add_foldr</span> <span class="o">[</span><span class="n">tt</span><span class="o">,</span><span class="n">ff</span><span class="o">,</span><span class="n">tt</span><span class="o">]</span>                      <span class="c1">-- error: no instance</span>
+
+
+<span class="c1">-- Exercise: define a typeclass instance to fix this error.</span>
 </pre></div>
 </div>
-</div><p>In the next section, we&#8217;ll see how typeclass &#8220;inheritance&#8221; can
-be used to define rich and complex hierarchies of type classes.
-For example, we&#8217;ll define &#8220;group&#8221; as an extension of monoid with
-an additional <em>inverse</em> operation and proof that every element
-in a given group (e.g., of the integers or rationals) has an
-inverse. One could then pass any group to any function expecting
-a monoid, because such an object &#8220;is&#8221; automatically a monoid too.</p>
+</div></section>
+<section id="a-default-value-typeclass">
+<h4><span class="section-number">4.6.2.5. </span>A default value typeclass<a class="headerlink" href="#a-default-value-typeclass" title="Permalink to this heading">&#61633;</a></h4>
+<p>It&#8217;ll be helpful to see a simpler typeclass and how it can be
+used to help define otherwise troublesome functions. We will
+define a typeclass, <em>default_value &#945;</em>, an instance of which
+has just one field, holding a single value of type &#945; to be
+used as a default return value in function definitions in case
+of exceptions.</p>
+<p>In particular, we&#8217;ll see how to use it to write a total function
+that returns the value at the head of any list of &#945;, as long as
+there&#8217;s a default_value instance for &#945; providing an &#945; value to
+return in case one tries to compute the head of an empty list.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=class%20default_value%20(%CE%B1%20%3A%20Type)%20%3A%3D%20mk%3A%3A%0A(val%20%3A%20%CE%B1)%0A%0Ainstance%20nat_def%20%3A%20default_value%20nat%20%3A%3D%20default_value.mk%200%0Ainstance%20bool_def%20%3A%20default_value%20bool%20%3A%3D%20default_value.mk%20tt%0Ainstance%20list_def%20%7B%CE%B1%20%3A%20Type%7D%20%3A%20default_value%20(list%20%CE%B1)%20%3A%3D%20default_value.mk%20%5B%5D%0A%0Adef%20list_head%20%7B%CE%B1%20%3A%20Type%7D%20%5Bd%20%3A%20default_value%20%CE%B1%5D%20%3A%20list%20%CE%B1%20%E2%86%92%20%CE%B1%0A%7C%20%5B%5D%20%3A%3D%20d.val%0A%7C%20(h%3A%3At)%20%3A%3D%20h%0A%0A%23eval%20list_head%20%5B1%2C2%2C3%5D%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20returns%20nat%0A%23eval%20list_head%20%5Bff%2Ctt%2Cff%5D%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20returns%20bool%0A%23eval%20list_head%20%5B%5B1%2C2%2C3%5D%2C%5B4%2C5%2C6%5D%2C%5B7%2C8%2C9%5D%5D%20%20%20--%20returns%20list%20nat%0A%0A%23eval%20list_head%20(%5B%5D%20%3A%20list%20nat)%20%20%20%20%20%20%20%20%20%20%20%20%20--%20returns%20default%20nat!%0A%23eval%20list_head%20(%5B%5D%20%3A%20list%20bool)%20%20%20%20%20%20%20%20%20%20%20%20--%20returns%20default%20bool!%0A%23eval%20list_head%20(%5B%5D%20%3A%20list%20string)%20%20%20%20%20%20%20%20%20%20--%20error%3A%20no%20default%20for%20string%0A%0A--%20EXERCISE%3A%20define%20a%20default_value%20typeclass%20instance%20to%20fix%20that%20error" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_362.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">class</span> <span class="n">default_value</span> <span class="o">(</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">:=</span> <span class="n">mk</span><span class="o">::</span>
+<span class="o">(</span><span class="n">val</span> <span class="o">:</span> <span class="n">&#945;</span><span class="o">)</span>
+
+<span class="kd">instance</span> <span class="n">nat_def</span> <span class="o">:</span> <span class="n">default_value</span> <span class="n">nat</span> <span class="o">:=</span> <span class="n">default_value.mk</span> <span class="mi">0</span>
+<span class="kd">instance</span> <span class="n">bool_def</span> <span class="o">:</span> <span class="n">default_value</span> <span class="n">bool</span> <span class="o">:=</span> <span class="n">default_value.mk</span> <span class="n">tt</span>
+<span class="kd">instance</span> <span class="n">list_def</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">:</span> <span class="n">default_value</span> <span class="o">(</span><span class="n">list</span> <span class="n">&#945;</span><span class="o">)</span> <span class="o">:=</span> <span class="n">default_value.mk</span> <span class="o">[]</span>
+
+<span class="kd">def</span> <span class="n">list_head</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">[</span><span class="n">d</span> <span class="o">:</span> <span class="n">default_value</span> <span class="n">&#945;</span><span class="o">]</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span> <span class="bp">&#8594;</span> <span class="n">&#945;</span>
+<span class="bp">|</span> <span class="o">[]</span> <span class="o">:=</span> <span class="n">d.val</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">h</span><span class="o">::</span><span class="n">t</span><span class="o">)</span> <span class="o">:=</span> <span class="n">h</span>
+
+<span class="k">#eval</span> <span class="n">list_head</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">]</span>                     <span class="c1">-- returns nat</span>
+<span class="k">#eval</span> <span class="n">list_head</span> <span class="o">[</span><span class="n">ff</span><span class="o">,</span><span class="n">tt</span><span class="o">,</span><span class="n">ff</span><span class="o">]</span>                  <span class="c1">-- returns bool</span>
+<span class="k">#eval</span> <span class="n">list_head</span> <span class="o">[[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">],[</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">,</span><span class="mi">6</span><span class="o">],[</span><span class="mi">7</span><span class="o">,</span><span class="mi">8</span><span class="o">,</span><span class="mi">9</span><span class="o">]]</span>   <span class="c1">-- returns list nat</span>
+
+<span class="k">#eval</span> <span class="n">list_head</span> <span class="o">([]</span> <span class="o">:</span> <span class="n">list</span> <span class="n">nat</span><span class="o">)</span>             <span class="c1">-- returns default nat!</span>
+<span class="k">#eval</span> <span class="n">list_head</span> <span class="o">([]</span> <span class="o">:</span> <span class="n">list</span> <span class="n">bool</span><span class="o">)</span>            <span class="c1">-- returns default bool!</span>
+<span class="k">#eval</span> <span class="n">list_head</span> <span class="o">([]</span> <span class="o">:</span> <span class="n">list</span> <span class="n">string</span><span class="o">)</span>          <span class="c1">-- error: no default for string</span>
+
+<span class="c1">-- EXERCISE: define a default_value typeclass instance to fix that error</span>
+</pre></div>
+</div>
+</div></section>
+<section id="operator-overloading">
+<h4><span class="section-number">4.6.2.6. </span>Operator overloading<a class="headerlink" href="#operator-overloading" title="Permalink to this heading">&#61633;</a></h4>
+<p>The original purpose for typeclasses in Haskell was to enable
+overloading of operator notations. For example, we might want
+the infix notation, <a href="#id28"><span class="problematic" id="id29">*</span></a>, to mean nat.mul for natural numbers but
+bool.band for Boolean values. To do this is just an application
+of what you now already know. Let&#8217;s see.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20First%20the%20typeclass%0Aclass%20has_mult%20(%CE%B1%20%3A%20Type)%20%3A%3D%20%20%20%20--%20has_mul%20in%20Lean%3B%20also%20%22dropping%20mk%3A%3A%22%0A(op%20%3A%20%CE%B1%20%E2%86%92%20%CE%B1%20%E2%86%92%20%CE%B1)%0A%0A--%20Then%20an%20overloaded%20operator%3B%20applies%20right%20version%20of%20op%20for%20%CE%B1%0Adef%20mult%20%7B%CE%B1%20%3A%20Type%7D%20%5Bhas_mult%20%CE%B1%5D%20(a%20b%20%3A%20%CE%B1)%20%3A%3D%20has_mult.op%20a%20b%0A%0Ainstance%20has_mult_nat%20%3A%20has_mult%20nat%20%3A%3D%20has_mult.mk%20nat.mul%0Ainstance%20has_mult_bool%20%3A%20has_mult%20bool%20%3A%3D%20has_mult.mk%20band%0A%0A%23eval%20mult%203%204%0A%23eval%20mult%20tt%20tt%0A%23eval%20mult%20ff%20tt%0A%23eval%20mult%20tt%20ff%0A%23eval%20mult%20ff%20ff%0A%0A--%20Now%20all%20we%20need%20is%20a%20notation%0A%0Anotation%20(name%20%3A%3D%20mult)%20a%20%60%20*%20%60%20b%20%3A%3D%20mult%20a%20b%0A%0A%23eval%20tt%20*%20ff%20%20%20%20%20--%20this%20works%20well%0A%23eval%202%20*%203%20%20%20%20%20%20%20--%20oops%2C%20*%20already%20overloaded%2C%20thus%20*ambiguous*" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_395.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- First the typeclass</span>
+<span class="kd">class</span> <span class="n">has_mult</span> <span class="o">(</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">:=</span>    <span class="c1">-- has_mul in Lean; also &quot;dropping mk::&quot;</span>
+<span class="o">(</span><span class="n">op</span> <span class="o">:</span> <span class="n">&#945;</span> <span class="bp">&#8594;</span> <span class="n">&#945;</span> <span class="bp">&#8594;</span> <span class="n">&#945;</span><span class="o">)</span>
+
+<span class="c1">-- Then an overloaded operator; applies right version of op for &#945;</span>
+<span class="kd">def</span> <span class="n">mult</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">[</span><span class="n">has_mult</span> <span class="n">&#945;</span><span class="o">]</span> <span class="o">(</span><span class="n">a</span> <span class="n">b</span> <span class="o">:</span> <span class="n">&#945;</span><span class="o">)</span> <span class="o">:=</span> <span class="n">has_mult.op</span> <span class="n">a</span> <span class="n">b</span>
+
+<span class="kd">instance</span> <span class="n">has_mult_nat</span> <span class="o">:</span> <span class="n">has_mult</span> <span class="n">nat</span> <span class="o">:=</span> <span class="n">has_mult.mk</span> <span class="n">nat.mul</span>
+<span class="kd">instance</span> <span class="n">has_mult_bool</span> <span class="o">:</span> <span class="n">has_mult</span> <span class="n">bool</span> <span class="o">:=</span> <span class="n">has_mult.mk</span> <span class="n">band</span>
+
+<span class="k">#eval</span> <span class="n">mult</span> <span class="mi">3</span> <span class="mi">4</span>
+<span class="k">#eval</span> <span class="n">mult</span> <span class="n">tt</span> <span class="n">tt</span>
+<span class="k">#eval</span> <span class="n">mult</span> <span class="n">ff</span> <span class="n">tt</span>
+<span class="k">#eval</span> <span class="n">mult</span> <span class="n">tt</span> <span class="n">ff</span>
+<span class="k">#eval</span> <span class="n">mult</span> <span class="n">ff</span> <span class="n">ff</span>
+
+<span class="c1">-- Now all we need is a notation</span>
+
+<span class="kd">notation</span> <span class="o">(</span><span class="n">name</span> <span class="o">:=</span> <span class="n">mult</span><span class="o">)</span> <span class="n">a</span> <span class="bp">`</span> <span class="bp">*</span> <span class="bp">`</span> <span class="n">b</span> <span class="o">:=</span> <span class="n">mult</span> <span class="n">a</span> <span class="n">b</span>
+
+<span class="k">#eval</span> <span class="n">tt</span> <span class="bp">*</span> <span class="n">ff</span>     <span class="c1">-- this works well</span>
+<span class="k">#eval</span> <span class="mi">2</span> <span class="bp">*</span> <span class="mi">3</span>       <span class="c1">-- oops, * already overloaded, thus *ambiguous*</span>
+</pre></div>
+</div>
+</div></section>
+<section id="structure-inheritance">
+<h4><span class="section-number">4.6.2.7. </span>Structure inheritance<a class="headerlink" href="#structure-inheritance" title="Permalink to this heading">&#61633;</a></h4>
+<p>Typeclass &#8220;interface inheritance&#8221; can be used to define complex
+typeclasses as compositions of simpler ones. To see an example,
+let&#8217;s look at the actual definition of (multiplicative) monoid
+in the Lean libraries. To use the monoid typeclass we have to
+import the library in which it&#8217;s defined. Note that at the top
+of this file we&#8217;re now importing algebra.group. To figure out
+what library to import, use the online Lean mathlib reference.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20monoid%20%20%20%20%20%20%20%20%20--%20extends%20semigroup%2C%20mul_one_class%0A%23check%20semigroup%20%20%20%20%20%20--%20extends%20has_mul%0A%23check%20has_mul%20%20%20%20%20%20%20%20--%20as%20we've%20seen%0A%23check%20mul_one_class%20%20--%20extends%20has_one%0A%23check%20has_one%20%20%20%20%20%20%20%20--%20arbitrary%20value%20called%20%22one%22%0A%0A--%20See%20documentation%20for%20how%20it%20all%20fits%20together." target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_432.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="n">monoid</span>         <span class="c1">-- extends semigroup, mul_one_class</span>
+<span class="k">#check</span> <span class="n">semigroup</span>      <span class="c1">-- extends has_mul</span>
+<span class="k">#check</span> <span class="n">has_mul</span>        <span class="c1">-- as we&#39;ve seen</span>
+<span class="k">#check</span> <span class="n">mul_one_class</span>  <span class="c1">-- extends has_one</span>
+<span class="k">#check</span> <span class="n">has_one</span>        <span class="c1">-- arbitrary value called &quot;one&quot;</span>
+
+<span class="c1">-- See documentation for how it all fits together.</span>
+</pre></div>
+</div>
+</div></section>
 </section>
 </section>
 </section>

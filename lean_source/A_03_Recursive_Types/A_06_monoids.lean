@@ -318,7 +318,7 @@ def  mul_foldr {α : Type} [m : mul_monoid α] : list α → α
 | list.nil := match m with (mul_monoid.mk op e _ _) := e end
 | (h::t) := match m with (mul_monoid.mk op e _ _) := m.op h (mul_foldr t) end
 
-def  add_foldr {α : Type} [m : add_monoid α] : list α → α 
+def add_foldr {α : Type} [m : add_monoid α] : list α → α 
 | list.nil := match m with (add_monoid.mk op e _ _) := e end
 | (h::t) := match m with (add_monoid.mk op e _ _) := m.op h (add_foldr t) end
 -- QUOTE. 
@@ -337,6 +337,8 @@ TEXT. -/
 #eval add_foldr [1,2,3,4,5]                 -- op = nat.add
 #eval add_foldr [[1,2,3],[4,5,6],[7,8,9]]   -- op = list.append
 #eval mul_foldr [1,2,3,4,5]                 -- error: no instance available!
+
+
 -- QUOTE. 
 
 
@@ -426,6 +428,7 @@ def list_head {α : Type} [d : default_value α] : list α → α
 
 #eval list_head ([] : list nat)             -- returns default nat!     
 #eval list_head ([] : list bool)            -- returns default bool!
+
 #eval list_head ([] : list string)          -- error: no default for string
 
 -- EXERCISE: define a default_value typeclass instance to fix that error
