@@ -115,10 +115,14 @@
 <li class="toctree-l3"><a class="reference internal" href="#inductive-families">4.5.3. Inductive Families</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#monoids">4.6. Monoids</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#where-we-ve-gotten-to">4.6.1. Where we&#8217;ve gotten to</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#associating-values-with-types">4.6.2. Associating values with types</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#under-construction">4.6.3. Under Construction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#typeclasses">4.6. Typeclasses</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#summary-to-present">4.6.1. Summary to Present</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#algebraic-structures">4.6.1.1. Algebraic Structures</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#monoids-so-far">4.6.1.2. Monoids so far</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#associating-values-with-types">4.6.1.3. Associating values with types</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id27">4.6.2. Typeclasses</a></li>
 </ul>
 </li>
 </ul>
@@ -2179,41 +2183,70 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </div>
 </div></section>
 </section>
-<section id="monoids">
-<h2><span class="section-number">4.6. </span>Monoids<a class="headerlink" href="#monoids" title="Permalink to this heading">&#61633;</a></h2>
+<section id="typeclasses">
+<h2><span class="section-number">4.6. </span>Typeclasses<a class="headerlink" href="#typeclasses" title="Permalink to this heading">&#61633;</a></h2>
 <p>This chapter has taught you about proof by induction. Our need
 for this proof construction method was created by our need for
 proofs of some basic properties of all natural numbers: namely,
 for any <em>a</em>, <em>0</em> is both a left and a right identity; and for any
 <em>a, b,</em> and <em>c,</em> that <em>a + b + c = (a + b) + c</em>. (As application
 is left associative we omit explicit parentheses in <em>(b + c)</em>.)</p>
-<p>The for these proofs in turn was driven by our need to specify
+<p>The need for these proofs in turn was driven by our need to specify
 what it means to be a monoid, so that we could pass values of a
-<em>monoid</em> type to our favorite higher-order function, <em>foldr</em>,
-rather than separate <em>operator</em> and <em>identity</em> arguments.</p>
+<em>monoid</em> type, rather than separate <em>operator</em> and <em>identity</em>
+arguments, to our higher-order function, <a href="#id19"><span class="problematic" id="id20">*</span></a>foldr.</p>
 <p>We now finish off this chapter by completing our task to specify
-that it means in the abstract to be a <em>monoid</em> and how that will
+what it means, in the abstract, to be a <em>monoid</em>, how that will
 enable us to define a version of <em>foldr</em> that wil works for any
-monoid: extending its binary operator to an <em>n-ary</em> operator on
-a list of argument values.</p>
+monoid, and finally how the right monoid to use can be inferred
+automatically from the type of elements in a given list. For that,
+we will need the concept of typeclasses and typeclass inference.</p>
 <p>We&#8217;ll start with where we&#8217;ve gotten to up to now, and will then
 take it the rest of the way from there.</p>
-<section id="where-we-ve-gotten-to">
-<h3><span class="section-number">4.6.1. </span>Where we&#8217;ve gotten to<a class="headerlink" href="#where-we-ve-gotten-to" title="Permalink to this heading">&#61633;</a></h3>
+<section id="summary-to-present">
+<h3><span class="section-number">4.6.1. </span>Summary to Present<a class="headerlink" href="#summary-to-present" title="Permalink to this heading">&#61633;</a></h3>
+<p>Let&#8217;s start by reviewing what we&#8217;ve done so far.</p>
+<section id="algebraic-structures">
+<h4><span class="section-number">4.6.1.1. </span>Algebraic Structures<a class="headerlink" href="#algebraic-structures" title="Permalink to this heading">&#61633;</a></h4>
 <p>The concept of a <em>monoid</em> is a simple but important example of
-an algebraic structure. This chapter will explain how better to
-formalize such structures in Lean, settings patterns for more
-abstract mathematics and for certain generalized programming
-concepts as well.</p>
-<p>We defined a monoid type with one constructor (mk), polymorphic
-in the type element type, withan associative binary operator,
-<em>op</em>, and an identity element, <em>e</em>, for <em>op</em>.</p>
-<p>In this version the names <em>id</em> and <em>e</em> switched from our earlier
-version. The letter <em>e</em> is often used to represent an identity
-element, so we made that switch here.</p>
+an algebraic structure. An algebraic structure extends a set of
+elements of some type with additional <em>structure</em>: here with a
+binary operator and an identity element that follow the monoid
+laws.</p>
+<p>The concept extends to all manner of algebraic structures.
+For example, a <em>group</em> is a monoid with the added structure
+of an inverse operation, &#8315;&#185;, such that every element, a, has
+an inverse, a&#8315;&#185;, such that <a href="#id21"><span class="problematic" id="id22">*</span></a>op a a&#8315;&#185; = op a&#8315;&#185; = e. Note that
+the additive monoid of natural numbers cannot be extended in
+this way, but the additive monoid over the integers can be.
+Similarly, monoid extends semi-group, which in general has
+an associative binary operator but no identity element.</p>
+<p>This chapter will explain how to formalize such structures
+in Lean, settings patterns for more abstract mathematics as
+well as for important generalized programming abstractions,
+as well. For example, we &#8216;ll see that <em>applicative functor</em>
+objects extend function application to multiple arguments,
+and that monads extend function composition to add useful
+behaviors to it, in turn enabling apparently imperative
+styles of programming in pure functional languages.</p>
+</section>
+<section id="monoids-so-far">
+<h4><span class="section-number">4.6.1.2. </span>Monoids so far<a class="headerlink" href="#monoids-so-far" title="Permalink to this heading">&#61633;</a></h4>
+<p>We have so far defined one monoid type. It is a product
+type, which is to say that it has just constructor (mk),
+with multiple argments, and can be thought of as defining
+an ordinary <em>record</em> type. We associate such records with
+element types, such as nat and list &#945;, in order to extend
+them with additional monoid structure. Such structure is
+just what&#8217;s needed for foldr to work properly, as we&#8217;ve
+seen.</p>
+<p>Here&#8217;s the definition of monoid we&#8217;ve developed so far.
+In this version we&#8217;ve swapped the names <em>id</em> and <em>e</em> from
+last chapter (sorry), as the letter, <em>e,</em> is often used in
+mathematical writing to denote an identity element.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=structure%20monoid'%20%7B%CE%B1%20%3A%20Type%7D%20%3A%20Type%20%3A%3D%20mk%3A%3A%0A%20%20--%20data%20values%0A%20%20(op%20%3A%20%CE%B1%20%20%E2%86%92%20%CE%B1%20%20%E2%86%92%20%CE%B1%20)%20%20%20--%20data%0A%20%20(e%20%3A%20%CE%B1%20)%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20data%0A%20%20--%20statements%20and%20proofs%20of%20laws%0A%20%20(ident%20%3A%20%E2%88%80%20a%2C%20op%20e%20a%20%3D%20a%20%E2%88%A7%20op%20a%20e%20%3D%20a)%0A%20%20(assoc%3A%20%E2%88%80%20a%20b%20c%2C%20op%20a%20(op%20b%20c)%20%3D%20op%20(op%20a%20b)%20c)" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_44.lean">
-try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">structure</span> <span class="n">monoid&#39;</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">:</span> <span class="kt">Type</span> <span class="o">:=</span> <span class="n">mk</span><span class="o">::</span>
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=structure%20monoid'%20(%CE%B1%20%3A%20Type)%20%3A%20Type%20%3A%3D%20mk%3A%3A%0A%20%20--%20data%20values%0A%20%20(op%20%3A%20%CE%B1%20%20%E2%86%92%20%CE%B1%20%20%E2%86%92%20%CE%B1%20)%20%20%20--%20data%0A%20%20(e%20%3A%20%CE%B1%20)%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20data%0A%20%20--%20statements%20and%20proofs%20of%20laws%0A%20%20(ident%20%3A%20%E2%88%80%20a%2C%20op%20e%20a%20%3D%20a%20%E2%88%A7%20op%20a%20e%20%3D%20a)%0A%20%20(assoc%3A%20%E2%88%80%20a%20b%20c%2C%20op%20a%20(op%20b%20c)%20%3D%20op%20(op%20a%20b)%20c)" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_77.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">structure</span> <span class="n">monoid&#39;</span> <span class="o">(</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">:</span> <span class="kt">Type</span> <span class="o">:=</span> <span class="n">mk</span><span class="o">::</span>
   <span class="c1">-- data values</span>
   <span class="o">(</span><span class="n">op</span> <span class="o">:</span> <span class="n">&#945;</span>  <span class="bp">&#8594;</span> <span class="n">&#945;</span>  <span class="bp">&#8594;</span> <span class="n">&#945;</span> <span class="o">)</span>   <span class="c1">-- data</span>
   <span class="o">(</span><span class="n">e</span> <span class="o">:</span> <span class="n">&#945;</span> <span class="o">)</span>              <span class="c1">-- data</span>
@@ -2224,8 +2257,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </div>
 </div><p>With a monoid type defined, we then defined several <em>instances,</em>
 one for each monoid of interest: &#10216;nat, +, 0&#10217;,  &#10216;nat, *, 1&#10217;, and
-<em>&#10216;list, ++, []&#10217;</em>. Here that is again using gour improved monoid
-definition just above.
+<em>&#10216;list, ++, []&#10217;</em>.
 Next we implemented a first version of foldr taking any monoid as an argument.
 Here&#8217;s a version improved only in presentation. The function type specification
 clearly expresses what foldr does: given a monoid, m, it returns an n-nary operator
@@ -2234,26 +2266,27 @@ with &lt;patterns&gt; end construct. It lets you do case analysis via pattern ma
 any value or multiple values anywhere an expression is expected in Lean. The syntax
 is match _ with | case := return | case := return | &#8230; end  (first is | optional)</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20foldr%20%7B%CE%B1%20%3A%20Type%7D%20(m%20%3A%20%40monoid'%20%CE%B1)%20%3A%20list%20%CE%B1%20%E2%86%92%20%CE%B1%0A%7C%20list.nil%20%3A%3D%20match%20m%20with%20(monoid'.mk%20op%20e%20_%20_)%20%3A%3D%20e%20end%0A%7C%20(h%3A%3At)%20%3A%3D%20match%20m%20with%20(monoid'.mk%20op%20e%20_%20_)%20%3A%3D%20m.op%20h%20(foldr%20t)%20end" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_68.lean">
-try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">foldr</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">(</span><span class="n">m</span> <span class="o">:</span> <span class="bp">@</span><span class="n">monoid&#39;</span> <span class="n">&#945;</span><span class="o">)</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span> <span class="bp">&#8594;</span> <span class="n">&#945;</span>
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20foldr'%20(%CE%B1%20%3A%20Type)%20(m%20%3A%20monoid'%20%CE%B1)%20%3A%20list%20%CE%B1%20%E2%86%92%20%CE%B1%0A%7C%20list.nil%20%3A%3D%20match%20m%20with%20(monoid'.mk%20op%20e%20_%20_)%20%3A%3D%20e%20end%0A%7C%20(h%3A%3At)%20%3A%3D%20match%20m%20with%20(monoid'.mk%20op%20e%20_%20_)%20%3A%3D%20m.op%20h%20(foldr'%20t)%20end" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_99.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">foldr&#39;</span> <span class="o">(</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">(</span><span class="n">m</span> <span class="o">:</span> <span class="n">monoid&#39;</span> <span class="n">&#945;</span><span class="o">)</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span> <span class="bp">&#8594;</span> <span class="n">&#945;</span>
 <span class="bp">|</span> <span class="n">list.nil</span> <span class="o">:=</span> <span class="k">match</span> <span class="n">m</span> <span class="k">with</span> <span class="o">(</span><span class="n">monoid&#39;.mk</span> <span class="n">op</span> <span class="n">e</span> <span class="n">_</span> <span class="n">_</span><span class="o">)</span> <span class="o">:=</span> <span class="n">e</span> <span class="kd">end</span>
-<span class="bp">|</span> <span class="o">(</span><span class="n">h</span><span class="o">::</span><span class="n">t</span><span class="o">)</span> <span class="o">:=</span> <span class="k">match</span> <span class="n">m</span> <span class="k">with</span> <span class="o">(</span><span class="n">monoid&#39;.mk</span> <span class="n">op</span> <span class="n">e</span> <span class="n">_</span> <span class="n">_</span><span class="o">)</span> <span class="o">:=</span> <span class="n">m.op</span> <span class="n">h</span> <span class="o">(</span><span class="n">foldr</span> <span class="n">t</span><span class="o">)</span> <span class="kd">end</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">h</span><span class="o">::</span><span class="n">t</span><span class="o">)</span> <span class="o">:=</span> <span class="k">match</span> <span class="n">m</span> <span class="k">with</span> <span class="o">(</span><span class="n">monoid&#39;.mk</span> <span class="n">op</span> <span class="n">e</span> <span class="n">_</span> <span class="n">_</span><span class="o">)</span> <span class="o">:=</span> <span class="n">m.op</span> <span class="n">h</span> <span class="o">(</span><span class="n">foldr&#39;</span> <span class="n">t</span><span class="o">)</span> <span class="kd">end</span>
 </pre></div>
 </div>
-</div><p>Here are examples, first as we&#8217;ve seen previously, but then, using partial
-evaluation to clearly show how foldr extends the binary operation of any
-monoid to an n-ary version taking its arguments from a list data structure.</p>
+</div><p>Here are examples using these constructs. .First we apply foldr to
+a monoid &#945; and a list &#945;. Then, using partial evaluation, we apply
+foldr just to the monoid argument, returning what amounts to an
+n-ary operation on lists of &#945; values.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20Safe%20use%20of%20monoid%20instances%20folds%0A%23reduce%20foldr%20nat_add_monoid%20%5B1%2C2%2C3%2C4%2C5%5D%0A%23reduce%20foldr%20nat_mul_monoid%20%5B1%2C2%2C3%2C4%2C5%5D%0A%23reduce%20foldr%20monoid_list_append'%20%5B%5B1%2C2%2C3%5D%2C%5B4%2C5%2C6%5D%2C%5B7%2C8%2C9%5D%5D%0A%0A--%20Defining%20n-ary%20operators(partial%20evaluation)%0Adef%20nat_add_n%20%3A%3D%20foldr%20nat_add_monoid%0Adef%20nat_mul_n%20%3A%3D%20foldr%20nat_mul_monoid%0Adef%20list_app_n%20%7B%CE%B1%20%3A%20Type%7D%20%3A%3D%20foldr%20(%40monoid_list_append'%20%CE%B1)%20%20--%20study%20this%0A%0A--%20Applying%20n-ary%20versions%20of%20binary%20operators%20to%20*lists*%20of%20argument%20values%0A%23eval%20nat_add_n%20%5B1%2C2%2C3%2C4%2C5%2C6%2C7%2C8%2C9%2C10%5D%0A%23eval%20nat_mul_n%20%5B1%2C2%2C3%2C4%2C5%2C6%2C7%2C8%2C9%2C10%5D%0A%23eval%20list_app_n%20%5B%5B1%2C2%2C3%5D%2C%5B4%2C5%2C6%5D%2C%5B7%2C8%2C9%5D%5D%0A%23eval%20list_app_n%20%5B%20%5B%22Hello%22%2C%20%22%2C%20%22%2C%20%22Logic!%22%5D%2C%20%5B%22You%22%2C%20%22%20%22%2C%20%22are%22%2C%20%22%20%22%2C%20%22Cool!%22%5D%5D" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_78.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20Safe%20use%20of%20monoid%20instances%20folds%0A%23reduce%20foldr'%20nat%20nat_add_monoid'%20%5B1%2C2%2C3%2C4%2C5%5D%0A%23reduce%20foldr'%20nat%20nat_mul_monoid'%20%5B1%2C2%2C3%2C4%2C5%5D%0A%23reduce%20foldr'%20(list%20nat)%20monoid_list_append'%20%5B%5B1%2C2%2C3%5D%2C%5B4%2C5%2C6%5D%2C%5B7%2C8%2C9%5D%5D%0A%0A--%20Defining%20n-ary%20operators(partial%20evaluation)%0Adef%20nat_add_n%20%3A%3D%20foldr'%20nat%20nat_add_monoid'%0Adef%20nat_mul_n%20%3A%3D%20foldr'%20nat%20nat_mul_monoid'%0Adef%20list_app_n%20%7B%CE%B1%20%3A%20Type%7D%20%3A%3D%20foldr'%20(list%20%CE%B1)%20%20(%40monoid_list_append'%20%CE%B1)%20%20--%20study%20this%0A%0A--%20Applying%20n-ary%20versions%20of%20binary%20operators%20to%20*lists*%20of%20argument%20values%0A%23eval%20nat_add_n%20%5B1%2C2%2C3%2C4%2C5%2C6%2C7%2C8%2C9%2C10%5D%0A%23eval%20nat_mul_n%20%5B1%2C2%2C3%2C4%2C5%2C6%2C7%2C8%2C9%2C10%5D%0A%23eval%20list_app_n%20%5B%5B1%2C2%2C3%5D%2C%5B4%2C5%2C6%5D%2C%5B7%2C8%2C9%5D%5D%0A%23eval%20list_app_n%20%5B%20%5B%22Hello%22%2C%20%22%2C%20%22%2C%20%22Logic!%22%5D%2C%20%5B%22You%22%2C%20%22%20%22%2C%20%22are%22%2C%20%22%20%22%2C%20%22Cool!%22%5D%5D" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_110.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Safe use of monoid instances folds</span>
-<span class="k">#reduce</span> <span class="n">foldr</span> <span class="n">nat_add_monoid</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>
-<span class="k">#reduce</span> <span class="n">foldr</span> <span class="n">nat_mul_monoid</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>
-<span class="k">#reduce</span> <span class="n">foldr</span> <span class="n">monoid_list_append&#39;</span> <span class="o">[[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">],[</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">,</span><span class="mi">6</span><span class="o">],[</span><span class="mi">7</span><span class="o">,</span><span class="mi">8</span><span class="o">,</span><span class="mi">9</span><span class="o">]]</span>
+<span class="k">#reduce</span> <span class="n">foldr&#39;</span> <span class="n">nat</span> <span class="n">nat_add_monoid&#39;</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>
+<span class="k">#reduce</span> <span class="n">foldr&#39;</span> <span class="n">nat</span> <span class="n">nat_mul_monoid&#39;</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>
+<span class="k">#reduce</span> <span class="n">foldr&#39;</span> <span class="o">(</span><span class="n">list</span> <span class="n">nat</span><span class="o">)</span> <span class="n">monoid_list_append&#39;</span> <span class="o">[[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">],[</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">,</span><span class="mi">6</span><span class="o">],[</span><span class="mi">7</span><span class="o">,</span><span class="mi">8</span><span class="o">,</span><span class="mi">9</span><span class="o">]]</span>
 
 <span class="c1">-- Defining n-ary operators(partial evaluation)</span>
-<span class="kd">def</span> <span class="n">nat_add_n</span> <span class="o">:=</span> <span class="n">foldr</span> <span class="n">nat_add_monoid</span>
-<span class="kd">def</span> <span class="n">nat_mul_n</span> <span class="o">:=</span> <span class="n">foldr</span> <span class="n">nat_mul_monoid</span>
-<span class="kd">def</span> <span class="n">list_app_n</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">:=</span> <span class="n">foldr</span> <span class="o">(</span><span class="bp">@</span><span class="n">monoid_list_append&#39;</span> <span class="n">&#945;</span><span class="o">)</span>  <span class="c1">-- study this</span>
+<span class="kd">def</span> <span class="n">nat_add_n</span> <span class="o">:=</span> <span class="n">foldr&#39;</span> <span class="n">nat</span> <span class="n">nat_add_monoid&#39;</span>
+<span class="kd">def</span> <span class="n">nat_mul_n</span> <span class="o">:=</span> <span class="n">foldr&#39;</span> <span class="n">nat</span> <span class="n">nat_mul_monoid&#39;</span>
+<span class="kd">def</span> <span class="n">list_app_n</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">:=</span> <span class="n">foldr&#39;</span> <span class="o">(</span><span class="n">list</span> <span class="n">&#945;</span><span class="o">)</span>  <span class="o">(</span><span class="bp">@</span><span class="n">monoid_list_append&#39;</span> <span class="n">&#945;</span><span class="o">)</span>  <span class="c1">-- study this</span>
 
 <span class="c1">-- Applying n-ary versions of binary operators to *lists* of argument values</span>
 <span class="k">#eval</span> <span class="n">nat_add_n</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">,</span><span class="mi">6</span><span class="o">,</span><span class="mi">7</span><span class="o">,</span><span class="mi">8</span><span class="o">,</span><span class="mi">9</span><span class="o">,</span><span class="mi">10</span><span class="o">]</span>
@@ -2267,16 +2300,182 @@ operators, and use them as arguments to foldr to define their
 n-ary extensions.</p>
 </section>
 <section id="associating-values-with-types">
-<h3><span class="section-number">4.6.2. </span>Associating values with types<a class="headerlink" href="#associating-values-with-types" title="Permalink to this heading">&#61633;</a></h3>
-<p>Under construction.</p>
+<h4><span class="section-number">4.6.1.3. </span>Associating values with types<a class="headerlink" href="#associating-values-with-types" title="Permalink to this heading">&#61633;</a></h4>
+<p>If we take a step back, we can see that what we&#8217;ve done is to
+associate certain values of the monoid type with given element
+<em>types</em>. In particular, to the type, nat, we&#8217;ve associated two
+monoid values: the additive monoid, &#10216;&#8469;, +, 0&#10217; and separately
+the multiplicative monoid, &#10216;&#8469;, <a href="#id23"><span class="problematic" id="id24">*</span></a>, 1&#10217;; and to the type, list &#945;,
+we&#8217;ve associated the additive monoid value, &#10216;list &#945;, ++. []&#10217;.</p>
+<p>In practice we often want to associate notations with the
+binary operations of monoid objects. We can for example,
+define <em>+</em> as a notation for <em>op</em> in an additive monoid,
+such as &#10216;list,++,[]&#10217;, and <em>*</em> as a notation for <em>op</em> in a
+multiplicative monoid, such as &#10216;nat, <em>, 1&#10217;. We can then use
+the *+</em> and <em>*</em> notations to denote whathever operators
+are recorded in the <em>op</em> field of any given monoid object.</p>
+<p>For this to work (and for some other reasons) we&#8217;&#8217; define
+separate additive and multiplicative monoid types. In this
+context, we will thus have a <em>one-to-one</em> mapping from nat
+as an element type to each corresponding monoid type. That
+is, there will be exactly one add_monoid structure for the
+nat type, and one mul_monoid structure.</p>
+<ul class="simple">
+<li><p>nat is associated with the (add_monoid nat), &#10216;&#8469;, +, 0&#10217;</p></li>
+<li><p>list &#945; is associated with the add_monoid, &#10216;list &#945;, ++, []&#10217;</p></li>
+<li><p>nat is associated with the (mul_monoid nat), &#10216;&#8469;, <a href="#id25"><span class="problematic" id="id26">*</span></a>, 1&#10217;</p></li>
+</ul>
+<p>Sadly then, we&#8217;ll also need two definitions of foldr, one that
+takes any additive monoid as an argument and one that takes
+a multiplicative monoid. The need to split definitions into
+additive and multiplicative is counter-intuitive to most
+mathematicians but is forced by our type theory. In practce,
+Lean provides mechanisms for writing one definition and then
+cloning it automatically to produce the code for the other.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=structure%20mul_monoid'%20(%CE%B1%20%3A%20Type)%20%3A%20Type%20%3A%3D%20mk%3A%3A%0A%20%20(op%20%3A%20%CE%B1%20%20%E2%86%92%20%CE%B1%20%20%E2%86%92%20%CE%B1%20)%20%20%20--%20data%0A%20%20(e%20%3A%20%CE%B1%20)%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20data%0A%20%20(ident%20%3A%20%E2%88%80%20a%2C%20op%20e%20a%20%3D%20a%20%E2%88%A7%20op%20a%20e%20%3D%20a)%0A%20%20(assoc%3A%20%E2%88%80%20a%20b%20c%2C%20op%20a%20(op%20b%20c)%20%3D%20op%20(op%20a%20b)%20c)%0A%0A--%20unfortunate%20but%20unavoidable%20duplication%0Astructure%20add_monoid'%20(%CE%B1%20%3A%20Type)%20%3A%20Type%20%3A%3D%20mk%3A%3A%0A%20%20(op%20%3A%20%CE%B1%20%20%E2%86%92%20%CE%B1%20%20%E2%86%92%20%CE%B1%20)%20%20%20--%20data%0A%20%20(e%20%3A%20%CE%B1%20)%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20data%0A%20%20(ident%20%3A%20%E2%88%80%20a%2C%20op%20e%20a%20%3D%20a%20%E2%88%A7%20op%20a%20e%20%3D%20a)%0A%20%20(assoc%3A%20%E2%88%80%20a%20b%20c%2C%20op%20a%20(op%20b%20c)%20%3D%20op%20(op%20a%20b)%20c)%0A%0Adef%20%20mul_foldr'%20%7B%CE%B1%20%3A%20Type%7D%20(m%20%3A%20mul_monoid'%20%CE%B1)%20%3A%20list%20%CE%B1%20%E2%86%92%20%CE%B1%0A%7C%20list.nil%20%3A%3D%20match%20m%20with%20(mul_monoid'.mk%20op%20e%20_%20_)%20%3A%3D%20e%20end%0A%7C%20(h%3A%3At)%20%3A%3D%20match%20m%20with%20(mul_monoid'.mk%20op%20e%20_%20_)%20%3A%3D%20m.op%20h%20(mul_foldr'%20t)%20end%0A%0Adef%20%20add_foldr'%20%7B%CE%B1%20%3A%20Type%7D%20(m%20%3A%20add_monoid'%20%CE%B1)%20%3A%20list%20%CE%B1%20%E2%86%92%20%CE%B1%0A%7C%20list.nil%20%3A%3D%20match%20m%20with%20(add_monoid'.mk%20op%20e%20_%20_)%20%3A%3D%20e%20end%0A%7C%20(h%3A%3At)%20%3A%3D%20match%20m%20with%20(add_monoid'.mk%20op%20e%20_%20_)%20%3A%3D%20m.op%20h%20(add_foldr'%20t)%20end" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_171.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">structure</span> <span class="n">mul_monoid&#39;</span> <span class="o">(</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">:</span> <span class="kt">Type</span> <span class="o">:=</span> <span class="n">mk</span><span class="o">::</span>
+  <span class="o">(</span><span class="n">op</span> <span class="o">:</span> <span class="n">&#945;</span>  <span class="bp">&#8594;</span> <span class="n">&#945;</span>  <span class="bp">&#8594;</span> <span class="n">&#945;</span> <span class="o">)</span>   <span class="c1">-- data</span>
+  <span class="o">(</span><span class="n">e</span> <span class="o">:</span> <span class="n">&#945;</span> <span class="o">)</span>              <span class="c1">-- data</span>
+  <span class="o">(</span><span class="n">ident</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="n">a</span><span class="o">,</span> <span class="n">op</span> <span class="n">e</span> <span class="n">a</span> <span class="bp">=</span> <span class="n">a</span> <span class="bp">&#8743;</span> <span class="n">op</span> <span class="n">a</span> <span class="n">e</span> <span class="bp">=</span> <span class="n">a</span><span class="o">)</span>
+  <span class="o">(</span><span class="n">assoc</span><span class="o">:</span> <span class="bp">&#8704;</span> <span class="n">a</span> <span class="n">b</span> <span class="n">c</span><span class="o">,</span> <span class="n">op</span> <span class="n">a</span> <span class="o">(</span><span class="n">op</span> <span class="n">b</span> <span class="n">c</span><span class="o">)</span> <span class="bp">=</span> <span class="n">op</span> <span class="o">(</span><span class="n">op</span> <span class="n">a</span> <span class="n">b</span><span class="o">)</span> <span class="n">c</span><span class="o">)</span>
+
+<span class="c1">-- unfortunate but unavoidable duplication</span>
+<span class="kd">structure</span> <span class="n">add_monoid&#39;</span> <span class="o">(</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">:</span> <span class="kt">Type</span> <span class="o">:=</span> <span class="n">mk</span><span class="o">::</span>
+  <span class="o">(</span><span class="n">op</span> <span class="o">:</span> <span class="n">&#945;</span>  <span class="bp">&#8594;</span> <span class="n">&#945;</span>  <span class="bp">&#8594;</span> <span class="n">&#945;</span> <span class="o">)</span>   <span class="c1">-- data</span>
+  <span class="o">(</span><span class="n">e</span> <span class="o">:</span> <span class="n">&#945;</span> <span class="o">)</span>              <span class="c1">-- data</span>
+  <span class="o">(</span><span class="n">ident</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="n">a</span><span class="o">,</span> <span class="n">op</span> <span class="n">e</span> <span class="n">a</span> <span class="bp">=</span> <span class="n">a</span> <span class="bp">&#8743;</span> <span class="n">op</span> <span class="n">a</span> <span class="n">e</span> <span class="bp">=</span> <span class="n">a</span><span class="o">)</span>
+  <span class="o">(</span><span class="n">assoc</span><span class="o">:</span> <span class="bp">&#8704;</span> <span class="n">a</span> <span class="n">b</span> <span class="n">c</span><span class="o">,</span> <span class="n">op</span> <span class="n">a</span> <span class="o">(</span><span class="n">op</span> <span class="n">b</span> <span class="n">c</span><span class="o">)</span> <span class="bp">=</span> <span class="n">op</span> <span class="o">(</span><span class="n">op</span> <span class="n">a</span> <span class="n">b</span><span class="o">)</span> <span class="n">c</span><span class="o">)</span>
+
+<span class="kd">def</span>  <span class="n">mul_foldr&#39;</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">(</span><span class="n">m</span> <span class="o">:</span> <span class="n">mul_monoid&#39;</span> <span class="n">&#945;</span><span class="o">)</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span> <span class="bp">&#8594;</span> <span class="n">&#945;</span>
+<span class="bp">|</span> <span class="n">list.nil</span> <span class="o">:=</span> <span class="k">match</span> <span class="n">m</span> <span class="k">with</span> <span class="o">(</span><span class="n">mul_monoid&#39;.mk</span> <span class="n">op</span> <span class="n">e</span> <span class="n">_</span> <span class="n">_</span><span class="o">)</span> <span class="o">:=</span> <span class="n">e</span> <span class="kd">end</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">h</span><span class="o">::</span><span class="n">t</span><span class="o">)</span> <span class="o">:=</span> <span class="k">match</span> <span class="n">m</span> <span class="k">with</span> <span class="o">(</span><span class="n">mul_monoid&#39;.mk</span> <span class="n">op</span> <span class="n">e</span> <span class="n">_</span> <span class="n">_</span><span class="o">)</span> <span class="o">:=</span> <span class="n">m.op</span> <span class="n">h</span> <span class="o">(</span><span class="n">mul_foldr&#39;</span> <span class="n">t</span><span class="o">)</span> <span class="kd">end</span>
+
+<span class="kd">def</span>  <span class="n">add_foldr&#39;</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">(</span><span class="n">m</span> <span class="o">:</span> <span class="n">add_monoid&#39;</span> <span class="n">&#945;</span><span class="o">)</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span> <span class="bp">&#8594;</span> <span class="n">&#945;</span>
+<span class="bp">|</span> <span class="n">list.nil</span> <span class="o">:=</span> <span class="k">match</span> <span class="n">m</span> <span class="k">with</span> <span class="o">(</span><span class="n">add_monoid&#39;.mk</span> <span class="n">op</span> <span class="n">e</span> <span class="n">_</span> <span class="n">_</span><span class="o">)</span> <span class="o">:=</span> <span class="n">e</span> <span class="kd">end</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">h</span><span class="o">::</span><span class="n">t</span><span class="o">)</span> <span class="o">:=</span> <span class="k">match</span> <span class="n">m</span> <span class="k">with</span> <span class="o">(</span><span class="n">add_monoid&#39;.mk</span> <span class="n">op</span> <span class="n">e</span> <span class="n">_</span> <span class="n">_</span><span class="o">)</span> <span class="o">:=</span> <span class="n">m.op</span> <span class="n">h</span> <span class="o">(</span><span class="n">add_foldr&#39;</span> <span class="n">t</span><span class="o">)</span> <span class="kd">end</span>
+</pre></div>
+</div>
+</div><p>Our next observation we make is that we can apply foldr to
+a list of elements of some type &#945; if and <em>only if</em> we have a
+definition of a monoid for &#945;. For example, given what we&#8217;ve
+defined above, we can apply fold operation to lists of nat
+and lists of list, but not to list of bool, because we have
+not yet defined a monoid (additive or muliplicative) for the
+bool type.</p>
+<p>In other words, to apply foldr to lists of elements of type,
+&#945;, we must <em>overload</em> the definition of <em>monoid</em> for the &#945;
+type. What can <em>not</em> apply foldr to lists of elements of any
+type, &#945;, so we are <em>not</em> looking at <em>parametric polymorphism</em>
+here. Rather, we&#8217;re seeing a new concept: namely, <em>ad hoc</em>
+polymorphism.</p>
+<p>The list &#945; type is <em>parametrically</em> polymorphic, in that it&#8217;s
+defined in exactly the same way for <em>any</em> element type, &#945;. By
+contrast, we have defined monoid &#945; <em>instances</em> only for a few
+selected types, namely nat and list &#945;. We will further expect
+to have only one instance of either add_monoid&#8217; or mul_monoid&#8217;
+for any given type, &#945;.</p>
+<p>Finally, given these constraints, we note an real opportunity.
+Consider an application of mul_foldr&#8217; to a list of natural
+numbers. From the fact that the list element type, &#945;, is nat,
+we know is that mul_foldr&#8217; expects an instance of (mul_monoid&#8217;
+nat). Furthermore, there should be at most one instance of the
+(mul_monoid&#8217; nat) defined. Finally we have such an instance:
+nat_mul_monoid, as defined above will work. In other words, it
+is the only monoid instance that we can use here. Wouldn&#8217;t it
+be nice is Lean could infer that automatically and pass this
+<em>value</em> implicitly to foldr? Note that this is a new idea: we
+are not talking about <em>type</em> inference, but <em>value</em> inference.</p>
 </section>
-<section id="under-construction">
-<h3><span class="section-number">4.6.3. </span>Under Construction<a class="headerlink" href="#under-construction" title="Permalink to this heading">&#61633;</a></h3>
-<p>In the last chapter we started on this project. This chapter will
-finish it off with the introduction, explanation, and demonstration
-of typeclasses as a mechanism for associating monoid values, such
-as <em>&#10216;nat, +, 0&#10217;, &#10216;nat, *, 1&#10217;,</em> and <em>&#10216;list, ++, []&#10217;</em>, with element
-types such as nat and list.</p>
+</section>
+<section id="id27">
+<h3><span class="section-number">4.6.2. </span>Typeclasses<a class="headerlink" href="#id27" title="Permalink to this heading">&#61633;</a></h3>
+<p>The typeclass mechanism of Lean, first implemented for Haskell,
+provides exactly this capability. The basic idea is that if we
+annotate the add_monoid&#8217; structure definition with <em>[class]</em> we
+tell Lean to keep a table of monoid instance values, indexed by
+the element type &#945;, which it can then use later on to look up
+(infer) the monoid <em>instance</em> values that should be passed to
+various applications of foldr.</p>
+<p>Rather than declaring <em>structure mul_monoid&#8217;</em> we would declare
+<em>&#64;[class] structure mul_monoid</em>, or just <em>class mul_monoid</em>.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%40%5Bclass%5D%20structure%20mul_monoid%20(%CE%B1%20%3A%20Type)%20%3A%20Type%20%3A%3D%20mk%3A%3A%0A%20%20(op%20%3A%20%CE%B1%20%20%E2%86%92%20%CE%B1%20%20%E2%86%92%20%CE%B1%20)%20%20%20--%20data%0A%20%20(e%20%3A%20%CE%B1%20)%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20data%0A%20%20(ident%20%3A%20%E2%88%80%20a%2C%20op%20e%20a%20%3D%20a%20%E2%88%A7%20op%20a%20e%20%3D%20a)%0A%20%20(assoc%3A%20%E2%88%80%20a%20b%20c%2C%20op%20a%20(op%20b%20c)%20%3D%20op%20(op%20a%20b)%20c)%0A%0A--%20unfortunate%20but%20unavoidable%20duplication%0Aclass%20add_monoid%20(%CE%B1%20%3A%20Type)%20%3A%20Type%20%3A%3D%20mk%3A%3A%0A%20%20(op%20%3A%20%CE%B1%20%20%E2%86%92%20%CE%B1%20%20%E2%86%92%20%CE%B1%20)%20%20%20--%20data%0A%20%20(e%20%3A%20%CE%B1%20)%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20data%0A%20%20(ident%20%3A%20%E2%88%80%20a%2C%20op%20e%20a%20%3D%20a%20%E2%88%A7%20op%20a%20e%20%3D%20a)%0A%20%20(assoc%3A%20%E2%88%80%20a%20b%20c%2C%20op%20a%20(op%20b%20c)%20%3D%20op%20(op%20a%20b)%20c)" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_242.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">@[class]</span> <span class="kd">structure</span> <span class="n">mul_monoid</span> <span class="o">(</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">:</span> <span class="kt">Type</span> <span class="o">:=</span> <span class="n">mk</span><span class="o">::</span>
+  <span class="o">(</span><span class="n">op</span> <span class="o">:</span> <span class="n">&#945;</span>  <span class="bp">&#8594;</span> <span class="n">&#945;</span>  <span class="bp">&#8594;</span> <span class="n">&#945;</span> <span class="o">)</span>   <span class="c1">-- data</span>
+  <span class="o">(</span><span class="n">e</span> <span class="o">:</span> <span class="n">&#945;</span> <span class="o">)</span>              <span class="c1">-- data</span>
+  <span class="o">(</span><span class="n">ident</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="n">a</span><span class="o">,</span> <span class="n">op</span> <span class="n">e</span> <span class="n">a</span> <span class="bp">=</span> <span class="n">a</span> <span class="bp">&#8743;</span> <span class="n">op</span> <span class="n">a</span> <span class="n">e</span> <span class="bp">=</span> <span class="n">a</span><span class="o">)</span>
+  <span class="o">(</span><span class="n">assoc</span><span class="o">:</span> <span class="bp">&#8704;</span> <span class="n">a</span> <span class="n">b</span> <span class="n">c</span><span class="o">,</span> <span class="n">op</span> <span class="n">a</span> <span class="o">(</span><span class="n">op</span> <span class="n">b</span> <span class="n">c</span><span class="o">)</span> <span class="bp">=</span> <span class="n">op</span> <span class="o">(</span><span class="n">op</span> <span class="n">a</span> <span class="n">b</span><span class="o">)</span> <span class="n">c</span><span class="o">)</span>
+
+<span class="c1">-- unfortunate but unavoidable duplication</span>
+<span class="kd">class</span> <span class="n">add_monoid</span> <span class="o">(</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">)</span> <span class="o">:</span> <span class="kt">Type</span> <span class="o">:=</span> <span class="n">mk</span><span class="o">::</span>
+  <span class="o">(</span><span class="n">op</span> <span class="o">:</span> <span class="n">&#945;</span>  <span class="bp">&#8594;</span> <span class="n">&#945;</span>  <span class="bp">&#8594;</span> <span class="n">&#945;</span> <span class="o">)</span>   <span class="c1">-- data</span>
+  <span class="o">(</span><span class="n">e</span> <span class="o">:</span> <span class="n">&#945;</span> <span class="o">)</span>              <span class="c1">-- data</span>
+  <span class="o">(</span><span class="n">ident</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="n">a</span><span class="o">,</span> <span class="n">op</span> <span class="n">e</span> <span class="n">a</span> <span class="bp">=</span> <span class="n">a</span> <span class="bp">&#8743;</span> <span class="n">op</span> <span class="n">a</span> <span class="n">e</span> <span class="bp">=</span> <span class="n">a</span><span class="o">)</span>
+  <span class="o">(</span><span class="n">assoc</span><span class="o">:</span> <span class="bp">&#8704;</span> <span class="n">a</span> <span class="n">b</span> <span class="n">c</span><span class="o">,</span> <span class="n">op</span> <span class="n">a</span> <span class="o">(</span><span class="n">op</span> <span class="n">b</span> <span class="n">c</span><span class="o">)</span> <span class="bp">=</span> <span class="n">op</span> <span class="o">(</span><span class="n">op</span> <span class="n">a</span> <span class="n">b</span><span class="o">)</span> <span class="n">c</span><span class="o">)</span>
+</pre></div>
+</div>
+</div><p>Using the &#64;[class] annotation tells Lean that we are defining
+a structure whose instances are to be indexed by type values,
+&#945;. When we define an instance, we annotate it with &#64;[instance]
+or just use the <em>instance</em> keyword.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%40%5Binstance%5D%20def%20nat_add_monoid%20%3A%3D%20add_monoid.mk%20nat.add%200%20sorry%20sorry%20--%20zero_ident_add_nat%20nat_add_assoc%0Ainstance%20nat_mul_monoid%20%3A%3D%20mul_monoid.mk%20nat.mul%201%20sorry%20sorry%20--%20mul_one_ident_nat%20nat_mul_assoc%0Ainstance%20monoid_list_append%20%7B%CE%B1%20%3A%20Type%7D%20%3A%20%40add_monoid%20(list%20%CE%B1)%20%3A%3D%20add_monoid.mk%20list.append%20%5B%5D%20sorry%20sorry" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_262.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">@[instance]</span> <span class="kd">def</span> <span class="n">nat_add_monoid</span> <span class="o">:=</span> <span class="n">add_monoid.mk</span> <span class="n">nat.add</span> <span class="mi">0</span> <span class="gr">sorry</span> <span class="gr">sorry</span> <span class="c1">-- zero_ident_add_nat nat_add_assoc</span>
+<span class="kd">instance</span> <span class="n">nat_mul_monoid</span> <span class="o">:=</span> <span class="n">mul_monoid.mk</span> <span class="n">nat.mul</span> <span class="mi">1</span> <span class="gr">sorry</span> <span class="gr">sorry</span> <span class="c1">-- mul_one_ident_nat nat_mul_assoc</span>
+<span class="kd">instance</span> <span class="n">monoid_list_append</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">:</span> <span class="bp">@</span><span class="n">add_monoid</span> <span class="o">(</span><span class="n">list</span> <span class="n">&#945;</span><span class="o">)</span> <span class="o">:=</span> <span class="n">add_monoid.mk</span> <span class="n">list.append</span> <span class="o">[]</span> <span class="gr">sorry</span> <span class="gr">sorry</span>
+</pre></div>
+</div>
+</div><div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20%20mul_foldr%20%7B%CE%B1%20%3A%20Type%7D%20%5Bm%20%3A%20mul_monoid%20%CE%B1%5D%20%3A%20list%20%CE%B1%20%E2%86%92%20%CE%B1%0A%7C%20list.nil%20%3A%3D%20match%20m%20with%20(mul_monoid.mk%20op%20e%20_%20_)%20%3A%3D%20e%20end%0A%7C%20(h%3A%3At)%20%3A%3D%20match%20m%20with%20(mul_monoid.mk%20op%20e%20_%20_)%20%3A%3D%20m.op%20h%20(mul_foldr%20t)%20end%0A%0Adef%20%20add_foldr%20%7B%CE%B1%20%3A%20Type%7D%20%5Bm%20%3A%20add_monoid%20%CE%B1%5D%20%3A%20list%20%CE%B1%20%E2%86%92%20%CE%B1%0A%7C%20list.nil%20%3A%3D%20match%20m%20with%20(add_monoid.mk%20op%20e%20_%20_)%20%3A%3D%20e%20end%0A%7C%20(h%3A%3At)%20%3A%3D%20match%20m%20with%20(add_monoid.mk%20op%20e%20_%20_)%20%3A%3D%20m.op%20h%20(add_foldr%20t)%20end" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_269.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span>  <span class="n">mul_foldr</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">[</span><span class="n">m</span> <span class="o">:</span> <span class="n">mul_monoid</span> <span class="n">&#945;</span><span class="o">]</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span> <span class="bp">&#8594;</span> <span class="n">&#945;</span>
+<span class="bp">|</span> <span class="n">list.nil</span> <span class="o">:=</span> <span class="k">match</span> <span class="n">m</span> <span class="k">with</span> <span class="o">(</span><span class="n">mul_monoid.mk</span> <span class="n">op</span> <span class="n">e</span> <span class="n">_</span> <span class="n">_</span><span class="o">)</span> <span class="o">:=</span> <span class="n">e</span> <span class="kd">end</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">h</span><span class="o">::</span><span class="n">t</span><span class="o">)</span> <span class="o">:=</span> <span class="k">match</span> <span class="n">m</span> <span class="k">with</span> <span class="o">(</span><span class="n">mul_monoid.mk</span> <span class="n">op</span> <span class="n">e</span> <span class="n">_</span> <span class="n">_</span><span class="o">)</span> <span class="o">:=</span> <span class="n">m.op</span> <span class="n">h</span> <span class="o">(</span><span class="n">mul_foldr</span> <span class="n">t</span><span class="o">)</span> <span class="kd">end</span>
+
+<span class="kd">def</span>  <span class="n">add_foldr</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">[</span><span class="n">m</span> <span class="o">:</span> <span class="n">add_monoid</span> <span class="n">&#945;</span><span class="o">]</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span> <span class="bp">&#8594;</span> <span class="n">&#945;</span>
+<span class="bp">|</span> <span class="n">list.nil</span> <span class="o">:=</span> <span class="k">match</span> <span class="n">m</span> <span class="k">with</span> <span class="o">(</span><span class="n">add_monoid.mk</span> <span class="n">op</span> <span class="n">e</span> <span class="n">_</span> <span class="n">_</span><span class="o">)</span> <span class="o">:=</span> <span class="n">e</span> <span class="kd">end</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">h</span><span class="o">::</span><span class="n">t</span><span class="o">)</span> <span class="o">:=</span> <span class="k">match</span> <span class="n">m</span> <span class="k">with</span> <span class="o">(</span><span class="n">add_monoid.mk</span> <span class="n">op</span> <span class="n">e</span> <span class="n">_</span> <span class="n">_</span><span class="o">)</span> <span class="o">:=</span> <span class="n">m.op</span> <span class="n">h</span> <span class="o">(</span><span class="n">add_foldr</span> <span class="n">t</span><span class="o">)</span> <span class="kd">end</span>
+</pre></div>
+</div>
+</div><p>Now we can apply foldr functions without having to give explict monoid
+instance arguments.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23eval%20add_foldr%20%5B1%2C2%2C3%2C4%2C5%5D%0A%23eval%20add_foldr%20%5B%5B1%2C2%2C3%5D%2C%5B4%2C5%2C6%5D%2C%5B7%2C8%2C9%5D%5D%0A%23eval%20mul_foldr%20%5B1%2C2%2C3%2C4%2C5%5D" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_282.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#eval</span> <span class="n">add_foldr</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>
+<span class="k">#eval</span> <span class="n">add_foldr</span> <span class="o">[[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">],[</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">,</span><span class="mi">6</span><span class="o">],[</span><span class="mi">7</span><span class="o">,</span><span class="mi">8</span><span class="o">,</span><span class="mi">9</span><span class="o">]]</span>
+<span class="k">#eval</span> <span class="n">mul_foldr</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">]</span>
+</pre></div>
+</div>
+</div><p>To finish this section, let&#8217;s give another English reading
+of the type specification of our foldr operations. We&#8217;ll take
+mul_foldr as an example.</p>
+<ul class="simple">
+<li><p>def  mul_foldr {&#945; : Type} [m : mul_monoid &#945;] : list &#945; &#8594; &#945;</p></li>
+</ul>
+<p>We can now read this as follows: The mul_foldr operation takes
+any element type, &#945;, <em>as long as &#945; has a multiplicative monoid
+structure,</em> along with a list of &#945; elements. It then returns a
+value of the &#945; type. In other words, the requirement that there
+be a typeclass instance for &#945; imposes a key <em>constraint</em> on the
+<em>type values</em> that can be passed to foldr. You can only apply
+foldr to a list of values of type &#945; if &#945; has the structure of
+a multiplicative monoid.</p>
+<p>Let&#8217;s see what happens if we try to apply mul_foldr to a list
+of values of a type, &#945;, for which we have not yet defined a
+monoid structure. As you will guess, Lean will tell us that
+it can&#8217;t infer a required typeclass instance.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23eval%20mul_foldr%20%5Btt%2Cff%2Ctt%5D" target="_blank" tryitfile="../examples/A_03_Recursive_Types/unnamed_309.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#eval</span> <span class="n">mul_foldr</span> <span class="o">[</span><span class="n">tt</span><span class="o">,</span><span class="n">ff</span><span class="o">,</span><span class="n">tt</span><span class="o">]</span>
+</pre></div>
+</div>
+</div><p>In the next section, we&#8217;ll see how typeclass &#8220;inheritance&#8221; can
+be used to define rich and complex hierarchies of type classes.
+For example, we&#8217;ll define &#8220;group&#8221; as an extension of monoid with
+an additional <em>inverse</em> operation and proof that every element
+in a given group (e.g., of the integers or rationals) has an
+inverse. One could then pass any group to any function expecting
+a monoid, because such an object &#8220;is&#8221; automatically a monoid too.</p>
 </section>
 </section>
 </section>
