@@ -429,6 +429,8 @@ def list_head {α : Type} [d : default_value α] : list α → α
 #eval list_head ([] : list nat)             -- returns default nat!     
 #eval list_head ([] : list bool)            -- returns default bool!
 
+instance string_def : default_value string := default_value.mk ""
+
 #eval list_head ([] : list string)          -- error: no default for string
 
 -- EXERCISE: define a default_value typeclass instance to fix that error
@@ -492,6 +494,10 @@ TEXT. -/
 #check has_mul        -- as we've seen
 #check mul_one_class  -- extends has_one 
 #check has_one        -- arbitrary value called "one"
+
+
+#check group
+
 
 -- See documentation for how it all fits together. 
 
