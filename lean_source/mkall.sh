@@ -27,8 +27,8 @@ lean_source/mkdoc.py A_03_Recursive_Types A_03_polymorphic_lists
 lean_source/mkdoc.py A_03_Recursive_Types A_04_higher_order_functions
 lean_source/mkdoc.py A_03_Recursive_Types A_05_recursive_proofs
 
-lean_source/mkdoc.py A_04_Mathematical_Structures A_00_unit_title
-lean_source/mkdoc.py A_04_Mathematical_Structures A_01_monoids
+lean_source/mkdoc.py A_04_Typeclasses A_00_unit_title
+lean_source/mkdoc.py A_04_Typeclasses A_01_monoids
 
 lean_source/mkdoc.py A_05_Dependent_Types A_00_unit_title
 lean_source/mkdoc.py A_05_Dependent_Types A_01_Sigma_types

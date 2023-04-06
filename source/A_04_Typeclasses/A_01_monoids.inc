@@ -1,9 +1,3 @@
--- import .A_05_recursive_proofs
-
-import algebra.group
-namespace cs6501
-
-/- TEXT: 
 
 ***********
 Typeclasses
@@ -79,33 +73,20 @@ Here's the definition of monoid we've developed so far.
 In this version we've swapped the names *id* and *e* from
 last chapter (sorry), as the letter, *e,* is often used in
 mathematical writing to denote an identity element.   
-TEXT. -/ 
 
--- QUOTE:
-structure monoid' (α : Type) : Type := mk::
-  -- data values
-  (op : α  → α  → α )   -- data
-  (e : α )              -- data
-  -- statements and proofs of laws
-  (ident : ∀ a, op e a = a ∧ op a e = a)
-  (assoc: ∀ a b c, op a (op b c) = op (op a b) c)
--- QUOTE.
+.. code-block:: lean
 
-/- TEXT:
+  structure monoid' (α : Type) : Type := mk::
+    -- data values
+    (op : α  → α  → α )   -- data
+    (e : α )              -- data
+    -- statements and proofs of laws
+    (ident : ∀ a, op e a = a ∧ op a e = a)
+    (assoc: ∀ a b c, op a (op b c) = op (op a b) c)
+
 With a monoid type defined, we then defined several *instances,* 
 one for each monoid of interest: ⟨nat, +, 0⟩,  ⟨nat, \*, 1⟩, and
 *⟨list, ++, []⟩*.   
-TEXT. -/
-
--- QUOTE
--- monoid instances
-
-def nat_add_monoid' := monoid'.mk nat.add 0 sorry sorry -- zero_ident_add_nat nat_add_assoc  
-def nat_mul_monoid' := monoid'.mk nat.mul 1 sorry sorry -- mul_one_ident_nat nat_mul_assoc 
-def monoid_list_append' {α : Type} : @monoid' (list α) := monoid'.mk list.append [] sorry sorry 
-
-
-/- TEXT:
 Next we implemented a first version of foldr taking any monoid as an argument.
 Here's a version improved only in presentation. The function type specification
 clearly expresses what foldr does: given a monoid, m, it returns an n-nary operator
@@ -114,46 +95,39 @@ with <patterns> end construct. It lets you do case analysis via pattern matching
 any value or multiple values anywhere an expression is expected in Lean. The syntax
 is match _ with | case := return | case := return | ... end  (first is | optional)
 
-TEXT. -/
 
--- QUOTE:
-def foldr' (α : Type) (m : monoid' α) : list α → α  
-| list.nil := match m with (monoid'.mk op e _ _) := e end
-| (h::t) := match m with (monoid'.mk op e _ _) := m.op h (foldr' t) end
--- QUOTE.
+.. code-block:: lean
 
-/- TEXT:
+  def foldr' (α : Type) (m : monoid' α) : list α → α  
+  | list.nil := match m with (monoid'.mk op e _ _) := e end
+  | (h::t) := match m with (monoid'.mk op e _ _) := m.op h (foldr' t) end
+
 Here are examples using these constructs. .First we apply foldr to
 a monoid α and a list α. Then, using partial evaluation, we apply
 foldr just to the monoid argument, returning what amounts to an 
 n-ary operation on lists of α values.   
-TEXT. -/
 
--- QUOTE:
--- Safe use of monoid instances folds
-#reduce foldr' nat nat_add_monoid' [1,2,3,4,5]
-#reduce foldr' nat nat_mul_monoid' [1,2,3,4,5]
-#reduce foldr' (list nat) monoid_list_append' [[1,2,3],[4,5,6],[7,8,9]]
+.. code-block:: lean
 
--- Defining n-ary operators(partial evaluation)
-def nat_add_n := foldr' nat nat_add_monoid'
-def nat_mul_n := foldr' nat nat_mul_monoid'
-def list_app_n {α : Type} := foldr' (list α)  (@monoid_list_append' α)  -- study this
+  -- Safe use of monoid instances folds
+  #reduce foldr' nat nat_add_monoid' [1,2,3,4,5]
+  #reduce foldr' nat nat_mul_monoid' [1,2,3,4,5]
+  #reduce foldr' (list nat) monoid_list_append' [[1,2,3],[4,5,6],[7,8,9]]
+  
+  -- Defining n-ary operators(partial evaluation)
+  def nat_add_n := foldr' nat nat_add_monoid'
+  def nat_mul_n := foldr' nat nat_mul_monoid'
+  def list_app_n {α : Type} := foldr' (list α)  (@monoid_list_append' α)  -- study this
+  
+  -- Applying n-ary versions of binary operators to *lists* of argument values
+  #eval nat_add_n [1,2,3,4,5,6,7,8,9,10]
+  #eval nat_mul_n [1,2,3,4,5,6,7,8,9,10]
+  #eval list_app_n [[1,2,3],[4,5,6],[7,8,9]]
+  #eval list_app_n [ ["Hello", ", ", "Logic!"], ["You", " ", "are", " ", "Cool!"]]
 
--- Applying n-ary versions of binary operators to *lists* of argument values
-#eval nat_add_n [1,2,3,4,5,6,7,8,9,10]
-#eval nat_mul_n [1,2,3,4,5,6,7,8,9,10]
-#eval list_app_n [[1,2,3],[4,5,6],[7,8,9]]
-#eval list_app_n [ ["Hello", ", ", "Logic!"], ["You", " ", "are", " ", "Cool!"]]
--- QUOTE.
-
-/- TEXT:
 Exercise: Define monoid instances for Boolean && and Boolean ||
 operators, and use them as arguments to foldr to define their 
 n-ary extensions. 
-TEXT. -/
-
-/- TEXT:
 
 Associating values with types
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -193,36 +167,30 @@ Lean provides mechanisms for writing one definition and then
 cloning it automatically to produce the code for the other.
 
 
-TEXT. -/
 
--- QUOTE:
-structure mul_monoid' (α : Type) : Type := mk::
-  (op : α  → α  → α )   -- data
-  (e : α )              -- data
-  (ident : ∀ a, op e a = a ∧ op a e = a)
-  (assoc: ∀ a b c, op a (op b c) = op (op a b) c)
+.. code-block:: lean
 
--- unfortunate but unavoidable duplication 
-structure add_monoid' (α : Type) : Type := mk::
-  (op : α  → α  → α )   -- data
-  (e : α )              -- data
-  (ident : ∀ a, op e a = a ∧ op a e = a)
-  (assoc: ∀ a b c, op a (op b c) = op (op a b) c)
+  structure mul_monoid' (α : Type) : Type := mk::
+    (op : α  → α  → α )   -- data
+    (e : α )              -- data
+    (ident : ∀ a, op e a = a ∧ op a e = a)
+    (assoc: ∀ a b c, op a (op b c) = op (op a b) c)
+  
+  -- unfortunate but unavoidable duplication 
+  structure add_monoid' (α : Type) : Type := mk::
+    (op : α  → α  → α )   -- data
+    (e : α )              -- data
+    (ident : ∀ a, op e a = a ∧ op a e = a)
+    (assoc: ∀ a b c, op a (op b c) = op (op a b) c)
+  
+  def  mul_foldr' {α : Type} (m : mul_monoid' α) : list α → α 
+  | list.nil := match m with (mul_monoid'.mk op e _ _) := e end
+  | (h::t) := match m with (mul_monoid'.mk op e _ _) := m.op h (mul_foldr' t) end
+  
+  def  add_foldr' {α : Type} (m : add_monoid' α) : list α → α 
+  | list.nil := match m with (add_monoid'.mk op e _ _) := e end
+  | (h::t) := match m with (add_monoid'.mk op e _ _) := m.op h (add_foldr' t) end
 
-def  mul_foldr' {α : Type} (m : mul_monoid' α) : list α → α 
-| list.nil := match m with (mul_monoid'.mk op e _ _) := e end
-| (h::t) := match m with (mul_monoid'.mk op e _ _) := m.op h (mul_foldr' t) end
-
-def  add_foldr' {α : Type} (m : add_monoid' α) : list α → α 
-| list.nil := match m with (add_monoid'.mk op e _ _) := e end
-| (h::t) := match m with (add_monoid'.mk op e _ _) := m.op h (add_foldr' t) end
--- QUOTE. 
-
--- Question: what are the types of mul_ and add_monoid'?
-#check @add_monoid'
-#check @mul_monoid'
-
-/- TEXT: 
 Our next observation we make is that we can apply foldr to
 a list of elements of some type α if and *only if* we have a
 definition of a monoid for α. For example, given what we've
@@ -256,9 +224,6 @@ is the only monoid instance that we can use here. Wouldn't it
 be nice is Lean could infer that automatically and pass this
 *value* implicitly to foldr? Note that this is a new idea: we
 are not talking about *type* inference, but *value* inference.
-TEXT. -/
-
-/- TEXT: 
 
 Typeclasses
 -----------
@@ -276,24 +241,22 @@ Typeclass types
 
 Rather than declaring *structure mul_monoid'* we would declare 
 *@[class] structure mul_monoid*, or just *class mul_monoid*.  
-TEXT. -/ 
 
--- QUOTE:
-@[class] structure mul_monoid (α : Type) : Type := mk::
-  (op : α  → α  → α )   -- data
-  (e : α )              -- data
-  (ident : ∀ a, op e a = a ∧ op a e = a)
-  (assoc: ∀ a b c, op a (op b c) = op (op a b) c)
+.. code-block:: lean
 
--- unfortunate but unavoidable duplication 
-class add_monoid (α : Type) : Type := mk::
-  (op : α  → α  → α )   -- data
-  (e : α )              -- data
-  (ident : ∀ a, op e a = a ∧ op a e = a)
-  (assoc: ∀ a b c, op a (op b c) = op (op a b) c)
--- QUOTE.
+  @[class] structure mul_monoid (α : Type) : Type := mk::
+    (op : α  → α  → α )   -- data
+    (e : α )              -- data
+    (ident : ∀ a, op e a = a ∧ op a e = a)
+    (assoc: ∀ a b c, op a (op b c) = op (op a b) c)
+  
+  -- unfortunate but unavoidable duplication 
+  class add_monoid (α : Type) : Type := mk::
+    (op : α  → α  → α )   -- data
+    (e : α )              -- data
+    (ident : ∀ a, op e a = a ∧ op a e = a)
+    (assoc: ∀ a b c, op a (op b c) = op (op a b) c)
 
-/- TEXT:
 Using the @[class] annotation tells Lean that we are defining
 a structure whose instances are to be indexed by type values,
 α. When we define an instance, we annotate it with @[instance]
@@ -301,51 +264,44 @@ or just use the *instance* keyword.
 
 Typeclass instances
 ~~~~~~~~~~~~~~~~~~~
-TEXT. -/
 
--- QUOTE:
-@[instance] def nat_add_monoid : add_monoid nat := add_monoid.mk nat.add 0 sorry sorry -- zero_ident_add_nat nat_add_assoc  
-instance list_append_monoid {α : Type} : @add_monoid (list α) := add_monoid.mk list.append [] sorry sorry 
--- QUOTE.
+.. code-block:: lean
 
-/- TEXT:
+  @[instance] def nat_add_monoid : add_monoid nat := add_monoid.mk nat.add 0 sorry sorry -- zero_ident_add_nat nat_add_assoc  
+  instance list_append_monoid {α : Type} : @add_monoid (list α) := add_monoid.mk list.append [] sorry sorry 
+
 Finally, we use *square* brackets to tell Lean to infer typeclass instances
 at function application time. Here are revised versions of our foldr functions.
-TEXT. -/
 
--- QUOTE:
-def  mul_foldr {α : Type} [m : mul_monoid α] : list α → α 
-| list.nil := match m with (mul_monoid.mk op e _ _) := e end
-| (h::t) := match m with (mul_monoid.mk op e _ _) := m.op h (mul_foldr t) end
+.. code-block:: lean
 
-def add_foldr {α : Type} [m : add_monoid α] : list α → α 
-| list.nil := match m with (add_monoid.mk op e _ _) := e end
-| (h::t) := match m with (add_monoid.mk op e _ _) := m.op h (add_foldr t) end
--- QUOTE. 
+  def  mul_foldr {α : Type} [m : mul_monoid α] : list α → α 
+  | list.nil := match m with (mul_monoid.mk op e _ _) := e end
+  | (h::t) := match m with (mul_monoid.mk op e _ _) := m.op h (mul_foldr t) end
+  
+  def add_foldr {α : Type} [m : add_monoid α] : list α → α 
+  | list.nil := match m with (add_monoid.mk op e _ _) := e end
+  | (h::t) := match m with (add_monoid.mk op e _ _) := m.op h (add_foldr t) end
 
-/- TEXT: 
 
 Monoid-specific foldr operations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Now we can apply foldr functions without having to give explict monoid 
 instance arguments.
-TEXT. -/
 
--- QUOTE:
+.. code-block:: lean
 
-#eval add_foldr [1,2,3,4,5]                 -- op = nat.add
-#eval add_foldr [[1,2,3],[4,5,6],[7,8,9]]   -- op = list.append
-#eval mul_foldr [1,2,3,4,5]                 -- error: no instance available!
+  
+  #eval add_foldr [1,2,3,4,5]                 -- op = nat.add
+  #eval add_foldr [[1,2,3],[4,5,6],[7,8,9]]   -- op = list.append
+  #eval mul_foldr [1,2,3,4,5]                 -- error: no instance available!
+  
+  
 
-
--- QUOTE. 
-
-
-/- TEXT:
 
 Constraining type arguments
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------
 
 The next idea we'll make explicit is that typeclass arguments
 can be used to constrain type arguments, specifically to types
@@ -373,28 +329,25 @@ Let's see what happens if we try to apply mul_foldr to a list
 of values of a type, α, for which we have not yet defined a
 monoid structure. As you will guess, Lean will tell us that
 it can't infer a required typeclass instance. 
-TEXT. -/
 
+.. code-block:: lean
 
+  instance nat_mul_monoid := 
+    mul_monoid.mk nat.mul 1 sorry sorry           
+  instance bool_mul_monoid : mul_monoid bool := 
+    mul_monoid.mk band tt sorry sorry 
+  
+  #check mul_monoid
+  #check add_monoid
+  #eval mul_foldr [tt,ff,tt]
+  #eval add_foldr [tt,ff,tt]                      -- error: no instance
+  
+  
+  -- Exercise: define a typeclass instance to fix this error.
 
--- QUOTE:
-instance nat_mul_monoid := 
-  mul_monoid.mk nat.mul 1 sorry sorry           
-instance bool_mul_monoid : mul_monoid bool := 
-  mul_monoid.mk band tt sorry sorry 
-
-#check mul_monoid
-#check add_monoid
-#eval mul_foldr [tt,ff,tt]
-#eval add_foldr [tt,ff,tt]                      -- error: no instance
-
-
--- Exercise: define a typeclass instance to fix this error.
--- QUOTE.
-/- TEXT:
 
 A default value typeclass
-~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------
 
 It'll be helpful to see a simpler typeclass and how it can be
 used to help define otherwise troublesome functions. We will
@@ -407,74 +360,69 @@ In particular, we'll see how to use it to write a total function
 that returns the value at the head of any list of α, as long as 
 there's a default_value instance for α providing an α value to
 return in case one tries to compute the head of an empty list.  
-TEXT. -/
 
+.. code-block:: lean
 
--- QUOTE:
-class default_value (α : Type) := mk::
-(val : α)
+  class default_value (α : Type) := mk::
+  (val : α)
+  
+  instance nat_def : default_value nat := default_value.mk 0
+  instance bool_def : default_value bool := default_value.mk tt
+  instance list_def {α : Type} : default_value (list α) := default_value.mk []
+  
+  def list_head {α : Type} [d : default_value α] : list α → α
+  | [] := d.val
+  | (h::t) := h
+  
+  #eval list_head [1,2,3]                     -- returns nat
+  #eval list_head [ff,tt,ff]                  -- returns bool
+  #eval list_head [[1,2,3],[4,5,6],[7,8,9]]   -- returns list nat
+  
+  #eval list_head ([] : list nat)             -- returns default nat!     
+  #eval list_head ([] : list bool)            -- returns default bool!
+  
+  instance string_def : default_value string := default_value.mk ""
+  
+  #eval list_head ([] : list string)          -- error: no default for string
+  
+  -- EXERCISE: define a default_value typeclass instance to fix that error
 
-instance nat_def : default_value nat := default_value.mk 0
-instance bool_def : default_value bool := default_value.mk tt
-instance list_def {α : Type} : default_value (list α) := default_value.mk []
-
-def list_head {α : Type} [d : default_value α] : list α → α
-| [] := d.val
-| (h::t) := h
-
-#eval list_head [1,2,3]                     -- returns nat
-#eval list_head [ff,tt,ff]                  -- returns bool
-#eval list_head [[1,2,3],[4,5,6],[7,8,9]]   -- returns list nat
-
-#eval list_head ([] : list nat)             -- returns default nat!     
-#eval list_head ([] : list bool)            -- returns default bool!
-
-instance string_def : default_value string := default_value.mk ""
-
-#eval list_head ([] : list string)          -- error: no default for string
-
--- EXERCISE: define a default_value typeclass instance to fix that error
--- QUOTE. 
-
-/- TEXT:
 
 Operator overloading
-~~~~~~~~~~~~~~~~~~~~
+--------------------
 
 The original purpose for typeclasses in Haskell was to enable
 overloading of operator notations. For example, we might want 
 the infix notation, *, to mean nat.mul for natural numbers but
 bool.band for Boolean values. To do this is just an application
 of what you now already know. Let's see.  
-TEXT. -/
 
--- QUOTE:
--- First the typeclass
-class has_mult (α : Type) :=    -- has_mul in Lean; also "dropping mk::"
-(op : α → α → α)
+.. code-block:: lean
 
--- Then an overloaded operator; applies right version of op for α 
-def mult {α : Type} [has_mult α] (a b : α) := has_mult.op a b
+  -- First the typeclass
+  class has_mult (α : Type) :=    -- has_mul in Lean; also "dropping mk::"
+  (op : α → α → α)
+  
+  -- Then an overloaded operator; applies right version of op for α 
+  def mult {α : Type} [has_mult α] (a b : α) := has_mult.op a b
+  
+  instance has_mult_nat : has_mult nat := has_mult.mk nat.mul
+  instance has_mult_bool : has_mult bool := has_mult.mk band
+  
+  #eval mult 3 4
+  #eval mult tt tt
+  #eval mult ff tt
+  #eval mult tt ff
+  #eval mult ff ff
+  
+  -- Now all we need is a notation
+  
+  notation (name := mult) a ` * ` b := mult a b
+  
+  #eval tt * ff     -- this works well
+  #eval 2 * 3       -- oops, * already overloaded, thus *ambiguous*
+  
 
-instance has_mult_nat : has_mult nat := has_mult.mk nat.mul
-instance has_mult_bool : has_mult bool := has_mult.mk band
-
-#eval mult 3 4
-#eval mult tt tt
-#eval mult ff tt
-#eval mult tt ff
-#eval mult ff ff
-
--- Now all we need is a notation
-
-notation (name := mult) a ` * ` b := mult a b
-
-#eval tt * ff     -- this works well
-#eval 2 * 3       -- oops, * already overloaded, thus *ambiguous*
-
--- QUOTE. 
-
-/- TEXT:
 Structure inheritance
 ~~~~~~~~~~~~~~~~~~~~~
 
@@ -485,22 +433,24 @@ in the Lean libraries. To use the monoid typeclass we have to
 import the library in which it's defined. Note that at the top
 of this file we're now importing algebra.group. To figure out
 what library to import, use the online Lean mathlib reference.
-TEXT. -/
 
--- QUOTE:
+.. code-block:: lean
 
-#check monoid         -- extends semigroup, mul_one_class
-#check semigroup      -- extends has_mul
-#check has_mul        -- as we've seen
-#check mul_one_class  -- extends has_one 
-#check has_one        -- arbitrary value called "one"
+  
+  #check monoid         -- extends semigroup, mul_one_class
+  #check semigroup      -- extends has_mul
+  #check has_mul        -- as we've seen
+  #check mul_one_class  -- extends has_one 
+  #check has_one        -- arbitrary value called "one"
+  
+  
+  #check group
+  
+  
+  -- See documentation for how it all fits together. 
+  
 
 
-#check group
+Monoids in Mathlib
+~~~~~~~~~~~~~~~~~~
 
-
--- See documentation for how it all fits together. 
-
--- QUOTE. 
-
-end cs6501
