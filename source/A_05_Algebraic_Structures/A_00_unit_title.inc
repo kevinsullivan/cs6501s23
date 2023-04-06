@@ -1,5 +1,3 @@
-/- TEXT:
 ====================
 Algebraic Structures
 ====================
-TEXT. -/

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6. Algebraic Structures &mdash; CS6501 Spring 2023 1.2.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Index" href="genindex.html" />
+    <link rel="prev" title="5. Typeclasses" href="A_04_Typeclasses.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> CS6501 Spring 2023
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="A_00_Introduction.html">1. CS6501 Spring 2023</a></li>
+<li class="toctree-l1"><a class="reference internal" href="A_01_Propositional_Logic.html">2. Propositional Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="A_02_Constructive_Logic.html">3. Constructive Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="A_03_Recursive_Types.html">4. Recursive Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="A_04_Typeclasses.html">5. Typeclasses</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">6. Algebraic Structures</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#monoids">6.1. Monoids</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#extended-example">6.1.1. Extended Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#elements-operation-proofs">6.1.2. Elements, Operation, Proofs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#monoid-typeclass">6.1.3. Monoid typeclass</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#semigroup">6.1.4. Semigroup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#has-mul">6.1.5. has_mul</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#has-mul-instance">6.1.6. has_mul instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#semigroup-instance">6.1.7. semigroup instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mul-one-class-instance">6.1.8. mul_one_class instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#what-we-get">6.1.9. What we get</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#groups">6.2. Groups</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CS6501 Spring 2023</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">6. </span>Algebraic Structures</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/A_05_Algebraic_Structures.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="algebraic-structures">
+<span id="introduction"></span><h1><span class="section-number">6. </span>Algebraic Structures<a class="headerlink" href="#algebraic-structures" title="Permalink to this heading">&#61633;</a></h1>
+<section id="monoids">
+<h2><span class="section-number">6.1. </span>Monoids<a class="headerlink" href="#monoids" title="Permalink to this heading">&#61633;</a></h2>
+<p>In this section, we&#8217;ll analyze and use the definition of monoids provided
+by Lean&#8217;s <em>mathlib</em>.</p>
+<section id="extended-example">
+<h3><span class="section-number">6.1.1. </span>Extended Example<a class="headerlink" href="#extended-example" title="Permalink to this heading">&#61633;</a></h3>
+<p>As an exceptionally simple example, we&#8217;ll define an instance of this
+concept where the elements of a multiplicative monoid are <em>rotations</em>
+of an equilateral triangle that leave its vertices pointing in the
+same direction as the original. We call such rotations <em>symmetries</em>
+of an equilateral triange.</p>
+<p>Think of such a triangle with a black dot marking the top vertex when
+the triangle is in an un-rotated state. The symetries are rotations
+that leave the rotated triangle sitting right on top of where it was
+in its unrotated state. These are rotations by 0 degrees, which
+leaves the dot where it is; by 120 degrees, which rotates the dot by one
+vertex counterclockwise; and by 240 degrees, which rotates the dot two
+vertices counterclockwise. Rotating by 360 degrees leaves the dot exactly
+where it started, and so is equal to the zero rotation.</p>
+<p>These are all of the <em>rotational symmetries</em> of an equilateral triangle.
+We&#8217;ll call them <em>r0</em>, <em>r120</em>, and <em>r240</em>. Again these are the <em>elements</em>
+of our monoid, well call it <em>rot_sym_eqtri</em>, short for the <em>rotational
+symmetries of an equilateral triangle</em>.</p>
+<p>To be a monoid we also need an associative operator that takes any two
+monoid elements and returns another monoid element. Our operator will
+work by <em>composing</em> translations, and we&#8217;ll use multiplicative notation
+for this operation. As an example, if we compose r120 with r120 we get
+a rotation by 240 degrees, which is r240; composing r240 and r120 is
+rotates by 360 degrees giving back the original triangle, and so is
+equal to r0. It&#8217;s a simple exercise to write out the <em>multiplication
+table</em> for this operator.</p>
+<p>Finally we need our set of elements to includes an identity element,
+e, that when composed with any element, r, just yields r. Clearly
+r0 serves this purpose.</p>
+</section>
+<section id="elements-operation-proofs">
+<h3><span class="section-number">6.1.2. </span>Elements, Operation, Proofs<a class="headerlink" href="#elements-operation-proofs" title="Permalink to this heading">&#61633;</a></h3>
+<p>To formally specify our monoid of rotational symmetries of a regular
+triangle as a monoid, we&#8217;ll need to represent the set of rotations
+and the composition operation, and we&#8217;ll need to prove that these
+components satisfy the monoid laws.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20We%20represent%20the%20set%20of%20monoid%20elements%20(rotations)%20as%20a%20type%0Ainductive%20rot_sym_eqtri%0A%7C%20r0%0A%7C%20r120%0A%7C%20r240%0A%0Aopen%20rot_sym_eqtri%0A%0A--%20We%20represent%20the%20operation%20as%20a%20binary%20operation%20on%20this%0Adef%20rot_mul%20%3A%20rot_sym_eqtri%20%E2%86%92%20rot_sym_eqtri%20%E2%86%92%20rot_sym_eqtri%0A%7C%20r0%20r0%20%3A%3D%20r0%0A%7C%20r0%20r120%20%3A%3D%20r120%0A%7C%20r0%20r240%20%3A%3D%20r240%0A%7C%20r120%20r0%20%3A%3D%20r120%0A%7C%20r120%20r120%20%3A%3D%20r240%0A%7C%20r120%20r240%20%3A%3D%20r0%0A%7C%20r240%20r0%20%3A%3D%20r240%0A%7C%20r240%20r120%20%3A%3D%20r0%0A%7C%20r240%20r240%20%3A%3D%20r120%0A%0A--%20We%20need%20a%20proof%20that%20r0%20is%20an%20identity%20for%20this%20operation%0A%0Atheorem%20rot_left_ident%20%3A%20%E2%88%80%20(r%20%3A%20rot_sym_eqtri)%2C%20rot_mul%20r0%20r%20%3D%20r%20%20%3A%3D%0Abegin%0Aassume%20r%2C%0Acases%20r%2C%0Arepeat%20%7Bapply%20rfl%7D%2C%0Aend%0A%0Atheorem%20rot_right_ident%20%3A%20%E2%88%80%20(r%20%3A%20rot_sym_eqtri)%2C%20rot_mul%20r%20%20r0%20%3D%20r%20%3A%3D%0Abegin%0Aassume%20r%2C%0Acases%20r%2C%0Arepeat%20%7Bapply%20rfl%7D%2C%0Aend%0A%0A--%20And%20we%20need%20a%20proof%20that%20the%20operation%20is%20associative%0A%0Atheorem%20rot_mul_assoc%20%3A%0A%20%20%E2%88%80%20(e1%20e2%20e3%20%3A%20rot_sym_eqtri)%2C%0A%20%20%20%20rot_mul%20(rot_mul%20e1%20e2)%20e3%20%3D%20rot_mul%20e1%20(rot_mul%20e2%20e3)%20%3A%3D%0Abegin%0Aassume%20e1%20e2%20e3%2C%0A%0Acases%20e1%2C%0Arepeat%20%7B%0A%20%20cases%20e2%2C%0A%20%20repeat%20%7B%0A%20%20%20%20cases%20e3%2C%0A%20%20%20%20repeat%20%7Bexact%20rfl%7D%7D%2C%0A%20%20%7D%2C%0Aend" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_52.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- We represent the set of monoid elements (rotations) as a type</span>
+<span class="kd">inductive</span> <span class="n">rot_sym_eqtri</span>
+<span class="bp">|</span> <span class="n">r0</span>
+<span class="bp">|</span> <span class="n">r120</span>
+<span class="bp">|</span> <span class="n">r240</span>
+
+<span class="kn">open</span> <span class="n">rot_sym_eqtri</span>
+
+<span class="c1">-- We represent the operation as a binary operation on this</span>
+<span class="kd">def</span> <span class="n">rot_mul</span> <span class="o">:</span> <span class="n">rot_sym_eqtri</span> <span class="bp">&#8594;</span> <span class="n">rot_sym_eqtri</span> <span class="bp">&#8594;</span> <span class="n">rot_sym_eqtri</span>
+<span class="bp">|</span> <span class="n">r0</span> <span class="n">r0</span> <span class="o">:=</span> <span class="n">r0</span>
+<span class="bp">|</span> <span class="n">r0</span> <span class="n">r120</span> <span class="o">:=</span> <span class="n">r120</span>
+<span class="bp">|</span> <span class="n">r0</span> <span class="n">r240</span> <span class="o">:=</span> <span class="n">r240</span>
+<span class="bp">|</span> <span class="n">r120</span> <span class="n">r0</span> <span class="o">:=</span> <span class="n">r120</span>
+<span class="bp">|</span> <span class="n">r120</span> <span class="n">r120</span> <span class="o">:=</span> <span class="n">r240</span>
+<span class="bp">|</span> <span class="n">r120</span> <span class="n">r240</span> <span class="o">:=</span> <span class="n">r0</span>
+<span class="bp">|</span> <span class="n">r240</span> <span class="n">r0</span> <span class="o">:=</span> <span class="n">r240</span>
+<span class="bp">|</span> <span class="n">r240</span> <span class="n">r120</span> <span class="o">:=</span> <span class="n">r0</span>
+<span class="bp">|</span> <span class="n">r240</span> <span class="n">r240</span> <span class="o">:=</span> <span class="n">r120</span>
+
+<span class="c1">-- We need a proof that r0 is an identity for this operation</span>
+
+<span class="kd">theorem</span> <span class="n">rot_left_ident</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">r</span> <span class="o">:</span> <span class="n">rot_sym_eqtri</span><span class="o">),</span> <span class="n">rot_mul</span> <span class="n">r0</span> <span class="n">r</span> <span class="bp">=</span> <span class="n">r</span>  <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">assume</span> <span class="n">r</span><span class="o">,</span>
+<span class="n">cases</span> <span class="n">r</span><span class="o">,</span>
+<span class="n">repeat</span> <span class="o">{</span><span class="n">apply</span> <span class="n">rfl</span><span class="o">},</span>
+<span class="kd">end</span>
+
+<span class="kd">theorem</span> <span class="n">rot_right_ident</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">r</span> <span class="o">:</span> <span class="n">rot_sym_eqtri</span><span class="o">),</span> <span class="n">rot_mul</span> <span class="n">r</span>  <span class="n">r0</span> <span class="bp">=</span> <span class="n">r</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">assume</span> <span class="n">r</span><span class="o">,</span>
+<span class="n">cases</span> <span class="n">r</span><span class="o">,</span>
+<span class="n">repeat</span> <span class="o">{</span><span class="n">apply</span> <span class="n">rfl</span><span class="o">},</span>
+<span class="kd">end</span>
+
+<span class="c1">-- And we need a proof that the operation is associative</span>
+
+<span class="kd">theorem</span> <span class="n">rot_mul_assoc</span> <span class="o">:</span>
+  <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">e1</span> <span class="n">e2</span> <span class="n">e3</span> <span class="o">:</span> <span class="n">rot_sym_eqtri</span><span class="o">),</span>
+    <span class="n">rot_mul</span> <span class="o">(</span><span class="n">rot_mul</span> <span class="n">e1</span> <span class="n">e2</span><span class="o">)</span> <span class="n">e3</span> <span class="bp">=</span> <span class="n">rot_mul</span> <span class="n">e1</span> <span class="o">(</span><span class="n">rot_mul</span> <span class="n">e2</span> <span class="n">e3</span><span class="o">)</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">assume</span> <span class="n">e1</span> <span class="n">e2</span> <span class="n">e3</span><span class="o">,</span>
+
+<span class="n">cases</span> <span class="n">e1</span><span class="o">,</span>
+<span class="n">repeat</span> <span class="o">{</span>
+  <span class="n">cases</span> <span class="n">e2</span><span class="o">,</span>
+  <span class="n">repeat</span> <span class="o">{</span>
+    <span class="n">cases</span> <span class="n">e3</span><span class="o">,</span>
+    <span class="n">repeat</span> <span class="o">{</span><span class="n">exact</span> <span class="n">rfl</span><span class="o">}},</span>
+  <span class="o">},</span>
+<span class="kd">end</span>
+</pre></div>
+</div>
+</div></section>
+<section id="monoid-typeclass">
+<h3><span class="section-number">6.1.3. </span>Monoid typeclass<a class="headerlink" href="#monoid-typeclass" title="Permalink to this heading">&#61633;</a></h3>
+<p>That&#8217;s all we need to have a monoid. Next we assemble these
+elements into an instance of Lean&#8217;s monoid typeclass. Once we
+do that, we&#8217;ll benefit from all of the machinery (including
+notations and other operations) that come Lean&#8217;s monoid and
+its underlying typeclass definitions. So let&#8217;s look to see
+exactly what&#8217;s needed to create our own monoid instance.
+Here&#8217;s Lean&#8217;s definition of monoid.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20%40monoid%0A%2F-%0Aclass%20monoid%20(M%20%3A%20Type%20u)%20extends%20semigroup%20M%2C%20mul_one_class%20M%20%3A%3D%0A(npow%20%3A%20%E2%84%95%20%E2%86%92%20M%20%E2%86%92%20M%20%3A%3D%20npow_rec)%0A(npow_zero'%20%3A%20%E2%88%80%20x%2C%20npow%200%20x%20%3D%201%20.%20try_refl_tac)%0A(npow_succ'%20%3A%20%E2%88%80%20(n%20%3A%20%E2%84%95)%20x%2C%20npow%20n.succ%20x%20%3D%20x%20*%20npow%20n%20x%20.%20try_refl_tac)%0A-%2F" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_119.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="bp">@</span><span class="n">monoid</span>
+<span class="c">/-</span>
+<span class="cm">class monoid (M : Type u) extends semigroup M, mul_one_class M :=</span>
+<span class="cm">(npow : &#8469; &#8594; M &#8594; M := npow_rec)</span>
+<span class="cm">(npow_zero&#39; : &#8704; x, npow 0 x = 1 . try_refl_tac)</span>
+<span class="cm">(npow_succ&#39; : &#8704; (n : &#8469;) x, npow n.succ x = x * npow n x . try_refl_tac)</span>
+<span class="cm">-/</span>
+</pre></div>
+</div>
+</div><p>We see that a monoid on a carrier set, <em>M</em> (here of rotations), will
+extend semi-group and mul_one_class typeclasses, so we&#8217;ll need to go
+look at those. The typeclass itself requires an operation n_pow, which
+will be defined recursively as applying a given operation <em>n</em> times.
+The proofs require base and recursive step cases, which will be given
+by the base and inductive rules of the given function. Let&#8217;s ignore the
+details of notation for now. What&#8217;s important to know is that these
+proofs are given values here that will be computed automatically
+when a definition of npow is actually given.</p>
+<p>The <em>major</em> insight to gain from this definition is that, to define
+a monoid typeclass instance, we need to already have instances of
+Lean&#8217;s semigroup and mul_one_class typeclasses. So Let&#8217;s see what
+we need for those, digging down until we reach simplest typeclasses.
+We&#8217;ll then build our monoid typeclass instances in a bottom-up
+fashion.</p>
+</section>
+<section id="semigroup">
+<h3><span class="section-number">6.1.4. </span>Semigroup<a class="headerlink" href="#semigroup" title="Permalink to this heading">&#61633;</a></h3>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20%40semigroup%0A%2F-%0Aclass%20semigroup%20(G%20%3A%20Type%20u)%20extends%20has_mul%20G%20%3A%3D%0A(mul_assoc%20%3A%20%E2%88%80%20a%20b%20c%20%3A%20G%2C%20a%20*%20b%20*%20c%20%3D%20a%20*%20(b%20*%20c))%0A-%2F" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_149.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="bp">@</span><span class="n">semigroup</span>
+<span class="c">/-</span>
+<span class="cm">class semigroup (G : Type u) extends has_mul G :=</span>
+<span class="cm">(mul_assoc : &#8704; a b c : G, a * b * c = a * (b * c))</span>
+<span class="cm">-/</span>
+</pre></div>
+</div>
+</div><p>We see that to define a semigroup instance we&#8217;ll need an instance
+of has_mul, so let&#8217;s look at that.
+TEXT.</p>
+</section>
+<section id="has-mul">
+<h3><span class="section-number">6.1.5. </span>has_mul<a class="headerlink" href="#has-mul" title="Permalink to this heading">&#61633;</a></h3>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20%40has_mul%0A%2F-%0Aclass%20has_mul%20%20%20%20%20%20(%CE%B1%20%3A%20Type%20u)%20%3A%3D%20(mul%20%3A%20%CE%B1%20%E2%86%92%20%CE%B1%20%E2%86%92%20%CE%B1)%0A-%2F" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_165.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="bp">@</span><span class="n">has_mul</span>
+<span class="c">/-</span>
+<span class="cm">class has_mul      (&#945; : Type u) := (mul : &#945; &#8594; &#945; &#8594; &#945;)</span>
+<span class="cm">-/</span>
+</pre></div>
+</div>
+</div></section>
+<section id="has-mul-instance">
+<h3><span class="section-number">6.1.6. </span>has_mul instance<a class="headerlink" href="#has-mul-instance" title="Permalink to this heading">&#61633;</a></h3>
+<p>Hooray, we have everything we need to define an instance of this
+typeclass, namely just a multiplication operator (mul) for objects
+in our monoid. That operator is rot_mul. (Note that you can define
+typeclass instances without giving them names, which is typical.)</p>
+<p>You see here the use of angle-brackets to specify the field
+values of a given structure. It&#8217;s easier to use than has_mul.mk.</p>
+</section>
+<section id="semigroup-instance">
+<h3><span class="section-number">6.1.7. </span>semigroup instance<a class="headerlink" href="#semigroup-instance" title="Permalink to this heading">&#61633;</a></h3>
+<p>Now we&#8217;ve got what we need to specify a semigroup typeclass
+instance, which simply adds the constraint (in the form of a
+proof) that the operator be associative.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=instance%20%3A%20semigroup%20rot_sym_eqtri%20%3A%3D%20%E2%9F%A8%20rot_mul%2C%20rot_mul_assoc%20%E2%9F%A9%0A%0A%23check%20%40mul_one_class" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_191.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">instance</span> <span class="o">:</span> <span class="n">semigroup</span> <span class="n">rot_sym_eqtri</span> <span class="o">:=</span> <span class="o">&#10216;</span> <span class="n">rot_mul</span><span class="o">,</span> <span class="n">rot_mul_assoc</span> <span class="o">&#10217;</span>
+
+<span class="k">#check</span> <span class="bp">@</span><span class="n">mul_one_class</span>
+</pre></div>
+</div>
+</div></section>
+<section id="mul-one-class-instance">
+<h3><span class="section-number">6.1.8. </span>mul_one_class instance<a class="headerlink" href="#mul-one-class-instance" title="Permalink to this heading">&#61633;</a></h3>
+<p>To complete a typeclass instance for monoid, we also need an instance
+for mul_one_class, and as we&#8217;ll now see, that in turn requires
+instances of has_one and has_mul. We aready have an instance of has_mul,
+so all we need to define now is has_one, which identities the identity
+element in the monoid, which will then be denoted by <em>1</em>.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20%40mul_one_class%0A%23check%20%40has_one%0A%23check%20%40has_mul%0A%0A%2F-%0Aclass%20mul_one_class%20(M%20%3A%20Type%20u)%20extends%20has_one%20M%2C%20has_mul%20M%20%3A%3D%0A(one_mul%20%3A%20%E2%88%80%20(a%20%3A%20M)%2C%201%20*%20a%20%3D%20a)%0A(mul_one%20%3A%20%E2%88%80%20(a%20%3A%20M)%2C%20a%20*%201%20%3D%20a)%0A%0Aclass%20has_one%20%20%20%20%20%20(%CE%B1%20%3A%20Type%20u)%20%3A%3D%20(one%20%3A%20%CE%B1)%0A-%2F%0A%0Ainstance%20%3A%20has_one%20rot_sym_eqtri%20%3A%3D%20%E2%9F%A8%20r0%20%E2%9F%A9%0Ainstance%20%3A%20mul_one_class%20rot_sym_eqtri%20%3A%3D%20%E2%9F%A8%20r0%2C%20rot_mul%2C%20rot_left_ident%2C%20rot_right_ident%20%E2%9F%A9" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_207.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="bp">@</span><span class="n">mul_one_class</span>
+<span class="k">#check</span> <span class="bp">@</span><span class="n">has_one</span>
+<span class="k">#check</span> <span class="bp">@</span><span class="n">has_mul</span>
+
+<span class="c">/-</span>
+<span class="cm">class mul_one_class (M : Type u) extends has_one M, has_mul M :=</span>
+<span class="cm">(one_mul : &#8704; (a : M), 1 * a = a)</span>
+<span class="cm">(mul_one : &#8704; (a : M), a * 1 = a)</span>
+
+<span class="cm">class has_one      (&#945; : Type u) := (one : &#945;)</span>
+<span class="cm">-/</span>
+
+<span class="kd">instance</span> <span class="o">:</span> <span class="n">has_one</span> <span class="n">rot_sym_eqtri</span> <span class="o">:=</span> <span class="o">&#10216;</span> <span class="n">r0</span> <span class="o">&#10217;</span>
+<span class="kd">instance</span> <span class="o">:</span> <span class="n">mul_one_class</span> <span class="n">rot_sym_eqtri</span> <span class="o">:=</span> <span class="o">&#10216;</span> <span class="n">r0</span><span class="o">,</span> <span class="n">rot_mul</span><span class="o">,</span> <span class="n">rot_left_ident</span><span class="o">,</span> <span class="n">rot_right_ident</span> <span class="o">&#10217;</span>
+</pre></div>
+</div>
+</div><p>Yay. We can now assemble our monoid instance.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20rot_npow%20%3A%20%E2%84%95%20%E2%86%92%20rot_sym_eqtri%20%E2%86%92%20rot_sym_eqtri%0A%7C%200%20x%20%3A%3D%20r0%0A%7C%20(nat.succ%20n')%20x%20%3A%3D%20rot_mul%20x%20(rot_npow%20n'%20x)%0A%0Ainstance%20%3A%20monoid%20rot_sym_eqtri%20%3A%3D%0A%E2%9F%A8%0A%20%20rot_mul%2C%0A%20%20rot_mul_assoc%2C%0A%20%20r0%2C%0A%20%20rot_left_ident%2C%0A%20%20rot_right_ident%2C%0A%20%20rot_npow%2C%0A%E2%9F%A9" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_228.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">rot_npow</span> <span class="o">:</span> <span class="n">&#8469;</span> <span class="bp">&#8594;</span> <span class="n">rot_sym_eqtri</span> <span class="bp">&#8594;</span> <span class="n">rot_sym_eqtri</span>
+<span class="bp">|</span> <span class="mi">0</span> <span class="n">x</span> <span class="o">:=</span> <span class="n">r0</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">nat.succ</span> <span class="n">n&#39;</span><span class="o">)</span> <span class="n">x</span> <span class="o">:=</span> <span class="n">rot_mul</span> <span class="n">x</span> <span class="o">(</span><span class="n">rot_npow</span> <span class="n">n&#39;</span> <span class="n">x</span><span class="o">)</span>
+
+<span class="kd">instance</span> <span class="o">:</span> <span class="n">monoid</span> <span class="n">rot_sym_eqtri</span> <span class="o">:=</span>
+<span class="o">&#10216;</span>
+  <span class="n">rot_mul</span><span class="o">,</span>
+  <span class="n">rot_mul_assoc</span><span class="o">,</span>
+  <span class="n">r0</span><span class="o">,</span>
+  <span class="n">rot_left_ident</span><span class="o">,</span>
+  <span class="n">rot_right_ident</span><span class="o">,</span>
+  <span class="n">rot_npow</span><span class="o">,</span>
+<span class="o">&#10217;</span>
+</pre></div>
+</div>
+</div></section>
+<section id="what-we-get">
+<h3><span class="section-number">6.1.9. </span>What we get<a class="headerlink" href="#what-we-get" title="Permalink to this heading">&#61633;</a></h3>
+<p>Having defined the monoid of rotational symmetries of a
+regular triangle, we gain some real benefits. First, we
+get to use the notations (namely 1 and <a href="#id1"><span class="problematic" id="id2">*</span></a>) associated with
+the monoid identity and operator. Second, we can of course
+now define another version of foldr that takes a Lean
+monoid as an argument and extends its binary operator
+to n-ary, taking an arbitrary number of arguments in a
+list.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20Notations!%0A%23reduce%20(1%20%3A%20rot_sym_eqtri)%0A%23reduce%20(r120%20*%201)%0A%23reduce%20(r120%20*%20r120)%0A%0A--%20foldr%20using%20monoid%20notation%0Adef%20foldr%20%7B%CE%B1%20%3A%20Type%7D%20%5Bmonoid%20%CE%B1%5D%20%3A%20list%20%CE%B1%20%E2%86%92%20%CE%B1%0A%7C%20%20list.nil%20%3A%3D%201%0A%7C%20(h%3A%3At)%20%3A%3D%20h%20*%20foldr%20t%0A%0A%23reduce%20foldr%20%5B%5D%0A%23reduce%20foldr%20%5Br120%2Cr120%5D%0A%23reduce%20foldr%20%5Br120%2Cr120%2Cr120%5D" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_257.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Notations!</span>
+<span class="k">#reduce</span> <span class="o">(</span><span class="mi">1</span> <span class="o">:</span> <span class="n">rot_sym_eqtri</span><span class="o">)</span>
+<span class="k">#reduce</span> <span class="o">(</span><span class="n">r120</span> <span class="bp">*</span> <span class="mi">1</span><span class="o">)</span>
+<span class="k">#reduce</span> <span class="o">(</span><span class="n">r120</span> <span class="bp">*</span> <span class="n">r120</span><span class="o">)</span>
+
+<span class="c1">-- foldr using monoid notation</span>
+<span class="kd">def</span> <span class="n">foldr</span> <span class="o">{</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span><span class="o">}</span> <span class="o">[</span><span class="n">monoid</span> <span class="n">&#945;</span><span class="o">]</span> <span class="o">:</span> <span class="n">list</span> <span class="n">&#945;</span> <span class="bp">&#8594;</span> <span class="n">&#945;</span>
+<span class="bp">|</span>  <span class="n">list.nil</span> <span class="o">:=</span> <span class="mi">1</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">h</span><span class="o">::</span><span class="n">t</span><span class="o">)</span> <span class="o">:=</span> <span class="n">h</span> <span class="bp">*</span> <span class="n">foldr</span> <span class="n">t</span>
+
+<span class="k">#reduce</span> <span class="n">foldr</span> <span class="o">[]</span>
+<span class="k">#reduce</span> <span class="n">foldr</span> <span class="o">[</span><span class="n">r120</span><span class="o">,</span><span class="n">r120</span><span class="o">]</span>
+<span class="k">#reduce</span> <span class="n">foldr</span> <span class="o">[</span><span class="n">r120</span><span class="o">,</span><span class="n">r120</span><span class="o">,</span><span class="n">r120</span><span class="o">]</span>
+</pre></div>
+</div>
+</div></section>
+</section>
+<section id="groups">
+<h2><span class="section-number">6.2. </span>Groups<a class="headerlink" href="#groups" title="Permalink to this heading">&#61633;</a></h2>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20%40group%0A%0A%2F-%0Aclass%20group%20(G%20%3A%20Type%20u)%20extends%20div_inv_monoid%20G%20%3A%3D%0A(mul_left_inv%20%3A%20%E2%88%80%20a%20%3A%20G%2C%20a%E2%81%BB%C2%B9%20*%20a%20%3D%201)%0A-%2F%0A%0A%23check%20%40div_inv_monoid%0A%0A%2F-%0Aclass%20div_inv_monoid%20(G%20%3A%20Type%20u)%20extends%20monoid%20G%2C%20has_inv%20G%2C%20has_div%20G%20%3A%3D%0A(div%20%3A%3D%20%CE%BB%20a%20b%2C%20a%20*%20b%E2%81%BB%C2%B9)%0A(div_eq_mul_inv%20%3A%20%E2%88%80%20a%20b%20%3A%20G%2C%20a%20%2F%20b%20%3D%20a%20*%20b%E2%81%BB%C2%B9%20.%20try_refl_tac)%0A(zpow%20%3A%20%E2%84%A4%20%E2%86%92%20G%20%E2%86%92%20G%20%3A%3D%20zpow_rec)%0A(zpow_zero'%20%3A%20%E2%88%80%20(a%20%3A%20G)%2C%20zpow%200%20a%20%3D%201%20.%20try_refl_tac)%0A(zpow_succ'%20%3A%0A%20%20%E2%88%80%20(n%20%3A%20%E2%84%95)%20(a%20%3A%20G)%2C%20zpow%20(int.of_nat%20n.succ)%20a%20%3D%20a%20*%20zpow%20(int.of_nat%20n)%20a%20.%20try_refl_tac)%0A(zpow_neg'%20%3A%0A%20%20%E2%88%80%20(n%20%3A%20%E2%84%95)%20(a%20%3A%20G)%2C%20zpow%20(-%5B1%2B%20n%5D)%20a%20%3D%20(zpow%20n.succ%20a)%E2%81%BB%C2%B9%20.%20try_refl_tac)%0A-%2F%0A%0A%23check%20%40has_inv%0A%2F-%0Aclass%20has_inv%20%20%20%20%20%20(%CE%B1%20%3A%20Type%20u)%20%3A%3D%20(inv%20%3A%20%CE%B1%20%E2%86%92%20%CE%B1)%0A-%2F%0A%23check%20%40has_div%0A%2F-%0Aclass%20has_div%20%20%20%20%20%20(%CE%B1%20%3A%20Type%20u)%20%3A%3D%20(div%20%3A%20%CE%B1%20%E2%86%92%20%CE%B1)%0A-%2F" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_5.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="bp">@</span><span class="n">group</span>
+
+<span class="c">/-</span>
+<span class="cm">class group (G : Type u) extends div_inv_monoid G :=</span>
+<span class="cm">(mul_left_inv : &#8704; a : G, a&#8315;&#185; * a = 1)</span>
+<span class="cm">-/</span>
+
+<span class="k">#check</span> <span class="bp">@</span><span class="n">div_inv_monoid</span>
+
+<span class="c">/-</span>
+<span class="cm">class div_inv_monoid (G : Type u) extends monoid G, has_inv G, has_div G :=</span>
+<span class="cm">(div := &#955; a b, a * b&#8315;&#185;)</span>
+<span class="cm">(div_eq_mul_inv : &#8704; a b : G, a / b = a * b&#8315;&#185; . try_refl_tac)</span>
+<span class="cm">(zpow : &#8484; &#8594; G &#8594; G := zpow_rec)</span>
+<span class="cm">(zpow_zero&#39; : &#8704; (a : G), zpow 0 a = 1 . try_refl_tac)</span>
+<span class="cm">(zpow_succ&#39; :</span>
+<span class="cm">  &#8704; (n : &#8469;) (a : G), zpow (int.of_nat n.succ) a = a * zpow (int.of_nat n) a . try_refl_tac)</span>
+<span class="cm">(zpow_neg&#39; :</span>
+<span class="cm">  &#8704; (n : &#8469;) (a : G), zpow (-[1+ n]) a = (zpow n.succ a)&#8315;&#185; . try_refl_tac)</span>
+<span class="cm">-/</span>
+
+<span class="k">#check</span> <span class="bp">@</span><span class="n">has_inv</span>
+<span class="c">/-</span>
+<span class="cm">class has_inv      (&#945; : Type u) := (inv : &#945; &#8594; &#945;)</span>
+<span class="cm">-/</span>
+<span class="k">#check</span> <span class="bp">@</span><span class="n">has_div</span>
+<span class="c">/-</span>
+<span class="cm">class has_div      (&#945; : Type u) := (div : &#945; &#8594; &#945;)</span>
+<span class="cm">-/</span>
+</pre></div>
+</div>
+</div></section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="A_04_Typeclasses.html" class="btn btn-neutral float-left" title="5. Typeclasses" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="genindex.html" class="btn btn-neutral float-right" title="Index" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Kevin Sullivan.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,13 +1,7 @@
 
 import algebra.group
 
-/- TEXT: 
-******
-Groups
-******
-TEXT. -/
 
--- QUOTE:
 #check @group
 
 /-
@@ -38,4 +32,3 @@ class has_inv      (α : Type u) := (inv : α → α)
 class has_div      (α : Type u) := (div : α → α)
 -/
 
--- QUOTE.
