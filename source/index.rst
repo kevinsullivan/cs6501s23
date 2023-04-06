@@ -11,7 +11,7 @@ CS6501, Spring 2023, Sullivan
    A_01_Propositional_Logic
    A_02_Constructive_Logic
    A_03_Recursive_Types
-   A_04_Mathematical_Structures
+   A_04_Typeclasses
 .. toctree::
    :hidden:
 

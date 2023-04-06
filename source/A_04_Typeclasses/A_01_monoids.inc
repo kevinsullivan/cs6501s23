@@ -1,7 +1,7 @@
 
-***********
-Typeclasses
-***********
+*******************
+By Example: Monoids
+*******************
 
 This chapter has taught you about proof by induction. Our need
 for this proof construction method was created by our need for  
@@ -25,8 +25,8 @@ we will need the concept of typeclasses and typeclass inference.
 We'll start with where we've gotten to up to now, and will then
 take it the rest of the way from there. 
 
-Summary to Present
-------------------
+Review to Present
+-----------------
 
 Let's start by reviewing what we've done so far. 
 
@@ -130,7 +130,7 @@ operators, and use them as arguments to foldr to define their
 n-ary extensions. 
 
 Associating values with types
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------------
 
 If we take a step back, we can see that what we've done is to
 associate certain values of the monoid type with given element
@@ -270,6 +270,10 @@ Typeclass instances
   @[instance] def nat_add_monoid : add_monoid nat := add_monoid.mk nat.add 0 sorry sorry -- zero_ident_add_nat nat_add_assoc  
   instance list_append_monoid {α : Type} : @add_monoid (list α) := add_monoid.mk list.append [] sorry sorry 
 
+
+Instance inference
+~~~~~~~~~~~~~~~~~~
+
 Finally, we use *square* brackets to tell Lean to infer typeclass instances
 at function application time. Here are revised versions of our foldr functions.
 
@@ -284,8 +288,8 @@ at function application time. Here are revised versions of our foldr functions.
   | (h::t) := match m with (add_monoid.mk op e _ _) := m.op h (add_foldr t) end
 
 
-Monoid-specific foldr operations
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Monoids and foldr
+~~~~~~~~~~~~~~~~~
 
 Now we can apply foldr functions without having to give explict monoid 
 instance arguments.
@@ -300,8 +304,8 @@ instance arguments.
   
 
 
-Constraining type arguments
----------------------------
+Type constraints
+----------------
 
 The next idea we'll make explicit is that typeclass arguments
 can be used to constrain type arguments, specifically to types
@@ -346,8 +350,8 @@ it can't infer a required typeclass instance.
   -- Exercise: define a typeclass instance to fix this error.
 
 
-A default value typeclass
--------------------------
+Example: default typeclass
+--------------------------
 
 It'll be helpful to see a simpler typeclass and how it can be
 used to help define otherwise troublesome functions. We will
@@ -423,8 +427,8 @@ of what you now already know. Let's see.
   #eval 2 * 3       -- oops, * already overloaded, thus *ambiguous*
   
 
-Structure inheritance
-~~~~~~~~~~~~~~~~~~~~~
+Typeclass inheritance
+---------------------
 
 Typeclass "interface inheritance" can be used to define complex 
 typeclasses as compositions of simpler ones. To see an example, 
@@ -449,8 +453,4 @@ what library to import, use the online Lean mathlib reference.
   
   -- See documentation for how it all fits together. 
   
-
-
-Monoids in Mathlib
-~~~~~~~~~~~~~~~~~~
 

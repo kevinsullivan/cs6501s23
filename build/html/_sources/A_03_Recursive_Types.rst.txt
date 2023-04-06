@@ -6,4 +6,3 @@
 .. include:: A_03_Recursive_Types/A_03_polymorphic_lists.inc
 .. include:: A_03_Recursive_Types/A_04_higher_order_functions.inc
 .. include:: A_03_Recursive_Types/A_05_recursive_proofs.inc
-.. include:: A_03_Recursive_Types/A_06_monoids.inc
