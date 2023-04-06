@@ -27,7 +27,7 @@ theorem rot_left_ident : ∀ (r : rot_sym_eqtri), rot_mul r0 r = r  :=
 begin
 assume r,
 cases r,
-repeat {apply rfl},
+repeat {exact rfl,}
 end 
 
 theorem rot_right_ident : ∀ (r : rot_sym_eqtri), rot_mul r  r0 = r :=
@@ -100,20 +100,29 @@ class has_one      (α : Type u) := (one : α)
 -/
 
 instance : has_one rot_sym_eqtri := ⟨ r0 ⟩ 
-instance : mul_one_class rot_sym_eqtri := ⟨ r0, rot_mul, rot_left_ident, rot_right_ident ⟩ 
+
+instance : mul_one_class rot_sym_eqtri := 
+⟨  
+  r0,
+  rot_mul,
+  rot_left_ident,
+  rot_right_ident,
+⟩ 
 
 
 
 
 def rot_npow : ℕ → rot_sym_eqtri → rot_sym_eqtri 
-| 0 x := r0
+| 0 x := 1
 | (nat.succ n') x := rot_mul x (rot_npow n' x)
+
+
 
 instance : monoid rot_sym_eqtri := 
 ⟨
   rot_mul,
   rot_mul_assoc,
-  r0,
+  1,
   rot_left_ident,
   rot_right_ident,
   rot_npow,

@@ -136,7 +136,7 @@ triangle as a monoid, we&#8217;ll need to represent the set of rotations
 and the composition operation, and we&#8217;ll need to prove that these
 components satisfy the monoid laws.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20We%20represent%20the%20set%20of%20monoid%20elements%20(rotations)%20as%20a%20type%0Ainductive%20rot_sym_eqtri%0A%7C%20r0%0A%7C%20r120%0A%7C%20r240%0A%0Aopen%20rot_sym_eqtri%0A%0A--%20We%20represent%20the%20operation%20as%20a%20binary%20operation%20on%20this%0Adef%20rot_mul%20%3A%20rot_sym_eqtri%20%E2%86%92%20rot_sym_eqtri%20%E2%86%92%20rot_sym_eqtri%0A%7C%20r0%20r0%20%3A%3D%20r0%0A%7C%20r0%20r120%20%3A%3D%20r120%0A%7C%20r0%20r240%20%3A%3D%20r240%0A%7C%20r120%20r0%20%3A%3D%20r120%0A%7C%20r120%20r120%20%3A%3D%20r240%0A%7C%20r120%20r240%20%3A%3D%20r0%0A%7C%20r240%20r0%20%3A%3D%20r240%0A%7C%20r240%20r120%20%3A%3D%20r0%0A%7C%20r240%20r240%20%3A%3D%20r120%0A%0A--%20We%20need%20a%20proof%20that%20r0%20is%20an%20identity%20for%20this%20operation%0A%0Atheorem%20rot_left_ident%20%3A%20%E2%88%80%20(r%20%3A%20rot_sym_eqtri)%2C%20rot_mul%20r0%20r%20%3D%20r%20%20%3A%3D%0Abegin%0Aassume%20r%2C%0Acases%20r%2C%0Arepeat%20%7Bapply%20rfl%7D%2C%0Aend%0A%0Atheorem%20rot_right_ident%20%3A%20%E2%88%80%20(r%20%3A%20rot_sym_eqtri)%2C%20rot_mul%20r%20%20r0%20%3D%20r%20%3A%3D%0Abegin%0Aassume%20r%2C%0Acases%20r%2C%0Arepeat%20%7Bapply%20rfl%7D%2C%0Aend%0A%0A--%20And%20we%20need%20a%20proof%20that%20the%20operation%20is%20associative%0A%0Atheorem%20rot_mul_assoc%20%3A%0A%20%20%E2%88%80%20(e1%20e2%20e3%20%3A%20rot_sym_eqtri)%2C%0A%20%20%20%20rot_mul%20(rot_mul%20e1%20e2)%20e3%20%3D%20rot_mul%20e1%20(rot_mul%20e2%20e3)%20%3A%3D%0Abegin%0Aassume%20e1%20e2%20e3%2C%0A%0Acases%20e1%2C%0Arepeat%20%7B%0A%20%20cases%20e2%2C%0A%20%20repeat%20%7B%0A%20%20%20%20cases%20e3%2C%0A%20%20%20%20repeat%20%7Bexact%20rfl%7D%7D%2C%0A%20%20%7D%2C%0Aend" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_52.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20We%20represent%20the%20set%20of%20monoid%20elements%20(rotations)%20as%20a%20type%0Ainductive%20rot_sym_eqtri%0A%7C%20r0%0A%7C%20r120%0A%7C%20r240%0A%0Aopen%20rot_sym_eqtri%0A%0A--%20We%20represent%20the%20operation%20as%20a%20binary%20operation%20on%20this%0Adef%20rot_mul%20%3A%20rot_sym_eqtri%20%E2%86%92%20rot_sym_eqtri%20%E2%86%92%20rot_sym_eqtri%0A%7C%20r0%20r0%20%3A%3D%20r0%0A%7C%20r0%20r120%20%3A%3D%20r120%0A%7C%20r0%20r240%20%3A%3D%20r240%0A%7C%20r120%20r0%20%3A%3D%20r120%0A%7C%20r120%20r120%20%3A%3D%20r240%0A%7C%20r120%20r240%20%3A%3D%20r0%0A%7C%20r240%20r0%20%3A%3D%20r240%0A%7C%20r240%20r120%20%3A%3D%20r0%0A%7C%20r240%20r240%20%3A%3D%20r120%0A%0A--%20We%20need%20a%20proof%20that%20r0%20is%20an%20identity%20for%20this%20operation%0A%0Atheorem%20rot_left_ident%20%3A%20%E2%88%80%20(r%20%3A%20rot_sym_eqtri)%2C%20rot_mul%20r0%20r%20%3D%20r%20%20%3A%3D%0Abegin%0Aassume%20r%2C%0Acases%20r%2C%0Arepeat%20%7Bexact%20rfl%2C%7D%0Aend%0A%0Atheorem%20rot_right_ident%20%3A%20%E2%88%80%20(r%20%3A%20rot_sym_eqtri)%2C%20rot_mul%20r%20%20r0%20%3D%20r%20%3A%3D%0Abegin%0Aassume%20r%2C%0Acases%20r%2C%0Arepeat%20%7Bapply%20rfl%7D%2C%0Aend%0A%0A--%20And%20we%20need%20a%20proof%20that%20the%20operation%20is%20associative%0A%0Atheorem%20rot_mul_assoc%20%3A%0A%20%20%E2%88%80%20(e1%20e2%20e3%20%3A%20rot_sym_eqtri)%2C%0A%20%20%20%20rot_mul%20(rot_mul%20e1%20e2)%20e3%20%3D%20rot_mul%20e1%20(rot_mul%20e2%20e3)%20%3A%3D%0Abegin%0Aassume%20e1%20e2%20e3%2C%0A%0Acases%20e1%2C%0Arepeat%20%7B%0A%20%20cases%20e2%2C%0A%20%20repeat%20%7B%0A%20%20%20%20cases%20e3%2C%0A%20%20%20%20repeat%20%7Bexact%20rfl%7D%7D%2C%0A%20%20%7D%2C%0Aend" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_52.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- We represent the set of monoid elements (rotations) as a type</span>
 <span class="kd">inductive</span> <span class="n">rot_sym_eqtri</span>
 <span class="bp">|</span> <span class="n">r0</span>
@@ -163,7 +163,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <span class="kd">begin</span>
 <span class="k">assume</span> <span class="n">r</span><span class="o">,</span>
 <span class="n">cases</span> <span class="n">r</span><span class="o">,</span>
-<span class="n">repeat</span> <span class="o">{</span><span class="n">apply</span> <span class="n">rfl</span><span class="o">},</span>
+<span class="n">repeat</span> <span class="o">{</span><span class="n">exact</span> <span class="n">rfl</span><span class="o">,}</span>
 <span class="kd">end</span>
 
 <span class="kd">theorem</span> <span class="n">rot_right_ident</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">r</span> <span class="o">:</span> <span class="n">rot_sym_eqtri</span><span class="o">),</span> <span class="n">rot_mul</span> <span class="n">r</span>  <span class="n">r0</span> <span class="bp">=</span> <span class="n">r</span> <span class="o">:=</span>
@@ -284,7 +284,7 @@ instances of has_one and has_mul. We aready have an instance of has_mul,
 so all we need to define now is has_one, which identities the identity
 element in the monoid, which will then be denoted by <em>1</em>.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20%40mul_one_class%0A%23check%20%40has_one%0A%23check%20%40has_mul%0A%0A%2F-%0Aclass%20mul_one_class%20(M%20%3A%20Type%20u)%20extends%20has_one%20M%2C%20has_mul%20M%20%3A%3D%0A(one_mul%20%3A%20%E2%88%80%20(a%20%3A%20M)%2C%201%20*%20a%20%3D%20a)%0A(mul_one%20%3A%20%E2%88%80%20(a%20%3A%20M)%2C%20a%20*%201%20%3D%20a)%0A%0Aclass%20has_one%20%20%20%20%20%20(%CE%B1%20%3A%20Type%20u)%20%3A%3D%20(one%20%3A%20%CE%B1)%0A-%2F%0A%0Ainstance%20%3A%20has_one%20rot_sym_eqtri%20%3A%3D%20%E2%9F%A8%20r0%20%E2%9F%A9%0Ainstance%20%3A%20mul_one_class%20rot_sym_eqtri%20%3A%3D%20%E2%9F%A8%20r0%2C%20rot_mul%2C%20rot_left_ident%2C%20rot_right_ident%20%E2%9F%A9" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_207.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20%40mul_one_class%0A%23check%20%40has_one%0A%23check%20%40has_mul%0A%0A%2F-%0Aclass%20mul_one_class%20(M%20%3A%20Type%20u)%20extends%20has_one%20M%2C%20has_mul%20M%20%3A%3D%0A(one_mul%20%3A%20%E2%88%80%20(a%20%3A%20M)%2C%201%20*%20a%20%3D%20a)%0A(mul_one%20%3A%20%E2%88%80%20(a%20%3A%20M)%2C%20a%20*%201%20%3D%20a)%0A%0Aclass%20has_one%20%20%20%20%20%20(%CE%B1%20%3A%20Type%20u)%20%3A%3D%20(one%20%3A%20%CE%B1)%0A-%2F%0A%0Ainstance%20%3A%20has_one%20rot_sym_eqtri%20%3A%3D%20%E2%9F%A8%20r0%20%E2%9F%A9%0A%0Ainstance%20%3A%20mul_one_class%20rot_sym_eqtri%20%3A%3D%0A%E2%9F%A8%0A%20%20r0%2C%0A%20%20rot_mul%2C%0A%20%20rot_left_ident%2C%0A%20%20rot_right_ident%2C%0A%E2%9F%A9" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_207.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="bp">@</span><span class="n">mul_one_class</span>
 <span class="k">#check</span> <span class="bp">@</span><span class="n">has_one</span>
 <span class="k">#check</span> <span class="bp">@</span><span class="n">has_mul</span>
@@ -298,21 +298,30 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <span class="cm">-/</span>
 
 <span class="kd">instance</span> <span class="o">:</span> <span class="n">has_one</span> <span class="n">rot_sym_eqtri</span> <span class="o">:=</span> <span class="o">&#10216;</span> <span class="n">r0</span> <span class="o">&#10217;</span>
-<span class="kd">instance</span> <span class="o">:</span> <span class="n">mul_one_class</span> <span class="n">rot_sym_eqtri</span> <span class="o">:=</span> <span class="o">&#10216;</span> <span class="n">r0</span><span class="o">,</span> <span class="n">rot_mul</span><span class="o">,</span> <span class="n">rot_left_ident</span><span class="o">,</span> <span class="n">rot_right_ident</span> <span class="o">&#10217;</span>
+
+<span class="kd">instance</span> <span class="o">:</span> <span class="n">mul_one_class</span> <span class="n">rot_sym_eqtri</span> <span class="o">:=</span>
+<span class="o">&#10216;</span>
+  <span class="n">r0</span><span class="o">,</span>
+  <span class="n">rot_mul</span><span class="o">,</span>
+  <span class="n">rot_left_ident</span><span class="o">,</span>
+  <span class="n">rot_right_ident</span><span class="o">,</span>
+<span class="o">&#10217;</span>
 </pre></div>
 </div>
 </div><p>Yay. We can now assemble our monoid instance.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20rot_npow%20%3A%20%E2%84%95%20%E2%86%92%20rot_sym_eqtri%20%E2%86%92%20rot_sym_eqtri%0A%7C%200%20x%20%3A%3D%20r0%0A%7C%20(nat.succ%20n')%20x%20%3A%3D%20rot_mul%20x%20(rot_npow%20n'%20x)%0A%0Ainstance%20%3A%20monoid%20rot_sym_eqtri%20%3A%3D%0A%E2%9F%A8%0A%20%20rot_mul%2C%0A%20%20rot_mul_assoc%2C%0A%20%20r0%2C%0A%20%20rot_left_ident%2C%0A%20%20rot_right_ident%2C%0A%20%20rot_npow%2C%0A%E2%9F%A9" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_228.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20rot_npow%20%3A%20%E2%84%95%20%E2%86%92%20rot_sym_eqtri%20%E2%86%92%20rot_sym_eqtri%0A%7C%200%20x%20%3A%3D%201%0A%7C%20(nat.succ%20n')%20x%20%3A%3D%20rot_mul%20x%20(rot_npow%20n'%20x)%0A%0A%0A%0Ainstance%20%3A%20monoid%20rot_sym_eqtri%20%3A%3D%0A%E2%9F%A8%0A%20%20rot_mul%2C%0A%20%20rot_mul_assoc%2C%0A%20%201%2C%0A%20%20rot_left_ident%2C%0A%20%20rot_right_ident%2C%0A%20%20rot_npow%2C%0A%E2%9F%A9" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_235.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">rot_npow</span> <span class="o">:</span> <span class="n">&#8469;</span> <span class="bp">&#8594;</span> <span class="n">rot_sym_eqtri</span> <span class="bp">&#8594;</span> <span class="n">rot_sym_eqtri</span>
-<span class="bp">|</span> <span class="mi">0</span> <span class="n">x</span> <span class="o">:=</span> <span class="n">r0</span>
+<span class="bp">|</span> <span class="mi">0</span> <span class="n">x</span> <span class="o">:=</span> <span class="mi">1</span>
 <span class="bp">|</span> <span class="o">(</span><span class="n">nat.succ</span> <span class="n">n&#39;</span><span class="o">)</span> <span class="n">x</span> <span class="o">:=</span> <span class="n">rot_mul</span> <span class="n">x</span> <span class="o">(</span><span class="n">rot_npow</span> <span class="n">n&#39;</span> <span class="n">x</span><span class="o">)</span>
+
+
 
 <span class="kd">instance</span> <span class="o">:</span> <span class="n">monoid</span> <span class="n">rot_sym_eqtri</span> <span class="o">:=</span>
 <span class="o">&#10216;</span>
   <span class="n">rot_mul</span><span class="o">,</span>
   <span class="n">rot_mul_assoc</span><span class="o">,</span>
-  <span class="n">r0</span><span class="o">,</span>
+  <span class="mi">1</span><span class="o">,</span>
   <span class="n">rot_left_ident</span><span class="o">,</span>
   <span class="n">rot_right_ident</span><span class="o">,</span>
   <span class="n">rot_npow</span><span class="o">,</span>
@@ -331,7 +340,7 @@ monoid as an argument and extends its binary operator
 to n-ary, taking an arbitrary number of arguments in a
 list.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20Notations!%0A%23reduce%20(1%20%3A%20rot_sym_eqtri)%0A%23reduce%20(r120%20*%201)%0A%23reduce%20(r120%20*%20r120)%0A%0A--%20foldr%20using%20monoid%20notation%0Adef%20foldr%20%7B%CE%B1%20%3A%20Type%7D%20%5Bmonoid%20%CE%B1%5D%20%3A%20list%20%CE%B1%20%E2%86%92%20%CE%B1%0A%7C%20%20list.nil%20%3A%3D%201%0A%7C%20(h%3A%3At)%20%3A%3D%20h%20*%20foldr%20t%0A%0A%23reduce%20foldr%20%5B%5D%0A%23reduce%20foldr%20%5Br120%2Cr120%5D%0A%23reduce%20foldr%20%5Br120%2Cr120%2Cr120%5D" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_257.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20Notations!%0A%23reduce%20(1%20%3A%20rot_sym_eqtri)%0A%23reduce%20(r120%20*%201)%0A%23reduce%20(r120%20*%20r120)%0A%0A--%20foldr%20using%20monoid%20notation%0Adef%20foldr%20%7B%CE%B1%20%3A%20Type%7D%20%5Bmonoid%20%CE%B1%5D%20%3A%20list%20%CE%B1%20%E2%86%92%20%CE%B1%0A%7C%20%20list.nil%20%3A%3D%201%0A%7C%20(h%3A%3At)%20%3A%3D%20h%20*%20foldr%20t%0A%0A%23reduce%20foldr%20%5B%5D%0A%23reduce%20foldr%20%5Br120%2Cr120%5D%0A%23reduce%20foldr%20%5Br120%2Cr120%2Cr120%5D" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_266.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Notations!</span>
 <span class="k">#reduce</span> <span class="o">(</span><span class="mi">1</span> <span class="o">:</span> <span class="n">rot_sym_eqtri</span><span class="o">)</span>
 <span class="k">#reduce</span> <span class="o">(</span><span class="n">r120</span> <span class="bp">*</span> <span class="mi">1</span><span class="o">)</span>

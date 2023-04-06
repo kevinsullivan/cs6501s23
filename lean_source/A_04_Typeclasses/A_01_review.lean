@@ -128,3 +128,4 @@ operators, and use them as arguments to foldr to define their
 n-ary extensions. 
 TEXT. -/
 
+end cs6501
