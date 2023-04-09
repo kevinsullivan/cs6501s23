@@ -44,3 +44,4 @@ def list_app_n {α : Type} := foldr' (list α)  (@monoid_list_append' α)  -- st
 #eval list_app_n [ ["Hello", ", ", "Logic!"], ["You", " ", "are", " ", "Cool!"]]
 
 
+end cs6501

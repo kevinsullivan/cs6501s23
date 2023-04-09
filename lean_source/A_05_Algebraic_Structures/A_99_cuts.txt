@@ -1,0 +1,112 @@
+M-specific implementations of the abstract interface elements
+and then use those implementation elements as arguments in
+constructing a typeclass instance.
+
+(We sometimes use *class* to mean typeclass.  Don't confuse
+this usage of class with classes in OO languages. The right 
+analogy is that a typeclass in Lean is akin to an abstract 
+interface definition in in an OO language, and a typeclass
+instance is akin to an implementation of that interface.
+
+
+====
+
+/- TEXT: 
+
+has_inv 
+~~~~~~~~
+
+TEXT. -/
+
+-- QUOTE:
+#check @has_inv
+/-
+class has_inv      (α : Type u) := (inv : α → α)
+
+An instance of has_inv holds a single unary operator, inv, 
+on group elements of type α, and provides the notation, a⁻¹, 
+for (inv a). 
+-/
+
+#check @has_div
+/-
+class has_div      (α : Type u) := (div : α → α → α)
+
+An instance of has_div holds a single binary operator, div, 
+on group elements of type α, and provides the notation, a/b 
+to mean (mul a (inv b)), or (add a (inv b)), depending on
+whether one is working with a multiplicative or additive
+group. The notion of division is generalized from arithmetic
+to any group in this way. 
+-/
+-- QUOTE.
+
+/- TEXT:
+An instance of the has_inv typeclass will have one field
+value, a total function from group elements to other group 
+elements. In the context of a group, it will be cosntrained
+to behave as a genuine inverse operation must: that given 
+an element, r, it will return an element r⁻¹, such that
+r⁻¹ * r = 1 (the group identity element). 
+
+Of course the * operator will have to have an inverse for
+every element of the group. We'll now define an inverse
+operation for our rotations and will soon show that it 
+satisfies the axioms for being a (left) inverse. 
+
+
+====
+
+rotation-specific inv 
+~~~~~~~~~~~~~~~~~~~~~~
+
+TEXT. -/
+
+-- QUOTE:
+-- Here's our inverse operation
+def rot_inv : rot_syms → rot_syms := _
+-- it comes with ⁻¹ as a notation
+
+-- Let's stick it in a has_inv instance for rot_syms
+instance : has_inv rot_syms := _
+-- QUOTE.
+
+/- TEXT:
+
+rotation-specific div
+~~~~~~~~~~~~~~~~~~~~~
+
+Instantiating has_div for rot_syms requires a 
+rot_syms-specific implementation of div(ision).
+This function just multiplies by the inv(erse).
+TEXT. -/
+
+-- QUOTE:
+-- Here's our rotation-specific division operation
+def rot_div (x y : rot_syms) :=  x * y⁻¹
+-- note use of notations from monoid (*) and has_inv
+
+-- Now wecan instantiate has_div for rot_syms 
+instance has_div_rot_syms : has_div rot_syms := _
+-- thus overloading div(ision) (/) for rot_syms
+-- QUOTE.
+
+/- TEXT: 
+
+Demo
+~~~~
+TEXT. -/
+
+-- QUOTE:
+/-
+Verify test correctness in your head by 
+first expanding the definition of div, then
+unfolding the application of ⁻¹, and finally
+reasoning about the "geometry" of the example. 
+-/
+example :r240 / r240 = 1 := rfl
+
+-- QUOTE.
+
+/- TEXT:
+
