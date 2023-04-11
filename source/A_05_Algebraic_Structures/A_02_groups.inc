@@ -82,9 +82,6 @@ from several parent typclasses, including monoid, which
 reflects the fact that every group with its operator and
 identity also satisfies the monoid axioms. 
 
-Groups
-------
-
 We'll use the same method as in the last section to analyze
 and then provide the values needed to instantiate the group
 typeclass for a new type, with three values, representing the
@@ -95,16 +92,24 @@ typeclasses, finally assembing all of these pieces into a
 group typeclass instance for our set of rotation-representing
 group elements. 
 
+
+
+
+
+
+
+
+Typeclasses
+-----------
+
+In this section we'll go over the numerous typeclasses that
+have to be instantiated before the group class can be. 
+
 group
 ~~~~~
 
-Here's the definition of the group typeclass in Lean. It
-extends from a (non-mathematically standard) class called
-div_inv_monoid. It provides a unary inverse and binary
-division operations, with division just multiplication by 
-inverse; and associated notations (a⁻¹ and a/b). The group
-typeclass then adds a constraint (required proof) that, 
-for any a in the group, a⁻¹ is really a left inverse for a. 
+Here's the definition of the group typeclass in Lean. 
+
 
 .. code-block:: lean
 
@@ -114,19 +119,56 @@ for any a in the group, a⁻¹ is really a left inverse for a.
   (mul_left_inv : ∀ a : G, a⁻¹ * a = 1)
   -/
 
+Every group is a monoid but with some additional structure,
+namely inverses for every element. Inverses in turn enable
+the definition division (multiplication by inverse) and the
+definition of exponentiation of an element to integer powers,
+including negatives.
+
+[KS: Bothered by mismatch between hierarchy as taught in
+school and the weirdly refactored abstractions we're seeing
+here.]
+
+monoid
+~~~~~~
+
+In Lean, the statement that every group is automatically 
+a monoid means a few things. First, the group typeclass 
+builds on (*extends*) monoid. Second, given  group typeclass
+instance it will always be possible to extract from it a 
+monoid instance. 
+
+As something of a detailed design detail, In Lean, the
+group class doesn't extend from monoid directly. Rather
+it extends a typeclass call div_inv_monoid, representing
+a monoid enriched with an inverse operation that behaves
+like one, and a division operation defined simply as
+(monoid) multiplication/composition by the inverse of
+the second argument.
 
 div_inv_monoid
 ~~~~~~~~~~~~~~
 
-The div_inv_monoid typeclass in turn extends monoid, has_inv,
-and has_div. A group is thus automatically a monoid. Instances 
-of the has_inv and has_div typeclasses provide unary inverse 
-and binary division operations. 
+An instance of *div_inv_monoid α* provides 
+
+- inv: binary operation, a⁻¹, from has_inv
+- div: definition of a / b to be a * b⁻¹ 
+- div_eq_mul_inv: proof of ∀ a b : G, a / b = a * b⁻¹ 
+- left inverse: multiplying by inverse on left yields 1 *(∀ a, a⁻¹ * a = 1)*
+
+, implements a⁻¹ inverse operation
+
+We will now drill down on the div_inv_monoid typeclass. 
+
+As a reminder, here it is again. We'll first look at the
+classes it inherits, and then the field it adds to those
+from its parent classes.  
+
+div_inv_monoid
+~~~~~~~~~~~~~~
 
 .. code-block:: lean
 
-  -- What is a div_inv_monoid?
-  #check @div_inv_monoid
   /-
   class div_inv_monoid (G : Type u) extends monoid G, has_inv G, has_div G :=
   (div := λ a b, a * b⁻¹)
@@ -139,59 +181,109 @@ and binary division operations.
     ∀ (n : ℕ) (a : G), zpow (-[1 + n]) a = (zpow n.succ a)⁻¹ . try_refl_tac)
   -/
 
+This typeclass extends from the monoid, has_inv, and has_div classes
+and then adds several additional fields. Let's first see what fields 
+div_inv_monoid inherits from its parent classes.
 
-has_inv and has_div
-~~~~~~~~~~~~~~~~~~~
+From *monoid*, div_inv_monoid inherits the following: 
+
+- mul, an associative binary operator, with notation (a * b) 
+- e, an identity element for mul, with notation 1
+- npow, for computing aⁿ by multiplication of a by itself n times
+- npow_zero', a proof that a⁰ = 1
+- npow_succ', a proof that npow n a is multiplication iterated n times (∀ (n : ℕ) x, npow n.succ x = x * npow n x . try_refl_tac))
+
+From *has_inv*, div_inv_monoid inherits a single unary operator, 
+inv (for inverse), for monoid elements, wotj the notation, a⁻¹. 
+From the has_div class, div_inv_monoid obtains a single binary
+operation, div, with notation (a / b) for (div a b).  So far, then, 
+a div_inv_monoid instance will provide operators and notations for 
+multiplication, exponentiation by a natural number, inverse, and 
+division for monoid elements. 
+
+The div_inv_monoid class then adds multiple fields values to
+extend and constrain this inherited structure. Let's look at each 
+of these fields in turn. 
+
+- div, defining (a / b) as a * b⁻¹
+- div_eq_mul_inv, requiring that division be multiplication by inverse
+- zpow, which generalizes exponentiation to include negative exponents
+- a proof of (∀ (x : rot_syms), rot_npow 0 x = 1)
+- a proof of (∀ (n : ℕ) (x : rot_syms), rot_npow n.succ x = x * rot_npow n x)
+- a proof of (∀ (a b : rot_syms), a / b = a * b⁻¹)
+- a proof of (∀ (n : ℕ) (a : rot_syms), rot_zpow (int.of_nat n.succ) a = a * rot_zpow (int.of_nat n) a) :=
+- a proof of (∀ (n : ℕ) (a : rot_syms), rot_zpow -[1+ n] a = (rot_zpow ↑(n.succ) a)⁻¹)
+
+Finally, to all of this structure the *group* typeclass adds one
+additional constraint, (mul_left_inv : ∀ a : G, a⁻¹ * a = 1), which
+requires that inv and mul work together correctly, in the sense that
+for any monoid element, a, that mul (inv a) a = 1. We can say that
+it requires a⁻¹ to always act as a *left inverse* for any *a*. 
+
+To create a group typeclass instance, we need to instantiate the
+parent typeclasses and then apply the group typeclass constructor
+to the right arguments. We will now construct a group typeclass
+instance for rot_syms in a bottom-up manner, first constructing
+instances for the parent typeclasses and finally instantiating
+the group typeclass. 
+
+To see what values have to be given to a typeclass constructor, 
+you can #check the constructor type. So let's now do this for
+the parent typeclasses, starting with has_inv and has_div, then
+for div_inv_monoid, and finally for group. 
+
+We'll tackle has_inv first. We check the constructor type to
+see what arguments it needs. Then we construct the right
+argument values: in this case an implementation of inverse
+(inv) for rot_syms in particular. And finally we instantiate
+the typeclass. 
+
+has_inv
+~~~~~~~
 
 
 .. code-block:: lean
 
-  -- what are has_inv and has_div
-  #check @has_inv
+  #check @has_inv.mk 
   /-
-  class has_inv      (α : Type u) := (inv : α → α)
-  
-  An instance of has_inv holds a single unary operator, inv, 
-  on group elements of type α, and provides the notation, a⁻¹, 
-  to mean (inv a). 
+  Π {α : Type u}, (α → α) → has_inv α
   -/
-  #check @has_div
-  /-
-  class has_div      (α : Type u) := (div : α → α → α)
   
-  An instance of has_div holds a single binary operator, div, 
-  on group elements of type α, and provides the notation, a/b 
-  to mean (mul a (inv b)), or (add a (inv b)), depending on
-  whether one is working with a multiplicative or additive
-  group. The notion of division is generalized to any group
-  in this way. 
-  -/
+  open rot_syms
+  def rot_inv : rot_syms → rot_syms           -- HOMEWORK
+  | r0 := r0
+  | r120 := r240
+  | r240 := r120
+  
+  instance : has_inv rot_syms := ⟨ rot_inv ⟩  -- ⟨ ⟩ applies mk
 
-An instance of the has_inv typeclass will have one field
-value, a total function from group elements to other group 
-elements. In the context of a group, it will be cosntrained
-to behave as a genuine inverse operation must: that given 
-an element, r, it will return an element r⁻¹, such that
-r⁻¹ * r = 1 (the group identity element). 
 
-Of course the * operator will have to have an inverse for
-every element of the group. We'll now define an inverse
-operation for our rotations and will soon show that it 
-satisfies the axioms for being a (left) inverse. 
+has_div
+~~~~~~~
 
-instances for rot_syms
-~~~~~~~~~~~~~~~~~~~~~~
-
-To construct instances, we have to understand their 
-constructors. We generally leave structure constructor
-names implicit and let Lean fill them is as *mk*. By
-#check-ing the type of mk, you see what arguments you 
-have to provide, including both data and proofs. Let's 
-check the type of div_inv_monoid.mk.
+Next we do the same thing for has_div.
 
 .. code-block:: lean
 
+  def rot_div : rot_syms → rot_syms → rot_syms
+  | a b := a * b⁻¹ 
   
+  instance : has_div rot_syms := ⟨ rot_div ⟩  -- HOMEWORK
+
+
+Example: (group rot_syms)
+-------------------------
+
+div_inv_monoid
+~~~~~~~~~~~~~~
+
+We've already got an implementation (a typeclass instance)
+of monoid for rot_syms, so we've now got typeclass instances
+for all the parent classes of div_inv_monoid. We now turn 
+our attention to instantiating this class.
+
+.. code-block:: lean
+
   #check @div_inv_monoid.mk 
   /-
   div_inv_monoid.mk :
@@ -215,88 +307,25 @@ check the type of div_inv_monoid.mk.
     div_inv_monoid G
   -/
 
-From the constructor type we can see that we'll need to provide explicit argument 
-values for mul, mul_assoc,  one, one_mul, mul_one, and npow, all of which we already
-have from our monoid typeclass for rot_syms, as well  as implementations of inv and div, 
-and zpow. The last three we need to define. For inv, just work out how the function has 
-to behave for each of the three possible inputs (r0, r120, r240). For example, the inverse 
-of r120 is r240 because r240 after r120 is not rotation at all. The div function is defined 
-in one line in terms of inv. 
+From the constructor type we can see that we'll need to provide 
+explicit argument values for mul, mul_assoc, one, one_mul, mul_one,
+and npow, all of which we already have, as well as implementations
+of inv and div, which we just produced, and finally an implementation
+of zpow. 
 
-The new challenge here will be with zpow. Note that its first argument is not a natural 
-number but an *integer*. That means it can be negative. Given any integer, z, and any 
-rotation, r, zpow returns rᶻ. If z is positive, this is z composed (\*) with itself n 
-times.  If z is a negative number, -n, then the result is defined to be 1 / rᶻ (just
-like in arithmetic). That in turn is just shorthand for (div 1 rᶻ).
+We will define zpow by case analysis on its integer argument. But
+what are the cases? We haven't yet seen how int (ℤ) is even defined.   
 
-So let's take care of inv and div first.  To instantiate these typeclasses for we first
-need implementations for α = rot_syms
+aside: the ℤ type
+~~~~~~~~~~~~~~~~~
 
-
-rotation-specific inv 
-~~~~~~~~~~~~~~~~~~~~~~
-
+The integer type has two constructors. The first takes a natural
+number, n, and returns it packaged up as an integer, int.of_nat n.
+The second takes a natural number, n, and returns a term, namely
+(int.neg_succ_of_nat n), representing -(n+1). 
 
 .. code-block:: lean
 
-  -- Here's our inverse operation
-  def rot_inv : rot_syms → rot_syms := _
-  -- it comes with ⁻¹ as a notation
-  
-  -- Let's stick it in a has_inv instance for rot_syms
-  instance : has_inv rot_syms := _
-
-
-rotation-specific div
-~~~~~~~~~~~~~~~~~~~~~
-
-Instantiating has_div for rot_syms requires a 
-rot_syms-specific implementation of div(ision).
-This function just multiplies by the inv(erse).
-
-.. code-block:: lean
-
-  -- Here's our rotation-specific division operation
-  def rot_div (x y : rot_syms) :=  x * y⁻¹
-  -- note use of notations from monoid (*) and has_inv
-  
-  -- Now wecan instantiate has_div for rot_syms 
-  instance has_div_rot_syms : has_div rot_syms := _
-  -- thus overloading div(ision) (/) for rot_syms
-
-
-Demo
-~~~~
-
-.. code-block:: lean
-
-  /-
-  Verify test correctness in your head by 
-  first expanding the definition of div, then
-  unfolding the application of ⁻¹, and finally
-  reasoning about the "geometry" of the example. 
-  -/
-  example :r240 / r240 = 1 := rfl
-  
-
-
-div_inv_monoid
-~~~~~~~~~~~~~~
-
-Now we can turn to zpow. Its type is reported as ℤ → G → G, 
-where, here, G = rot_syms. If the argument, (z :  ℤ), is not
-negative, we know how to recurse down from z to 0 in order to
-iterate some operation; but what do we do with argumentss that
-are negative integers? More generally, how do we define a
-function to compute a result for any values of type integer?  
-
-The type definition is the key, as you'll have to define such
-a function by cases analysis on constructor applications. The
-key in turn is to understand how int terms are represented.   
-
-.. code-block:: lean
-
-  -- inductive definition of e int (with standard notation ℤ)
   #check int
   /-
   inductive int : Type
@@ -304,96 +333,27 @@ key in turn is to understand how int terms are represented.
   | neg_succ_of_nat : nat → int
   -/
 
-There are two forms of int value. Each incorporates a nat value (n). 
-The term, (int.of_nat n), is the int representation of the injection of
-the nat value, n, into the integers. So, for example, (int.of_nat 3) is
-a term that represents the *integer,* not the natural number, 3. On the
-other hand, The term, (int.neg_succ_of_nat n), represents the integer,
--(n+1). So, for example, (int.neg_succ_of_nat 0) represents -1, while
-(int.neg_succ_of_nat 4) represents the integer value, -5. 
-
+Example will help. First, (int.of_nat 3) represents the *integer,* 
+not the natural number, 3. Second, the term, (int.neg_succ_of_nat n), 
+represents the integer, -(n+1), so (int.neg_succ_of_nat 0) represents 
+-1, while (int.neg_succ_of_nat 4) represents the integer value, -5. 
 Admittedly the constructors seem strange at first, but they do provide 
 one term for each and every integer. The +1 in the second assures that
 we don't end up with two distinct representations of 0.
 
-In any case, we now know how to write zpow for rot_syms: by case analysis 
-on the incoming int argument as usual. The only remaining question is what
-to do in each case. Note that zpow just generalizes npow to take negative
-integer values as well non-negatives corresponding to natural numbers. Put
-this together with the meaning of exponentiation by a negative value and
-you're good to go!
+In any case, we can now define zpow for rot_syms by case analysis on
+the *int* argument. The only remaining question is what to do in each 
+case. 
 
 .. code-block:: lean
 
   -- hint: think about rot_npow from monoid
-  def zpow_rot_syms : ℤ → rot_syms → rot_syms 
-  | (int.of_nat n) r := _           -- reminder: something about rot_npow, hmmm ...
-  | (int.neg_succ_of_nat n) r := _  -- reminder: rot_npow (and a negative exponent)
-  
+  def rot_zpow : ℤ → rot_syms → rot_syms 
+  | (int.of_nat n) r := rot_npow n r                    -- HOMEWORK 
+  | (int.neg_succ_of_nat n) r := (rot_npow (n+1) r)⁻¹   -- HOMEWORK
 
-
-.. code-block:: lean
-
-  
-  -- a little pain; use "show" to force rewrite of (a * b⁻¹)
-  theorem rot_inv_div : ∀ (a b : rot_syms), a / b = a * b⁻¹ :=
-  begin
-  end
-  
-  
-  /-
-  SEE Design note on div_inv_monoid/sub_neg_monoid and 
-  division_monoid/subtraction_monoid in the Lean source
-  file. Now let's build our group typeclass instance for
-  rot_syms.
-  -/ 
-  
-  #check @div_inv_monoid.mk
-  /-
-  div_inv_monoid.mk :
-    Π -- arguments
-      {G : Type u_1} 
-      (mul : G → G → G)
-      (mul_assoc : ∀ (a b c : G), a * b * c = a * (b * c))
-      (one : G)
-      (one_mul : ∀ (a : G), 1 * a = a) 
-      (mul_one : ∀ (a : G), a * 1 = a) 
-      (npow : ℕ → G → G)
-      (npow_zero' : auto_param (∀ (x : G), npow 0 x = 1) (name.mk_string "try_refl_tac" name.anonymous))
-      (npow_succ' : auto_param (∀ (n : ℕ) (x : G), npow n.succ x = x * npow n x) (name.mk_string "try_refl_tac" name.anonymous))
-      (inv : G → G) 
-      (div : G → G → G),  -- comma
-      auto_param (∀ (a b : G), a / b = a * b⁻¹) (name.mk_string "try_refl_tac" name.anonymous) →
-      Π (zpow : ℤ → G → G),
-        auto_param (∀ (a : G), zpow 0 a = 1) (name.mk_string "try_refl_tac" name.anonymous) →
-        auto_param (∀ (n : ℕ) (a : G), zpow (int.of_nat n.succ) a = a * zpow (int.of_nat n) a) (name.mk_string "try_refl_tac" name.anonymous) →
-        auto_param (∀ (n : ℕ) (a : G), zpow -[1+ n] a = (zpow ↑(n.succ) a)⁻¹) (name.mk_string "try_refl_tac" name.anonymous) →
-    div_inv_monoid G
-  -/
-  
-  instance div_inv_monoid_rot_syms : div_inv_monoid rot_syms :=  
-  ⟨
-    rot_mul,
-    rot_mul_assoc,
-    1,
-    rot_left_ident,
-    rot_right_ident,
-    rot_npow,
-    _,                -- Lean infers these auto_param values
-    _,
-    rot_inv,
-    rot_div,
-    _,
-    zpow_rot_syms,
-    _,
-    _,
-    _
-  ⟩ 
-  
-  #eval @div_inv_monoid_rot_syms 
-  
-  #check @group
-  #check @group.mk
-  
-  
-
+We now have all the building blocks needed to assemble
+an instance of div_inv_monoid for objects of type rot_syms. 
+Here's the constructor type, again. Lean will infer values
+of each field marked as auto_param, so when applying the
+constructor, just use _ for each of these field values.  

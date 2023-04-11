@@ -9,8 +9,6 @@ class group (G : Type u) extends div_inv_monoid G :=
 -/
 
 
--- What is a div_inv_monoid?
-#check @div_inv_monoid
 /-
 class div_inv_monoid (G : Type u) extends monoid G, has_inv G, has_div G :=
 (div := λ a b, a * b⁻¹)
@@ -23,28 +21,29 @@ class div_inv_monoid (G : Type u) extends monoid G, has_inv G, has_div G :=
   ∀ (n : ℕ) (a : G), zpow (-[1 + n]) a = (zpow n.succ a)⁻¹ . try_refl_tac)
 -/
 
+#check @monoid
 
--- what are has_inv and has_div
-#check @has_inv
+
+
+#check @has_inv.mk 
 /-
-class has_inv      (α : Type u) := (inv : α → α)
-
-An instance of has_inv holds a single unary operator, inv, 
-on group elements of type α, and provides the notation, a⁻¹, 
-to mean (inv a). 
--/
-#check @has_div
-/-
-class has_div      (α : Type u) := (div : α → α → α)
-
-An instance of has_div holds a single binary operator, div, 
-on group elements of type α, and provides the notation, a/b 
-to mean (mul a (inv b)), or (add a (inv b)), depending on
-whether one is working with a multiplicative or additive
-group. The notion of division is generalized to any group
-in this way. 
+Π {α : Type u}, (α → α) → has_inv α
 -/
 
+open rot_syms
+def rot_inv : rot_syms → rot_syms           -- HOMEWORK
+| r0 := r0
+| r120 := r240
+| r240 := r120
+
+instance : has_inv rot_syms := ⟨ rot_inv ⟩  -- ⟨ ⟩ applies mk
+
+
+
+def rot_div : rot_syms → rot_syms → rot_syms
+| a b := a * b⁻¹ 
+
+instance : has_div rot_syms := ⟨ rot_div ⟩  -- HOMEWORK
 
 
 #check @div_inv_monoid.mk 
@@ -71,34 +70,6 @@ div_inv_monoid.mk :
 -/
 
 
--- Here's our inverse operation
-def rot_inv : rot_syms → rot_syms := _
--- it comes with ⁻¹ as a notation
-
--- Let's stick it in a has_inv instance for rot_syms
-instance : has_inv rot_syms := _
-
-
--- Here's our rotation-specific division operation
-def rot_div (x y : rot_syms) :=  x * y⁻¹
--- note use of notations from monoid (*) and has_inv
-
--- Now wecan instantiate has_div for rot_syms 
-instance has_div_rot_syms : has_div rot_syms := _
--- thus overloading div(ision) (/) for rot_syms
-
-
-/-
-Verify test correctness in your head by 
-first expanding the definition of div, then
-unfolding the application of ⁻¹, and finally
-reasoning about the "geometry" of the example. 
--/
-example :r240 / r240 = 1 := rfl
-
-
-
--- inductive definition of e int (with standard notation ℤ)
 #check int
 /-
 inductive int : Type
@@ -109,25 +80,42 @@ inductive int : Type
 
 
 -- hint: think about rot_npow from monoid
-def zpow_rot_syms : ℤ → rot_syms → rot_syms 
-| (int.of_nat n) r := _           -- reminder: something about rot_npow, hmmm ...
-| (int.neg_succ_of_nat n) r := _  -- reminder: rot_npow (and a negative exponent)
+def rot_zpow : ℤ → rot_syms → rot_syms 
+| (int.of_nat n) r := rot_npow n r                    -- HOMEWORK 
+| (int.neg_succ_of_nat n) r := (rot_npow (n+1) r)⁻¹   -- HOMEWORK
 
 
+-- HOMEWORK
 
-
--- a little pain; use "show" to force rewrite of (a * b⁻¹)
-theorem rot_inv_div : ∀ (a b : rot_syms), a / b = a * b⁻¹ :=
+lemma rot_npow_zero : (∀ (x : rot_syms), rot_npow 0 x = 1) :=
 begin
+assume x,
+exact rfl,
 end
 
+lemma rot_npow_succ : (∀ (n : ℕ) (x : rot_syms), rot_npow n.succ x = x * rot_npow n x) :=
+begin
+assume x r,
+exact rfl,
+end
 
-/-
-SEE Design note on div_inv_monoid/sub_neg_monoid and 
-division_monoid/subtraction_monoid in the Lean source
-file. Now let's build our group typeclass instance for
-rot_syms.
--/ 
+lemma rot_div_inv : (∀ (a b : rot_syms), a / b = a * b⁻¹) :=
+begin
+assume a b,
+exact rfl,
+end
+
+lemma rot_zpow_non_neg : (∀ (n : ℕ) (a : rot_syms), rot_zpow (int.of_nat n.succ) a = a * rot_zpow (int.of_nat n) a) :=
+begin
+assume n a,
+exact rfl,
+end
+
+def rot_zpow_neg : (∀ (n : ℕ) (a : rot_syms), rot_zpow -[1+ n] a = (rot_zpow ↑(n.succ) a)⁻¹) :=
+begin
+assume n a,
+exact rfl,
+end
 
 #check @div_inv_monoid.mk
 /-
@@ -152,6 +140,8 @@ div_inv_monoid.mk :
   div_inv_monoid G
 -/
 
+#check rot_npow
+
 instance div_inv_monoid_rot_syms : div_inv_monoid rot_syms :=  
 ⟨
   rot_mul,
@@ -160,15 +150,15 @@ instance div_inv_monoid_rot_syms : div_inv_monoid rot_syms :=
   rot_left_ident,
   rot_right_ident,
   rot_npow,
-  _,                -- Lean infers these auto_param values
-  _,
+  rot_npow_zero,                -- autoparam
+  rot_npow_succ,                -- autoparam
   rot_inv,
   rot_div,
-  _,
-  zpow_rot_syms,
-  _,
-  _,
-  _
+  rot_div_inv,
+  rot_zpow,
+  rot_npow_zero,
+  rot_zpow_non_neg,
+  rot_zpow_neg,
 ⟩ 
 
 #eval @div_inv_monoid_rot_syms 
@@ -176,4 +166,12 @@ instance div_inv_monoid_rot_syms : div_inv_monoid rot_syms :=
 #check @group
 #check @group.mk
 
+
+-- Examples
+
+#reduce r120 * r120               -- multiplication
+#reduce r120⁻¹                    -- inverses
+#reduce r120 / r240               -- division
+#reduce rot_npow 4 r120           -- exponentiation by non-negative int
+#reduce rot_zpow (-4 : int) r120  -- exponentiation by negative int
 

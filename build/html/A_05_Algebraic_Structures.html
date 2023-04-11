@@ -67,15 +67,18 @@
 <li class="toctree-l4"><a class="reference internal" href="#chapter-plan">6.2.1.3. Chapter plan</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id3">6.2.2. Groups</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#typeclasses">6.2.2. Typeclasses</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#group">6.2.2.1. group</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#div-inv-monoid">6.2.2.2. div_inv_monoid</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#has-inv-and-has-div">6.2.2.3. has_inv and has_div</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#instances-for-rot-syms">6.2.2.4. instances for rot_syms</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#rotation-specific-inv">6.2.2.5. rotation-specific inv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#rotation-specific-div">6.2.2.6. rotation-specific div</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#demo">6.2.2.7. Demo</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id4">6.2.2.8. div_inv_monoid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#monoid">6.2.2.2. monoid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#div-inv-monoid">6.2.2.3. div_inv_monoid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">6.2.2.4. div_inv_monoid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#has-inv">6.2.2.5. has_inv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#has-div">6.2.2.6. has_div</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#example-group-rot-syms">6.2.3. Example: (group rot_syms)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id4">6.2.3.1. div_inv_monoid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aside-the-type">6.2.3.2. aside: the &#8484; type</a></li>
 </ul>
 </li>
 </ul>
@@ -486,10 +489,6 @@ the <em>group</em> typeclass for &#945;. The group typeclass extends
 from several parent typclasses, including monoid, which
 reflects the fact that every group with its operator and
 identity also satisfies the monoid axioms.</p>
-</section>
-</section>
-<section id="id3">
-<h3><span class="section-number">6.2.2. </span>Groups<a class="headerlink" href="#id3" title="Permalink to this heading">&#61633;</a></h3>
 <p>We&#8217;ll use the same method as in the last section to analyze
 and then provide the values needed to instantiate the group
 typeclass for a new type, with three values, representing the
@@ -499,17 +498,17 @@ construct the elements needed to instantiate all of these
 typeclasses, finally assembing all of these pieces into a
 group typeclass instance for our set of rotation-representing
 group elements.</p>
+</section>
+</section>
+<section id="typeclasses">
+<h3><span class="section-number">6.2.2. </span>Typeclasses<a class="headerlink" href="#typeclasses" title="Permalink to this heading">&#61633;</a></h3>
+<p>In this section we&#8217;ll go over the numerous typeclasses that
+have to be instantiated before the group class can be.</p>
 <section id="group">
 <h4><span class="section-number">6.2.2.1. </span>group<a class="headerlink" href="#group" title="Permalink to this heading">&#61633;</a></h4>
-<p>Here&#8217;s the definition of the group typeclass in Lean. It
-extends from a (non-mathematically standard) class called
-div_inv_monoid. It provides a unary inverse and binary
-division operations, with division just multiplication by
-inverse; and associated notations (a&#8315;&#185; and a/b). The group
-typeclass then adds a constraint (required proof) that,
-for any a in the group, a&#8315;&#185; is really a left inverse for a.</p>
+<p>Here&#8217;s the definition of the group typeclass in Lean.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20%40group%0A%2F-%0Aclass%20group%20(G%20%3A%20Type%20u)%20extends%20div_inv_monoid%20G%20%3A%3D%0A(mul_left_inv%20%3A%20%E2%88%80%20a%20%3A%20G%2C%20a%E2%81%BB%C2%B9%20*%20a%20%3D%201)%0A-%2F" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_109.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20%40group%0A%2F-%0Aclass%20group%20(G%20%3A%20Type%20u)%20extends%20div_inv_monoid%20G%20%3A%3D%0A(mul_left_inv%20%3A%20%E2%88%80%20a%20%3A%20G%2C%20a%E2%81%BB%C2%B9%20*%20a%20%3D%201)%0A-%2F" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_114.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="bp">@</span><span class="n">group</span>
 <span class="c">/-</span>
 <span class="cm">class group (G : Type u) extends div_inv_monoid G :=</span>
@@ -517,18 +516,50 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <span class="cm">-/</span>
 </pre></div>
 </div>
-</div></section>
+</div><p>Every group is a monoid but with some additional structure,
+namely inverses for every element. Inverses in turn enable
+the definition division (multiplication by inverse) and the
+definition of exponentiation of an element to integer powers,
+including negatives.</p>
+<p>[KS: Bothered by mismatch between hierarchy as taught in
+school and the weirdly refactored abstractions we&#8217;re seeing
+here.]</p>
+</section>
+<section id="monoid">
+<h4><span class="section-number">6.2.2.2. </span>monoid<a class="headerlink" href="#monoid" title="Permalink to this heading">&#61633;</a></h4>
+<p>In Lean, the statement that every group is automatically
+a monoid means a few things. First, the group typeclass
+builds on (<em>extends</em>) monoid. Second, given  group typeclass
+instance it will always be possible to extract from it a
+monoid instance.</p>
+<p>As something of a detailed design detail, In Lean, the
+group class doesn&#8217;t extend from monoid directly. Rather
+it extends a typeclass call div_inv_monoid, representing
+a monoid enriched with an inverse operation that behaves
+like one, and a division operation defined simply as
+(monoid) multiplication/composition by the inverse of
+the second argument.</p>
+</section>
 <section id="div-inv-monoid">
-<h4><span class="section-number">6.2.2.2. </span>div_inv_monoid<a class="headerlink" href="#div-inv-monoid" title="Permalink to this heading">&#61633;</a></h4>
-<p>The div_inv_monoid typeclass in turn extends monoid, has_inv,
-and has_div. A group is thus automatically a monoid. Instances
-of the has_inv and has_div typeclasses provide unary inverse
-and binary division operations.</p>
+<h4><span class="section-number">6.2.2.3. </span>div_inv_monoid<a class="headerlink" href="#div-inv-monoid" title="Permalink to this heading">&#61633;</a></h4>
+<p>An instance of <em>div_inv_monoid &#945;</em> provides</p>
+<ul class="simple">
+<li><p>inv: binary operation, a&#8315;&#185;, from has_inv</p></li>
+<li><p>div: definition of a / b to be a * b&#8315;&#185;</p></li>
+<li><p>div_eq_mul_inv: proof of &#8704; a b : G, a / b = a * b&#8315;&#185;</p></li>
+<li><p>left inverse: multiplying by inverse on left yields 1 <em>(&#8704; a, a&#8315;&#185; * a = 1)</em></p></li>
+</ul>
+<p>, implements a&#8315;&#185; inverse operation</p>
+<p>We will now drill down on the div_inv_monoid typeclass.</p>
+<p>As a reminder, here it is again. We&#8217;ll first look at the
+classes it inherits, and then the field it adds to those
+from its parent classes.</p>
+</section>
+<section id="id3">
+<h4><span class="section-number">6.2.2.4. </span>div_inv_monoid<a class="headerlink" href="#id3" title="Permalink to this heading">&#61633;</a></h4>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20What%20is%20a%20div_inv_monoid%3F%0A%23check%20%40div_inv_monoid%0A%2F-%0Aclass%20div_inv_monoid%20(G%20%3A%20Type%20u)%20extends%20monoid%20G%2C%20has_inv%20G%2C%20has_div%20G%20%3A%3D%0A(div%20%3A%3D%20%CE%BB%20a%20b%2C%20a%20*%20b%E2%81%BB%C2%B9)%0A(div_eq_mul_inv%20%3A%20%E2%88%80%20a%20b%20%3A%20G%2C%20a%20%2F%20b%20%3D%20a%20*%20b%E2%81%BB%C2%B9%20.%20try_refl_tac)%0A(zpow%20%3A%20%E2%84%A4%20%E2%86%92%20G%20%E2%86%92%20G%20%3A%3D%20zpow_rec)%0A(zpow_zero'%20%3A%20%E2%88%80%20(a%20%3A%20G)%2C%20zpow%200%20a%20%3D%201%20.%20try_refl_tac)%0A(zpow_succ'%20%3A%0A%20%20%E2%88%80%20(n%20%3A%20%E2%84%95)%20(a%20%3A%20G)%2C%20zpow%20(int.of_nat%20n.succ)%20a%20%3D%20a%20*%20zpow%20(int.of_nat%20n)%20a%20.%20try_refl_tac)%0A(zpow_neg'%20%3A%0A%20%20%E2%88%80%20(n%20%3A%20%E2%84%95)%20(a%20%3A%20G)%2C%20zpow%20(-%5B1%20%2B%20n%5D)%20a%20%3D%20(zpow%20n.succ%20a)%E2%81%BB%C2%B9%20.%20try_refl_tac)%0A-%2F" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_126.lean">
-try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- What is a div_inv_monoid?</span>
-<span class="k">#check</span> <span class="bp">@</span><span class="n">div_inv_monoid</span>
-<span class="c">/-</span>
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%2F-%0Aclass%20div_inv_monoid%20(G%20%3A%20Type%20u)%20extends%20monoid%20G%2C%20has_inv%20G%2C%20has_div%20G%20%3A%3D%0A(div%20%3A%3D%20%CE%BB%20a%20b%2C%20a%20*%20b%E2%81%BB%C2%B9)%0A(div_eq_mul_inv%20%3A%20%E2%88%80%20a%20b%20%3A%20G%2C%20a%20%2F%20b%20%3D%20a%20*%20b%E2%81%BB%C2%B9%20.%20try_refl_tac)%0A(zpow%20%3A%20%E2%84%A4%20%E2%86%92%20G%20%E2%86%92%20G%20%3A%3D%20zpow_rec)%0A(zpow_zero'%20%3A%20%E2%88%80%20(a%20%3A%20G)%2C%20zpow%200%20a%20%3D%201%20.%20try_refl_tac)%0A(zpow_succ'%20%3A%0A%20%20%E2%88%80%20(n%20%3A%20%E2%84%95)%20(a%20%3A%20G)%2C%20zpow%20(int.of_nat%20n.succ)%20a%20%3D%20a%20*%20zpow%20(int.of_nat%20n)%20a%20.%20try_refl_tac)%0A(zpow_neg'%20%3A%0A%20%20%E2%88%80%20(n%20%3A%20%E2%84%95)%20(a%20%3A%20G)%2C%20zpow%20(-%5B1%20%2B%20n%5D)%20a%20%3D%20(zpow%20n.succ%20a)%E2%81%BB%C2%B9%20.%20try_refl_tac)%0A-%2F" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_170.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c">/-</span>
 <span class="cm">class div_inv_monoid (G : Type u) extends monoid G, has_inv G, has_div G :=</span>
 <span class="cm">(div := &#955; a b, a * b&#8315;&#185;)</span>
 <span class="cm">(div_eq_mul_inv : &#8704; a b : G, a / b = a * b&#8315;&#185; . try_refl_tac)</span>
@@ -541,54 +572,100 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <span class="cm">-/</span>
 </pre></div>
 </div>
-</div></section>
-<section id="has-inv-and-has-div">
-<h4><span class="section-number">6.2.2.3. </span>has_inv and has_div<a class="headerlink" href="#has-inv-and-has-div" title="Permalink to this heading">&#61633;</a></h4>
+</div><p>This typeclass extends from the monoid, has_inv, and has_div classes
+and then adds several additional fields. Let&#8217;s first see what fields
+div_inv_monoid inherits from its parent classes.</p>
+<p>From <em>monoid</em>, div_inv_monoid inherits the following:</p>
+<ul class="simple">
+<li><p>mul, an associative binary operator, with notation (a * b)</p></li>
+<li><p>e, an identity element for mul, with notation 1</p></li>
+<li><p>npow, for computing a&#8319; by multiplication of a by itself n times</p></li>
+<li><p>npow_zero&#8217;, a proof that a&#8304; = 1</p></li>
+<li><p>npow_succ&#8217;, a proof that npow n a is multiplication iterated n times (&#8704; (n : &#8469;) x, npow n.succ x = x * npow n x . try_refl_tac))</p></li>
+</ul>
+<p>From <em>has_inv</em>, div_inv_monoid inherits a single unary operator,
+inv (for inverse), for monoid elements, wotj the notation, a&#8315;&#185;.
+From the has_div class, div_inv_monoid obtains a single binary
+operation, div, with notation (a / b) for (div a b).  So far, then,
+a div_inv_monoid instance will provide operators and notations for
+multiplication, exponentiation by a natural number, inverse, and
+division for monoid elements.</p>
+<p>The div_inv_monoid class then adds multiple fields values to
+extend and constrain this inherited structure. Let&#8217;s look at each
+of these fields in turn.</p>
+<ul class="simple">
+<li><p>div, defining (a / b) as a * b&#8315;&#185;</p></li>
+<li><p>div_eq_mul_inv, requiring that division be multiplication by inverse</p></li>
+<li><p>zpow, which generalizes exponentiation to include negative exponents</p></li>
+<li><p>a proof of (&#8704; (x : rot_syms), rot_npow 0 x = 1)</p></li>
+<li><p>a proof of (&#8704; (n : &#8469;) (x : rot_syms), rot_npow n.succ x = x * rot_npow n x)</p></li>
+<li><p>a proof of (&#8704; (a b : rot_syms), a / b = a * b&#8315;&#185;)</p></li>
+<li><p>a proof of (&#8704; (n : &#8469;) (a : rot_syms), rot_zpow (int.of_nat n.succ) a = a * rot_zpow (int.of_nat n) a) :=</p></li>
+<li><p>a proof of (&#8704; (n : &#8469;) (a : rot_syms), rot_zpow -[1+ n] a = (rot_zpow &#8593;(n.succ) a)&#8315;&#185;)</p></li>
+</ul>
+<p>Finally, to all of this structure the <em>group</em> typeclass adds one
+additional constraint, (mul_left_inv : &#8704; a : G, a&#8315;&#185; * a = 1), which
+requires that inv and mul work together correctly, in the sense that
+for any monoid element, a, that mul (inv a) a = 1. We can say that
+it requires a&#8315;&#185; to always act as a <em>left inverse</em> for any <em>a</em>.</p>
+<p>To create a group typeclass instance, we need to instantiate the
+parent typeclasses and then apply the group typeclass constructor
+to the right arguments. We will now construct a group typeclass
+instance for rot_syms in a bottom-up manner, first constructing
+instances for the parent typeclasses and finally instantiating
+the group typeclass.</p>
+<p>To see what values have to be given to a typeclass constructor,
+you can #check the constructor type. So let&#8217;s now do this for
+the parent typeclasses, starting with has_inv and has_div, then
+for div_inv_monoid, and finally for group.</p>
+<p>We&#8217;ll tackle has_inv first. We check the constructor type to
+see what arguments it needs. Then we construct the right
+argument values: in this case an implementation of inverse
+(inv) for rot_syms in particular. And finally we instantiate
+the typeclass.</p>
+</section>
+<section id="has-inv">
+<h4><span class="section-number">6.2.2.5. </span>has_inv<a class="headerlink" href="#has-inv" title="Permalink to this heading">&#61633;</a></h4>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20what%20are%20has_inv%20and%20has_div%0A%23check%20%40has_inv%0A%2F-%0Aclass%20has_inv%20%20%20%20%20%20(%CE%B1%20%3A%20Type%20u)%20%3A%3D%20(inv%20%3A%20%CE%B1%20%E2%86%92%20%CE%B1)%0A%0AAn%20instance%20of%20has_inv%20holds%20a%20single%20unary%20operator%2C%20inv%2C%0Aon%20group%20elements%20of%20type%20%CE%B1%2C%20and%20provides%20the%20notation%2C%20a%E2%81%BB%C2%B9%2C%0Ato%20mean%20(inv%20a).%0A-%2F%0A%23check%20%40has_div%0A%2F-%0Aclass%20has_div%20%20%20%20%20%20(%CE%B1%20%3A%20Type%20u)%20%3A%3D%20(div%20%3A%20%CE%B1%20%E2%86%92%20%CE%B1%20%E2%86%92%20%CE%B1)%0A%0AAn%20instance%20of%20has_div%20holds%20a%20single%20binary%20operator%2C%20div%2C%0Aon%20group%20elements%20of%20type%20%CE%B1%2C%20and%20provides%20the%20notation%2C%20a%2Fb%0Ato%20mean%20(mul%20a%20(inv%20b))%2C%20or%20(add%20a%20(inv%20b))%2C%20depending%20on%0Awhether%20one%20is%20working%20with%20a%20multiplicative%20or%20additive%0Agroup.%20The%20notion%20of%20division%20is%20generalized%20to%20any%20group%0Ain%20this%20way.%0A-%2F" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_147.lean">
-try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- what are has_inv and has_div</span>
-<span class="k">#check</span> <span class="bp">@</span><span class="n">has_inv</span>
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20%40has_inv.mk%0A%2F-%0A%CE%A0%20%7B%CE%B1%20%3A%20Type%20u%7D%2C%20(%CE%B1%20%E2%86%92%20%CE%B1)%20%E2%86%92%20has_inv%20%CE%B1%0A-%2F%0A%0Aopen%20rot_syms%0Adef%20rot_inv%20%3A%20rot_syms%20%E2%86%92%20rot_syms%20%20%20%20%20%20%20%20%20%20%20--%20HOMEWORK%0A%7C%20r0%20%3A%3D%20r0%0A%7C%20r120%20%3A%3D%20r240%0A%7C%20r240%20%3A%3D%20r120%0A%0Ainstance%20%3A%20has_inv%20rot_syms%20%3A%3D%20%E2%9F%A8%20rot_inv%20%E2%9F%A9%20%20--%20%E2%9F%A8%20%E2%9F%A9%20applies%20mk" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_245.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="bp">@</span><span class="n">has_inv.mk</span>
 <span class="c">/-</span>
-<span class="cm">class has_inv      (&#945; : Type u) := (inv : &#945; &#8594; &#945;)</span>
-
-<span class="cm">An instance of has_inv holds a single unary operator, inv,</span>
-<span class="cm">on group elements of type &#945;, and provides the notation, a&#8315;&#185;,</span>
-<span class="cm">to mean (inv a).</span>
+<span class="cm">&#928; {&#945; : Type u}, (&#945; &#8594; &#945;) &#8594; has_inv &#945;</span>
 <span class="cm">-/</span>
-<span class="k">#check</span> <span class="bp">@</span><span class="n">has_div</span>
-<span class="c">/-</span>
-<span class="cm">class has_div      (&#945; : Type u) := (div : &#945; &#8594; &#945; &#8594; &#945;)</span>
 
-<span class="cm">An instance of has_div holds a single binary operator, div,</span>
-<span class="cm">on group elements of type &#945;, and provides the notation, a/b</span>
-<span class="cm">to mean (mul a (inv b)), or (add a (inv b)), depending on</span>
-<span class="cm">whether one is working with a multiplicative or additive</span>
-<span class="cm">group. The notion of division is generalized to any group</span>
-<span class="cm">in this way.</span>
-<span class="cm">-/</span>
+<span class="kn">open</span> <span class="n">rot_syms</span>
+<span class="kd">def</span> <span class="n">rot_inv</span> <span class="o">:</span> <span class="n">rot_syms</span> <span class="bp">&#8594;</span> <span class="n">rot_syms</span>           <span class="c1">-- HOMEWORK</span>
+<span class="bp">|</span> <span class="n">r0</span> <span class="o">:=</span> <span class="n">r0</span>
+<span class="bp">|</span> <span class="n">r120</span> <span class="o">:=</span> <span class="n">r240</span>
+<span class="bp">|</span> <span class="n">r240</span> <span class="o">:=</span> <span class="n">r120</span>
+
+<span class="kd">instance</span> <span class="o">:</span> <span class="n">has_inv</span> <span class="n">rot_syms</span> <span class="o">:=</span> <span class="o">&#10216;</span> <span class="n">rot_inv</span> <span class="o">&#10217;</span>  <span class="c1">-- &#10216; &#10217; applies mk</span>
 </pre></div>
 </div>
-</div><p>An instance of the has_inv typeclass will have one field
-value, a total function from group elements to other group
-elements. In the context of a group, it will be cosntrained
-to behave as a genuine inverse operation must: that given
-an element, r, it will return an element r&#8315;&#185;, such that
-r&#8315;&#185; * r = 1 (the group identity element).</p>
-<p>Of course the * operator will have to have an inverse for
-every element of the group. We&#8217;ll now define an inverse
-operation for our rotations and will soon show that it
-satisfies the axioms for being a (left) inverse.</p>
-</section>
-<section id="instances-for-rot-syms">
-<h4><span class="section-number">6.2.2.4. </span>instances for rot_syms<a class="headerlink" href="#instances-for-rot-syms" title="Permalink to this heading">&#61633;</a></h4>
-<p>To construct instances, we have to understand their
-constructors. We generally leave structure constructor
-names implicit and let Lean fill them is as <em>mk</em>. By
-#check-ing the type of mk, you see what arguments you
-have to provide, including both data and proofs. Let&#8217;s
-check the type of div_inv_monoid.mk.</p>
+</div></section>
+<section id="has-div">
+<h4><span class="section-number">6.2.2.6. </span>has_div<a class="headerlink" href="#has-div" title="Permalink to this heading">&#61633;</a></h4>
+<p>Next we do the same thing for has_div.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20%40div_inv_monoid.mk%0A%2F-%0Adiv_inv_monoid.mk%20%3A%0A%20%20%CE%A0%20--%20arguments%0A%20%20%20%20%7BG%20%3A%20Type%20u_1%7D%0A%20%20%20%20(mul%20%3A%20G%20%E2%86%92%20G%20%E2%86%92%20G)%0A%20%20%20%20(mul_assoc%20%3A%20%E2%88%80%20(a%20b%20c%20%3A%20G)%2C%20a%20*%20b%20*%20c%20%3D%20a%20*%20(b%20*%20c))%0A%20%20%20%20(one%20%3A%20G)%0A%20%20%20%20(one_mul%20%3A%20%E2%88%80%20(a%20%3A%20G)%2C%201%20*%20a%20%3D%20a)%0A%20%20%20%20(mul_one%20%3A%20%E2%88%80%20(a%20%3A%20G)%2C%20a%20*%201%20%3D%20a)%0A%20%20%20%20(npow%20%3A%20%E2%84%95%20%E2%86%92%20G%20%E2%86%92%20G)%0A%20%20%20%20(npow_zero'%20%3A%20auto_param%20(%E2%88%80%20(x%20%3A%20G)%2C%20npow%200%20x%20%3D%201)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous))%0A%20%20%20%20(npow_succ'%20%3A%20auto_param%20(%E2%88%80%20(n%20%3A%20%E2%84%95)%20(x%20%3A%20G)%2C%20npow%20n.succ%20x%20%3D%20x%20*%20npow%20n%20x)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous))%0A%20%20%20%20(inv%20%3A%20G%20%E2%86%92%20G)%0A%20%20%20%20(div%20%3A%20G%20%E2%86%92%20G%20%E2%86%92%20G)%2C%20%20--%20comma%0A%20%20%20%20auto_param%20(%E2%88%80%20(a%20b%20%3A%20G)%2C%20a%20%2F%20b%20%3D%20a%20*%20b%E2%81%BB%C2%B9)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous)%20%E2%86%92%0A%20%20%20%20%CE%A0%20(zpow%20%3A%20%E2%84%A4%20%E2%86%92%20G%20%E2%86%92%20G)%2C%0A%20%20%20%20%20%20auto_param%20(%E2%88%80%20(a%20%3A%20G)%2C%20zpow%200%20a%20%3D%201)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous)%20%E2%86%92%0A%20%20%20%20%20%20auto_param%20(%E2%88%80%20(n%20%3A%20%E2%84%95)%20(a%20%3A%20G)%2C%20zpow%20(int.of_nat%20n.succ)%20a%20%3D%20a%20*%20zpow%20(int.of_nat%20n)%20a)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous)%20%E2%86%92%0A%20%20%20%20%20%20auto_param%20(%E2%88%80%20(n%20%3A%20%E2%84%95)%20(a%20%3A%20G)%2C%20zpow%20-%5B1%2B%20n%5D%20a%20%3D%20(zpow%20%E2%86%91(n.succ)%20a)%E2%81%BB%C2%B9)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous)%20%E2%86%92%0A%20%20div_inv_monoid%20G%0A-%2F" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_192.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20rot_div%20%3A%20rot_syms%20%E2%86%92%20rot_syms%20%E2%86%92%20rot_syms%0A%7C%20a%20b%20%3A%3D%20a%20*%20b%E2%81%BB%C2%B9%0A%0Ainstance%20%3A%20has_div%20rot_syms%20%3A%3D%20%E2%9F%A8%20rot_div%20%E2%9F%A9%20%20--%20HOMEWORK" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_266.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">rot_div</span> <span class="o">:</span> <span class="n">rot_syms</span> <span class="bp">&#8594;</span> <span class="n">rot_syms</span> <span class="bp">&#8594;</span> <span class="n">rot_syms</span>
+<span class="bp">|</span> <span class="n">a</span> <span class="n">b</span> <span class="o">:=</span> <span class="n">a</span> <span class="bp">*</span> <span class="n">b</span><span class="bp">&#8315;&#185;</span>
+
+<span class="kd">instance</span> <span class="o">:</span> <span class="n">has_div</span> <span class="n">rot_syms</span> <span class="o">:=</span> <span class="o">&#10216;</span> <span class="n">rot_div</span> <span class="o">&#10217;</span>  <span class="c1">-- HOMEWORK</span>
+</pre></div>
+</div>
+</div></section>
+</section>
+<section id="example-group-rot-syms">
+<h3><span class="section-number">6.2.3. </span>Example: (group rot_syms)<a class="headerlink" href="#example-group-rot-syms" title="Permalink to this heading">&#61633;</a></h3>
+<section id="id4">
+<h4><span class="section-number">6.2.3.1. </span>div_inv_monoid<a class="headerlink" href="#id4" title="Permalink to this heading">&#61633;</a></h4>
+<p>We&#8217;ve already got an implementation (a typeclass instance)
+of monoid for rot_syms, so we&#8217;ve now got typeclass instances
+for all the parent classes of div_inv_monoid. We now turn
+our attention to instantiating this class.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20%40div_inv_monoid.mk%0A%2F-%0Adiv_inv_monoid.mk%20%3A%0A%20%20%CE%A0%20--%20arguments%0A%20%20%20%20%7BG%20%3A%20Type%20u_1%7D%0A%20%20%20%20(mul%20%3A%20G%20%E2%86%92%20G%20%E2%86%92%20G)%0A%20%20%20%20(mul_assoc%20%3A%20%E2%88%80%20(a%20b%20c%20%3A%20G)%2C%20a%20*%20b%20*%20c%20%3D%20a%20*%20(b%20*%20c))%0A%20%20%20%20(one%20%3A%20G)%0A%20%20%20%20(one_mul%20%3A%20%E2%88%80%20(a%20%3A%20G)%2C%201%20*%20a%20%3D%20a)%0A%20%20%20%20(mul_one%20%3A%20%E2%88%80%20(a%20%3A%20G)%2C%20a%20*%201%20%3D%20a)%0A%20%20%20%20(npow%20%3A%20%E2%84%95%20%E2%86%92%20G%20%E2%86%92%20G)%0A%20%20%20%20(npow_zero'%20%3A%20auto_param%20(%E2%88%80%20(x%20%3A%20G)%2C%20npow%200%20x%20%3D%201)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous))%0A%20%20%20%20(npow_succ'%20%3A%20auto_param%20(%E2%88%80%20(n%20%3A%20%E2%84%95)%20(x%20%3A%20G)%2C%20npow%20n.succ%20x%20%3D%20x%20*%20npow%20n%20x)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous))%0A%20%20%20%20(inv%20%3A%20G%20%E2%86%92%20G)%0A%20%20%20%20(div%20%3A%20G%20%E2%86%92%20G%20%E2%86%92%20G)%2C%20%20--%20comma%0A%20%20%20%20auto_param%20(%E2%88%80%20(a%20b%20%3A%20G)%2C%20a%20%2F%20b%20%3D%20a%20*%20b%E2%81%BB%C2%B9)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous)%20%E2%86%92%0A%20%20%20%20%CE%A0%20(zpow%20%3A%20%E2%84%A4%20%E2%86%92%20G%20%E2%86%92%20G)%2C%0A%20%20%20%20%20%20auto_param%20(%E2%88%80%20(a%20%3A%20G)%2C%20zpow%200%20a%20%3D%201)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous)%20%E2%86%92%0A%20%20%20%20%20%20auto_param%20(%E2%88%80%20(n%20%3A%20%E2%84%95)%20(a%20%3A%20G)%2C%20zpow%20(int.of_nat%20n.succ)%20a%20%3D%20a%20*%20zpow%20(int.of_nat%20n)%20a)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous)%20%E2%86%92%0A%20%20%20%20%20%20auto_param%20(%E2%88%80%20(n%20%3A%20%E2%84%95)%20(a%20%3A%20G)%2C%20zpow%20-%5B1%2B%20n%5D%20a%20%3D%20(zpow%20%E2%86%91(n.succ)%20a)%E2%81%BB%C2%B9)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous)%20%E2%86%92%0A%20%20div_inv_monoid%20G%0A-%2F" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_285.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="bp">@</span><span class="n">div_inv_monoid.mk</span>
 <span class="c">/-</span>
 <span class="cm">div_inv_monoid.mk :</span>
@@ -613,80 +690,23 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <span class="cm">-/</span>
 </pre></div>
 </div>
-</div><p>From the constructor type we can see that we&#8217;ll need to provide explicit argument
-values for mul, mul_assoc,  one, one_mul, mul_one, and npow, all of which we already
-have from our monoid typeclass for rot_syms, as well  as implementations of inv and div,
-and zpow. The last three we need to define. For inv, just work out how the function has
-to behave for each of the three possible inputs (r0, r120, r240). For example, the inverse
-of r120 is r240 because r240 after r120 is not rotation at all. The div function is defined
-in one line in terms of inv.</p>
-<p>The new challenge here will be with zpow. Note that its first argument is not a natural
-number but an <em>integer</em>. That means it can be negative. Given any integer, z, and any
-rotation, r, zpow returns r&#7611;. If z is positive, this is z composed (*) with itself n
-times.  If z is a negative number, -n, then the result is defined to be 1 / r&#7611; (just
-like in arithmetic). That in turn is just shorthand for (div 1 r&#7611;).</p>
-<p>So let&#8217;s take care of inv and div first.  To instantiate these typeclasses for we first
-need implementations for &#945; = rot_syms</p>
+</div><p>From the constructor type we can see that we&#8217;ll need to provide
+explicit argument values for mul, mul_assoc, one, one_mul, mul_one,
+and npow, all of which we already have, as well as implementations
+of inv and div, which we just produced, and finally an implementation
+of zpow.</p>
+<p>We will define zpow by case analysis on its integer argument. But
+what are the cases? We haven&#8217;t yet seen how int (&#8484;) is even defined.</p>
 </section>
-<section id="rotation-specific-inv">
-<h4><span class="section-number">6.2.2.5. </span>rotation-specific inv<a class="headerlink" href="#rotation-specific-inv" title="Permalink to this heading">&#61633;</a></h4>
+<section id="aside-the-type">
+<h4><span class="section-number">6.2.3.2. </span>aside: the &#8484; type<a class="headerlink" href="#aside-the-type" title="Permalink to this heading">&#61633;</a></h4>
+<p>The integer type has two constructors. The first takes a natural
+number, n, and returns it packaged up as an integer, int.of_nat n.
+The second takes a natural number, n, and returns a term, namely
+(int.neg_succ_of_nat n), representing -(n+1).</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20Here's%20our%20inverse%20operation%0Adef%20rot_inv%20%3A%20rot_syms%20%E2%86%92%20rot_syms%20%3A%3D%20_%0A--%20it%20comes%20with%20%E2%81%BB%C2%B9%20as%20a%20notation%0A%0A--%20Let's%20stick%20it%20in%20a%20has_inv%20instance%20for%20rot_syms%0Ainstance%20%3A%20has_inv%20rot_syms%20%3A%3D%20_" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_240.lean">
-try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Here&#39;s our inverse operation</span>
-<span class="kd">def</span> <span class="n">rot_inv</span> <span class="o">:</span> <span class="n">rot_syms</span> <span class="bp">&#8594;</span> <span class="n">rot_syms</span> <span class="o">:=</span> <span class="n">_</span>
-<span class="c1">-- it comes with &#8315;&#185; as a notation</span>
-
-<span class="c1">-- Let&#39;s stick it in a has_inv instance for rot_syms</span>
-<span class="kd">instance</span> <span class="o">:</span> <span class="n">has_inv</span> <span class="n">rot_syms</span> <span class="o">:=</span> <span class="n">_</span>
-</pre></div>
-</div>
-</div></section>
-<section id="rotation-specific-div">
-<h4><span class="section-number">6.2.2.6. </span>rotation-specific div<a class="headerlink" href="#rotation-specific-div" title="Permalink to this heading">&#61633;</a></h4>
-<p>Instantiating has_div for rot_syms requires a
-rot_syms-specific implementation of div(ision).
-This function just multiplies by the inv(erse).</p>
-<div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20Here's%20our%20rotation-specific%20division%20operation%0Adef%20rot_div%20(x%20y%20%3A%20rot_syms)%20%3A%3D%20%20x%20*%20y%E2%81%BB%C2%B9%0A--%20note%20use%20of%20notations%20from%20monoid%20(*)%20and%20has_inv%0A%0A--%20Now%20wecan%20instantiate%20has_div%20for%20rot_syms%0Ainstance%20has_div_rot_syms%20%3A%20has_div%20rot_syms%20%3A%3D%20_%0A--%20thus%20overloading%20div(ision)%20(%2F)%20for%20rot_syms" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_257.lean">
-try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Here&#39;s our rotation-specific division operation</span>
-<span class="kd">def</span> <span class="n">rot_div</span> <span class="o">(</span><span class="n">x</span> <span class="n">y</span> <span class="o">:</span> <span class="n">rot_syms</span><span class="o">)</span> <span class="o">:=</span>  <span class="n">x</span> <span class="bp">*</span> <span class="n">y</span><span class="bp">&#8315;&#185;</span>
-<span class="c1">-- note use of notations from monoid (*) and has_inv</span>
-
-<span class="c1">-- Now wecan instantiate has_div for rot_syms</span>
-<span class="kd">instance</span> <span class="n">has_div_rot_syms</span> <span class="o">:</span> <span class="n">has_div</span> <span class="n">rot_syms</span> <span class="o">:=</span> <span class="n">_</span>
-<span class="c1">-- thus overloading div(ision) (/) for rot_syms</span>
-</pre></div>
-</div>
-</div></section>
-<section id="demo">
-<h4><span class="section-number">6.2.2.7. </span>Demo<a class="headerlink" href="#demo" title="Permalink to this heading">&#61633;</a></h4>
-<div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%2F-%0AVerify%20test%20correctness%20in%20your%20head%20by%0Afirst%20expanding%20the%20definition%20of%20div%2C%20then%0Aunfolding%20the%20application%20of%20%E2%81%BB%C2%B9%2C%20and%20finally%0Areasoning%20about%20the%20%22geometry%22%20of%20the%20example.%0A-%2F%0Aexample%20%3Ar240%20%2F%20r240%20%3D%201%20%3A%3D%20rfl" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_271.lean">
-try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c">/-</span>
-<span class="cm">Verify test correctness in your head by</span>
-<span class="cm">first expanding the definition of div, then</span>
-<span class="cm">unfolding the application of &#8315;&#185;, and finally</span>
-<span class="cm">reasoning about the &quot;geometry&quot; of the example.</span>
-<span class="cm">-/</span>
-<span class="kd">example</span> <span class="o">:</span><span class="n">r240</span> <span class="bp">/</span> <span class="n">r240</span> <span class="bp">=</span> <span class="mi">1</span> <span class="o">:=</span> <span class="n">rfl</span>
-</pre></div>
-</div>
-</div></section>
-<section id="id4">
-<h4><span class="section-number">6.2.2.8. </span>div_inv_monoid<a class="headerlink" href="#id4" title="Permalink to this heading">&#61633;</a></h4>
-<p>Now we can turn to zpow. Its type is reported as &#8484; &#8594; G &#8594; G,
-where, here, G = rot_syms. If the argument, (z :  &#8484;), is not
-negative, we know how to recurse down from z to 0 in order to
-iterate some operation; but what do we do with argumentss that
-are negative integers? More generally, how do we define a
-function to compute a result for any values of type integer?</p>
-<p>The type definition is the key, as you&#8217;ll have to define such
-a function by cases analysis on constructor applications. The
-key in turn is to understand how int terms are represented.</p>
-<div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20inductive%20definition%20of%20e%20int%20(with%20standard%20notation%20%E2%84%A4)%0A%23check%20int%0A%2F-%0Ainductive%20int%20%3A%20Type%0A%7C%20of_nat%20%3A%20nat%20%E2%86%92%20int%0A%7C%20neg_succ_of_nat%20%3A%20nat%20%E2%86%92%20int%0A-%2F" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_297.lean">
-try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- inductive definition of e int (with standard notation &#8484;)</span>
-<span class="k">#check</span> <span class="n">int</span>
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20int%0A%2F-%0Ainductive%20int%20%3A%20Type%0A%7C%20of_nat%20%3A%20nat%20%E2%86%92%20int%0A%7C%20neg_succ_of_nat%20%3A%20nat%20%E2%86%92%20int%0A-%2F" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_327.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="n">int</span>
 <span class="c">/-</span>
 <span class="cm">inductive int : Type</span>
 <span class="cm">| of_nat : nat &#8594; int</span>
@@ -694,94 +714,30 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <span class="cm">-/</span>
 </pre></div>
 </div>
-</div><p>There are two forms of int value. Each incorporates a nat value (n).
-The term, (int.of_nat n), is the int representation of the injection of
-the nat value, n, into the integers. So, for example, (int.of_nat 3) is
-a term that represents the <em>integer,</em> not the natural number, 3. On the
-other hand, The term, (int.neg_succ_of_nat n), represents the integer,
--(n+1). So, for example, (int.neg_succ_of_nat 0) represents -1, while
-(int.neg_succ_of_nat 4) represents the integer value, -5.</p>
-<p>Admittedly the constructors seem strange at first, but they do provide
+</div><p>Example will help. First, (int.of_nat 3) represents the <em>integer,</em>
+not the natural number, 3. Second, the term, (int.neg_succ_of_nat n),
+represents the integer, -(n+1), so (int.neg_succ_of_nat 0) represents
+-1, while (int.neg_succ_of_nat 4) represents the integer value, -5.
+Admittedly the constructors seem strange at first, but they do provide
 one term for each and every integer. The +1 in the second assures that
 we don&#8217;t end up with two distinct representations of 0.</p>
-<p>In any case, we now know how to write zpow for rot_syms: by case analysis
-on the incoming int argument as usual. The only remaining question is what
-to do in each case. Note that zpow just generalizes npow to take negative
-integer values as well non-negatives corresponding to natural numbers. Put
-this together with the meaning of exponentiation by a negative value and
-you&#8217;re good to go!</p>
+<p>In any case, we can now define zpow for rot_syms by case analysis on
+the <em>int</em> argument. The only remaining question is what to do in each
+case.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20hint%3A%20think%20about%20rot_npow%20from%20monoid%0Adef%20zpow_rot_syms%20%3A%20%E2%84%A4%20%E2%86%92%20rot_syms%20%E2%86%92%20rot_syms%0A%7C%20(int.of_nat%20n)%20r%20%3A%3D%20_%20%20%20%20%20%20%20%20%20%20%20--%20reminder%3A%20something%20about%20rot_npow%2C%20hmmm%20...%0A%7C%20(int.neg_succ_of_nat%20n)%20r%20%3A%3D%20_%20%20--%20reminder%3A%20rot_npow%20(and%20a%20negative%20exponent)" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_326.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20hint%3A%20think%20about%20rot_npow%20from%20monoid%0Adef%20rot_zpow%20%3A%20%E2%84%A4%20%E2%86%92%20rot_syms%20%E2%86%92%20rot_syms%0A%7C%20(int.of_nat%20n)%20r%20%3A%3D%20rot_npow%20n%20r%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20HOMEWORK%0A%7C%20(int.neg_succ_of_nat%20n)%20r%20%3A%3D%20(rot_npow%20(n%2B1)%20r)%E2%81%BB%C2%B9%20%20%20--%20HOMEWORK" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_348.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- hint: think about rot_npow from monoid</span>
-<span class="kd">def</span> <span class="n">zpow_rot_syms</span> <span class="o">:</span> <span class="n">&#8484;</span> <span class="bp">&#8594;</span> <span class="n">rot_syms</span> <span class="bp">&#8594;</span> <span class="n">rot_syms</span>
-<span class="bp">|</span> <span class="o">(</span><span class="n">int.of_nat</span> <span class="n">n</span><span class="o">)</span> <span class="n">r</span> <span class="o">:=</span> <span class="n">_</span>           <span class="c1">-- reminder: something about rot_npow, hmmm ...</span>
-<span class="bp">|</span> <span class="o">(</span><span class="n">int.neg_succ_of_nat</span> <span class="n">n</span><span class="o">)</span> <span class="n">r</span> <span class="o">:=</span> <span class="n">_</span>  <span class="c1">-- reminder: rot_npow (and a negative exponent)</span>
+<span class="kd">def</span> <span class="n">rot_zpow</span> <span class="o">:</span> <span class="n">&#8484;</span> <span class="bp">&#8594;</span> <span class="n">rot_syms</span> <span class="bp">&#8594;</span> <span class="n">rot_syms</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">int.of_nat</span> <span class="n">n</span><span class="o">)</span> <span class="n">r</span> <span class="o">:=</span> <span class="n">rot_npow</span> <span class="n">n</span> <span class="n">r</span>                    <span class="c1">-- HOMEWORK</span>
+<span class="bp">|</span> <span class="o">(</span><span class="n">int.neg_succ_of_nat</span> <span class="n">n</span><span class="o">)</span> <span class="n">r</span> <span class="o">:=</span> <span class="o">(</span><span class="n">rot_npow</span> <span class="o">(</span><span class="n">n</span><span class="bp">+</span><span class="mi">1</span><span class="o">)</span> <span class="n">r</span><span class="o">)</span><span class="bp">&#8315;&#185;</span>   <span class="c1">-- HOMEWORK</span>
 </pre></div>
 </div>
-</div><div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20a%20little%20pain%3B%20use%20%22show%22%20to%20force%20rewrite%20of%20(a%20*%20b%E2%81%BB%C2%B9)%0Atheorem%20rot_inv_div%20%3A%20%E2%88%80%20(a%20b%20%3A%20rot_syms)%2C%20a%20%2F%20b%20%3D%20a%20*%20b%E2%81%BB%C2%B9%20%3A%3D%0Abegin%0Aend%0A%0A%0A%2F-%0ASEE%20Design%20note%20on%20div_inv_monoid%2Fsub_neg_monoid%20and%0Adivision_monoid%2Fsubtraction_monoid%20in%20the%20Lean%20source%0Afile.%20Now%20let's%20build%20our%20group%20typeclass%20instance%20for%0Arot_syms.%0A-%2F%0A%0A%23check%20%40div_inv_monoid.mk%0A%2F-%0Adiv_inv_monoid.mk%20%3A%0A%20%20%CE%A0%20--%20arguments%0A%20%20%20%20%7BG%20%3A%20Type%20u_1%7D%0A%20%20%20%20(mul%20%3A%20G%20%E2%86%92%20G%20%E2%86%92%20G)%0A%20%20%20%20(mul_assoc%20%3A%20%E2%88%80%20(a%20b%20c%20%3A%20G)%2C%20a%20*%20b%20*%20c%20%3D%20a%20*%20(b%20*%20c))%0A%20%20%20%20(one%20%3A%20G)%0A%20%20%20%20(one_mul%20%3A%20%E2%88%80%20(a%20%3A%20G)%2C%201%20*%20a%20%3D%20a)%0A%20%20%20%20(mul_one%20%3A%20%E2%88%80%20(a%20%3A%20G)%2C%20a%20*%201%20%3D%20a)%0A%20%20%20%20(npow%20%3A%20%E2%84%95%20%E2%86%92%20G%20%E2%86%92%20G)%0A%20%20%20%20(npow_zero'%20%3A%20auto_param%20(%E2%88%80%20(x%20%3A%20G)%2C%20npow%200%20x%20%3D%201)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous))%0A%20%20%20%20(npow_succ'%20%3A%20auto_param%20(%E2%88%80%20(n%20%3A%20%E2%84%95)%20(x%20%3A%20G)%2C%20npow%20n.succ%20x%20%3D%20x%20*%20npow%20n%20x)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous))%0A%20%20%20%20(inv%20%3A%20G%20%E2%86%92%20G)%0A%20%20%20%20(div%20%3A%20G%20%E2%86%92%20G%20%E2%86%92%20G)%2C%20%20--%20comma%0A%20%20%20%20auto_param%20(%E2%88%80%20(a%20b%20%3A%20G)%2C%20a%20%2F%20b%20%3D%20a%20*%20b%E2%81%BB%C2%B9)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous)%20%E2%86%92%0A%20%20%20%20%CE%A0%20(zpow%20%3A%20%E2%84%A4%20%E2%86%92%20G%20%E2%86%92%20G)%2C%0A%20%20%20%20%20%20auto_param%20(%E2%88%80%20(a%20%3A%20G)%2C%20zpow%200%20a%20%3D%201)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous)%20%E2%86%92%0A%20%20%20%20%20%20auto_param%20(%E2%88%80%20(n%20%3A%20%E2%84%95)%20(a%20%3A%20G)%2C%20zpow%20(int.of_nat%20n.succ)%20a%20%3D%20a%20*%20zpow%20(int.of_nat%20n)%20a)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous)%20%E2%86%92%0A%20%20%20%20%20%20auto_param%20(%E2%88%80%20(n%20%3A%20%E2%84%95)%20(a%20%3A%20G)%2C%20zpow%20-%5B1%2B%20n%5D%20a%20%3D%20(zpow%20%E2%86%91(n.succ)%20a)%E2%81%BB%C2%B9)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous)%20%E2%86%92%0A%20%20div_inv_monoid%20G%0A-%2F%0A%0Ainstance%20div_inv_monoid_rot_syms%20%3A%20div_inv_monoid%20rot_syms%20%3A%3D%0A%E2%9F%A8%0A%20%20rot_mul%2C%0A%20%20rot_mul_assoc%2C%0A%20%201%2C%0A%20%20rot_left_ident%2C%0A%20%20rot_right_ident%2C%0A%20%20rot_npow%2C%0A%20%20_%2C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20Lean%20infers%20these%20auto_param%20values%0A%20%20_%2C%0A%20%20rot_inv%2C%0A%20%20rot_div%2C%0A%20%20_%2C%0A%20%20zpow_rot_syms%2C%0A%20%20_%2C%0A%20%20_%2C%0A%20%20_%0A%E2%9F%A9%0A%0A%23eval%20%40div_inv_monoid_rot_syms%0A%0A%23check%20%40group%0A%23check%20%40group.mk" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_335.lean">
-try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- a little pain; use &quot;show&quot; to force rewrite of (a * b&#8315;&#185;)</span>
-<span class="kd">theorem</span> <span class="n">rot_inv_div</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">a</span> <span class="n">b</span> <span class="o">:</span> <span class="n">rot_syms</span><span class="o">),</span> <span class="n">a</span> <span class="bp">/</span> <span class="n">b</span> <span class="bp">=</span> <span class="n">a</span> <span class="bp">*</span> <span class="n">b</span><span class="bp">&#8315;&#185;</span> <span class="o">:=</span>
-<span class="kd">begin</span>
-<span class="kd">end</span>
-
-
-<span class="c">/-</span>
-<span class="cm">SEE Design note on div_inv_monoid/sub_neg_monoid and</span>
-<span class="cm">division_monoid/subtraction_monoid in the Lean source</span>
-<span class="cm">file. Now let&#39;s build our group typeclass instance for</span>
-<span class="cm">rot_syms.</span>
-<span class="cm">-/</span>
-
-<span class="k">#check</span> <span class="bp">@</span><span class="n">div_inv_monoid.mk</span>
-<span class="c">/-</span>
-<span class="cm">div_inv_monoid.mk :</span>
-<span class="cm">  &#928; -- arguments</span>
-<span class="cm">    {G : Type u_1}</span>
-<span class="cm">    (mul : G &#8594; G &#8594; G)</span>
-<span class="cm">    (mul_assoc : &#8704; (a b c : G), a * b * c = a * (b * c))</span>
-<span class="cm">    (one : G)</span>
-<span class="cm">    (one_mul : &#8704; (a : G), 1 * a = a)</span>
-<span class="cm">    (mul_one : &#8704; (a : G), a * 1 = a)</span>
-<span class="cm">    (npow : &#8469; &#8594; G &#8594; G)</span>
-<span class="cm">    (npow_zero&#39; : auto_param (&#8704; (x : G), npow 0 x = 1) (name.mk_string &quot;try_refl_tac&quot; name.anonymous))</span>
-<span class="cm">    (npow_succ&#39; : auto_param (&#8704; (n : &#8469;) (x : G), npow n.succ x = x * npow n x) (name.mk_string &quot;try_refl_tac&quot; name.anonymous))</span>
-<span class="cm">    (inv : G &#8594; G)</span>
-<span class="cm">    (div : G &#8594; G &#8594; G),  -- comma</span>
-<span class="cm">    auto_param (&#8704; (a b : G), a / b = a * b&#8315;&#185;) (name.mk_string &quot;try_refl_tac&quot; name.anonymous) &#8594;</span>
-<span class="cm">    &#928; (zpow : &#8484; &#8594; G &#8594; G),</span>
-<span class="cm">      auto_param (&#8704; (a : G), zpow 0 a = 1) (name.mk_string &quot;try_refl_tac&quot; name.anonymous) &#8594;</span>
-<span class="cm">      auto_param (&#8704; (n : &#8469;) (a : G), zpow (int.of_nat n.succ) a = a * zpow (int.of_nat n) a) (name.mk_string &quot;try_refl_tac&quot; name.anonymous) &#8594;</span>
-<span class="cm">      auto_param (&#8704; (n : &#8469;) (a : G), zpow -[1+ n] a = (zpow &#8593;(n.succ) a)&#8315;&#185;) (name.mk_string &quot;try_refl_tac&quot; name.anonymous) &#8594;</span>
-<span class="cm">  div_inv_monoid G</span>
-<span class="cm">-/</span>
-
-<span class="kd">instance</span> <span class="n">div_inv_monoid_rot_syms</span> <span class="o">:</span> <span class="n">div_inv_monoid</span> <span class="n">rot_syms</span> <span class="o">:=</span>
-<span class="o">&#10216;</span>
-  <span class="n">rot_mul</span><span class="o">,</span>
-  <span class="n">rot_mul_assoc</span><span class="o">,</span>
-  <span class="mi">1</span><span class="o">,</span>
-  <span class="n">rot_left_ident</span><span class="o">,</span>
-  <span class="n">rot_right_ident</span><span class="o">,</span>
-  <span class="n">rot_npow</span><span class="o">,</span>
-  <span class="n">_</span><span class="o">,</span>                <span class="c1">-- Lean infers these auto_param values</span>
-  <span class="n">_</span><span class="o">,</span>
-  <span class="n">rot_inv</span><span class="o">,</span>
-  <span class="n">rot_div</span><span class="o">,</span>
-  <span class="n">_</span><span class="o">,</span>
-  <span class="n">zpow_rot_syms</span><span class="o">,</span>
-  <span class="n">_</span><span class="o">,</span>
-  <span class="n">_</span><span class="o">,</span>
-  <span class="n">_</span>
-<span class="o">&#10217;</span>
-
-<span class="k">#eval</span> <span class="bp">@</span><span class="n">div_inv_monoid_rot_syms</span>
-
-<span class="k">#check</span> <span class="bp">@</span><span class="n">group</span>
-<span class="k">#check</span> <span class="bp">@</span><span class="n">group.mk</span>
-</pre></div>
-</div>
-</div></section>
+</div><p>We now have all the building blocks needed to assemble
+an instance of div_inv_monoid for objects of type rot_syms.
+Here&#8217;s the constructor type, again. Lean will infer values
+of each field marked as auto_param, so when applying the
+constructor, just use _ for each of these field values.</p>
+</section>
 </section>
 </section>
 </section>
