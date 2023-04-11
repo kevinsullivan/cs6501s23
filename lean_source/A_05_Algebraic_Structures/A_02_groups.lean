@@ -1,5 +1,6 @@
 
 import .A_01_monoids
+import group_theory.group_action
 
 /- TEXT: 
 
@@ -444,8 +445,7 @@ of each field marked as auto_param, so when applying the
 constructor, just use _ for each of these field values.  
 TEXT. -/
 
--- HOMEWORK
-
+-- QUOTE:
 -- just to be explicit, we already have the following two proofs
 lemma rot_npow_zero : (∀ (x : rot_syms), rot_npow 0 x = 1) :=
    monoid.npow_zero'
@@ -533,8 +533,8 @@ group
 And now, finally, we can instantiate the group class
 for rot_syms elements. 
 
-TEXT. 
--/
+TEXT. -/
+
 -- QUOTE:
 #check group 
 /-
@@ -605,6 +605,7 @@ group structure on elements of type rot_syms, given our
 definitions of mul, inv, div, npow, and zpow. 
 TEXT. -/
 
+-- QUOTE:
 #reduce r120 * r120               -- multiplication
 #reduce r120⁻¹                    -- inverses
 #reduce r120 / r240               -- division

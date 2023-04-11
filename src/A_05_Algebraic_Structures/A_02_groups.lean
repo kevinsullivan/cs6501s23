@@ -1,5 +1,6 @@
 
 import .A_01_monoids
+import group_theory.group_action
 
 
 #check @group
@@ -28,7 +29,16 @@ class div_inv_monoid (G : Type u) extends monoid G, has_inv G, has_div G :=
 #check @has_inv.mk 
 /-
 Π {α : Type u}, (α → α) → has_inv α
+
+The has_inv typeclass requires an implementation
+of a unary operation, inv, on α, and provides a⁻¹ 
+as a standard mathematical notation. It does not 
+constrain the behavior of inv in any way, leaving
+that task to downstream typeclasses that inherit
+from this one.  
 -/
+
+
 
 open rot_syms
 def rot_inv : rot_syms → rot_syms           -- HOMEWORK
@@ -39,12 +49,29 @@ def rot_inv : rot_syms → rot_syms           -- HOMEWORK
 instance : has_inv rot_syms := ⟨ rot_inv ⟩  -- ⟨ ⟩ applies mk
 
 
+example : ∀ (r : rot_syms), (r⁻¹ * r = 1) := 
+begin
+assume r,
+cases r,
+repeat {exact rfl, },
+end
 
-def rot_div : rot_syms → rot_syms → rot_syms
-| a b := a * b⁻¹ 
 
-instance : has_div rot_syms := ⟨ rot_div ⟩  -- HOMEWORK
+def rot_div : rot_syms → rot_syms → rot_syms := λ a b, a * b⁻¹ 
 
+instance : has_div rot_syms := ⟨ rot_div ⟩  
+
+example : r240 / r240 = 1 := rfl
+
+
+/- TEXT
+div_inv_monoid
+~~~~~~~~~~~~~~
+
+We now have typeclass instances for rot_syms for each of the
+typeclasses that div_inv_monoid extends. We now look at how
+to instantiate div_inv_monoid for rot_syms. We begin by looking
+at the constructor for this typeclass. Here it is. 
 
 #check @div_inv_monoid.mk 
 /-
@@ -78,27 +105,20 @@ inductive int : Type
 -/
 
 
-
 -- hint: think about rot_npow from monoid
 def rot_zpow : ℤ → rot_syms → rot_syms 
 | (int.of_nat n) r := rot_npow n r                    -- HOMEWORK 
 | (int.neg_succ_of_nat n) r := (rot_npow (n+1) r)⁻¹   -- HOMEWORK
 
 
--- HOMEWORK
-
+-- just to be explicit, we already have the following two proofs
 lemma rot_npow_zero : (∀ (x : rot_syms), rot_npow 0 x = 1) :=
-begin
-assume x,
-exact rfl,
-end
+   monoid.npow_zero'
 
 lemma rot_npow_succ : (∀ (n : ℕ) (x : rot_syms), rot_npow n.succ x = x * rot_npow n x) :=
-begin
-assume x r,
-exact rfl,
-end
+  monoid.npow_succ'
 
+-- We need related proofs linking div and inv and proofs of axioms for zpow
 lemma rot_div_inv : (∀ (a b : rot_syms), a / b = a * b⁻¹) :=
 begin
 assume a b,
@@ -156,22 +176,88 @@ instance div_inv_monoid_rot_syms : div_inv_monoid rot_syms :=
   rot_div,
   rot_div_inv,
   rot_zpow,
-  rot_npow_zero,
-  rot_zpow_non_neg,
-  rot_zpow_neg,
+  rot_npow_zero,                -- same proof again
+  rot_zpow_non_neg,             -- explicit typing needed
+  rot_zpow_neg,                 -- same
 ⟩ 
 
-#eval @div_inv_monoid_rot_syms 
+/-
+Now we can see the structure we've built!
+The proofs are erased in this presentation
+and only the computational data are named.
+-/
+#reduce @div_inv_monoid_rot_syms 
 
-#check @group
+
+
+#check group 
+/-
+class group (G : Type u) extends div_inv_monoid G :=
+(mul_left_inv : ∀ a : G, a⁻¹ * a = 1)
+-/
 #check @group.mk
+/-
+Π {G : Type u_1} 
+  (mul : G → G → G) 
+  (mul_assoc : ∀ (a b c : G), 
+  a * b * c = a * (b * c)) 
+  (one : G)
+  (one_mul : ∀ (a : G), 1 * a = a) 
+  (mul_one : ∀ (a : G), a * 1 = a) 
+  (npow : ℕ → G → G)
+  (npow_zero' : auto_param (∀ (x : G), npow 0 x = 1) 
+  (name.mk_string "try_refl_tac" name.anonymous))
+  (npow_succ' :
+    auto_param (∀ (n : ℕ) (x : G), npow n.succ x = x * npow n x) (name.mk_string "try_refl_tac" name.anonymous))
+  (inv : G → G) (div : G → G → G)
+  (div_eq_mul_inv : auto_param (∀ (a b : G), a / b = a * b⁻¹) (name.mk_string "try_refl_tac" name.anonymous))
+  (zpow : ℤ → G → G)
+  (zpow_zero' : auto_param (∀ (a : G), zpow 0 a = 1) (name.mk_string "try_refl_tac" name.anonymous))
+  (zpow_succ' :
+    auto_param (∀ (n : ℕ) (a : G), zpow (int.of_nat n.succ) a = a * zpow (int.of_nat n) a)
+      (name.mk_string "try_refl_tac" name.anonymous))
+  (zpow_neg' :
+    auto_param (∀ (n : ℕ) (a : G), zpow -[1+ n] a = (zpow ↑(n.succ) a)⁻¹)
+      (name.mk_string "try_refl_tac" name.anonymous)), (∀ (a : G), a⁻¹ * a = 1) → 
+  group G
+-/
+
+lemma rot_left_inv:  (∀ (a : rot_syms), a⁻¹ * a = 1) :=
+begin
+assume a,
+cases a,
+repeat {exact rfl},
+end
 
 
--- Examples
+instance : group rot_syms := 
+⟨
+    rot_mul,
+  rot_mul_assoc,
+  1,
+  rot_left_ident,
+  rot_right_ident,
+  rot_npow,
+  rot_npow_zero,                -- autoparam
+  rot_npow_succ,                -- autoparam
+  rot_inv,
+  rot_div,
+  rot_div_inv,
+  rot_zpow,
+  rot_npow_zero,                -- same proof again
+  rot_zpow_non_neg,             -- explicit typing needed
+  rot_zpow_neg,                 -- same
+  rot_left_inv
+⟩ 
+
+
+
 
 #reduce r120 * r120               -- multiplication
 #reduce r120⁻¹                    -- inverses
 #reduce r120 / r240               -- division
-#reduce rot_npow 4 r120           -- exponentiation by non-negative int
-#reduce rot_zpow (-4 : int) r120  -- exponentiation by negative int
+#reduce r120^4                    -- exponentiation by nat
+#reduce r120^(4:int)              -- exponentiation by non-negative int
+#reduce r120^(-4:int)             -- exponentiation by negative int
+
 

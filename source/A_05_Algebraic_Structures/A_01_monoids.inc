@@ -257,8 +257,9 @@ Yay. We can now assemble our monoid instance.
       (one_mul : ∀ (a : M), 1 * a = a) 
       (mul_one : ∀ (a : M), a * 1 = a)
       (npow : ℕ → M → M),
-        auto_param (∀ (x : M), npow 0 x = 1) (name.mk_string "try_refl_tac" name.anonymous) →
-        auto_param (∀ (n : ℕ) (x : M), npow n.succ x = x * npow n x) (name.mk_string "try_refl_tac" name.anonymous) →
+      -- synthesized parameters
+      auto_param (∀ (x : M), npow 0 x = 1) (name.mk_string "try_refl_tac" name.anonymous) →
+      auto_param (∀ (n : ℕ) (x : M), npow n.succ x = x * npow n x) (name.mk_string "try_refl_tac" name.anonymous) →
     monoid
   -/
   instance : monoid rot_syms := 
@@ -270,18 +271,21 @@ Yay. We can now assemble our monoid instance.
     rot_right_ident,
     rot_npow,
   ⟩ 
+  
+  -- Synthesized fields
+  #check monoid.npow_zero'
+  #reduce monoid.npow_succ'
 
 What we get
 -----------
 
 Having defined the monoid of rotational symmetries of a 
-regular triangle, we gain some real benefits. First, we
-get to use the notations (namely 1 and *) associated with
-the monoid identity and operator. Second, we can of course
-now define another version of foldr that takes a Lean
-monoid as an argument and extends its binary operator
-to n-ary, taking an arbitrary number of arguments in a
-list. 
+regular triangle, we can now use the notations (namely 1 
+and *) associated with the monoid identity and operator. 
+Second, we can now define another version of foldr that 
+takes a Lean monoid as an argument and extends its binary
+operator to n-ary, taking an arbitrary number of arguments 
+in a list. 
 
 .. code-block:: lean
 

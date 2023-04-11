@@ -139,8 +139,9 @@ def rot_npow : ℕ → rot_syms → rot_syms
     (one_mul : ∀ (a : M), 1 * a = a) 
     (mul_one : ∀ (a : M), a * 1 = a)
     (npow : ℕ → M → M),
-      auto_param (∀ (x : M), npow 0 x = 1) (name.mk_string "try_refl_tac" name.anonymous) →
-      auto_param (∀ (n : ℕ) (x : M), npow n.succ x = x * npow n x) (name.mk_string "try_refl_tac" name.anonymous) →
+    -- synthesized parameters
+    auto_param (∀ (x : M), npow 0 x = 1) (name.mk_string "try_refl_tac" name.anonymous) →
+    auto_param (∀ (n : ℕ) (x : M), npow n.succ x = x * npow n x) (name.mk_string "try_refl_tac" name.anonymous) →
   monoid
 -/
 instance : monoid rot_syms := 
@@ -152,6 +153,10 @@ instance : monoid rot_syms :=
   rot_right_ident,
   rot_npow,
 ⟩ 
+
+-- Synthesized fields
+#check monoid.npow_zero'
+#reduce monoid.npow_succ'
 
 
 
