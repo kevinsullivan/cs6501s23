@@ -26,6 +26,8 @@ class div_inv_monoid (G : Type u) extends monoid G, has_inv G, has_div G :=
 
 
 
+
+#check @has_inv
 #check @has_inv.mk 
 /-
 Π {α : Type u}, (α → α) → has_inv α
@@ -48,6 +50,9 @@ def rot_inv : rot_syms → rot_syms           -- HOMEWORK
 
 instance : has_inv rot_syms := ⟨ rot_inv ⟩  -- ⟨ ⟩ applies mk
 
+-- example, cool!
+#reduce r120^2
+
 
 example : ∀ (r : rot_syms), (r⁻¹ * r = 1) := 
 begin
@@ -58,20 +63,9 @@ end
 
 
 def rot_div : rot_syms → rot_syms → rot_syms := λ a b, a * b⁻¹ 
-
 instance : has_div rot_syms := ⟨ rot_div ⟩  
-
 example : r240 / r240 = 1 := rfl
 
-
-/- TEXT
-div_inv_monoid
-~~~~~~~~~~~~~~
-
-We now have typeclass instances for rot_syms for each of the
-typeclasses that div_inv_monoid extends. We now look at how
-to instantiate div_inv_monoid for rot_syms. We begin by looking
-at the constructor for this typeclass. Here it is. 
 
 #check @div_inv_monoid.mk 
 /-
@@ -105,10 +99,23 @@ inductive int : Type
 -/
 
 
+
+-- an example
+
+def isNeg : ℤ → bool 
+| (int.of_nat n) := ff
+| (int.neg_succ_of_nat n) := tt
+#eval isNeg (-5 : int)
+
+
 -- hint: think about rot_npow from monoid
 def rot_zpow : ℤ → rot_syms → rot_syms 
 | (int.of_nat n) r := rot_npow n r                    -- HOMEWORK 
 | (int.neg_succ_of_nat n) r := (rot_npow (n+1) r)⁻¹   -- HOMEWORK
+
+#reduce rot_zpow (-2:ℤ) r240 -- yay! expect 240
+
+
 
 
 -- just to be explicit, we already have the following two proofs
@@ -175,10 +182,7 @@ instance div_inv_monoid_rot_syms : div_inv_monoid rot_syms :=
   rot_inv,
   rot_div,
   rot_div_inv,
-  rot_zpow,
-  rot_npow_zero,                -- same proof again
-  rot_zpow_non_neg,             -- explicit typing needed
-  rot_zpow_neg,                 -- same
+  rot_zpow
 ⟩ 
 
 /-
@@ -232,7 +236,7 @@ end
 
 instance : group rot_syms := 
 ⟨
-    rot_mul,
+  rot_mul,
   rot_mul_assoc,
   1,
   rot_left_ident,

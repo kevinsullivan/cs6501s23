@@ -170,9 +170,6 @@ We will now drill down on the div_inv_monoid typeclass.
 As a reminder, here it is again. We'll first look at the
 classes it inherits, and then the field it adds to those
 from its parent classes.  
-
-div_inv_monoid
-~~~~~~~~~~~~~~
 TEXT. -/
 
 -- QUOTE: 
@@ -258,6 +255,8 @@ has_inv
 TEXT. -/
 
 -- QUOTE:
+
+#check @has_inv
 #check @has_inv.mk 
 /-
 Π {α : Type u}, (α → α) → has_inv α
@@ -281,7 +280,7 @@ We'll build the required instances to enable construction
 of a group typeclass instance for elements of type rot_syms.
 
 has_inv rot_syms
-----------------
+~~~~~~~~~~~~~~~~
 
 To instantiate has_inv, we have to provide an implementation
 of this operation for arguments of type rot_syms. Once we have
@@ -300,6 +299,9 @@ def rot_inv : rot_syms → rot_syms           -- HOMEWORK
 | r240 := r120
 
 instance : has_inv rot_syms := ⟨ rot_inv ⟩  -- ⟨ ⟩ applies mk
+
+-- example, cool!
+#reduce r120^2
 -- QUOTE.
 
 /- TEXT:
@@ -325,22 +327,20 @@ the div typeclass using this value, which, among other things,
 will provides (a / b) as a standard notation for a * b⁻¹
 (which in turn of course desugars to mul a (inv b)).  
 
-has_div
-~~~~~~~
+has_div rot_syms
+~~~~~~~~~~~~~~~~
 TEXT. -/
 
 -- QUOTE:
 def rot_div : rot_syms → rot_syms → rot_syms := λ a b, a * b⁻¹ 
-
 instance : has_div rot_syms := ⟨ rot_div ⟩  
-
 example : r240 / r240 = 1 := rfl
-
 -- QUOTE. 
 
-/- TEXT
-div_inv_monoid
-~~~~~~~~~~~~~~
+/- TEXT:
+
+div_inv_monoid rot_syms
+~~~~~~~~~~~~~~~~~~~~~~~
 
 We now have typeclass instances for rot_syms for each of the
 typeclasses that div_inv_monoid extends. We now look at how
@@ -398,8 +398,8 @@ correspond to non-negative and negative values, respectively. To
 prepare to define zpow, we need to understand the int type in more
 details, so let's do that next, ending with a definition of zpow.
 
-aside: ℤ (int)
-~~~~~~~~~~~~~~
+aside: int type
+~~~~~~~~~~~~~~~
 
 The integer type has two constructors. The first takes a natural
 number, n, and returns it packaged up as an integer, int.of_nat n.
@@ -430,11 +430,24 @@ the *int* argument. The only remaining question is what to do in each
 case. 
 TEXT. -/
 
+
 -- QUOTE:
+-- an example
+
+def isNeg : ℤ → bool 
+| (int.of_nat n) := ff
+| (int.neg_succ_of_nat n) := tt
+#eval isNeg (-5 : int)
+
+
 -- hint: think about rot_npow from monoid
 def rot_zpow : ℤ → rot_syms → rot_syms 
 | (int.of_nat n) r := rot_npow n r                    -- HOMEWORK 
 | (int.neg_succ_of_nat n) r := (rot_npow (n+1) r)⁻¹   -- HOMEWORK
+
+#reduce rot_zpow (-2:ℤ) r240 -- yay! expect 240
+
+
 -- QUOTE.
 
 /- TEXT:
@@ -510,10 +523,7 @@ instance div_inv_monoid_rot_syms : div_inv_monoid rot_syms :=
   rot_inv,
   rot_div,
   rot_div_inv,
-  rot_zpow,
-  rot_npow_zero,                -- same proof again
-  rot_zpow_non_neg,             -- explicit typing needed
-  rot_zpow_neg,                 -- same
+  rot_zpow
 ⟩ 
 
 /-
@@ -527,8 +537,8 @@ and only the computational data are named.
 
 /- TEXT:
 
-group
-~~~~~
+group rot_syms
+~~~~~~~~~~~~~~
 
 And now, finally, we can instantiate the group class
 for rot_syms elements. 
@@ -578,7 +588,7 @@ end
 
 instance : group rot_syms := 
 ⟨
-    rot_mul,
+  rot_mul,
   rot_mul_assoc,
   1,
   rot_left_ident,
