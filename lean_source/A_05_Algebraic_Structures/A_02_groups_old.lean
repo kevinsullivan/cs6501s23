@@ -189,7 +189,7 @@ every element of the group. We'll now define an inverse
 operation for our rotations and will soon show that it 
 satisfies the axioms for being a (left) inverse. 
 
-instances for rot_syms
+instances for rot
 ~~~~~~~~~~~~~~~~~~~~~~
 
 To construct instances, we have to understand their 
@@ -229,7 +229,7 @@ div_inv_monoid.mk :
 /- TEXT:
 From the constructor type we can see that we'll need to provide explicit argument 
 values for mul, mul_assoc,  one, one_mul, mul_one, and npow, all of which we already
-have from our monoid typeclass for rot_syms, as well  as implementations of inv and div, 
+have from our monoid typeclass for rot, as well  as implementations of inv and div, 
 and zpow. The last three we need to define. For inv, just work out how the function has 
 to behave for each of the three possible inputs (r0, r120, r240). For example, the inverse 
 of r120 is r240 because r240 after r120 is not rotation at all. The div function is defined 
@@ -242,7 +242,7 @@ times.  If z is a negative number, -n, then the result is defined to be 1 / rᶻ
 like in arithmetic). That in turn is just shorthand for (div 1 rᶻ).
 
 So let's take care of inv and div first.  To instantiate these typeclasses for we first
-need implementations for α = rot_syms
+need implementations for α = rot
 
 
 rotation-specific inv 
@@ -252,11 +252,11 @@ TEXT. -/
 
 -- QUOTE:
 -- Here's our inverse operation
-def rot_inv : rot_syms → rot_syms := _
+def rot_inv : rot → rot := _
 -- it comes with ⁻¹ as a notation
 
--- Let's stick it in a has_inv instance for rot_syms
-instance : has_inv rot_syms := _
+-- Let's stick it in a has_inv instance for rot
+instance : has_inv rot := _
 -- QUOTE.
 
 /- TEXT:
@@ -264,19 +264,19 @@ instance : has_inv rot_syms := _
 rotation-specific div
 ~~~~~~~~~~~~~~~~~~~~~
 
-Instantiating has_div for rot_syms requires a 
-rot_syms-specific implementation of div(ision).
+Instantiating has_div for rot requires a 
+rot-specific implementation of div(ision).
 This function just multiplies by the inv(erse).
 TEXT. -/
 
 -- QUOTE:
 -- Here's our rotation-specific division operation
-def rot_div (x y : rot_syms) :=  x * y⁻¹
+def rot_div (x y : rot) :=  x * y⁻¹
 -- note use of notations from monoid (*) and has_inv
 
--- Now wecan instantiate has_div for rot_syms 
-instance has_div_rot_syms : has_div rot_syms := _
--- thus overloading div(ision) (/) for rot_syms
+-- Now wecan instantiate has_div for rot 
+instance has_div_rot : has_div rot := _
+-- thus overloading div(ision) (/) for rot
 -- QUOTE.
 
 /- TEXT: 
@@ -302,7 +302,7 @@ div_inv_monoid
 ~~~~~~~~~~~~~~
 
 Now we can turn to zpow. Its type is reported as ℤ → G → G, 
-where, here, G = rot_syms. If the argument, (z :  ℤ), is not
+where, here, G = rot. If the argument, (z :  ℤ), is not
 negative, we know how to recurse down from z to 0 in order to
 iterate some operation; but what do we do with argumentss that
 are negative integers? More generally, how do we define a
@@ -337,7 +337,7 @@ Admittedly the constructors seem strange at first, but they do provide
 one term for each and every integer. The +1 in the second assures that
 we don't end up with two distinct representations of 0.
 
-In any case, we now know how to write zpow for rot_syms: by case analysis 
+In any case, we now know how to write zpow for rot: by case analysis 
 on the incoming int argument as usual. The only remaining question is what
 to do in each case. Note that zpow just generalizes npow to take negative
 integer values as well non-negatives corresponding to natural numbers. Put
@@ -347,7 +347,7 @@ TEXT. -/
 
 -- QUOTE:
 -- hint: think about rot_npow from monoid
-def zpow_rot_syms : ℤ → rot_syms → rot_syms 
+def zpow_rot : ℤ → rot → rot 
 | (int.of_nat n) r := _           -- reminder: something about rot_npow, hmmm ...
 | (int.neg_succ_of_nat n) r := _  -- reminder: rot_npow (and a negative exponent)
 
@@ -359,7 +359,7 @@ TEXT. -/
 -- QUOTE:
 
 -- a little pain; use "show" to force rewrite of (a * b⁻¹)
-theorem rot_inv_div : ∀ (a b : rot_syms), a / b = a * b⁻¹ :=
+theorem rot_inv_div : ∀ (a b : rot), a / b = a * b⁻¹ :=
 begin
 end
 
@@ -368,7 +368,7 @@ end
 SEE Design note on div_inv_monoid/sub_neg_monoid and 
 division_monoid/subtraction_monoid in the Lean source
 file. Now let's build our group typeclass instance for
-rot_syms.
+rot.
 -/ 
 
 #check @div_inv_monoid.mk
@@ -394,7 +394,7 @@ div_inv_monoid.mk :
   div_inv_monoid G
 -/
 
-instance div_inv_monoid_rot_syms : div_inv_monoid rot_syms :=  
+instance div_inv_monoid_rot : div_inv_monoid rot :=  
 ⟨
   rot_mul,
   rot_mul_assoc,
@@ -407,13 +407,13 @@ instance div_inv_monoid_rot_syms : div_inv_monoid rot_syms :=
   rot_inv,
   rot_div,
   _,
-  zpow_rot_syms,
+  zpow_rot,
   _,
   _,
   _
 ⟩ 
 
-#eval @div_inv_monoid_rot_syms 
+#eval @div_inv_monoid_rot 
 
 #check @group
 #check @group.mk

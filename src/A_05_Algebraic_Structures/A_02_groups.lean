@@ -42,19 +42,19 @@ from this one.
 
 
 
-open rot_syms
-def rot_inv : rot_syms → rot_syms           -- HOMEWORK
+open rot
+def rot_inv : rot → rot           -- HOMEWORK
 | r0 := r0
 | r120 := r240
 | r240 := r120
 
-instance : has_inv rot_syms := ⟨ rot_inv ⟩  -- ⟨ ⟩ applies mk
+instance : has_inv rot := ⟨ rot_inv ⟩  -- ⟨ ⟩ applies mk
 
 -- example, cool!
 #reduce r120^2
 
 
-example : ∀ (r : rot_syms), (r⁻¹ * r = 1) := 
+example : ∀ (r : rot), (r⁻¹ * r = 1) := 
 begin
 assume r,
 cases r,
@@ -62,8 +62,8 @@ repeat {exact rfl, },
 end
 
 
-def rot_div : rot_syms → rot_syms → rot_syms := λ a b, a * b⁻¹ 
-instance : has_div rot_syms := ⟨ rot_div ⟩  
+def rot_div : rot → rot → rot := λ a b, a * b⁻¹ 
+instance : has_div rot := ⟨ rot_div ⟩  
 example : r240 / r240 = 1 := rfl
 
 
@@ -109,7 +109,7 @@ def isNeg : ℤ → bool
 
 
 -- hint: think about rot_npow from monoid
-def rot_zpow : ℤ → rot_syms → rot_syms 
+def rot_zpow : ℤ → rot → rot 
 | (int.of_nat n) r := rot_npow n r                    -- HOMEWORK 
 | (int.neg_succ_of_nat n) r := (rot_npow (n+1) r)⁻¹   -- HOMEWORK
 
@@ -119,26 +119,26 @@ def rot_zpow : ℤ → rot_syms → rot_syms
 
 
 -- just to be explicit, we already have the following two proofs
-lemma rot_npow_zero : (∀ (x : rot_syms), rot_npow 0 x = 1) :=
+lemma rot_npow_zero : (∀ (x : rot), rot_npow 0 x = 1) :=
    monoid.npow_zero'
 
-lemma rot_npow_succ : (∀ (n : ℕ) (x : rot_syms), rot_npow n.succ x = x * rot_npow n x) :=
+lemma rot_npow_succ : (∀ (n : ℕ) (x : rot), rot_npow n.succ x = x * rot_npow n x) :=
   monoid.npow_succ'
 
 -- We need related proofs linking div and inv and proofs of axioms for zpow
-lemma rot_div_inv : (∀ (a b : rot_syms), a / b = a * b⁻¹) :=
+lemma rot_div_inv : (∀ (a b : rot), a / b = a * b⁻¹) :=
 begin
 assume a b,
 exact rfl,
 end
 
-lemma rot_zpow_non_neg : (∀ (n : ℕ) (a : rot_syms), rot_zpow (int.of_nat n.succ) a = a * rot_zpow (int.of_nat n) a) :=
+lemma rot_zpow_non_neg : (∀ (n : ℕ) (a : rot), rot_zpow (int.of_nat n.succ) a = a * rot_zpow (int.of_nat n) a) :=
 begin
 assume n a,
 exact rfl,
 end
 
-def rot_zpow_neg : (∀ (n : ℕ) (a : rot_syms), rot_zpow -[1+ n] a = (rot_zpow ↑(n.succ) a)⁻¹) :=
+def rot_zpow_neg : (∀ (n : ℕ) (a : rot), rot_zpow -[1+ n] a = (rot_zpow ↑(n.succ) a)⁻¹) :=
 begin
 assume n a,
 exact rfl,
@@ -169,7 +169,7 @@ div_inv_monoid.mk :
 
 #check rot_npow
 
-instance div_inv_monoid_rot_syms : div_inv_monoid rot_syms :=  
+instance div_inv_monoid_rot : div_inv_monoid rot :=  
 ⟨
   rot_mul,
   rot_mul_assoc,
@@ -190,7 +190,7 @@ Now we can see the structure we've built!
 The proofs are erased in this presentation
 and only the computational data are named.
 -/
-#reduce @div_inv_monoid_rot_syms 
+#reduce @div_inv_monoid_rot 
 
 
 
@@ -226,7 +226,7 @@ class group (G : Type u) extends div_inv_monoid G :=
   group G
 -/
 
-lemma rot_left_inv:  (∀ (a : rot_syms), a⁻¹ * a = 1) :=
+lemma rot_left_inv:  (∀ (a : rot), a⁻¹ * a = 1) :=
 begin
 assume a,
 cases a,
@@ -234,7 +234,7 @@ repeat {exact rfl},
 end
 
 
-instance : group rot_syms := 
+instance : group rot := 
 ⟨
   rot_mul,
   rot_mul_assoc,

@@ -64,11 +64,11 @@ TEXT. -/
 
 -- QUOTE:
 -- Here's our inverse operation
-def rot_inv : rot_syms → rot_syms := _
+def rot_inv : rot → rot := _
 -- it comes with ⁻¹ as a notation
 
--- Let's stick it in a has_inv instance for rot_syms
-instance : has_inv rot_syms := _
+-- Let's stick it in a has_inv instance for rot
+instance : has_inv rot := _
 -- QUOTE.
 
 /- TEXT:
@@ -76,19 +76,19 @@ instance : has_inv rot_syms := _
 rotation-specific div
 ~~~~~~~~~~~~~~~~~~~~~
 
-Instantiating has_div for rot_syms requires a 
-rot_syms-specific implementation of div(ision).
+Instantiating has_div for rot requires a 
+rot-specific implementation of div(ision).
 This function just multiplies by the inv(erse).
 TEXT. -/
 
 -- QUOTE:
 -- Here's our rotation-specific division operation
-def rot_div (x y : rot_syms) :=  x * y⁻¹
+def rot_div (x y : rot) :=  x * y⁻¹
 -- note use of notations from monoid (*) and has_inv
 
--- Now wecan instantiate has_div for rot_syms 
-instance has_div_rot_syms : has_div rot_syms := _
--- thus overloading div(ision) (/) for rot_syms
+-- Now wecan instantiate has_div for rot 
+instance has_div_rot : has_div rot := _
+-- thus overloading div(ision) (/) for rot
 -- QUOTE.
 
 /- TEXT: 

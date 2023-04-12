@@ -205,11 +205,11 @@ of these fields in turn.
 - div, defining (a / b) as a * b⁻¹
 - div_eq_mul_inv, requiring that division be multiplication by inverse
 - zpow, which generalizes exponentiation to include negative exponents
-- a proof of (∀ (x : rot_syms), rot_npow 0 x = 1)
-- a proof of (∀ (n : ℕ) (x : rot_syms), rot_npow n.succ x = x * rot_npow n x)
-- a proof of (∀ (a b : rot_syms), a / b = a * b⁻¹)
-- a proof of (∀ (n : ℕ) (a : rot_syms), rot_zpow (int.of_nat n.succ) a = a * rot_zpow (int.of_nat n) a) :=
-- a proof of (∀ (n : ℕ) (a : rot_syms), rot_zpow -[1+ n] a = (rot_zpow ↑(n.succ) a)⁻¹)
+- a proof of (∀ (x : rot), rot_npow 0 x = 1)
+- a proof of (∀ (n : ℕ) (x : rot), rot_npow n.succ x = x * rot_npow n x)
+- a proof of (∀ (a b : rot), a / b = a * b⁻¹)
+- a proof of (∀ (n : ℕ) (a : rot), rot_zpow (int.of_nat n.succ) a = a * rot_zpow (int.of_nat n) a) :=
+- a proof of (∀ (n : ℕ) (a : rot), rot_zpow -[1+ n] a = (rot_zpow ↑(n.succ) a)⁻¹)
 
 Finally, to all of this structure the *group* typeclass adds one
 additional constraint, (mul_left_inv : ∀ a : G, a⁻¹ * a = 1), which
@@ -220,7 +220,7 @@ it requires a⁻¹ to always act as a *left inverse* for any *a*.
 To create a group typeclass instance, we need to instantiate the
 parent typeclasses and then apply the group typeclass constructor
 to the right arguments. We will now construct a group typeclass
-instance for rot_syms in a bottom-up manner, first constructing
+instance for rot in a bottom-up manner, first constructing
 instances for the parent typeclasses and finally instantiating
 the group typeclass. 
 
@@ -232,7 +232,7 @@ for div_inv_monoid, and finally for group.
 We'll tackle has_inv first. We check the constructor type to
 see what arguments it needs. Then we construct the right
 argument values: in this case an implementation of inverse
-(inv) for rot_syms in particular. And finally we instantiate
+(inv) for rot in particular. And finally we instantiate
 the typeclass. 
 
 has_inv
@@ -260,28 +260,28 @@ Instances
 ---------
 
 We'll build the required instances to enable construction
-of a group typeclass instance for elements of type rot_syms.
+of a group typeclass instance for elements of type rot.
 
-has_inv rot_syms
+has_inv rot
 ~~~~~~~~~~~~~~~~
 
 To instantiate has_inv, we have to provide an implementation
-of this operation for arguments of type rot_syms. Once we have
+of this operation for arguments of type rot. Once we have
 that, the rest is straightforward. We'll call our overloaded
 implementation function, rot_inv. We define the function by
-case analysis on the rot_syms argument, returning in each case
-the rot_syms value that when multiplied by the argument returns 
+case analysis on the rot argument, returning in each case
+the rot value that when multiplied by the argument returns 
 1. 
 
 .. code-block:: lean
 
-  open rot_syms
-  def rot_inv : rot_syms → rot_syms           -- HOMEWORK
+  open rot
+  def rot_inv : rot → rot           -- HOMEWORK
   | r0 := r0
   | r120 := r240
   | r240 := r120
   
-  instance : has_inv rot_syms := ⟨ rot_inv ⟩  -- ⟨ ⟩ applies mk
+  instance : has_inv rot := ⟨ rot_inv ⟩  -- ⟨ ⟩ applies mk
   
   -- example, cool!
   #reduce r120^2
@@ -292,7 +292,7 @@ the left by the inverse always yields the identity.
 
 .. code-block:: lean
 
-  example : ∀ (r : rot_syms), (r⁻¹ * r = 1) := 
+  example : ∀ (r : rot), (r⁻¹ * r = 1) := 
   begin
   assume r,
   cases r,
@@ -301,27 +301,27 @@ the left by the inverse always yields the identity.
 
 Next we do the same thing for has_div: (1) define a binary
 operation, rot_div, to use in overloading the generic div
-function for values of type rot_syms; then (2) instantiate 
+function for values of type rot; then (2) instantiate 
 the div typeclass using this value, which, among other things,
 will provides (a / b) as a standard notation for a * b⁻¹
 (which in turn of course desugars to mul a (inv b)).  
 
-has_div rot_syms
+has_div rot
 ~~~~~~~~~~~~~~~~
 
 .. code-block:: lean
 
-  def rot_div : rot_syms → rot_syms → rot_syms := λ a b, a * b⁻¹ 
-  instance : has_div rot_syms := ⟨ rot_div ⟩  
+  def rot_div : rot → rot → rot := λ a b, a * b⁻¹ 
+  instance : has_div rot := ⟨ rot_div ⟩  
   example : r240 / r240 = 1 := rfl
 
 
-div_inv_monoid rot_syms
+div_inv_monoid rot
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-We now have typeclass instances for rot_syms for each of the
+We now have typeclass instances for rot for each of the
 typeclasses that div_inv_monoid extends. We now look at how
-to instantiate div_inv_monoid for rot_syms. We begin by looking
+to instantiate div_inv_monoid for rot. We begin by looking
 at the constructor for this typeclass. Here it is. 
 
 .. code-block:: lean
@@ -353,7 +353,7 @@ From the constructor type we can see that we'll need to provide
 explicit argument values for mul, mul_assoc, one, one_mul, mul_one,
 npow, npow_zero', and npow_succ', all which we already have from 
 our instantiation of the monoid typeclass. We'll also need functions
-for inv and div on rot_syms elements, which we just produced. Finally
+for inv and div on rot elements, which we just produced. Finally
 we'll need an implementation of zpow along proofs that it's behavior
 satisfies certain axiom. 
 
@@ -398,7 +398,7 @@ Admittedly the constructors seem strange at first, but they do provide
 one term for each and every integer. The +1 in the second assures that
 we don't end up with two distinct representations of 0.
 
-In any case, we can now define zpow for rot_syms by case analysis on
+In any case, we can now define zpow for rot by case analysis on
 the *int* argument. The only remaining question is what to do in each 
 case. 
 
@@ -413,7 +413,7 @@ case.
   
   
   -- hint: think about rot_npow from monoid
-  def rot_zpow : ℤ → rot_syms → rot_syms 
+  def rot_zpow : ℤ → rot → rot 
   | (int.of_nat n) r := rot_npow n r                    -- HOMEWORK 
   | (int.neg_succ_of_nat n) r := (rot_npow (n+1) r)⁻¹   -- HOMEWORK
   
@@ -422,7 +422,7 @@ case.
   
 
 We now have all the building blocks needed to assemble
-an instance of div_inv_monoid for objects of type rot_syms. 
+an instance of div_inv_monoid for objects of type rot. 
 Here's the constructor type, again. Lean will infer values
 of each field marked as auto_param, so when applying the
 constructor, just use _ for each of these field values.  
@@ -430,26 +430,26 @@ constructor, just use _ for each of these field values.
 .. code-block:: lean
 
   -- just to be explicit, we already have the following two proofs
-  lemma rot_npow_zero : (∀ (x : rot_syms), rot_npow 0 x = 1) :=
+  lemma rot_npow_zero : (∀ (x : rot), rot_npow 0 x = 1) :=
      monoid.npow_zero'
   
-  lemma rot_npow_succ : (∀ (n : ℕ) (x : rot_syms), rot_npow n.succ x = x * rot_npow n x) :=
+  lemma rot_npow_succ : (∀ (n : ℕ) (x : rot), rot_npow n.succ x = x * rot_npow n x) :=
     monoid.npow_succ'
   
   -- We need related proofs linking div and inv and proofs of axioms for zpow
-  lemma rot_div_inv : (∀ (a b : rot_syms), a / b = a * b⁻¹) :=
+  lemma rot_div_inv : (∀ (a b : rot), a / b = a * b⁻¹) :=
   begin
   assume a b,
   exact rfl,
   end
   
-  lemma rot_zpow_non_neg : (∀ (n : ℕ) (a : rot_syms), rot_zpow (int.of_nat n.succ) a = a * rot_zpow (int.of_nat n) a) :=
+  lemma rot_zpow_non_neg : (∀ (n : ℕ) (a : rot), rot_zpow (int.of_nat n.succ) a = a * rot_zpow (int.of_nat n) a) :=
   begin
   assume n a,
   exact rfl,
   end
   
-  def rot_zpow_neg : (∀ (n : ℕ) (a : rot_syms), rot_zpow -[1+ n] a = (rot_zpow ↑(n.succ) a)⁻¹) :=
+  def rot_zpow_neg : (∀ (n : ℕ) (a : rot), rot_zpow -[1+ n] a = (rot_zpow ↑(n.succ) a)⁻¹) :=
   begin
   assume n a,
   exact rfl,
@@ -480,7 +480,7 @@ constructor, just use _ for each of these field values.
   
   #check rot_npow
   
-  instance div_inv_monoid_rot_syms : div_inv_monoid rot_syms :=  
+  instance div_inv_monoid_rot : div_inv_monoid rot :=  
   ⟨
     rot_mul,
     rot_mul_assoc,
@@ -501,14 +501,14 @@ constructor, just use _ for each of these field values.
   The proofs are erased in this presentation
   and only the computational data are named.
   -/
-  #reduce @div_inv_monoid_rot_syms 
+  #reduce @div_inv_monoid_rot 
 
 
-group rot_syms
+group rot
 ~~~~~~~~~~~~~~
 
 And now, finally, we can instantiate the group class
-for rot_syms elements. 
+for rot elements. 
 
 
 .. code-block:: lean
@@ -545,7 +545,7 @@ for rot_syms elements.
     group G
   -/
   
-  lemma rot_left_inv:  (∀ (a : rot_syms), a⁻¹ * a = 1) :=
+  lemma rot_left_inv:  (∀ (a : rot), a⁻¹ * a = 1) :=
   begin
   assume a,
   cases a,
@@ -553,7 +553,7 @@ for rot_syms elements.
   end
   
   
-  instance : group rot_syms := 
+  instance : group rot := 
   ⟨
     rot_mul,
     rot_mul_assoc,
@@ -575,7 +575,7 @@ for rot_syms elements.
   
 
 What we've finally done is to show that we can impose a
-group structure on elements of type rot_syms, given our
+group structure on elements of type rot, given our
 definitions of mul, inv, div, npow, and zpow. 
 
 .. code-block:: lean

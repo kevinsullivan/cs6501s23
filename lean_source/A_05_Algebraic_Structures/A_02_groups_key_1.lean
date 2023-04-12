@@ -90,25 +90,25 @@ satisfies the axioms for being a (left) inverse.
 TEXT. -/
 
 -- QUOTE:
-open rot_syms
+open rot
 
 -- Here's our inverse operation
-def rot_inv : rot_syms → rot_syms
+def rot_inv : rot → rot
 | 1     :=  1
 | r120  :=  r240
 | r240  :=  r120
 
 -- Let's put it in a typeclass
-instance : has_inv rot_syms := ⟨ rot_inv ⟩
+instance : has_inv rot := ⟨ rot_inv ⟩
 
 /-
 Now here's a division operation
 Not use of *notation* from has_mul rot_inv
 -/
-def rot_div (x y : rot_syms) :=  x * y⁻¹
+def rot_div (x y : rot) :=  x * y⁻¹
 
 -- And let's stick it in an instance
-instance has_div_rot_syms : has_div rot_syms := ⟨ rot_div ⟩ 
+instance has_div_rot : has_div rot := ⟨ rot_div ⟩ 
 
 /-
 A quick "smoke test." If we divide r240
@@ -156,7 +156,7 @@ div_inv_monoid G
 -/
 
 -- a little pain; use "show" to force rewrite of (a * b⁻¹)
-theorem rot_inv_div : ∀ (a b : rot_syms), a / b = a * b⁻¹ :=
+theorem rot_inv_div : ∀ (a b : rot), a / b = a * b⁻¹ :=
 begin
 assume a b,
 show a/b = a/b,
@@ -174,7 +174,7 @@ inductive int : Type
 #reduce int.of_nat 3
 #reduce int.neg_succ_of_nat 0
 
-def rot_zpow : ℤ → rot_syms → rot_syms 
+def rot_zpow : ℤ → rot → rot 
 | (int.of_nat 0) _ := 1
 | (int.of_nat (nat.succ n')) r := r * (rot_zpow n' r) 
 | (int.neg_succ_of_nat n') r := 1 / (rot_zpow ((int.of_nat n') + 1)) r
@@ -186,7 +186,7 @@ division_monoid/subtraction_monoid in the Lean source
 file: 
 -/ 
 
-lemma foo : (∀ (a : rot_syms), rot_zpow 0 a = 1) :=
+lemma foo : (∀ (a : rot), rot_zpow 0 a = 1) :=
   begin
     assume a,
     cases a,
@@ -198,7 +198,7 @@ end
 
 #reduce rot_zpow 2 r120
 
-instance : div_inv_monoid rot_syms :=  
+instance : div_inv_monoid rot :=  
 ⟨
   rot_mul,
   rot_mul_assoc,
@@ -206,7 +206,7 @@ instance : div_inv_monoid rot_syms :=
   rot_left_ident,
   rot_right_ident,
   rot_npow,
-  sorry, -- auto_param (∀ (x : rot_syms), rot_npow 0 x = 1) (name.mk_string "try_refl_tac" name.anonymous) : Prop
+  sorry, -- auto_param (∀ (x : rot), rot_npow 0 x = 1) (name.mk_string "try_refl_tac" name.anonymous) : Prop
   sorry, 
   rot_inv,
   rot_div,

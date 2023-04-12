@@ -25,7 +25,7 @@ where it started, and so is equal to the zero rotation.
 
 These are all of the *rotational symmetries* of an equilateral triangle. 
 We'll call them *r0*, *r120*, and *r240*. Again these are the *elements* 
-of our monoid, well call it *rot_syms*, short for the *rotational
+of our monoid, well call it *rot*, short for the *rotational
 symmetries of an equilateral triangle*.
 
 To be a monoid we also need an associative operator that takes any two 
@@ -52,15 +52,15 @@ components satisfy the monoid laws.
 .. code-block:: lean
 
   -- We represent the set of monoid elements (rotations) as a type
-  inductive rot_syms 
+  inductive rot 
   | r0
   | r120
   | r240
   
-  open rot_syms
+  open rot
   
   -- We represent the operation as a binary operation on this
-  def rot_mul : rot_syms → rot_syms → rot_syms 
+  def rot_mul : rot → rot → rot 
   | r0 r0 := r0
   | r0 r120 := r120
   | r0 r240 := r240
@@ -73,14 +73,14 @@ components satisfy the monoid laws.
   
   -- We need a proof that r0 is an identity for this operation
   
-  theorem rot_left_ident : ∀ (r : rot_syms), rot_mul r0 r = r  :=
+  theorem rot_left_ident : ∀ (r : rot), rot_mul r0 r = r  :=
   begin
   assume r,
   cases r,
   repeat {exact rfl,}
   end 
   
-  theorem rot_right_ident : ∀ (r : rot_syms), rot_mul r  r0 = r :=
+  theorem rot_right_ident : ∀ (r : rot), rot_mul r  r0 = r :=
   begin
   assume r,
   cases r,
@@ -90,7 +90,7 @@ components satisfy the monoid laws.
   -- And we need a proof that the operation is associative
   
   theorem rot_mul_assoc : 
-    ∀ (e1 e2 e3 : rot_syms), 
+    ∀ (e1 e2 e3 : rot), 
       rot_mul (rot_mul e1 e2) e3 = rot_mul e1 (rot_mul e2 e3) :=
   begin
   assume e1 e2 e3,
@@ -199,7 +199,7 @@ proof) that the operator be associative.
   semigroup G
   -/
   
-  instance : semigroup rot_syms := ⟨ rot_mul, rot_mul_assoc ⟩ 
+  instance : semigroup rot := ⟨ rot_mul, rot_mul_assoc ⟩ 
   #check @mul_one_class
   
 
@@ -225,7 +225,7 @@ element in the monoid, which will then be denoted by *1*.
   
   class has_one      (α : Type u) := (one : α)
   -/
-  instance : has_one rot_syms := ⟨ r0 ⟩ 
+  instance : has_one rot := ⟨ r0 ⟩ 
   
   #check @mul_one_class.mk 
   /-
@@ -236,11 +236,11 @@ element in the monoid, which will then be denoted by *1*.
      (∀ (a : M), a * 1 = a) → 
     mul_one_class M
   -/
-  instance : mul_one_class rot_syms := 
+  instance : mul_one_class rot := 
   ⟨ r0, rot_mul, rot_left_ident, rot_right_ident ⟩ 
   
   -- Finally we'll need a definition of npow
-  def rot_npow : ℕ → rot_syms → rot_syms 
+  def rot_npow : ℕ → rot → rot 
   | 0 x := 1
   | (nat.succ n') x := rot_mul x (rot_npow n' x)
 
@@ -262,7 +262,7 @@ Yay. We can now assemble our monoid instance.
       auto_param (∀ (n : ℕ) (x : M), npow n.succ x = x * npow n x) (name.mk_string "try_refl_tac" name.anonymous) →
     monoid
   -/
-  instance : monoid rot_syms := 
+  instance : monoid rot := 
   ⟨
     rot_mul,
     rot_mul_assoc,
@@ -291,7 +291,7 @@ in a list.
 
   
   -- Notations!
-  #reduce (1 : rot_syms)
+  #reduce (1 : rot)
   #reduce (r120 * 1)
   #reduce (r120 * r120)
   
@@ -305,13 +305,13 @@ in a list.
   #reduce mul_foldr [r120,r120,r120]
   
   -- we could also do this, as in the previous chapter
-  def rot_comp_n := @mul_foldr rot_syms
+  def rot_comp_n := @mul_foldr rot
   #reduce rot_comp_n []
   #reduce rot_comp_n [r120,r120]
   #reduce rot_comp_n [r120,r120,r120]
 
 In conclusion, by define a Lean monoid typeclass instance
-for our set of rotation-representing objects, rot_syms, we
+for our set of rotation-representing objects, rot, we
 have obtained:
 
 - a proven-consistent representation of this particular monoid
