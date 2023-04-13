@@ -263,7 +263,7 @@ We'll build the required instances to enable construction
 of a group typeclass instance for elements of type rot.
 
 has_inv rot
-~~~~~~~~~~~~~~~~
+~~~~~~~~~~~
 
 To instantiate has_inv, we have to provide an implementation
 of this operation for arguments of type rot. Once we have
@@ -307,7 +307,7 @@ will provides (a / b) as a standard notation for a * b⁻¹
 (which in turn of course desugars to mul a (inv b)).  
 
 has_div rot
-~~~~~~~~~~~~~~~~
+~~~~~~~~~~~
 
 .. code-block:: lean
 
@@ -317,7 +317,7 @@ has_div rot
 
 
 div_inv_monoid rot
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~
 
 We now have typeclass instances for rot for each of the
 typeclasses that div_inv_monoid extends. We now look at how
@@ -505,7 +505,7 @@ constructor, just use _ for each of these field values.
 
 
 group rot
-~~~~~~~~~~~~~~
+~~~~~~~~~
 
 And now, finally, we can instantiate the group class
 for rot elements. 

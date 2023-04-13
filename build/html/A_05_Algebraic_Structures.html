@@ -75,13 +75,28 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#instances">6.2.3. Instances</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#has-inv-rot-syms">6.2.3.1. has_inv rot</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#has-div-rot-syms">6.2.3.2. has_div rot</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#div-inv-monoid-rot-syms">6.2.3.3. div_inv_monoid rot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#has-inv-rot">6.2.3.1. has_inv rot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#has-div-rot">6.2.3.2. has_div rot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#div-inv-monoid-rot">6.2.3.3. div_inv_monoid rot</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#aside-int-type">6.2.3.4. aside: int type</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#group-rot-syms">6.2.3.5. group rot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#group-rot">6.2.3.5. group rot</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#group-actions">6.3. Group Actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#target-type">6.3.1. Target Type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">6.3.2. Typeclasses</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#has-smul">6.3.2.1. has_smul</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#group-action">6.3.2.2. group_action</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">6.3.3. Instances</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#has-smul-rot-tri">6.3.3.1. has_smul rot tri</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#group-action-rot-tri">6.3.3.2. group_action rot tri</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#discussion">6.3.4. Discussion</a></li>
 </ul>
 </li>
 </ul>
@@ -650,8 +665,8 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <h3><span class="section-number">6.2.3. </span>Instances<a class="headerlink" href="#instances" title="Permalink to this heading">&#61633;</a></h3>
 <p>We&#8217;ll build the required instances to enable construction
 of a group typeclass instance for elements of type rot.</p>
-<section id="has-inv-rot-syms">
-<h4><span class="section-number">6.2.3.1. </span>has_inv rot<a class="headerlink" href="#has-inv-rot-syms" title="Permalink to this heading">&#61633;</a></h4>
+<section id="has-inv-rot">
+<h4><span class="section-number">6.2.3.1. </span>has_inv rot<a class="headerlink" href="#has-inv-rot" title="Permalink to this heading">&#61633;</a></h4>
 <p>To instantiate has_inv, we have to provide an implementation
 of this operation for arguments of type rot. Once we have
 that, the rest is straightforward. We&#8217;ll call our overloaded
@@ -693,8 +708,8 @@ the div typeclass using this value, which, among other things,
 will provides (a / b) as a standard notation for a * b&#8315;&#185;
 (which in turn of course desugars to mul a (inv b)).</p>
 </section>
-<section id="has-div-rot-syms">
-<h4><span class="section-number">6.2.3.2. </span>has_div rot<a class="headerlink" href="#has-div-rot-syms" title="Permalink to this heading">&#61633;</a></h4>
+<section id="has-div-rot">
+<h4><span class="section-number">6.2.3.2. </span>has_div rot<a class="headerlink" href="#has-div-rot" title="Permalink to this heading">&#61633;</a></h4>
 <div style="position: relative">
 <div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20rot_div%20%3A%20rot%20%E2%86%92%20rot%20%E2%86%92%20rot%20%3A%3D%20%CE%BB%20a%20b%2C%20a%20*%20b%E2%81%BB%C2%B9%0Ainstance%20%3A%20has_div%20rot%20%3A%3D%20%E2%9F%A8%20rot_div%20%E2%9F%A9%0Aexample%20%3A%20r240%20%2F%20r240%20%3D%201%20%3A%3D%20rfl" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_312.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">rot_div</span> <span class="o">:</span> <span class="n">rot</span> <span class="bp">&#8594;</span> <span class="n">rot</span> <span class="bp">&#8594;</span> <span class="n">rot</span> <span class="o">:=</span> <span class="bp">&#955;</span> <span class="n">a</span> <span class="n">b</span><span class="o">,</span> <span class="n">a</span> <span class="bp">*</span> <span class="n">b</span><span class="bp">&#8315;&#185;</span>
@@ -703,8 +718,8 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </pre></div>
 </div>
 </div></section>
-<section id="div-inv-monoid-rot-syms">
-<h4><span class="section-number">6.2.3.3. </span>div_inv_monoid rot<a class="headerlink" href="#div-inv-monoid-rot-syms" title="Permalink to this heading">&#61633;</a></h4>
+<section id="div-inv-monoid-rot">
+<h4><span class="section-number">6.2.3.3. </span>div_inv_monoid rot<a class="headerlink" href="#div-inv-monoid-rot" title="Permalink to this heading">&#61633;</a></h4>
 <p>We now have typeclass instances for rot for each of the
 typeclasses that div_inv_monoid extends. We now look at how
 to instantiate div_inv_monoid for rot. We begin by looking
@@ -884,8 +899,8 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </pre></div>
 </div>
 </div></section>
-<section id="group-rot-syms">
-<h4><span class="section-number">6.2.3.5. </span>group rot<a class="headerlink" href="#group-rot-syms" title="Permalink to this heading">&#61633;</a></h4>
+<section id="group-rot">
+<h4><span class="section-number">6.2.3.5. </span>group rot<a class="headerlink" href="#group-rot" title="Permalink to this heading">&#61633;</a></h4>
 <p>And now, finally, we can instantiate the group class
 for rot elements.</p>
 <div style="position: relative">
@@ -965,6 +980,134 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </pre></div>
 </div>
 </div></section>
+</section>
+</section>
+<section id="group-actions">
+<h2><span class="section-number">6.3. </span>Group Actions<a class="headerlink" href="#group-actions" title="Permalink to this heading">&#61633;</a></h2>
+<p>We now seen that group elements can be understood as
+actions that can be performed on some other kinds of
+objects. For example, elements of the Lie group, S1,
+namely points on the complex unit circle, represent
+rotations of vectors specified by arbitrary complex
+numbers. Moreover, every possible degree of rotation
+has a corresponding group element. It&#8217;s a continuous
+transformation group.</p>
+<p>By contrast, our group of rotational symmetries of an
+equilateral triangle (rotations that put it right back
+on top of itself) is hardly continuous. Nevertheless,
+it can be understood as a group of actions, acting on
+such a triangle.</p>
+<p>More generally, an action acts on something, and in
+general these somethings are not of the same type as
+the actions themselves. For example, elements of S1
+are <em>special</em> complex numbers, lying on the unit circle,
+and understood on any arbitrary vector, represented by
+an complex number, by complex number multiplication,
+thereby effecting a pure rotation (no dilation) of the
+target vector.</p>
+<p>We thus now have two types involved: the type of the
+group elements and the type of the objects that the group
+elements act upon. In this chapter, we&#8217;ll use G as the name
+of the type of group elements, and &#945; for the type of the
+objects that group elements act on.</p>
+<p>To make the concept of a group action clearer, we&#8217;ll develop
+it in the context of our running example of the rotational
+symmetries of equilateral triangles. What these actions act
+on are equilaterial triangles. We&#8217;ll overload an operation
+called smul, introduced by the group_action typeclass, and
+denoted g &#8226; b to represent the result of applying the action
+g to the object b, with a result of the same type b has. As
+an example, if b is the triangle rotated 120 degrees then
+the result of applying the r120 action to b would be the
+triangle rotated 240 degrees.</p>
+<p>We could define a generalized triangle type, but in this
+example, there are only three configurations that we care
+about: not rotated, rotated by 120 degrees, and rotated by
+240 degrees. That means we can represent this set with a
+type, we&#8217;ll call it tri, with just three values. We&#8217;ll
+call them t0, t120, and t240.</p>
+<p>The concept of a group acting on objects of some type is
+fundamental in mathematics. And there&#8217;s a notation for that.
+If g &#8712; G and b &#8712; &#945; then we can write (g &#8226; b) to denote the
+result of g acting on b.</p>
+<p>Lean provides this notation through instantiation of its
+group_action typeclass. In addition to this notation, this
+typeclass requires verification of the two actioms of group
+actions, namely that 1 &#8226; b = b, and that (g&#8321; * g&#8322;) &#8226; b =
+g&#8321; &#8226; (g&#8322; &#8226; b).</p>
+<p>So, first, the group identity has to act as an identity
+for &#945;. Second, you can compose transformations (g&#8321; * g&#8322;)
+then apply the result to a target, or you can transform
+by g&#8321; the result of transforming b by g&#8322;, and you&#8217;ll get
+the same results.</p>
+<p>It&#8217;s easier to think about sequential application of
+transformations than applications of their compositions,
+but as we&#8217;ll see, the ability to compose arbitrary
+transforms into reduced transforms will be essential.</p>
+<section id="target-type">
+<h3><span class="section-number">6.3.1. </span>Target Type<a class="headerlink" href="#target-type" title="Permalink to this heading">&#61633;</a></h3>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=inductive%20tri%0A%7C%20t0%0A%7C%20t120%0A%7C%20t240" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_79.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">inductive</span> <span class="n">tri</span>
+<span class="bp">|</span> <span class="n">t0</span>
+<span class="bp">|</span> <span class="n">t120</span>
+<span class="bp">|</span> <span class="n">t240</span>
+</pre></div>
+</div>
+</div></section>
+<section id="id3">
+<h3><span class="section-number">6.3.2. </span>Typeclasses<a class="headerlink" href="#id3" title="Permalink to this heading">&#61633;</a></h3>
+<p>To instantiate the group_action typeclass, we&#8217;ll have to
+do so for the group_smul class, providing an implementation
+of the <em>smul</em> function that computes the results of group
+actions; and we&#8217;ll have to gven proofs of compliance with
+the two axioms. At the end of the chapter we&#8217;ll introduce
+some other examples and emphasize that the step taken in
+this chapter has given us a way not only to represent
+but also to apply transformations. The smul operation, &#8226;,
+applies a group element representing an operation to a
+given target object, returning its transformed state.</p>
+<section id="has-smul">
+<h4><span class="section-number">6.3.2.1. </span>has_smul<a class="headerlink" href="#has-smul" title="Permalink to this heading">&#61633;</a></h4>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%2F-%0A%40%5Bext%2C%20class%5D%0Astructure%20has_smul%20(M%20%3A%20Type%20u_1)%20(%CE%B1%20%3A%20Type%20u_2)%20%3A%0AType%20(max%20u_1%20u_2)%0A%0A%20%20%20%20smul%20%3A%20M%20%E2%86%92%20%CE%B1%20%E2%86%92%20%CE%B1%0A-%2F" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_105.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c">/-</span>
+<span class="cm">@[ext, class]</span>
+<span class="cm">structure has_smul (M : Type u_1) (&#945; : Type u_2) :</span>
+<span class="cm">Type (max u_1 u_2)</span>
+
+<span class="cm">    smul : M &#8594; &#945; &#8594; &#945;</span>
+<span class="cm">-/</span>
+</pre></div>
+</div>
+</div></section>
+<section id="group-action">
+<h4><span class="section-number">6.3.2.2. </span>group_action<a class="headerlink" href="#group-action" title="Permalink to this heading">&#61633;</a></h4>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=universes%20u_10%20u_11%0A%0A%40%5Bext%2C%20class%5D%0Astructure%20mul_action%20(%CE%B1%20%3A%20Type%20u_10)%20(%CE%B1%20%3A%20Type%20u_11)%20%5Bmonoid%20%CE%B1%5D%20%3A%0AType%20(max%20u_10%20u_11)%20%3A%3D%0A(%20%20%20%20to_has_smul%20%3A%20has_smul%20%CE%B1%20%CE%B1)%0A(%20%20%20%20one_smul%20%3A%20%E2%88%80%20(b%20%3A%20%CE%B1)%2C%201%20%E2%80%A2%20b%20%3D%20b)%0A(%20%20%20%20mul_smul%20%3A%20%E2%88%80%20(x%20y%20%3A%20%CE%B1)%20(b%20%3A%20%CE%B1)%2C%20(x%20*%20y)%20%E2%80%A2%20b%20%3D%20x%20%E2%80%A2%20y%20%E2%80%A2%20b)" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_120.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">universes</span> <span class="n">u_10</span> <span class="n">u_11</span>
+
+<span class="kd">@[ext, class]</span>
+<span class="kd">structure</span> <span class="n">mul_action</span> <span class="o">(</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span> <span class="n">u_10</span><span class="o">)</span> <span class="o">(</span><span class="n">&#945;</span> <span class="o">:</span> <span class="kt">Type</span> <span class="n">u_11</span><span class="o">)</span> <span class="o">[</span><span class="n">monoid</span> <span class="n">&#945;</span><span class="o">]</span> <span class="o">:</span>
+<span class="kt">Type</span> <span class="o">(</span><span class="n">max</span> <span class="n">u_10</span> <span class="n">u_11</span><span class="o">)</span> <span class="o">:=</span>
+<span class="o">(</span>    <span class="n">to_has_smul</span> <span class="o">:</span> <span class="n">has_smul</span> <span class="n">&#945;</span> <span class="n">&#945;</span><span class="o">)</span>
+<span class="o">(</span>    <span class="n">one_smul</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">b</span> <span class="o">:</span> <span class="n">&#945;</span><span class="o">),</span> <span class="mi">1</span> <span class="bp">&#8226;</span> <span class="n">b</span> <span class="bp">=</span> <span class="n">b</span><span class="o">)</span>
+<span class="o">(</span>    <span class="n">mul_smul</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">x</span> <span class="n">y</span> <span class="o">:</span> <span class="n">&#945;</span><span class="o">)</span> <span class="o">(</span><span class="n">b</span> <span class="o">:</span> <span class="n">&#945;</span><span class="o">),</span> <span class="o">(</span><span class="n">x</span> <span class="bp">*</span> <span class="n">y</span><span class="o">)</span> <span class="bp">&#8226;</span> <span class="n">b</span> <span class="bp">=</span> <span class="n">x</span> <span class="bp">&#8226;</span> <span class="n">y</span> <span class="bp">&#8226;</span> <span class="n">b</span><span class="o">)</span>
+</pre></div>
+</div>
+</div></section>
+</section>
+<section id="id4">
+<h3><span class="section-number">6.3.3. </span>Instances<a class="headerlink" href="#id4" title="Permalink to this heading">&#61633;</a></h3>
+<section id="has-smul-rot-tri">
+<h4><span class="section-number">6.3.3.1. </span>has_smul rot tri<a class="headerlink" href="#has-smul-rot-tri" title="Permalink to this heading">&#61633;</a></h4>
+</section>
+<section id="group-action-rot-tri">
+<h4><span class="section-number">6.3.3.2. </span>group_action rot tri<a class="headerlink" href="#group-action-rot-tri" title="Permalink to this heading">&#61633;</a></h4>
+</section>
+</section>
+<section id="discussion">
+<h3><span class="section-number">6.3.4. </span>Discussion<a class="headerlink" href="#discussion" title="Permalink to this heading">&#61633;</a></h3>
 </section>
 </section>
 </section>
