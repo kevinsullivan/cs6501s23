@@ -480,7 +480,7 @@ constructor, just use _ for each of these field values.
   
   #check rot_npow
   
-  instance div_inv_monoid_rot : div_inv_monoid rot :=  
+  instance rot_div_inv_monoid : div_inv_monoid rot :=  
   ⟨
     rot_mul,
     rot_mul_assoc,
@@ -501,7 +501,7 @@ constructor, just use _ for each of these field values.
   The proofs are erased in this presentation
   and only the computational data are named.
   -/
-  #reduce @div_inv_monoid_rot 
+  #reduce @rot_div_inv_monoid 
 
 
 group rot
@@ -545,7 +545,7 @@ for rot elements.
     group G
   -/
   
-  lemma rot_left_inv:  (∀ (a : rot), a⁻¹ * a = 1) :=
+  lemma rot_left_inv : (∀ (a : rot), a⁻¹ * a = 1) :=
   begin
   assume a,
   cases a,
@@ -553,7 +553,7 @@ for rot elements.
   end
   
   
-  instance : group rot := 
+  instance rot_group : group rot := 
   ⟨
     rot_mul,
     rot_mul_assoc,
@@ -572,7 +572,6 @@ for rot elements.
     rot_zpow_neg,                 -- same
     rot_left_inv
   ⟩ 
-  
 
 What we've finally done is to show that we can impose a
 group structure on elements of type rot, given our

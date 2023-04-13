@@ -169,7 +169,7 @@ div_inv_monoid.mk :
 
 #check rot_npow
 
-instance div_inv_monoid_rot : div_inv_monoid rot :=  
+instance rot_div_inv_monoid : div_inv_monoid rot :=  
 ⟨
   rot_mul,
   rot_mul_assoc,
@@ -190,7 +190,7 @@ Now we can see the structure we've built!
 The proofs are erased in this presentation
 and only the computational data are named.
 -/
-#reduce @div_inv_monoid_rot 
+#reduce @rot_div_inv_monoid 
 
 
 
@@ -226,7 +226,7 @@ class group (G : Type u) extends div_inv_monoid G :=
   group G
 -/
 
-lemma rot_left_inv:  (∀ (a : rot), a⁻¹ * a = 1) :=
+lemma rot_left_inv : (∀ (a : rot), a⁻¹ * a = 1) :=
 begin
 assume a,
 cases a,
@@ -234,7 +234,7 @@ repeat {exact rfl},
 end
 
 
-instance : group rot := 
+instance rot_group : group rot := 
 ⟨
   rot_mul,
   rot_mul_assoc,
@@ -254,6 +254,18 @@ instance : group rot :=
   rot_left_inv
 ⟩ 
 
+-- We can see the structure we've created
+#reduce @rot_group
+
+-- From such a structure we can project its constituents
+def rot_div_inv_mon := group.to_div_inv_monoid rot
+def rot_mon := div_inv_monoid.to_monoid rot
+def rot_inv_op := div_inv_monoid.to_has_inv rot
+-- Note that the argument in each case is the element type
+
+#check rot_div_inv_mon
+#check rot_mon
+#check rot_inv_op
 
 
 
