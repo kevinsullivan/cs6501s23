@@ -4,3 +4,4 @@
 .. include:: A_05_Algebraic_Structures/A_01_monoids.inc
 .. include:: A_05_Algebraic_Structures/A_02_groups.inc
 .. include:: A_05_Algebraic_Structures/A_03_group_actions.inc
+.. include:: A_05_Algebraic_Structures/A_04_torsors.inc

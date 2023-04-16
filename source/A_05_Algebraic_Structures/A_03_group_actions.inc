@@ -138,9 +138,7 @@ has_smul rot tri
 .. code-block:: lean
 
   def mul_rot_tri : rot → tri → tri
-  | r0 t0 := t0
-  | r0 t120 := t120
-  | r0 t240 := t240
+  | r0 t := t
   | r120 t0 := t120
   | r120 t120 := t240
   | r120 t240 := t0
@@ -166,30 +164,52 @@ additive monoids and groups; they extend notation classes
 .. code-block:: lean
 
   
-  lemma foo : ∀ (b : tri), (1 : rot) • b = b :=
+  lemma rot_one_action : ∀ (b : tri), (1 : rot) • b = b :=
   begin
   assume b,
   cases b,
   repeat {exact rfl},
   end
   
-  def bar : ∀ (x y : rot) (b : tri), (x * y) • b = x • y • b :=
+  def rot_prod_action : ∀ (x y : rot) (t : tri), (x * y) • t = x • y • t :=
   begin
-  assume x y b,
-  cases b,
-  repeat {
+   
+  assume x y t,
+  cases t,
+  
     cases x,
-    repeat {
-      cases y,
-      repeat {exact rfl},
-    }
-  },
+    cases y,
+    repeat {exact rfl},
+    cases y,
+    repeat {exact rfl},
+    cases y,
+    repeat {exact rfl},
+  
+    cases x,
+    cases y,
+    repeat {exact rfl},
+    cases y,
+    repeat {exact rfl},
+    cases y,
+    repeat {exact rfl},
+    cases y,
+    repeat {exact rfl},
+  
+  cases x,
+  repeat { exact rfl,},
+  cases x,
+  repeat { exact rfl,},
+  cases x,
+  repeat {exact rfl,},
+  
   end
   
   
   instance : mul_action rot tri :=
   ⟨ 
-    foo,
-    bar
+    rot_one_action,
+    rot_prod_action,
   ⟩ 
+  
+  
 

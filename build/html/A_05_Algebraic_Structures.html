@@ -98,6 +98,21 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#torsors">6.4. Torsors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subsection">6.4.1. Subsection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">6.4.2. Typeclasses</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#something">6.4.2.1. something</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">6.4.2.2. something</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">6.4.3. Subsection</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id8">6.4.3.1. something</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">6.4.3.2. something</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">6.4.4. Subsection</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -1102,11 +1117,9 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <section id="has-smul-rot-tri">
 <h4><span class="section-number">6.3.3.1. </span>has_smul rot tri<a class="headerlink" href="#has-smul-rot-tri" title="Permalink to this heading">&#61633;</a></h4>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20mul_rot_tri%20%3A%20rot%20%E2%86%92%20tri%20%E2%86%92%20tri%0A%7C%20r0%20t0%20%3A%3D%20t0%0A%7C%20r0%20t120%20%3A%3D%20t120%0A%7C%20r0%20t240%20%3A%3D%20t240%0A%7C%20r120%20t0%20%3A%3D%20t120%0A%7C%20r120%20t120%20%3A%3D%20t240%0A%7C%20r120%20t240%20%3A%3D%20t0%0A%7C%20r240%20t0%20%3A%3D%20t240%0A%7C%20r240%20t120%20%3A%3D%20t0%0A%7C%20r240%20t240%20%3A%3D%20t120%0A%0Ainstance%20%3A%20has_smul%20rot%20tri%20%3A%3D%20%E2%9F%A8%20mul_rot_tri%20%E2%9F%A9%0A%0A%23reduce%20r0%20%E2%80%A2%20t0%0A%23reduce%20r240%20%E2%80%A2%20t0%0A%23reduce%20r240%20%E2%80%A2%20t120" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_138.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20mul_rot_tri%20%3A%20rot%20%E2%86%92%20tri%20%E2%86%92%20tri%0A%7C%20r0%20t%20%3A%3D%20t%0A%7C%20r120%20t0%20%3A%3D%20t120%0A%7C%20r120%20t120%20%3A%3D%20t240%0A%7C%20r120%20t240%20%3A%3D%20t0%0A%7C%20r240%20t0%20%3A%3D%20t240%0A%7C%20r240%20t120%20%3A%3D%20t0%0A%7C%20r240%20t240%20%3A%3D%20t120%0A%0Ainstance%20%3A%20has_smul%20rot%20tri%20%3A%3D%20%E2%9F%A8%20mul_rot_tri%20%E2%9F%A9%0A%0A%23reduce%20r0%20%E2%80%A2%20t0%0A%23reduce%20r240%20%E2%80%A2%20t0%0A%23reduce%20r240%20%E2%80%A2%20t120" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_138.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">mul_rot_tri</span> <span class="o">:</span> <span class="n">rot</span> <span class="bp">&#8594;</span> <span class="n">tri</span> <span class="bp">&#8594;</span> <span class="n">tri</span>
-<span class="bp">|</span> <span class="n">r0</span> <span class="n">t0</span> <span class="o">:=</span> <span class="n">t0</span>
-<span class="bp">|</span> <span class="n">r0</span> <span class="n">t120</span> <span class="o">:=</span> <span class="n">t120</span>
-<span class="bp">|</span> <span class="n">r0</span> <span class="n">t240</span> <span class="o">:=</span> <span class="n">t240</span>
+<span class="bp">|</span> <span class="n">r0</span> <span class="n">t</span> <span class="o">:=</span> <span class="n">t</span>
 <span class="bp">|</span> <span class="n">r120</span> <span class="n">t0</span> <span class="o">:=</span> <span class="n">t120</span>
 <span class="bp">|</span> <span class="n">r120</span> <span class="n">t120</span> <span class="o">:=</span> <span class="n">t240</span>
 <span class="bp">|</span> <span class="n">r120</span> <span class="n">t240</span> <span class="o">:=</span> <span class="n">t0</span>
@@ -1129,36 +1142,105 @@ are typeclasses used for actions of multiplicative and
 additive monoids and groups; they extend notation classes
 <cite>has_smul</cite> and <cite>has_vadd</cite> defined in <cite>algebra.group.defs</cite>;</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=lemma%20foo%20%3A%20%E2%88%80%20(b%20%3A%20tri)%2C%20(1%20%3A%20rot)%20%E2%80%A2%20b%20%3D%20b%20%3A%3D%0Abegin%0Aassume%20b%2C%0Acases%20b%2C%0Arepeat%20%7Bexact%20rfl%7D%2C%0Aend%0A%0Adef%20bar%20%3A%20%E2%88%80%20(x%20y%20%3A%20rot)%20(b%20%3A%20tri)%2C%20(x%20*%20y)%20%E2%80%A2%20b%20%3D%20x%20%E2%80%A2%20y%20%E2%80%A2%20b%20%3A%3D%0Abegin%0Aassume%20x%20y%20b%2C%0Acases%20b%2C%0Arepeat%20%7B%0A%20%20cases%20x%2C%0A%20%20repeat%20%7B%0A%20%20%20%20cases%20y%2C%0A%20%20%20%20repeat%20%7Bexact%20rfl%7D%2C%0A%20%20%7D%0A%7D%2C%0Aend%0A%0A%0Ainstance%20%3A%20mul_action%20rot%20tri%20%3A%3D%0A%E2%9F%A8%0A%20%20foo%2C%0A%20%20bar%0A%E2%9F%A9" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_166.lean">
-try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">lemma</span> <span class="n">foo</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">b</span> <span class="o">:</span> <span class="n">tri</span><span class="o">),</span> <span class="o">(</span><span class="mi">1</span> <span class="o">:</span> <span class="n">rot</span><span class="o">)</span> <span class="bp">&#8226;</span> <span class="n">b</span> <span class="bp">=</span> <span class="n">b</span> <span class="o">:=</span>
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=lemma%20rot_one_action%20%3A%20%E2%88%80%20(b%20%3A%20tri)%2C%20(1%20%3A%20rot)%20%E2%80%A2%20b%20%3D%20b%20%3A%3D%0Abegin%0Aassume%20b%2C%0Acases%20b%2C%0Arepeat%20%7Bexact%20rfl%7D%2C%0Aend%0A%0Adef%20rot_prod_action%20%3A%20%E2%88%80%20(x%20y%20%3A%20rot)%20(t%20%3A%20tri)%2C%20(x%20*%20y)%20%E2%80%A2%20t%20%3D%20x%20%E2%80%A2%20y%20%E2%80%A2%20t%20%3A%3D%0Abegin%0A%0Aassume%20x%20y%20t%2C%0Acases%20t%2C%0A%0A%20%20cases%20x%2C%0A%20%20cases%20y%2C%0A%20%20repeat%20%7Bexact%20rfl%7D%2C%0A%20%20cases%20y%2C%0A%20%20repeat%20%7Bexact%20rfl%7D%2C%0A%20%20cases%20y%2C%0A%20%20repeat%20%7Bexact%20rfl%7D%2C%0A%0A%20%20cases%20x%2C%0A%20%20cases%20y%2C%0A%20%20repeat%20%7Bexact%20rfl%7D%2C%0A%20%20cases%20y%2C%0A%20%20repeat%20%7Bexact%20rfl%7D%2C%0A%20%20cases%20y%2C%0A%20%20repeat%20%7Bexact%20rfl%7D%2C%0A%20%20cases%20y%2C%0A%20%20repeat%20%7Bexact%20rfl%7D%2C%0A%0Acases%20x%2C%0Arepeat%20%7B%20exact%20rfl%2C%7D%2C%0Acases%20x%2C%0Arepeat%20%7B%20exact%20rfl%2C%7D%2C%0Acases%20x%2C%0Arepeat%20%7Bexact%20rfl%2C%7D%2C%0A%0Aend%0A%0A%0Ainstance%20%3A%20mul_action%20rot%20tri%20%3A%3D%0A%E2%9F%A8%0A%20%20rot_one_action%2C%0A%20%20rot_prod_action%2C%0A%E2%9F%A9" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_164.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">lemma</span> <span class="n">rot_one_action</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">b</span> <span class="o">:</span> <span class="n">tri</span><span class="o">),</span> <span class="o">(</span><span class="mi">1</span> <span class="o">:</span> <span class="n">rot</span><span class="o">)</span> <span class="bp">&#8226;</span> <span class="n">b</span> <span class="bp">=</span> <span class="n">b</span> <span class="o">:=</span>
 <span class="kd">begin</span>
 <span class="k">assume</span> <span class="n">b</span><span class="o">,</span>
 <span class="n">cases</span> <span class="n">b</span><span class="o">,</span>
 <span class="n">repeat</span> <span class="o">{</span><span class="n">exact</span> <span class="n">rfl</span><span class="o">},</span>
 <span class="kd">end</span>
 
-<span class="kd">def</span> <span class="n">bar</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">x</span> <span class="n">y</span> <span class="o">:</span> <span class="n">rot</span><span class="o">)</span> <span class="o">(</span><span class="n">b</span> <span class="o">:</span> <span class="n">tri</span><span class="o">),</span> <span class="o">(</span><span class="n">x</span> <span class="bp">*</span> <span class="n">y</span><span class="o">)</span> <span class="bp">&#8226;</span> <span class="n">b</span> <span class="bp">=</span> <span class="n">x</span> <span class="bp">&#8226;</span> <span class="n">y</span> <span class="bp">&#8226;</span> <span class="n">b</span> <span class="o">:=</span>
+<span class="kd">def</span> <span class="n">rot_prod_action</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">x</span> <span class="n">y</span> <span class="o">:</span> <span class="n">rot</span><span class="o">)</span> <span class="o">(</span><span class="n">t</span> <span class="o">:</span> <span class="n">tri</span><span class="o">),</span> <span class="o">(</span><span class="n">x</span> <span class="bp">*</span> <span class="n">y</span><span class="o">)</span> <span class="bp">&#8226;</span> <span class="n">t</span> <span class="bp">=</span> <span class="n">x</span> <span class="bp">&#8226;</span> <span class="n">y</span> <span class="bp">&#8226;</span> <span class="n">t</span> <span class="o">:=</span>
 <span class="kd">begin</span>
-<span class="k">assume</span> <span class="n">x</span> <span class="n">y</span> <span class="n">b</span><span class="o">,</span>
-<span class="n">cases</span> <span class="n">b</span><span class="o">,</span>
-<span class="n">repeat</span> <span class="o">{</span>
+
+<span class="k">assume</span> <span class="n">x</span> <span class="n">y</span> <span class="n">t</span><span class="o">,</span>
+<span class="n">cases</span> <span class="n">t</span><span class="o">,</span>
+
   <span class="n">cases</span> <span class="n">x</span><span class="o">,</span>
-  <span class="n">repeat</span> <span class="o">{</span>
-    <span class="n">cases</span> <span class="n">y</span><span class="o">,</span>
-    <span class="n">repeat</span> <span class="o">{</span><span class="n">exact</span> <span class="n">rfl</span><span class="o">},</span>
-  <span class="o">}</span>
-<span class="o">},</span>
+  <span class="n">cases</span> <span class="n">y</span><span class="o">,</span>
+  <span class="n">repeat</span> <span class="o">{</span><span class="n">exact</span> <span class="n">rfl</span><span class="o">},</span>
+  <span class="n">cases</span> <span class="n">y</span><span class="o">,</span>
+  <span class="n">repeat</span> <span class="o">{</span><span class="n">exact</span> <span class="n">rfl</span><span class="o">},</span>
+  <span class="n">cases</span> <span class="n">y</span><span class="o">,</span>
+  <span class="n">repeat</span> <span class="o">{</span><span class="n">exact</span> <span class="n">rfl</span><span class="o">},</span>
+
+  <span class="n">cases</span> <span class="n">x</span><span class="o">,</span>
+  <span class="n">cases</span> <span class="n">y</span><span class="o">,</span>
+  <span class="n">repeat</span> <span class="o">{</span><span class="n">exact</span> <span class="n">rfl</span><span class="o">},</span>
+  <span class="n">cases</span> <span class="n">y</span><span class="o">,</span>
+  <span class="n">repeat</span> <span class="o">{</span><span class="n">exact</span> <span class="n">rfl</span><span class="o">},</span>
+  <span class="n">cases</span> <span class="n">y</span><span class="o">,</span>
+  <span class="n">repeat</span> <span class="o">{</span><span class="n">exact</span> <span class="n">rfl</span><span class="o">},</span>
+  <span class="n">cases</span> <span class="n">y</span><span class="o">,</span>
+  <span class="n">repeat</span> <span class="o">{</span><span class="n">exact</span> <span class="n">rfl</span><span class="o">},</span>
+
+<span class="n">cases</span> <span class="n">x</span><span class="o">,</span>
+<span class="n">repeat</span> <span class="o">{</span> <span class="n">exact</span> <span class="n">rfl</span><span class="o">,},</span>
+<span class="n">cases</span> <span class="n">x</span><span class="o">,</span>
+<span class="n">repeat</span> <span class="o">{</span> <span class="n">exact</span> <span class="n">rfl</span><span class="o">,},</span>
+<span class="n">cases</span> <span class="n">x</span><span class="o">,</span>
+<span class="n">repeat</span> <span class="o">{</span><span class="n">exact</span> <span class="n">rfl</span><span class="o">,},</span>
+
 <span class="kd">end</span>
 
 
 <span class="kd">instance</span> <span class="o">:</span> <span class="n">mul_action</span> <span class="n">rot</span> <span class="n">tri</span> <span class="o">:=</span>
 <span class="o">&#10216;</span>
-  <span class="n">foo</span><span class="o">,</span>
-  <span class="n">bar</span>
+  <span class="n">rot_one_action</span><span class="o">,</span>
+  <span class="n">rot_prod_action</span><span class="o">,</span>
 <span class="o">&#10217;</span>
 </pre></div>
 </div>
 </div></section>
+</section>
+</section>
+<section id="torsors">
+<h2><span class="section-number">6.4. </span>Torsors<a class="headerlink" href="#torsors" title="Permalink to this heading">&#61633;</a></h2>
+<section id="subsection">
+<h3><span class="section-number">6.4.1. </span>Subsection<a class="headerlink" href="#subsection" title="Permalink to this heading">&#61633;</a></h3>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_11.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div></section>
+<section id="id5">
+<h3><span class="section-number">6.4.2. </span>Typeclasses<a class="headerlink" href="#id5" title="Permalink to this heading">&#61633;</a></h3>
+<section id="something">
+<h4><span class="section-number">6.4.2.1. </span>something<a class="headerlink" href="#something" title="Permalink to this heading">&#61633;</a></h4>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%2F-%0A-%2F" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_22.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c">/-</span>
+<span class="cm">-/</span>
+</pre></div>
+</div>
+</div></section>
+<section id="id6">
+<h4><span class="section-number">6.4.2.2. </span>something<a class="headerlink" href="#id6" title="Permalink to this heading">&#61633;</a></h4>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%2F-%0A-%2F" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_31.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c">/-</span>
+<span class="cm">-/</span>
+</pre></div>
+</div>
+</div></section>
+</section>
+<section id="id7">
+<h3><span class="section-number">6.4.3. </span>Subsection<a class="headerlink" href="#id7" title="Permalink to this heading">&#61633;</a></h3>
+<section id="id8">
+<h4><span class="section-number">6.4.3.1. </span>something<a class="headerlink" href="#id8" title="Permalink to this heading">&#61633;</a></h4>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_43.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div></section>
+<section id="id9">
+<h4><span class="section-number">6.4.3.2. </span>something<a class="headerlink" href="#id9" title="Permalink to this heading">&#61633;</a></h4>
+</section>
+</section>
+<section id="id10">
+<h3><span class="section-number">6.4.4. </span>Subsection<a class="headerlink" href="#id10" title="Permalink to this heading">&#61633;</a></h3>
 </section>
 </section>
 </section>
