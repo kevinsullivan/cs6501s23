@@ -37,8 +37,8 @@ lean_source/mkdoc.py A_05_Algebraic_Structures A_01_monoids
 lean_source/mkdoc.py A_05_Algebraic_Structures A_02_groups
 lean_source/mkdoc.py A_05_Algebraic_Structures A_03_group_actions
 lean_source/mkdoc.py A_05_Algebraic_Structures A_04_torsors
-lean_source/mkdoc.py A_05_Algebraic_Structures A_05_additive_commutative_groups
-lean_source/mkdoc.py A_05_Algebraic_Structures A_06_semirings
+lean_source/mkdoc.py A_05_Algebraic_Structures A_05_modules
+lean_source/mkdoc.py A_05_Algebraic_Structures A_06_vector_spaces
 
 
 lean_source/mkdoc.py A_06_Dependent_Types A_00_unit_title

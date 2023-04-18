@@ -1,12 +1,12 @@
 
-import .A_01_monoids
+import .A_02_groups
 import group_theory.group_action
 
 /- TEXT: 
 
-*************
-Group Actions
-*************
+*******
+Actions
+*******
 
 We now seen that group elements can be understood as
 actions that can be performed on some other kinds of

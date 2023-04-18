@@ -1,7 +1,7 @@
 
-*************
-Group Actions
-*************
+*******
+Actions
+*******
 
 We now seen that group elements can be understood as
 actions that can be performed on some other kinds of

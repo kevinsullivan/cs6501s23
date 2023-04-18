@@ -110,3 +110,63 @@ example :r240 / r240 = 1 := rfl
 
 /- TEXT:
 
+
+
+======= Torsors
+What this means is we can do arithmetic on transformations 
+in the group--addition, substraction, and multiplication by
+natural number constants (n-iterated addition) separately 
+from the actions then apply the result, or we can apply 
+all the separate transformations, and in either case we'll
+get the same result.
+====
+
+Phys modeling
+
+
+We can model several important physical dimensions, 
+particularly classical geometry and time, as affine 
+spaces. An affine space has the same architecture as 
+our example: a group (in particular a vector space) 
+of actions and a torsor of points, with point-point 
+(-ᵥ) and vector+point (+ᵥ) operations that satisfy
+the torsor axioms. 
+
+A vector space in turn has more structure that a mere
+group. First, it includes scalar vector multiplication. 
+Second, scalars must come from a field. Third, all of
+this plays into how such objects act on other objects. 
+For now the details don't matter. 
+
+What does matter is that you intuit how replacing 
+transformation *groups* with transformation *vector 
+spaces* within torsor instances could make a ton of
+space. A vector (transformation) transforms a point 
+by *translating* it by that "geometric" difference.
+
+Moreover, if you pick an origin point, you then 
+then lay the vector space origin over that point
+to "map" the torsor by the vector space relative
+to the selected origin. (Assuming vector space
+comes with unit [what conditions?] vectors.) 
+
+The key idea will be that every point is mapped 
+by a vector difference from the origin, and that 
+these can be represented as the coefficients of
+linear combinations of basis vectors. In this way
+we can impose non-canonical coordinate systems on 
+otherwise coordinate free, abstract, point spaces,
+provided that they and their difference operations
+work in the right ways with the group actions.  
+
+For example, we can't impose a vector space structure
+on tri. The vector space axioms define linear spaces 
+and won't work with our small set of triangles as the
+points of such a space. 
+
+Perhaps a better way, then, to think of the points set 
+of a vector space torsor, is as exactly the points but
+stripped of mappings by/into any particular coordinate
+system. The group structure of the differences can be
+imposed on the points relative to any selected origin
+point.

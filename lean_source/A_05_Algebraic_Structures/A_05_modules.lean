@@ -3,9 +3,14 @@ import group_theory.group_action
 
 /- TEXT: 
 
-*********
-Semirings
-*********
+*****************
+Rings and Modules
+*****************
+
+Under construction. Ignore. 
+
+Rings
+-----
 
 As explained and stated in the mathlib documentation, a
 semiring is a single type with these additionalstructures.  
@@ -72,4 +77,9 @@ distributive laws
 multiplication by zero
 ~~~~~~~~~~~~~~~~~~~~~~
 
+Modules
+-------
+
+Torsors over Modules
+--------------------
 TEXT. -/
