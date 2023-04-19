@@ -1,12 +1,4 @@
-import .A_01_monoids
-import group_theory.group_action
-
-/- TEXT: 
-
-*****************
-Rings and Modules
-*****************
-
+/-
 Under construction. Ignore. 
 
 Rings
