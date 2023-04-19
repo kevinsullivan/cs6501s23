@@ -114,6 +114,23 @@ def rot_add := rot_mul
 def rot_add_assoc := rot_mul_assoc
 def foo := rot_npow
 
+#check @add_monoid.mk
+
+/-
+Π {M : Type u_1} 
+  (add : M → M → M),
+  (∀ (a b c : M), a + b + c = a + (b + c)) →
+  Π (zero : M) 
+  (zero_add : ∀ (a : M), 0 + a = a) 
+  (add_zero : ∀ (a : M), a + 0 = a) 
+  (nsmul : ℕ → M → M),
+  auto_param (∀ (x : M), nsmul 0 x = 0) (name.mk_string "try_refl_tac" name.anonymous) →
+  auto_param (∀ (n : ℕ) (x : M), nsmul n.succ x = x + nsmul n x)
+    (name.mk_string "try_refl_tac" name.anonymous) →
+  add_monoid MLea
+-/
+
+
 open rot
 instance : add_monoid rot :=
 ⟨
