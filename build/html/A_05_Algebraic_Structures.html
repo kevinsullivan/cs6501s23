@@ -115,6 +115,14 @@
 <li class="toctree-l4"><a class="reference internal" href="#path-forward">6.4.5.3. Path Forward</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#informal-introduction">6.4.6. Informal Introduction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vector-space">6.4.6.1. vector space</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#field">6.4.6.2. field</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#axioms">6.4.6.3. axioms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ring">6.4.6.4. ring</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module">6.4.6.5. module</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -1270,11 +1278,28 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </pre></div>
 </div>
 </div><div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20renaming%0Adef%20rot_add%20%3A%3D%20rot_mul%0Adef%20rot_add_assoc%20%3A%3D%20rot_mul_assoc%0Adef%20foo%20%3A%3D%20rot_npow%0A%0Aopen%20rot%0Ainstance%20%3A%20add_monoid%20rot%20%3A%3D%0A%E2%9F%A8%0A%20%20rot_add%2C%20%20%20%20%20%20%20%20--%20same%20operation%20now%20viewed%20as%20addition%0A%20%20rot_add_assoc%2C%20%20--%20same%20trick%0A%20%20r0%2C%0A%20%20begin%0A%20%20%20%20assume%20a%2C%0A%20%20%20%20cases%20a%2C%0A%20%20%20%20repeat%20%7Bexact%20rfl%7D%2C%0A%20%20end%2C%0A%20%20begin%0A%20%20%20%20assume%20a%2C%0A%20%20%20%20cases%20a%2C%0A%20%20%20%20repeat%20%7Bexact%20rfl%7D%2C%0A%20%20end%2C%0A%20%20foo%2C%20%20%20%20--%20TODO%3A%20fix%20naming%0A%E2%9F%A9%0A%0A--%20The%20add_monoid%20structure%20gives%20us%20addition%20and%20the%20%2B%20notation%20for%20it%0A--%20We%20think%20of%20monoid%20addition%20as%20akin%20to%20vector%20addition%0A%23reduce%20r120%20%2B%20r120%20%20%20%20--%20overloaded%20%2B%0A%23reduce%20r120%20%2B%20r0%20%20%20%20%20%20--%20overloaded%200" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_85.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20renaming%0Adef%20rot_add%20%3A%3D%20rot_mul%0Adef%20rot_add_assoc%20%3A%3D%20rot_mul_assoc%0Adef%20foo%20%3A%3D%20rot_npow%0A%0A%23check%20%40add_monoid.mk%0A%0A%2F-%0A%CE%A0%20%7BM%20%3A%20Type%20u_1%7D%0A%20%20(add%20%3A%20M%20%E2%86%92%20M%20%E2%86%92%20M)%2C%0A%20%20(%E2%88%80%20(a%20b%20c%20%3A%20M)%2C%20a%20%2B%20b%20%2B%20c%20%3D%20a%20%2B%20(b%20%2B%20c))%20%E2%86%92%0A%20%20%CE%A0%20(zero%20%3A%20M)%0A%20%20(zero_add%20%3A%20%E2%88%80%20(a%20%3A%20M)%2C%200%20%2B%20a%20%3D%20a)%0A%20%20(add_zero%20%3A%20%E2%88%80%20(a%20%3A%20M)%2C%20a%20%2B%200%20%3D%20a)%0A%20%20(nsmul%20%3A%20%E2%84%95%20%E2%86%92%20M%20%E2%86%92%20M)%2C%0A%20%20auto_param%20(%E2%88%80%20(x%20%3A%20M)%2C%20nsmul%200%20x%20%3D%200)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous)%20%E2%86%92%0A%20%20auto_param%20(%E2%88%80%20(n%20%3A%20%E2%84%95)%20(x%20%3A%20M)%2C%20nsmul%20n.succ%20x%20%3D%20x%20%2B%20nsmul%20n%20x)%0A%20%20%20%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous)%20%E2%86%92%0A%20%20add_monoid%20MLea%0A-%2F%0A%0A%0Aopen%20rot%0Ainstance%20%3A%20add_monoid%20rot%20%3A%3D%0A%E2%9F%A8%0A%20%20rot_add%2C%20%20%20%20%20%20%20%20--%20same%20operation%20now%20viewed%20as%20addition%0A%20%20rot_add_assoc%2C%20%20--%20same%20trick%0A%20%20r0%2C%0A%20%20begin%0A%20%20%20%20assume%20a%2C%0A%20%20%20%20cases%20a%2C%0A%20%20%20%20repeat%20%7Bexact%20rfl%7D%2C%0A%20%20end%2C%0A%20%20begin%0A%20%20%20%20assume%20a%2C%0A%20%20%20%20cases%20a%2C%0A%20%20%20%20repeat%20%7Bexact%20rfl%7D%2C%0A%20%20end%2C%0A%20%20foo%2C%20%20%20%20--%20TODO%3A%20fix%20naming%0A%E2%9F%A9%0A%0A--%20The%20add_monoid%20structure%20gives%20us%20addition%20and%20the%20%2B%20notation%20for%20it%0A--%20We%20think%20of%20monoid%20addition%20as%20akin%20to%20vector%20addition%0A%23reduce%20r120%20%2B%20r120%20%20%20%20--%20overloaded%20%2B%0A%23reduce%20r120%20%2B%20r0%20%20%20%20%20%20--%20overloaded%200" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_85.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- renaming</span>
 <span class="kd">def</span> <span class="n">rot_add</span> <span class="o">:=</span> <span class="n">rot_mul</span>
 <span class="kd">def</span> <span class="n">rot_add_assoc</span> <span class="o">:=</span> <span class="n">rot_mul_assoc</span>
 <span class="kd">def</span> <span class="n">foo</span> <span class="o">:=</span> <span class="n">rot_npow</span>
+
+<span class="k">#check</span> <span class="bp">@</span><span class="n">add_monoid.mk</span>
+
+<span class="c">/-</span>
+<span class="cm">&#928; {M : Type u_1}</span>
+<span class="cm">  (add : M &#8594; M &#8594; M),</span>
+<span class="cm">  (&#8704; (a b c : M), a + b + c = a + (b + c)) &#8594;</span>
+<span class="cm">  &#928; (zero : M)</span>
+<span class="cm">  (zero_add : &#8704; (a : M), 0 + a = a)</span>
+<span class="cm">  (add_zero : &#8704; (a : M), a + 0 = a)</span>
+<span class="cm">  (nsmul : &#8469; &#8594; M &#8594; M),</span>
+<span class="cm">  auto_param (&#8704; (x : M), nsmul 0 x = 0) (name.mk_string &quot;try_refl_tac&quot; name.anonymous) &#8594;</span>
+<span class="cm">  auto_param (&#8704; (n : &#8469;) (x : M), nsmul n.succ x = x + nsmul n x)</span>
+<span class="cm">    (name.mk_string &quot;try_refl_tac&quot; name.anonymous) &#8594;</span>
+<span class="cm">  add_monoid MLea</span>
+<span class="cm">-/</span>
+
 
 <span class="kn">open</span> <span class="n">rot</span>
 <span class="kd">instance</span> <span class="o">:</span> <span class="n">add_monoid</span> <span class="n">rot</span> <span class="o">:=</span>
@@ -1305,7 +1330,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <section id="add-group-rot">
 <h4><span class="section-number">6.4.3.1. </span>add_group rot<a class="headerlink" href="#add-group-rot" title="Permalink to this heading">&#61633;</a></h4>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20%40add_group.mk%0A%2F-%0Aadd_group.mk%20%3A%0A%20%20%CE%A0%0A%20%20%20%20%7BA%20%3A%20Type%20u_1%7D%0A%20%20%20%20(add%20%3A%20A%20%E2%86%92%20A%20%E2%86%92%20A)%0A%20%20%20%20(add_assoc%20%3A%20%E2%88%80%20(a%20b%20c%20%3A%20A)%2C%20a%20%2B%20b%20%2B%20c%20%3D%20a%20%2B%20(b%20%2B%20c))%0A%20%20%20%20(zero%20%3A%20A)%0A%20%20%20%20(zero_add%20%3A%20%E2%88%80%20(a%20%3A%20A)%2C%200%20%2B%20a%20%3D%20a)%0A%20%20%20%20(add_zero%20%3A%20%E2%88%80%20(a%20%3A%20A)%2C%20a%20%2B%200%20%3D%20a)%0A%20%20%20%20(nsmul%20%3A%20%E2%84%95%20%E2%86%92%20A%20%E2%86%92%20A)%0A%20%20%20%20(nsmul_zero'%20%3A%20auto_param%20(%E2%88%80%20(x%20%3A%20A)%2C%20nsmul%200%20x%20%3D%200)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous))%0A%20%20%20%20(nsmul_succ'%20%3A%0A%20%20%20%20%20%20auto_param%20(%E2%88%80%20(n%20%3A%20%E2%84%95)%20(x%20%3A%20A)%2C%20nsmul%20n.succ%20x%20%3D%20x%20%2B%20nsmul%20n%20x)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous))%0A%20%20%20%20(neg%20%3A%20A%20%E2%86%92%20A)%0A%20%20%20%20(sub%20%3A%20A%20%E2%86%92%20A%20%E2%86%92%20A)%0A%20%20%20%20(sub_eq_add_neg%20%3A%20auto_param%20(%E2%88%80%20(a%20b%20%3A%20A)%2C%20a%20-%20b%20%3D%20a%20%2B%20-b)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous))%0A%20%20%20%20(zsmul%20%3A%20%E2%84%A4%20%E2%86%92%20A%20%E2%86%92%20A)%0A%20%20%20%20(zsmul_zero'%20%3A%20auto_param%20(%E2%88%80%20(a%20%3A%20A)%2C%20zsmul%200%20a%20%3D%200)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous))%0A%20%20%20%20(zsmul_succ'%20%3A%0A%20%20%20%20%20%20auto_param%20(%E2%88%80%20(n%20%3A%20%E2%84%95)%20(a%20%3A%20A)%2C%20zsmul%20(int.of_nat%20n.succ)%20a%20%3D%20a%20%2B%20zsmul%20(int.of_nat%20n)%20a)%0A%20%20%20%20%20%20%20%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous))%0A%20%20%20%20(zsmul_neg'%20%3A%0A%20%20%20%20%20%20auto_param%20(%E2%88%80%20(n%20%3A%20%E2%84%95)%20(a%20%3A%20A)%2C%20zsmul%20-%5B1%2B%20n%5D%20a%20%3D%20-zsmul%20%E2%86%91(n.succ)%20a)%0A%20%20%20%20%20%20%20%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous))%2C%20(%E2%88%80%20(a%20%3A%20A)%2C%20-a%20%2B%20a%20%3D%200)%20%E2%86%92%20add_group%20A%0A-%2F%0A%0Ainstance%20%3A%20add_group%20rot%20%3A%3D%0A%E2%9F%A8%0A%20%20rot_add%2C%20%20%20%20%20%20%20%20--%20stealing%20it%20for%20use%20here%0A%20%20rot_add_assoc%2C%20%20--%20even%20works%20for%20this%0A%20%200%2C%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20r0%20denoted%200%20is%20additive%20identity%0A%20%20rot_left_ident%2C%0A%20%20rot_right_ident%2C%0A%20%20foo%2C%20%20%20%20%20%20%20--%20again%20reusing%20mult%20operator%0A%20%20--%20nsmul%200%0A%20%20begin%20assume%20x%2C%20exact%20rfl%2C%20end%2C%0A%20%20begin%0A%20%20%20%20assume%20n%20x%2C%0A%20%20%20%20simp%20%5Bfoo%5D%2C%20%20%20--%20TODO%3A%20fix%20naming%0A%20%20%20%20exact%20rfl%2C%0A%20%20end%2C%0A%20%20rot_inv%2C%0A%20%20(%CE%BB%20r1%20r2%2C%20r1%20%2B%20(rot_inv%20r2))%2C%0A%20%20begin%0A%20%20%20%20assume%20a%20b%2C%0A%20%20%20%20exact%20rfl%2C%0A%20%20end%2C%0A%20%20rot_zpow%2C%20%20%20%20%20%20%20--%20TODO%3A%20fix%20naming%0A%20%20begin%0A%20%20%20%20assume%20r%2C%0A%20%20%20%20exact%20rfl%2C%0A%20%20end%2C%0A%20%20begin%0A%20%20%20%20assume%20n%20a%2C%0A%20%20%20%20exact%20rfl%2C%0A%20%20end%2C%0A%20%20begin%0A%20%20%20%20assume%20n%20a%2C%0A%20%20%20%20exact%20rfl%2C%0A%20%20end%2C%0A%20%20begin%0A%20%20%20%20assume%20a%2C%0A%20%20%20%20cases%20a%2C%0A%20%20%20%20repeat%20%7Bexact%20rfl%2C%7D%0A%20%20end%2C%0A%E2%9F%A9%0A--%20So%20here%20we%20have%20the%20add_group%20we%20need%20for%20torsor%0A--%20What%20it%20gives%20us%20(because%20of%20inverses)%20is%20subtraction%0A%0A%23reduce%20r120%20-%20r120" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_123.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20%40add_group.mk%0A%2F-%0Aadd_group.mk%20%3A%0A%20%20%CE%A0%0A%20%20%20%20%7BA%20%3A%20Type%20u_1%7D%0A%20%20%20%20(add%20%3A%20A%20%E2%86%92%20A%20%E2%86%92%20A)%0A%20%20%20%20(add_assoc%20%3A%20%E2%88%80%20(a%20b%20c%20%3A%20A)%2C%20a%20%2B%20b%20%2B%20c%20%3D%20a%20%2B%20(b%20%2B%20c))%0A%20%20%20%20(zero%20%3A%20A)%0A%20%20%20%20(zero_add%20%3A%20%E2%88%80%20(a%20%3A%20A)%2C%200%20%2B%20a%20%3D%20a)%0A%20%20%20%20(add_zero%20%3A%20%E2%88%80%20(a%20%3A%20A)%2C%20a%20%2B%200%20%3D%20a)%0A%20%20%20%20(nsmul%20%3A%20%E2%84%95%20%E2%86%92%20A%20%E2%86%92%20A)%0A%20%20%20%20(nsmul_zero'%20%3A%20auto_param%20(%E2%88%80%20(x%20%3A%20A)%2C%20nsmul%200%20x%20%3D%200)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous))%0A%20%20%20%20(nsmul_succ'%20%3A%0A%20%20%20%20%20%20auto_param%20(%E2%88%80%20(n%20%3A%20%E2%84%95)%20(x%20%3A%20A)%2C%20nsmul%20n.succ%20x%20%3D%20x%20%2B%20nsmul%20n%20x)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous))%0A%20%20%20%20(neg%20%3A%20A%20%E2%86%92%20A)%0A%20%20%20%20(sub%20%3A%20A%20%E2%86%92%20A%20%E2%86%92%20A)%0A%20%20%20%20(sub_eq_add_neg%20%3A%20auto_param%20(%E2%88%80%20(a%20b%20%3A%20A)%2C%20a%20-%20b%20%3D%20a%20%2B%20-b)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous))%0A%20%20%20%20(zsmul%20%3A%20%E2%84%A4%20%E2%86%92%20A%20%E2%86%92%20A)%0A%20%20%20%20(zsmul_zero'%20%3A%20auto_param%20(%E2%88%80%20(a%20%3A%20A)%2C%20zsmul%200%20a%20%3D%200)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous))%0A%20%20%20%20(zsmul_succ'%20%3A%0A%20%20%20%20%20%20auto_param%20(%E2%88%80%20(n%20%3A%20%E2%84%95)%20(a%20%3A%20A)%2C%20zsmul%20(int.of_nat%20n.succ)%20a%20%3D%20a%20%2B%20zsmul%20(int.of_nat%20n)%20a)%0A%20%20%20%20%20%20%20%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous))%0A%20%20%20%20(zsmul_neg'%20%3A%0A%20%20%20%20%20%20auto_param%20(%E2%88%80%20(n%20%3A%20%E2%84%95)%20(a%20%3A%20A)%2C%20zsmul%20-%5B1%2B%20n%5D%20a%20%3D%20-zsmul%20%E2%86%91(n.succ)%20a)%0A%20%20%20%20%20%20%20%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous))%2C%20(%E2%88%80%20(a%20%3A%20A)%2C%20-a%20%2B%20a%20%3D%200)%20%E2%86%92%20add_group%20A%0A-%2F%0A%0Ainstance%20%3A%20add_group%20rot%20%3A%3D%0A%E2%9F%A8%0A%20%20rot_add%2C%20%20%20%20%20%20%20%20--%20stealing%20it%20for%20use%20here%0A%20%20rot_add_assoc%2C%20%20--%20even%20works%20for%20this%0A%20%200%2C%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20r0%20denoted%200%20is%20additive%20identity%0A%20%20rot_left_ident%2C%0A%20%20rot_right_ident%2C%0A%20%20foo%2C%20%20%20%20%20%20%20--%20again%20reusing%20mult%20operator%0A%20%20--%20nsmul%200%0A%20%20begin%20assume%20x%2C%20exact%20rfl%2C%20end%2C%0A%20%20begin%0A%20%20%20%20assume%20n%20x%2C%0A%20%20%20%20simp%20%5Bfoo%5D%2C%20%20%20--%20TODO%3A%20fix%20naming%0A%20%20%20%20exact%20rfl%2C%0A%20%20end%2C%0A%20%20rot_inv%2C%0A%20%20(%CE%BB%20r1%20r2%2C%20r1%20%2B%20(rot_inv%20r2))%2C%0A%20%20begin%0A%20%20%20%20assume%20a%20b%2C%0A%20%20%20%20exact%20rfl%2C%0A%20%20end%2C%0A%20%20rot_zpow%2C%20%20%20%20%20%20%20--%20TODO%3A%20fix%20naming%0A%20%20begin%0A%20%20%20%20assume%20r%2C%0A%20%20%20%20exact%20rfl%2C%0A%20%20end%2C%0A%20%20begin%0A%20%20%20%20assume%20n%20a%2C%0A%20%20%20%20exact%20rfl%2C%0A%20%20end%2C%0A%20%20begin%0A%20%20%20%20assume%20n%20a%2C%0A%20%20%20%20exact%20rfl%2C%0A%20%20end%2C%0A%20%20begin%0A%20%20%20%20assume%20a%2C%0A%20%20%20%20cases%20a%2C%0A%20%20%20%20repeat%20%7Bexact%20rfl%2C%7D%0A%20%20end%2C%0A%E2%9F%A9%0A--%20So%20here%20we%20have%20the%20add_group%20we%20need%20for%20torsor%0A--%20What%20it%20gives%20us%20(because%20of%20inverses)%20is%20subtraction%0A%0A%23reduce%20r120%20-%20r120" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_140.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="bp">@</span><span class="n">add_group.mk</span>
 <span class="c">/-</span>
 <span class="cm">add_group.mk :</span>
@@ -1388,7 +1413,7 @@ that it satisfies the axioms for an additive action.</p>
 <section id="has-vadd-rot-tri">
 <h4><span class="section-number">6.4.3.2. </span>has_vadd rot tri<a class="headerlink" href="#has-vadd-rot-tri" title="Permalink to this heading">&#61633;</a></h4>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20view%20mul%20action%2C%20mul_rot_tri%2C%20as%20an%20additive%20action%0A--%20a%20rotation%20%22adds%20itself%22%20to%20any%20tri%20to%20rotate%20it%20thusly%0A%0A--%20We%20need%20additive%20action%2C%20borrow%20mult%20version%20(hack)%0Adef%20add_rot_tri%20%3A%3D%20mul_rot_tri%0Ainstance%20%3A%20has_vadd%20rot%20tri%20%3A%3D%20%E2%9F%A8%20add_rot_tri%20%E2%9F%A9%0A%0A--%20Now%20we've%20got%20the%20%22action%22" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_209.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20view%20mul%20action%2C%20mul_rot_tri%2C%20as%20an%20additive%20action%0A--%20a%20rotation%20%22adds%20itself%22%20to%20any%20tri%20to%20rotate%20it%20thusly%0A%0A--%20We%20need%20additive%20action%2C%20borrow%20mult%20version%20(hack)%0Adef%20add_rot_tri%20%3A%3D%20mul_rot_tri%0Ainstance%20%3A%20has_vadd%20rot%20tri%20%3A%3D%20%E2%9F%A8%20add_rot_tri%20%E2%9F%A9%0A%0A--%20Now%20we've%20got%20the%20%22action%22" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_226.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- view mul action, mul_rot_tri, as an additive action</span>
 <span class="c1">-- a rotation &quot;adds itself&quot; to any tri to rotate it thusly</span>
 
@@ -1403,7 +1428,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <section id="add-action-rot-tri">
 <h4><span class="section-number">6.4.3.3. </span>add_action rot tri<a class="headerlink" href="#add-action-rot-tri" title="Permalink to this heading">&#61633;</a></h4>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%2F-%0A%40%5Bext%2C%20class%5D%0Astructure%20add_action%20(G%20%3A%20Type%20u_10)%20(P%20%3A%20Type%20u_11)%20%5Badd_monoid%20G%5D%20%3A%0AType%20(max%20u_10%20u_11)%0A%20%20%20%20to_has_vadd%20%3A%20has_vadd%20G%20P%0A%20%20%20%20zero_vadd%20%3A%20%E2%88%80%20(p%20%3A%20P)%2C%200%20%2B%E1%B5%A5%20p%20%3D%20p%0A%20%20%20%20add_vadd%20%3A%20%E2%88%80%20(g%E2%82%81%20g%E2%82%82%20%3A%20G)%20(p%20%3A%20P)%2C%20g%E2%82%81%20%2B%20g%E2%82%82%20%2B%E1%B5%A5%20p%20%3D%20g%E2%82%81%20%2B%E1%B5%A5%20(g%E2%82%82%20%2B%E1%B5%A5%20p)%0A%0A-%2F%0A%0A%23check%20%40add_action.mk%0A%2F-%0Aadd_action.mk%20%3A%0A%CE%A0%0A%20%20%7BG%20%3A%20Type%20u_10%7D%0A%20%20%7BP%20%3A%20Type%20u_11%7D%0A%20%20%5B_inst_1%20%3A%20add_monoid%20G%5D%0A%20%20%5B_to_has_vadd%20%3A%20has_vadd%20G%20P%5D%2C%0A(%E2%88%80%20(p%20%3A%20P)%2C%200%20%2B%E1%B5%A5%20p%20%3D%20p)%20%E2%86%92%0A(%E2%88%80%20(g%E2%82%81%20g%E2%82%82%20%3A%20G)%20(p%20%3A%20P)%2C%20g%E2%82%81%20%2B%20g%E2%82%82%20%2B%E1%B5%A5%20p%20%3D%20g%E2%82%81%20%2B%E1%B5%A5%20(g%E2%82%82%20%2B%E1%B5%A5%20p))%20%E2%86%92%0Aadd_action%20G%20P%0A-%2F%0A%0Ainstance%20%3A%20add_action%20rot%20tri%20%3A%3D%0A%E2%9F%A8%0A%20%20--%20(%E2%88%80%20(p%20%3A%20P)%2C%200%20%2B%E1%B5%A5%20p%20%3D%20p)%0A%20%20begin%0A%20%20%20%20assume%20t%2C%0A%20%20%20%20cases%20t%2C%0A%20%20%20%20repeat%20%7Bexact%20rfl%2C%7D%0A%20%20end%2C%0A%0A%20%20--%20(%E2%88%80%20(g%E2%82%81%20g%E2%82%82%20%3A%20G)%20(p%20%3A%20P)%2C%20g%E2%82%81%20%2B%20g%E2%82%82%20%2B%E1%B5%A5%20p%20%3D%20g%E2%82%81%20%2B%E1%B5%A5%20(g%E2%82%82%20%2B%E1%B5%A5%20p))%0A%20%20begin%0A%20%20%20%20assume%20g%20h%20t%2C%0A%20%20%20%20cases%20t%2C%0A%20%20%20%20%20%20repeat%20%7B%0A%20%20%20%20%20%20%20%20cases%20g%2C%0A%20%20%20%20%20%20%20%20%20%20repeat%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20cases%20h%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20repeat%20%7B%20exact%20rfl%20%7D%0A%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%2C%0A%20%20end%0A%E2%9F%A9" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_226.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%2F-%0A%40%5Bext%2C%20class%5D%0Astructure%20add_action%20(G%20%3A%20Type%20u_10)%20(P%20%3A%20Type%20u_11)%20%5Badd_monoid%20G%5D%20%3A%0AType%20(max%20u_10%20u_11)%0A%20%20%20%20to_has_vadd%20%3A%20has_vadd%20G%20P%0A%20%20%20%20zero_vadd%20%3A%20%E2%88%80%20(p%20%3A%20P)%2C%200%20%2B%E1%B5%A5%20p%20%3D%20p%0A%20%20%20%20add_vadd%20%3A%20%E2%88%80%20(g%E2%82%81%20g%E2%82%82%20%3A%20G)%20(p%20%3A%20P)%2C%20g%E2%82%81%20%2B%20g%E2%82%82%20%2B%E1%B5%A5%20p%20%3D%20g%E2%82%81%20%2B%E1%B5%A5%20(g%E2%82%82%20%2B%E1%B5%A5%20p)%0A%0A-%2F%0A%0A%23check%20%40add_action.mk%0A%2F-%0Aadd_action.mk%20%3A%0A%CE%A0%0A%20%20%7BG%20%3A%20Type%20u_10%7D%0A%20%20%7BP%20%3A%20Type%20u_11%7D%0A%20%20%5B_inst_1%20%3A%20add_monoid%20G%5D%0A%20%20%5B_to_has_vadd%20%3A%20has_vadd%20G%20P%5D%2C%0A(%E2%88%80%20(p%20%3A%20P)%2C%200%20%2B%E1%B5%A5%20p%20%3D%20p)%20%E2%86%92%0A(%E2%88%80%20(g%E2%82%81%20g%E2%82%82%20%3A%20G)%20(p%20%3A%20P)%2C%20g%E2%82%81%20%2B%20g%E2%82%82%20%2B%E1%B5%A5%20p%20%3D%20g%E2%82%81%20%2B%E1%B5%A5%20(g%E2%82%82%20%2B%E1%B5%A5%20p))%20%E2%86%92%0Aadd_action%20G%20P%0A-%2F%0A%0Ainstance%20%3A%20add_action%20rot%20tri%20%3A%3D%0A%E2%9F%A8%0A%20%20--%20(%E2%88%80%20(p%20%3A%20P)%2C%200%20%2B%E1%B5%A5%20p%20%3D%20p)%0A%20%20begin%0A%20%20%20%20assume%20t%2C%0A%20%20%20%20cases%20t%2C%0A%20%20%20%20repeat%20%7Bexact%20rfl%2C%7D%0A%20%20end%2C%0A%0A%20%20--%20(%E2%88%80%20(g%E2%82%81%20g%E2%82%82%20%3A%20G)%20(p%20%3A%20P)%2C%20g%E2%82%81%20%2B%20g%E2%82%82%20%2B%E1%B5%A5%20p%20%3D%20g%E2%82%81%20%2B%E1%B5%A5%20(g%E2%82%82%20%2B%E1%B5%A5%20p))%0A%20%20begin%0A%20%20%20%20assume%20g%20h%20t%2C%0A%20%20%20%20cases%20t%2C%0A%20%20%20%20%20%20repeat%20%7B%0A%20%20%20%20%20%20%20%20cases%20g%2C%0A%20%20%20%20%20%20%20%20%20%20repeat%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20cases%20h%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20repeat%20%7B%20exact%20rfl%20%7D%0A%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%2C%0A%20%20end%0A%E2%9F%A9" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_243.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c">/-</span>
 <span class="cm">@[ext, class]</span>
 <span class="cm">structure add_action (G : Type u_10) (P : Type u_11) [add_monoid G] :</span>
@@ -1457,7 +1482,7 @@ for our additive group of rotations.</p>
 <section id="add-torsor-rot-tri">
 <h4><span class="section-number">6.4.3.4. </span>add_torsor rot tri<a class="headerlink" href="#add-torsor-rot-tri" title="Permalink to this heading">&#61633;</a></h4>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20With%20this%20additive%20action%20we%20can%20now%20instantiate%20torsor%20rot%20tri.%0A%0A%23check%20%40add_torsor%0A%2F-%0Aclass%20add_torsor%20(G%20%3A%20out_param%20Type*)%20(P%20%3A%20Type*)%20%5Bout_param%20%24%20add_group%20G%5D%0A%20%20extends%20add_action%20G%20P%2C%20has_vsub%20G%20P%20%3A%3D%0A%5Bnonempty%20%3A%20nonempty%20P%5D%0A(vsub_vadd'%20%3A%20%E2%88%80%20(p1%20p2%20%3A%20P)%2C%20(p1%20-%E1%B5%A5%20p2%20%3A%20G)%20%2B%E1%B5%A5%20p2%20%3D%20p1)%0A(vadd_vsub'%20%3A%20%E2%88%80%20(g%20%3A%20G)%20(p%20%3A%20P)%2C%20g%20%2B%E1%B5%A5%20p%20-%E1%B5%A5%20p%20%3D%20g)%0A-%2F%0A%0A--%20we%20need%20nonemtpy%20tri%0Ainstance%20%3A%20nonempty%20tri%20%3A%3D%20%E2%9F%A8%20tri.t0%20%E2%9F%A9%20%20%20--%20maybe%20open%20namespace%3F%0A%0A--%20we%20need%20has_vsub%20rot%20tri%0Adef%20vsub_rot_tri%20%3A%20tri%20%E2%86%92%20tri%20%E2%86%92%20rot%0A%7C%20tri.t0%20tri.t0%20%3A%3D%200%0A%7C%20tri.t0%20tri.t120%20%3A%3D%20r240%0A%7C%20tri.t0%20tri.t240%20%3A%3D%20r120%0A%7C%20tri.t120%20tri.t0%20%3A%3D%20r120%0A%7C%20tri.t120%20tri.t120%20%3A%3D%200%0A%7C%20tri.t120%20tri.t240%20%3A%3D%20r240%0A%7C%20tri.t240%20tri.t0%20%3A%3D%20r240%0A%7C%20tri.t240%20tri.t120%20%3A%3D%20r120%0A%7C%20tri.t240%20tri.t240%20%3A%3D%200%0Ainstance%20%3A%20has_vsub%20rot%20tri%20%3A%3D%20%E2%9F%A8%20vsub_rot_tri%E2%9F%A9%0A%0A--%20Ready!%0A%23check%20%40add_torsor.mk%0A%2F-%0Aadd_torsor.mk%20%3A%0A%CE%A0%0A%20%20%7BG%20%3A%20out_param%20(Type%20u_1)%7D%0A%20%20%7BP%20%3A%20Type%20u_2%7D%0A%20%20%5B_inst_1%20%3A%20out_param%20(add_group%20G)%5D%0A%20%20%5B_to_add_action%20%3A%20add_action%20G%20P%5D%0A%20%20%5B_to_has_vsub%20%3A%20has_vsub%20G%20P%5D%0A%20%20%5Bnonempty%20%3A%20nonempty%20P%5D%2C%0A(%E2%88%80%20(p1%20p2%20%3A%20P)%2C%20p1%20-%E1%B5%A5%20p2%20%2B%E1%B5%A5%20p2%20%3D%20p1)%20%E2%86%92%0A(%E2%88%80%20(g%20%3A%20G)%20(p%20%3A%20P)%2C%20g%20%2B%E1%B5%A5%20p%20-%E1%B5%A5%20p%20%3D%20g)%20%E2%86%92%0Aadd_torsor%20G%20P%0A-%2F%0A%0Ainstance%20%3A%20add_torsor%20rot%20tri%20%3A%3D%20add_torsor.mk%0A%0A--%20%E2%88%80%20(p1%20p2%20%3A%20%3Fm_1)%2C%20p1%20-%E1%B5%A5%20p2%20%2B%E1%B5%A5%20p2%20%3D%20p1%20%3A%20Prop%0Abegin%0A%20%20assume%20p1%20p2%2C%0A%20%20cases%20p1%2C%0A%20%20repeat%20%7B%0A%20%20%20%20cases%20p2%2C%0A%20%20%20%20repeat%20%7Bexact%20rfl%7D%2C%0A%20%20%7D%0Aend%0A%0A--%20(%E2%88%80%20(g%20%3A%20G)%20(p%20%3A%20P)%2C%20g%20%2B%E1%B5%A5%20p%20-%E1%B5%A5%20p%20%3D%20g)%0Abegin%0A%20%20assume%20g%20p%2C%0A%20%20cases%20g%2C%0A%20%20repeat%20%7B%0A%20%20%20%20cases%20p%2C%0A%20%20%20%20repeat%20%7Bexact%20rfl%7D%2C%0A%20%20%7D%2C%0Aend" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_283.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20With%20this%20additive%20action%20we%20can%20now%20instantiate%20torsor%20rot%20tri.%0A%0A%23check%20%40add_torsor%0A%2F-%0Aclass%20add_torsor%20(G%20%3A%20out_param%20Type*)%20(P%20%3A%20Type*)%20%5Bout_param%20%24%20add_group%20G%5D%0A%20%20extends%20add_action%20G%20P%2C%20has_vsub%20G%20P%20%3A%3D%0A%5Bnonempty%20%3A%20nonempty%20P%5D%0A(vsub_vadd'%20%3A%20%E2%88%80%20(p1%20p2%20%3A%20P)%2C%20(p1%20-%E1%B5%A5%20p2%20%3A%20G)%20%2B%E1%B5%A5%20p2%20%3D%20p1)%0A(vadd_vsub'%20%3A%20%E2%88%80%20(g%20%3A%20G)%20(p%20%3A%20P)%2C%20g%20%2B%E1%B5%A5%20p%20-%E1%B5%A5%20p%20%3D%20g)%0A-%2F%0A%0A--%20we%20need%20nonemtpy%20tri%0Ainstance%20%3A%20nonempty%20tri%20%3A%3D%20%E2%9F%A8%20tri.t0%20%E2%9F%A9%20%20%20--%20maybe%20open%20namespace%3F%0A%0A--%20we%20need%20has_vsub%20rot%20tri%0Adef%20vsub_rot_tri%20%3A%20tri%20%E2%86%92%20tri%20%E2%86%92%20rot%0A%7C%20tri.t0%20tri.t0%20%3A%3D%200%0A%7C%20tri.t0%20tri.t120%20%3A%3D%20r240%0A%7C%20tri.t0%20tri.t240%20%3A%3D%20r120%0A%7C%20tri.t120%20tri.t0%20%3A%3D%20r120%0A%7C%20tri.t120%20tri.t120%20%3A%3D%200%0A%7C%20tri.t120%20tri.t240%20%3A%3D%20r240%0A%7C%20tri.t240%20tri.t0%20%3A%3D%20r240%0A%7C%20tri.t240%20tri.t120%20%3A%3D%20r120%0A%7C%20tri.t240%20tri.t240%20%3A%3D%200%0Ainstance%20%3A%20has_vsub%20rot%20tri%20%3A%3D%20%E2%9F%A8%20vsub_rot_tri%E2%9F%A9%0A%0A--%20Ready!%0A%23check%20%40add_torsor.mk%0A%2F-%0Aadd_torsor.mk%20%3A%0A%CE%A0%0A%20%20%7BG%20%3A%20out_param%20(Type%20u_1)%7D%0A%20%20%7BP%20%3A%20Type%20u_2%7D%0A%20%20%5B_inst_1%20%3A%20out_param%20(add_group%20G)%5D%0A%20%20%5B_to_add_action%20%3A%20add_action%20G%20P%5D%0A%20%20%5B_to_has_vsub%20%3A%20has_vsub%20G%20P%5D%0A%20%20%5Bnonempty%20%3A%20nonempty%20P%5D%2C%0A(%E2%88%80%20(p1%20p2%20%3A%20P)%2C%20p1%20-%E1%B5%A5%20p2%20%2B%E1%B5%A5%20p2%20%3D%20p1)%20%E2%86%92%0A(%E2%88%80%20(g%20%3A%20G)%20(p%20%3A%20P)%2C%20g%20%2B%E1%B5%A5%20p%20-%E1%B5%A5%20p%20%3D%20g)%20%E2%86%92%0Aadd_torsor%20G%20P%0A-%2F%0A%0Ainstance%20%3A%20add_torsor%20rot%20tri%20%3A%3D%20add_torsor.mk%0A%0A--%20%E2%88%80%20(p1%20p2%20%3A%20%3Fm_1)%2C%20p1%20-%E1%B5%A5%20p2%20%2B%E1%B5%A5%20p2%20%3D%20p1%20%3A%20Prop%0Abegin%0A%20%20assume%20p1%20p2%2C%0A%20%20cases%20p1%2C%0A%20%20repeat%20%7B%0A%20%20%20%20cases%20p2%2C%0A%20%20%20%20repeat%20%7Bexact%20rfl%7D%2C%0A%20%20%7D%0Aend%0A%0A--%20(%E2%88%80%20(g%20%3A%20G)%20(p%20%3A%20P)%2C%20g%20%2B%E1%B5%A5%20p%20-%E1%B5%A5%20p%20%3D%20g)%0Abegin%0A%20%20assume%20g%20p%2C%0A%20%20cases%20g%2C%0A%20%20repeat%20%7B%0A%20%20%20%20cases%20p%2C%0A%20%20%20%20repeat%20%7Bexact%20rfl%7D%2C%0A%20%20%7D%2C%0Aend" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_300.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- With this additive action we can now instantiate torsor rot tri.</span>
 
 <span class="k">#check</span> <span class="bp">@</span><span class="n">add_torsor</span>
@@ -1531,7 +1556,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <p>We can now perform interesting computations specified in
 the mathematical language of the domain.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23reduce%20r120%20%2B%E1%B5%A5%20r240%20%2B%E1%B5%A5%20-r0%20%2B%E1%B5%A5%20-r120%20%2B%E1%B5%A5%20r0%20%2B%E1%B5%A5%20tri.t0%20%20--%20five%20costly%20actions%20(%2B%E1%B5%A5)%0A--%20r120%20acting%20on%20the%20result%20of%20r240%20acting%20on%20the%20result%20of%20...%20r0%20acting%20on%20t0" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_357.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23reduce%20r120%20%2B%E1%B5%A5%20r240%20%2B%E1%B5%A5%20-r0%20%2B%E1%B5%A5%20-r120%20%2B%E1%B5%A5%20r0%20%2B%E1%B5%A5%20tri.t0%20%20--%20five%20costly%20actions%20(%2B%E1%B5%A5)%0A--%20r120%20acting%20on%20the%20result%20of%20r240%20acting%20on%20the%20result%20of%20...%20r0%20acting%20on%20t0" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_374.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#reduce</span> <span class="n">r120</span> <span class="bp">+&#7525;</span> <span class="n">r240</span> <span class="bp">+&#7525;</span> <span class="bp">-</span><span class="n">r0</span> <span class="bp">+&#7525;</span> <span class="bp">-</span><span class="n">r120</span> <span class="bp">+&#7525;</span> <span class="n">r0</span> <span class="bp">+&#7525;</span> <span class="n">tri.t0</span>  <span class="c1">-- five costly actions (+&#7525;)</span>
 <span class="c1">-- r120 acting on the result of r240 acting on the result of ... r0 acting on t0</span>
 </pre></div>
@@ -1540,7 +1565,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 we&#8217;ve created makes it possible to <em>compute</em> the net action and to apply it only
 once with a guarantee that the result will be the same.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23reduce%20r120%20%20%2B%20r240%20%20-%20%20r0%20%20-%20%20r120%20%20%2B%20r0%20%2B%E1%B5%A5%20tri.t0%20%20--%20add%20in%20group%2C%20then%20just%20one!%0A--%20the%20sum%20of%20r120%20and%20r240%20and%20...%20acting%20on%20t0." target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_366.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23reduce%20r120%20%20%2B%20r240%20%20-%20%20r0%20%20-%20%20r120%20%20%2B%20r0%20%2B%E1%B5%A5%20tri.t0%20%20--%20add%20in%20group%2C%20then%20just%20one!%0A--%20the%20sum%20of%20r120%20and%20r240%20and%20...%20acting%20on%20t0." target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_383.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#reduce</span> <span class="n">r120</span>  <span class="bp">+</span> <span class="n">r240</span>  <span class="bp">-</span>  <span class="n">r0</span>  <span class="bp">-</span>  <span class="n">r120</span>  <span class="bp">+</span> <span class="n">r0</span> <span class="bp">+&#7525;</span> <span class="n">tri.t0</span>  <span class="c1">-- add in group, then just one!</span>
 <span class="c1">-- the sum of r120 and r240 and ... acting on t0.</span>
 </pre></div>
@@ -1628,6 +1653,90 @@ cross through them on our way to replacing the rot group
 in our example so far with a one dimensional vector space
 over a (coefficient) <em>field</em>, K. The corresponding point
 torsor will then be the corresonding affine space.</p>
+<p>We&#8217;ve now undertood what it means to be a torsor over a
+group, with a concrete example of a torsor of triangles
+over a group of rotational symmetries. In this chapter,
+we strengthen this concept by upgrading a mere group of
+differences to a <em>module</em>, from which it&#8217;s a short leap
+to a <em>vector space</em>.</p>
+<p>Once we get there, we will have a formalization of an
+<em>affine space</em>, which is simply a torsor of points over
+a <em>vector space</em> (instead of just a group). That is, we&#8217;ll
+have a structure in which <em>vectors</em> act on <em>points</em> by
+translating them, in a way that satisfies the torsor axioms.</p>
+<p>Such a space is basically a coordinate-free set of points,
+that we can use to represent positions in classical space
+and time (physics!), along with a transformation group (and
+not just a group but a vector space) of actions.</p>
+<p>Such an affine space can be visualized as a Euclidean space,
+familiar even from high-school algebra, without an origin or
+coordinate system, and also without the added structure of a
+Euclidean norm.</p>
+</section>
+</section>
+<section id="informal-introduction">
+<h3><span class="section-number">6.4.6. </span>Informal Introduction<a class="headerlink" href="#informal-introduction" title="Permalink to this heading">&#61633;</a></h3>
+<p>The path to vector spaces passes through the very important
+concepts of a <em>module</em>. So before going further, let&#8217;s get a
+sense of the path.</p>
+<section id="vector-space">
+<h4><span class="section-number">6.4.6.1. </span>vector space<a class="headerlink" href="#vector-space" title="Permalink to this heading">&#61633;</a></h4>
+<p>We&#8217;ve started with a torsor over a group. A <em>vector space</em> in
+turn has a richer structure than a mere group. It is a set of
+objects that has a additive <em>and commutative</em> group structure,
+thus addition and subtraction operations (v&#8321; + v&#8322; and v&#8321; - v&#8322;),
+where (v&#8321; + &#8744;&#8322; = v&#8322; + v&#8321;), but also a <em>scalar multiplication</em>
+operation, (k &#8226; v), where k &#8712; K is an element of a <em>field, K</em>.</p>
+</section>
+<section id="field">
+<h4><span class="section-number">6.4.6.2. </span>field<a class="headerlink" href="#field" title="Permalink to this heading">&#61633;</a></h4>
+<p>A field, in turn, has the structure of both an additive and
+commutative group, thus (k&#8321; + k&#8322;) and (k&#8321; - k&#8322;) operations,
+where (k&#8321; + k&#8322; = k&#8322; + k&#8321;) and a commutative multiplicative
+group, with a commutative (k&#8321; * k&#8322;) multiplication operation
+(k&#8321; * k&#8322; = k&#8322; * k&#8321;); a division operation, (k&#8321; / k&#8322;), except
+where k&#8322; = 0, and an identity, 1 . These operations are, in
+turn, required to satisfy the usual distributive laws familiar
+from everyday arithmetic.  Examples of <em>scalar fields</em> include
+the real number, &#8477;, the rationals, &#8474;, and the complex numbers,
+&#8450;, among others.</p>
+</section>
+<section id="axioms">
+<h4><span class="section-number">6.4.6.3. </span>axioms<a class="headerlink" href="#axioms" title="Permalink to this heading">&#61633;</a></h4>
+<p>Vector space axioms, beyond those already inherited from monoid
+(associative addition, additive identity) and group (additive
+inverses, thus also subtraction), we require (1) compatibility
+of scalar and field multiplication, k&#8321;(k&#8322;v) = (k&#8321;k&#8322;)v (we omit
+&#8226; as a shorthand); (2) distributivity of scalar multiplication
+over vector addition, k (v&#8321; + v&#8322;) = kv&#8321; + kv&#8322;; and finally (3),
+distributivity of scalar multiplication with respect to field
+addition, (k&#8321; + k&#8322;) &#8226; v = k&#8321;v + k&#8322;v.</p>
+<p>A vector space is then a set of &#8220;vector&#8221; objects that is closed
+under both vector addition and scalar multiplication. If, for
+example, we have a <em>real (&#8477;)</em> vector space that includes two
+vectors, v&#8321; and v&#8322;, and if k&#8321; and k&#8322; are real numbers, then the
+vectors k&#8321; &#8226; v&#8321;, k&#8321; &#8226; v&#8322;, and k&#8321; &#8226; v&#8321; + k&#8322; &#8226; v&#8322; are also in the
+vector space.</p>
+</section>
+<section id="ring">
+<h4><span class="section-number">6.4.6.4. </span>ring<a class="headerlink" href="#ring" title="Permalink to this heading">&#61633;</a></h4>
+<p>A ring generalizes a field by relaxing the requirements for
+(1) commutativity of multiplication and (2) multiplicative
+inverses. It thus loses division as an operation.</p>
+</section>
+<section id="module">
+<h4><span class="section-number">6.4.6.5. </span>module<a class="headerlink" href="#module" title="Permalink to this heading">&#61633;</a></h4>
+<p>A module is like a vector space but with a scalar field that
+is a ring and not necessarily a field.</p>
+<p>This file defines the typeclass module R M, which gives an
+R-module structure on the type M. An additive commutative
+monoid M is a module over the (semi)ring R if there is a
+scalar multiplication &#8226; (has_scalar.smul) that satisfies
+the expected distributivity axioms for + (in M and R) and
+* (in R). To define a module R M instance, you first need
+instances for semiring R and add_comm_monoid M.</p>
+<p>By splitting out these dependencies, we avoid instance loops
+and diamonds.</p>
 </section>
 </section>
 </section>
