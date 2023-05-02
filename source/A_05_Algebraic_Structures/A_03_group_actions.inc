@@ -163,7 +163,6 @@ additive monoids and groups; they extend notation classes
 
 .. code-block:: lean
 
-  
   lemma rot_one_action : ∀ (b : tri), (1 : rot) • b = b :=
   begin
   assume b,
@@ -210,6 +209,6 @@ additive monoids and groups; they extend notation classes
     rot_one_action,
     rot_prod_action,
   ⟩ 
-  
-  
 
+Discussion
+----------

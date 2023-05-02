@@ -1,7 +1,7 @@
 import .A_03_group_actions
 import algebra.add_torsor
 
-
+#check rot_zpow
 /-
 structure add_torsor (G : out_param (Type u_1)) (P : Type u_2) [out_param (add_group G)] :
 Type (max u_1 u_2)

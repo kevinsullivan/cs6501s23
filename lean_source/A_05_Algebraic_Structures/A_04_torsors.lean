@@ -71,7 +71,7 @@ operation. In the case of G being a vector space, P is then
 an affine space.
 
 TEXT. -/
-
+#check rot_zpow
 -- QUOTE:
 /-
 structure add_torsor (G : out_param (Type u_1)) (P : Type u_2) [out_param (add_group G)] :

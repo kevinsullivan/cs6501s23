@@ -96,6 +96,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#mul-action-m">6.3.3.2. mul_action M &#945;</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#discussion">6.3.4. Discussion</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#torsors">6.4. Torsors</a><ul>
@@ -109,18 +110,18 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#programming">6.4.4. Programming</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#discussion">6.4.5. Discussion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id6">6.4.5. Discussion</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#an-archictural-template">6.4.5.1. An archictural template</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#role-of-origin">6.4.5.2. Role of origin</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#path-forward">6.4.5.3. Path Forward</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#informal-introduction">6.4.6. Informal Introduction</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#vector-space">6.4.6.1. vector space</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#field">6.4.6.2. field</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#axioms">6.4.6.3. axioms</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#ring">6.4.6.4. ring</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module">6.4.6.5. module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#modules">6.5. Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modules-in-lean">6.5.1. Modules in Lean</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example">6.5.2. Example</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#additive-commutative-monoid">6.5.2.1. additive commutative monoid</a></li>
 </ul>
 </li>
 </ul>
@@ -1205,6 +1206,9 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </div>
 </div></section>
 </section>
+<section id="discussion">
+<h3><span class="section-number">6.3.4. </span>Discussion<a class="headerlink" href="#discussion" title="Permalink to this heading">&#61633;</a></h3>
+</section>
 </section>
 <section id="torsors">
 <h2><span class="section-number">6.4. </span>Torsors<a class="headerlink" href="#torsors" title="Permalink to this heading">&#61633;</a></h2>
@@ -1571,8 +1575,8 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </pre></div>
 </div>
 </div></section>
-<section id="discussion">
-<h3><span class="section-number">6.4.5. </span>Discussion<a class="headerlink" href="#discussion" title="Permalink to this heading">&#61633;</a></h3>
+<section id="id6">
+<h3><span class="section-number">6.4.5. </span>Discussion<a class="headerlink" href="#id6" title="Permalink to this heading">&#61633;</a></h3>
 <p>Under construction.</p>
 <p>Now we have a simple but beautiful and useful new arithmetic
 and mathematical architecture. The architectural components
@@ -1653,91 +1657,231 @@ cross through them on our way to replacing the rot group
 in our example so far with a one dimensional vector space
 over a (coefficient) <em>field</em>, K. The corresponding point
 torsor will then be the corresonding affine space.</p>
-<p>We&#8217;ve now undertood what it means to be a torsor over a
-group, with a concrete example of a torsor of triangles
-over a group of rotational symmetries. In this chapter,
-we strengthen this concept by upgrading a mere group of
-differences to a <em>module</em>, from which it&#8217;s a short leap
-to a <em>vector space</em>.</p>
-<p>Once we get there, we will have a formalization of an
-<em>affine space</em>, which is simply a torsor of points over
-a <em>vector space</em> (instead of just a group). That is, we&#8217;ll
-have a structure in which <em>vectors</em> act on <em>points</em> by
-translating them, in a way that satisfies the torsor axioms.</p>
-<p>Such a space is basically a coordinate-free set of points,
-that we can use to represent positions in classical space
-and time (physics!), along with a transformation group (and
-not just a group but a vector space) of actions.</p>
-<p>Such an affine space can be visualized as a Euclidean space,
-familiar even from high-school algebra, without an origin or
-coordinate system, and also without the added structure of a
-Euclidean norm.</p>
 </section>
 </section>
-<section id="informal-introduction">
-<h3><span class="section-number">6.4.6. </span>Informal Introduction<a class="headerlink" href="#informal-introduction" title="Permalink to this heading">&#61633;</a></h3>
-<p>The path to vector spaces passes through the very important
-concepts of a <em>module</em>. So before going further, let&#8217;s get a
-sense of the path.</p>
-<section id="vector-space">
-<h4><span class="section-number">6.4.6.1. </span>vector space<a class="headerlink" href="#vector-space" title="Permalink to this heading">&#61633;</a></h4>
-<p>We&#8217;ve started with a torsor over a group. A <em>vector space</em> in
-turn has a richer structure than a mere group. It is a set of
-objects that has a additive <em>and commutative</em> group structure,
-thus addition and subtraction operations (v&#8321; + v&#8322; and v&#8321; - v&#8322;),
-where (v&#8321; + &#8744;&#8322; = v&#8322; + v&#8321;), but also a <em>scalar multiplication</em>
-operation, (k &#8226; v), where k &#8712; K is an element of a <em>field, K</em>.</p>
 </section>
-<section id="field">
-<h4><span class="section-number">6.4.6.2. </span>field<a class="headerlink" href="#field" title="Permalink to this heading">&#61633;</a></h4>
-<p>A field, in turn, has the structure of both an additive and
-commutative group, thus (k&#8321; + k&#8322;) and (k&#8321; - k&#8322;) operations,
-where (k&#8321; + k&#8322; = k&#8322; + k&#8321;) and a commutative multiplicative
-group, with a commutative (k&#8321; * k&#8322;) multiplication operation
-(k&#8321; * k&#8322; = k&#8322; * k&#8321;); a division operation, (k&#8321; / k&#8322;), except
-where k&#8322; = 0, and an identity, 1 . These operations are, in
-turn, required to satisfy the usual distributive laws familiar
-from everyday arithmetic.  Examples of <em>scalar fields</em> include
-the real number, &#8477;, the rationals, &#8474;, and the complex numbers,
-&#8450;, among others.</p>
+<section id="modules">
+<h2><span class="section-number">6.5. </span>Modules<a class="headerlink" href="#modules" title="Permalink to this heading">&#61633;</a></h2>
+<p>We&#8217;ve now undertood what it means to be a torsor over
+a group. A concrete example is our torsor of triangles
+over a group of rotational symmetries. That fact that
+rotational symmetries form an additive group lets us
+do <em>additive group math</em> on symmetries: associative add,
+additively invert, subtract, zero left/right identity.</p>
+<p>In this chapter, we strengthen this concept by upgrading
+a mere additive group of actions/differences to a <em>module</em>
+of actions. In comparison with a group, G, a module adds a
+set of scalars and an operation for multiplying group
+actions by scalars.</p>
+<p>For example, if s is a scalar and v is a group action,
+then s &#8226; v is scalar multiplication of s and v yielding a
+new, &#8220;scaled&#8221; group action.</p>
+<p>The set of scalars must form at least a <em>ring</em>, so you
+can add, invert, substract, and multiply scalars by each
+other (+, -, <a href="#id7"><span class="problematic" id="id8">*</span></a>). For example, the integers for a ring:
+you can multiply, add, invert, and thus subtract them,
+but dividing them generally doesn&#8217;t produce new integers.</p>
+<p>If sclars have multiplicative inverses as well, and thus
+division, then you have a scalar <em>field</em>. For example, the
+set of real numbers minus {0} forms a field. A module with
+a scalar <em>field</em> is called a vector space.</p>
+<p>The overall picture, then, is one in which, in a module,
+you can not only add, invert, and substract actions, but
+you can also multiply (<em>scale</em>) them by scalars. Example:
+if v&#8321; and v&#8322; are group actions and s&#8321; and s&#8322; are scalars,
+then s&#8321; &#8226; (v1 +&#7525; v2) is also an action, s&#8321; &#8226; v&#8321; + s&#8321; &#8226; v&#8322;;
+and (s&#8321; + s&#8322;) &#8226; v1 = s&#8226; v&#8321; + s&#8321; &#8226; v&#8322;, is too. A module is
+a generalization of a vector space where you can&#8217;t always
+compute inverses of scalars.</p>
+<p>Once we have modules, as richer sets of group actions, then
+we&#8217;ll be able to form torsors over <em>modules</em>. That takes us
+right right up to the threshold of affine spaces, which are
+simply torsors over <em>vector</em> spaces. Vector spaces are just
+modules with that extra structure on their sets of scalars.</p>
+<section id="modules-in-lean">
+<h3><span class="section-number">6.5.1. </span>Modules in Lean<a class="headerlink" href="#modules-in-lean" title="Permalink to this heading">&#61633;</a></h3>
+<p>In Lean, one can form a module from an <em>additive commutative
+monoid</em> M, and a <em>semi-ring,</em> R, of scalars. A module relaxes
+the need for an underlying <em>group</em> of actions by relaxing the
+need for additive inverses of actions. And unlike a full ring,
+a semi-ring omits the requirement for additive inverses (and
+thus subtraction) of scalars.</p>
+<p>Note that in a ring, the existence of additive inverses means
+that 0 is a multiplicative zero (prove it to yourself); in a
+semi-ring, by contrast, without additive inverses, one has to
+identify the multiplicative zero explicitly (and show that it
+is one).</p>
 </section>
-<section id="axioms">
-<h4><span class="section-number">6.4.6.3. </span>axioms<a class="headerlink" href="#axioms" title="Permalink to this heading">&#61633;</a></h4>
-<p>Vector space axioms, beyond those already inherited from monoid
-(associative addition, additive identity) and group (additive
-inverses, thus also subtraction), we require (1) compatibility
-of scalar and field multiplication, k&#8321;(k&#8322;v) = (k&#8321;k&#8322;)v (we omit
-&#8226; as a shorthand); (2) distributivity of scalar multiplication
-over vector addition, k (v&#8321; + v&#8322;) = kv&#8321; + kv&#8322;; and finally (3),
-distributivity of scalar multiplication with respect to field
-addition, (k&#8321; + k&#8322;) &#8226; v = k&#8321;v + k&#8322;v.</p>
-<p>A vector space is then a set of &#8220;vector&#8221; objects that is closed
-under both vector addition and scalar multiplication. If, for
-example, we have a <em>real (&#8477;)</em> vector space that includes two
-vectors, v&#8321; and v&#8322;, and if k&#8321; and k&#8322; are real numbers, then the
-vectors k&#8321; &#8226; v&#8321;, k&#8321; &#8226; v&#8322;, and k&#8321; &#8226; v&#8321; + k&#8322; &#8226; v&#8322; are also in the
-vector space.</p>
-</section>
-<section id="ring">
-<h4><span class="section-number">6.4.6.4. </span>ring<a class="headerlink" href="#ring" title="Permalink to this heading">&#61633;</a></h4>
-<p>A ring generalizes a field by relaxing the requirements for
-(1) commutativity of multiplication and (2) multiplicative
-inverses. It thus loses division as an operation.</p>
-</section>
-<section id="module">
-<h4><span class="section-number">6.4.6.5. </span>module<a class="headerlink" href="#module" title="Permalink to this heading">&#61633;</a></h4>
-<p>A module is like a vector space but with a scalar field that
-is a ring and not necessarily a field.</p>
-<p>This file defines the typeclass module R M, which gives an
-R-module structure on the type M. An additive commutative
-monoid M is a module over the (semi)ring R if there is a
-scalar multiplication &#8226; (has_scalar.smul) that satisfies
-the expected distributivity axioms for + (in M and R) and
-* (in R). To define a module R M instance, you first need
-instances for semiring R and add_comm_monoid M.</p>
-<p>By splitting out these dependencies, we avoid instance loops
-and diamonds.</p>
-</section>
+<section id="example">
+<h3><span class="section-number">6.5.2. </span>Example<a class="headerlink" href="#example" title="Permalink to this heading">&#61633;</a></h3>
+<p>Can we turn our group of triangle rotations into a module?
+What would we need? Answer: a ring of scalars and a scalar
+multiplication operation. What would be a good scalar ring?
+How about the integers? They do form a ring, though not a
+field, as discussed. If we have a rotation action, g, and
+an integer scalar r, how would we define the scalar product,
+r &#8226; g? It needs to be another action. How about the action
+that simply applies g r times?</p>
+<section id="additive-commutative-monoid">
+<h4><span class="section-number">6.5.2.1. </span>additive commutative monoid<a class="headerlink" href="#additive-commutative-monoid" title="Permalink to this heading">&#61633;</a></h4>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%2F-%0A%2F--%20An%20additive%20commutative%20monoid%20is%20an%20additive%20monoid%20with%20commutative%20%60(%2B)%60.%20-%2F%0A%40%5Bprotect_proj%2C%20ancestor%20add_monoid%20add_comm_semigroup%5D%0Aclass%20add_comm_monoid%20(M%20%3A%20Type%20u)%20extends%20add_monoid%20M%2C%20add_comm_semigroup%20M%0A-%2F%0A%0A%23check%20%40add_comm_monoid.mk%0A%2F-%0Aadd_comm_monoid.mk%20%3A%0A%20%20%CE%A0%20%7BM%20%3A%20Type%20u%7D%0A%20%20%20%20(add%20%3A%20M%20%E2%86%92%20M%20%E2%86%92%20M)%0A%20%20%20%20(add_assoc%20%3A%20%E2%88%80%20(a%20b%20c%20%3A%20M)%2C%20a%20%2B%20b%20%2B%20c%20%3D%20a%20%2B%20(b%20%2B%20c))%0A%20%20%20%20(zero%20%3A%20M)%0A%20%20%20%20(zero_add%20%3A%20%E2%88%80%20(a%20%3A%20M)%2C%200%20%2B%20a%20%3D%20a)%0A%20%20%20%20(add_zero%20%3A%20%E2%88%80%20(a%20%3A%20M)%2C%20a%20%2B%200%20%3D%20a)%0A%20%20%20%20(nsmul%20%3A%20%E2%84%95%20%E2%86%92%20M%20%E2%86%92%20M)%2C%0A%20%20%20%20auto_param%20(%E2%88%80%20(x%20%3A%20M)%2C%20nsmul%200%20x%20%3D%200)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous)%20%E2%86%92%0A%20%20%20%20auto_param%20(%E2%88%80%20(n%20%3A%20%E2%84%95)%20(x%20%3A%20M)%2C%20nsmul%20n.succ%20x%20%3D%20x%20%2B%20nsmul%20n%20x)%20(name.mk_string%20%22try_refl_tac%22%20name.anonymous)%20%E2%86%92%0A%20%20%20%20(%E2%88%80%20(a%20b%20%3A%20M)%2C%20a%20%2B%20b%20%3D%20b%20%2B%20a)%20%E2%86%92%0A%20%20%20%20add_comm_monoid%20M%0A-%2F%0A%0Aopen%20rot%0A%0Adef%20rot_add_comm%20%3A%20%E2%88%80%20(a%20b%20%3A%20rot)%2C%20a%20%2B%20b%20%3D%20b%20%2B%20a%20%3A%3D%0Abegin%0A%20%20%20%20assume%20a%20b%2C%0A%20%20%20%20cases%20a%2C%0A%20%20%20%20repeat%20%7B%0A%20%20%20%20%20%20cases%20b%2C%0A%20%20%20%20%20%20repeat%20%7Bexact%20rfl%7D%2C%0A%20%20%20%20%7D%2C%0A%20%20end%0A%0Ainstance%20%3A%20add_comm_monoid%20rot%20%3A%3D%0A%E2%9F%A8%0A%20%20rot_add%2C%0A%20%20rot_add_assoc%2C%0A%20%20r0%2C%0A%20%20rot_left_ident%2C%0A%20%20rot_right_ident%2C%0A%20%20rot_npow%2C%20%20%20%20%20%20%20%20%20%20%20%20--%20fix%20multiplicative%20name%0A%20%20rot_npow_zero%2C%0A%20%20rot_npow_succ%2C%0A%20%20rot_add_comm%2C%0A%E2%9F%A9%0A%0A%23check%20%40module.mk%0A%2F-%0Amodule.mk%20%3A%0A%20%20%CE%A0%20%7BR%20%3A%20Type%20u_1%7D%0A%20%20%20%20%7BM%20%3A%20Type%20u_2%7D%0A%20%20%20%20%5B_inst_1%20%3A%20semiring%20R%5D%0A%20%20%20%20%5B_inst_2%20%3A%20add_comm_monoid%20M%5D%0A%20%20%20%20%5B_to_distrib_mul_action%20%3A%20distrib_mul_action%20R%20M%5D%2C%0A%20%20%20%20(%E2%88%80%20(r%20s%20%3A%20R)%20(x%20%3A%20M)%2C%20(r%20%2B%20s)%20%E2%80%A2%20x%20%3D%20r%20%E2%80%A2%20x%20%2B%20s%20%E2%80%A2%20x)%20%E2%86%92%0A%20%20%20%20(%E2%88%80%20(x%20%3A%20M)%2C%200%20%E2%80%A2%20x%20%3D%200)%20%E2%86%92%0A%20%20%20%20module%20R%20M%0A-%2F%0A%0A%23check%20%40distrib_mul_action%0A%2F-%0A%40%5Bext%5D%20class%20distrib_mul_action%20(M%20A%20%3A%20Type*)%20%5Bmonoid%20M%5D%20%5Badd_monoid%20A%5D%0A%20%20extends%20mul_action%20M%20A%20%3A%3D%0A(smul_zero%20%3A%20%E2%88%80%20(a%20%3A%20M)%2C%20a%20%E2%80%A2%20(0%20%3A%20A)%20%3D%200)%0A(smul_add%20%3A%20%E2%88%80%20(a%20%3A%20M)%20(x%20y%20%3A%20A)%2C%20a%20%E2%80%A2%20(x%20%2B%20y)%20%3D%20a%20%E2%80%A2%20x%20%2B%20a%20%E2%80%A2%20y)%0A-%2F%0A%0A%23check%20%40mul_action%0A%2F-%0Aclass%20mul_action%20(%CE%B1%20%3A%20Type*)%20(%CE%B2%20%3A%20Type*)%20%5Bmonoid%20%CE%B1%5D%20extends%20has_smul%20%CE%B1%20%CE%B2%20%3A%3D%0A(one_smul%20%3A%20%E2%88%80%20b%20%3A%20%CE%B2%2C%20(1%20%3A%20%CE%B1)%20%E2%80%A2%20b%20%3D%20b)%0A(mul_smul%20%3A%20%E2%88%80%20(x%20y%20%3A%20%CE%B1)%20(b%20%3A%20%CE%B2)%2C%20(x%20*%20y)%20%E2%80%A2%20b%20%3D%20x%20%E2%80%A2%20y%20%E2%80%A2%20b)%0A-%2F%0A%0Ainstance%20%3A%20has_smul%20%E2%84%A4%20rot%20%3A%3D%20%E2%9F%A8%20rot_zpow%20%E2%9F%A9%0A%0Alemma%20rot_mul_smul%20%3A%20%E2%88%80%20(x%20y%20%3A%20%E2%84%A4)%20(b%20%3A%20rot)%2C%20(x%20*%20y)%20%E2%80%A2%20b%20%3D%20x%20%E2%80%A2%20y%20%E2%80%A2%20b%20%3A%3D%20sorry%0A%0Ainstance%20%3A%20mul_action%20%E2%84%A4%20rot%20%3A%3D%0A%E2%9F%A8%0A%20%20begin%0A%20%20assume%20b%2C%0A%20%20cases%20b%2C%0A%20%20repeat%20%7Bexact%20rfl%7D%2C%0A%20%20end%2C%0A%0A%20%20begin%0A%20%20assume%20x%20y%20b%2C%0A%20%20apply%20rot_mul_smul%2C%20%20%20%20%20%20%20--%20sorried%0A%20%20end%2C%0A%E2%9F%A9%0A%0Alemma%20rot_smul_zero%20%3A%20%E2%88%80%20(a%20%3A%20%E2%84%A4)%2C%20a%20%E2%80%A2%20(0%20%3A%20rot)%20%3D%200%20%3A%3D%0Abegin%0Asimp%20%5Brot_zpow%5D%2C%0Aend%0A%0Alemma%20rot_smul_add%20%3A%20%E2%88%80%20(a%20%3A%20%E2%84%A4)%20(x%20y%20%3A%20rot)%2C%20a%20%E2%80%A2%20(x%20%2B%20y)%20%3D%20a%20%E2%80%A2%20x%20%2B%20a%20%E2%80%A2%20y%20%3A%3D%0Abegin%0Aassume%20z%20x%20y%2C%0A%0A--%20annoying%3A%20notation%20is%20blocking%20progress%2C%20use%20show%20to%20change%20notation%0Ahave%20fix%20%3A%20r0%20%3D%20(0%3Arot)%20%3A%3D%20begin%20exact%20rfl%2C%20end%2C%0A%0A--%20by%20case%20analysis%20on%20x%2C%20y%0Acases%20x%2C%0Arepeat%20%7B%0A%20%20cases%20y%2C%0A%20%20repeat%20%7B%0A%20%20%20%20rw%20fix%2C%0A%20%20%20%20simp%20%5Brot_add%5D%2C%0A%20%20%7D%2C%0A%7D%2C%0A%0A--%20induction%20on%20z%0Arepeat%20%7B%0Ainduction%20z%20with%20n%20negn%2C%0Asimp%20%5Brot_npow%5D%2C%0Asimp%20%5Brot_zpow%5D%2C%0A%7D%2C%0A%0A--%20by%20commutativity%20of%20rot%20%2B%0Aapply%20rot_add_comm%2C%0Aapply%20rot_add_comm%2C%0Aend%0A%0Ainstance%20%3A%20distrib_mul_action%20%E2%84%A4%20rot%20%3A%3D%0A%E2%9F%A8%0A%20%20rot_smul_zero%2C%0A%20%20rot_smul_add%2C%0A%E2%9F%A9%0A%0A%2F-%0A%20%20(%E2%88%80%20(r%20s%20%3A%20R)%20(x%20%3A%20M)%2C%20(r%20%2B%20s)%20%E2%80%A2%20x%20%3D%20r%20%E2%80%A2%20x%20%2B%20s%20%E2%80%A2%20x)%20%E2%86%92%0A%20%20(%E2%88%80%20(x%20%3A%20M)%2C%200%20%E2%80%A2%20x%20%3D%200)%0A-%2F%0A%0Ainstance%20%3A%20module%20%E2%84%A4%20rot%20%3A%3D%0A%E2%9F%A8%20show%20%E2%88%80%20(r%20s%20%3A%20%E2%84%A4)%20(x%20%3A%20rot)%2C%20(r%20%2B%20s)%20%E2%80%A2%20x%20%3D%20r%20%E2%80%A2%20x%20%2B%20s%20%E2%80%A2%20x%2C%0A%20%20begin%0A%20%20assume%20r%20s%20m%2C%0A%20%20sorry%2C%20%20%20%20%20%20%20%20%20%20--%20oops%0A%20%20end%2C%0A%20%20begin%0A%20%20assume%20x%2C%0A%20%20exact%20rfl%2C%0A%20%20end%0A%E2%9F%A9%0A%0Aopen%20tri%0A%23reduce%20((3%3A%E2%84%A4)%20%E2%80%A2%20r120)%20%E2%80%A2%20t120%0A%23reduce%20((-2%3A%E2%84%A4)%20%E2%80%A2%20r120)%20%E2%80%A2%20t120" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_82.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c">/-</span>
+<span class="cm">/-- An additive commutative monoid is an additive monoid with commutative `(+)`. -/</span>
+<span class="cm">@[protect_proj, ancestor add_monoid add_comm_semigroup]</span>
+<span class="cm">class add_comm_monoid (M : Type u) extends add_monoid M, add_comm_semigroup M</span>
+<span class="cm">-/</span>
+
+<span class="k">#check</span> <span class="bp">@</span><span class="n">add_comm_monoid.mk</span>
+<span class="c">/-</span>
+<span class="cm">add_comm_monoid.mk :</span>
+<span class="cm">  &#928; {M : Type u}</span>
+<span class="cm">    (add : M &#8594; M &#8594; M)</span>
+<span class="cm">    (add_assoc : &#8704; (a b c : M), a + b + c = a + (b + c))</span>
+<span class="cm">    (zero : M)</span>
+<span class="cm">    (zero_add : &#8704; (a : M), 0 + a = a)</span>
+<span class="cm">    (add_zero : &#8704; (a : M), a + 0 = a)</span>
+<span class="cm">    (nsmul : &#8469; &#8594; M &#8594; M),</span>
+<span class="cm">    auto_param (&#8704; (x : M), nsmul 0 x = 0) (name.mk_string &quot;try_refl_tac&quot; name.anonymous) &#8594;</span>
+<span class="cm">    auto_param (&#8704; (n : &#8469;) (x : M), nsmul n.succ x = x + nsmul n x) (name.mk_string &quot;try_refl_tac&quot; name.anonymous) &#8594;</span>
+<span class="cm">    (&#8704; (a b : M), a + b = b + a) &#8594;</span>
+<span class="cm">    add_comm_monoid M</span>
+<span class="cm">-/</span>
+
+<span class="kn">open</span> <span class="n">rot</span>
+
+<span class="kd">def</span> <span class="n">rot_add_comm</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">a</span> <span class="n">b</span> <span class="o">:</span> <span class="n">rot</span><span class="o">),</span> <span class="n">a</span> <span class="bp">+</span> <span class="n">b</span> <span class="bp">=</span> <span class="n">b</span> <span class="bp">+</span> <span class="n">a</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+    <span class="k">assume</span> <span class="n">a</span> <span class="n">b</span><span class="o">,</span>
+    <span class="n">cases</span> <span class="n">a</span><span class="o">,</span>
+    <span class="n">repeat</span> <span class="o">{</span>
+      <span class="n">cases</span> <span class="n">b</span><span class="o">,</span>
+      <span class="n">repeat</span> <span class="o">{</span><span class="n">exact</span> <span class="n">rfl</span><span class="o">},</span>
+    <span class="o">},</span>
+  <span class="kd">end</span>
+
+<span class="kd">instance</span> <span class="o">:</span> <span class="n">add_comm_monoid</span> <span class="n">rot</span> <span class="o">:=</span>
+<span class="o">&#10216;</span>
+  <span class="n">rot_add</span><span class="o">,</span>
+  <span class="n">rot_add_assoc</span><span class="o">,</span>
+  <span class="n">r0</span><span class="o">,</span>
+  <span class="n">rot_left_ident</span><span class="o">,</span>
+  <span class="n">rot_right_ident</span><span class="o">,</span>
+  <span class="n">rot_npow</span><span class="o">,</span>            <span class="c1">-- fix multiplicative name</span>
+  <span class="n">rot_npow_zero</span><span class="o">,</span>
+  <span class="n">rot_npow_succ</span><span class="o">,</span>
+  <span class="n">rot_add_comm</span><span class="o">,</span>
+<span class="o">&#10217;</span>
+
+<span class="k">#check</span> <span class="bp">@</span><span class="n">module.mk</span>
+<span class="c">/-</span>
+<span class="cm">module.mk :</span>
+<span class="cm">  &#928; {R : Type u_1}</span>
+<span class="cm">    {M : Type u_2}</span>
+<span class="cm">    [_inst_1 : semiring R]</span>
+<span class="cm">    [_inst_2 : add_comm_monoid M]</span>
+<span class="cm">    [_to_distrib_mul_action : distrib_mul_action R M],</span>
+<span class="cm">    (&#8704; (r s : R) (x : M), (r + s) &#8226; x = r &#8226; x + s &#8226; x) &#8594;</span>
+<span class="cm">    (&#8704; (x : M), 0 &#8226; x = 0) &#8594;</span>
+<span class="cm">    module R M</span>
+<span class="cm">-/</span>
+
+<span class="k">#check</span> <span class="bp">@</span><span class="n">distrib_mul_action</span>
+<span class="c">/-</span>
+<span class="cm">@[ext] class distrib_mul_action (M A : Type*) [monoid M] [add_monoid A]</span>
+<span class="cm">  extends mul_action M A :=</span>
+<span class="cm">(smul_zero : &#8704; (a : M), a &#8226; (0 : A) = 0)</span>
+<span class="cm">(smul_add : &#8704; (a : M) (x y : A), a &#8226; (x + y) = a &#8226; x + a &#8226; y)</span>
+<span class="cm">-/</span>
+
+<span class="k">#check</span> <span class="bp">@</span><span class="n">mul_action</span>
+<span class="c">/-</span>
+<span class="cm">class mul_action (&#945; : Type*) (&#946; : Type*) [monoid &#945;] extends has_smul &#945; &#946; :=</span>
+<span class="cm">(one_smul : &#8704; b : &#946;, (1 : &#945;) &#8226; b = b)</span>
+<span class="cm">(mul_smul : &#8704; (x y : &#945;) (b : &#946;), (x * y) &#8226; b = x &#8226; y &#8226; b)</span>
+<span class="cm">-/</span>
+
+<span class="kd">instance</span> <span class="o">:</span> <span class="n">has_smul</span> <span class="n">&#8484;</span> <span class="n">rot</span> <span class="o">:=</span> <span class="o">&#10216;</span> <span class="n">rot_zpow</span> <span class="o">&#10217;</span>
+
+<span class="kd">lemma</span> <span class="n">rot_mul_smul</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">x</span> <span class="n">y</span> <span class="o">:</span> <span class="n">&#8484;</span><span class="o">)</span> <span class="o">(</span><span class="n">b</span> <span class="o">:</span> <span class="n">rot</span><span class="o">),</span> <span class="o">(</span><span class="n">x</span> <span class="bp">*</span> <span class="n">y</span><span class="o">)</span> <span class="bp">&#8226;</span> <span class="n">b</span> <span class="bp">=</span> <span class="n">x</span> <span class="bp">&#8226;</span> <span class="n">y</span> <span class="bp">&#8226;</span> <span class="n">b</span> <span class="o">:=</span> <span class="gr">sorry</span>
+
+<span class="kd">instance</span> <span class="o">:</span> <span class="n">mul_action</span> <span class="n">&#8484;</span> <span class="n">rot</span> <span class="o">:=</span>
+<span class="o">&#10216;</span>
+  <span class="kd">begin</span>
+  <span class="k">assume</span> <span class="n">b</span><span class="o">,</span>
+  <span class="n">cases</span> <span class="n">b</span><span class="o">,</span>
+  <span class="n">repeat</span> <span class="o">{</span><span class="n">exact</span> <span class="n">rfl</span><span class="o">},</span>
+  <span class="kd">end</span><span class="o">,</span>
+
+  <span class="kd">begin</span>
+  <span class="k">assume</span> <span class="n">x</span> <span class="n">y</span> <span class="n">b</span><span class="o">,</span>
+  <span class="n">apply</span> <span class="n">rot_mul_smul</span><span class="o">,</span>       <span class="c1">-- sorried</span>
+  <span class="kd">end</span><span class="o">,</span>
+<span class="o">&#10217;</span>
+
+<span class="kd">lemma</span> <span class="n">rot_smul_zero</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="n">&#8484;</span><span class="o">),</span> <span class="n">a</span> <span class="bp">&#8226;</span> <span class="o">(</span><span class="mi">0</span> <span class="o">:</span> <span class="n">rot</span><span class="o">)</span> <span class="bp">=</span> <span class="mi">0</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="n">simp</span> <span class="o">[</span><span class="n">rot_zpow</span><span class="o">],</span>
+<span class="kd">end</span>
+
+<span class="kd">lemma</span> <span class="n">rot_smul_add</span> <span class="o">:</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="n">&#8484;</span><span class="o">)</span> <span class="o">(</span><span class="n">x</span> <span class="n">y</span> <span class="o">:</span> <span class="n">rot</span><span class="o">),</span> <span class="n">a</span> <span class="bp">&#8226;</span> <span class="o">(</span><span class="n">x</span> <span class="bp">+</span> <span class="n">y</span><span class="o">)</span> <span class="bp">=</span> <span class="n">a</span> <span class="bp">&#8226;</span> <span class="n">x</span> <span class="bp">+</span> <span class="n">a</span> <span class="bp">&#8226;</span> <span class="n">y</span> <span class="o">:=</span>
+<span class="kd">begin</span>
+<span class="k">assume</span> <span class="n">z</span> <span class="n">x</span> <span class="n">y</span><span class="o">,</span>
+
+<span class="c1">-- annoying: notation is blocking progress, use show to change notation</span>
+<span class="k">have</span> <span class="n">fix</span> <span class="o">:</span> <span class="n">r0</span> <span class="bp">=</span> <span class="o">(</span><span class="mi">0</span><span class="o">:</span><span class="n">rot</span><span class="o">)</span> <span class="o">:=</span> <span class="kd">begin</span> <span class="n">exact</span> <span class="n">rfl</span><span class="o">,</span> <span class="kd">end</span><span class="o">,</span>
+
+<span class="c1">-- by case analysis on x, y</span>
+<span class="n">cases</span> <span class="n">x</span><span class="o">,</span>
+<span class="n">repeat</span> <span class="o">{</span>
+  <span class="n">cases</span> <span class="n">y</span><span class="o">,</span>
+  <span class="n">repeat</span> <span class="o">{</span>
+    <span class="n">rw</span> <span class="n">fix</span><span class="o">,</span>
+    <span class="n">simp</span> <span class="o">[</span><span class="n">rot_add</span><span class="o">],</span>
+  <span class="o">},</span>
+<span class="o">},</span>
+
+<span class="c1">-- induction on z</span>
+<span class="n">repeat</span> <span class="o">{</span>
+<span class="n">induction</span> <span class="n">z</span> <span class="k">with</span> <span class="n">n</span> <span class="n">negn</span><span class="o">,</span>
+<span class="n">simp</span> <span class="o">[</span><span class="n">rot_npow</span><span class="o">],</span>
+<span class="n">simp</span> <span class="o">[</span><span class="n">rot_zpow</span><span class="o">],</span>
+<span class="o">},</span>
+
+<span class="c1">-- by commutativity of rot +</span>
+<span class="n">apply</span> <span class="n">rot_add_comm</span><span class="o">,</span>
+<span class="n">apply</span> <span class="n">rot_add_comm</span><span class="o">,</span>
+<span class="kd">end</span>
+
+<span class="kd">instance</span> <span class="o">:</span> <span class="n">distrib_mul_action</span> <span class="n">&#8484;</span> <span class="n">rot</span> <span class="o">:=</span>
+<span class="o">&#10216;</span>
+  <span class="n">rot_smul_zero</span><span class="o">,</span>
+  <span class="n">rot_smul_add</span><span class="o">,</span>
+<span class="o">&#10217;</span>
+
+<span class="c">/-</span>
+<span class="cm">  (&#8704; (r s : R) (x : M), (r + s) &#8226; x = r &#8226; x + s &#8226; x) &#8594;</span>
+<span class="cm">  (&#8704; (x : M), 0 &#8226; x = 0)</span>
+<span class="cm">-/</span>
+
+<span class="kd">instance</span> <span class="o">:</span> <span class="n">module</span> <span class="n">&#8484;</span> <span class="n">rot</span> <span class="o">:=</span>
+<span class="o">&#10216;</span> <span class="k">show</span> <span class="bp">&#8704;</span> <span class="o">(</span><span class="n">r</span> <span class="n">s</span> <span class="o">:</span> <span class="n">&#8484;</span><span class="o">)</span> <span class="o">(</span><span class="n">x</span> <span class="o">:</span> <span class="n">rot</span><span class="o">),</span> <span class="o">(</span><span class="n">r</span> <span class="bp">+</span> <span class="n">s</span><span class="o">)</span> <span class="bp">&#8226;</span> <span class="n">x</span> <span class="bp">=</span> <span class="n">r</span> <span class="bp">&#8226;</span> <span class="n">x</span> <span class="bp">+</span> <span class="n">s</span> <span class="bp">&#8226;</span> <span class="n">x</span><span class="o">,</span>
+  <span class="kd">begin</span>
+  <span class="k">assume</span> <span class="n">r</span> <span class="n">s</span> <span class="n">m</span><span class="o">,</span>
+  <span class="gr">sorry</span><span class="o">,</span>          <span class="c1">-- oops</span>
+  <span class="kd">end</span><span class="o">,</span>
+  <span class="kd">begin</span>
+  <span class="k">assume</span> <span class="n">x</span><span class="o">,</span>
+  <span class="n">exact</span> <span class="n">rfl</span><span class="o">,</span>
+  <span class="kd">end</span>
+<span class="o">&#10217;</span>
+
+<span class="kn">open</span> <span class="n">tri</span>
+<span class="k">#reduce</span> <span class="o">((</span><span class="mi">3</span><span class="o">:</span><span class="n">&#8484;</span><span class="o">)</span> <span class="bp">&#8226;</span> <span class="n">r120</span><span class="o">)</span> <span class="bp">&#8226;</span> <span class="n">t120</span>
+<span class="k">#reduce</span> <span class="o">((</span><span class="bp">-</span><span class="mi">2</span><span class="o">:</span><span class="n">&#8484;</span><span class="o">)</span> <span class="bp">&#8226;</span> <span class="n">r120</span><span class="o">)</span> <span class="bp">&#8226;</span> <span class="n">t120</span>
+</pre></div>
+</div>
+</div></section>
 </section>
 </section>
 </section>

@@ -5,4 +5,4 @@
 .. include:: A_05_Algebraic_Structures/A_02_groups.inc
 .. include:: A_05_Algebraic_Structures/A_03_group_actions.inc
 .. include:: A_05_Algebraic_Structures/A_04_torsors.inc
-.. include:: A_05_Algebraic_Structures/A_05_modules.inc
+.. include:: A_05_Algebraic_Structures/A_05_modules.inc 

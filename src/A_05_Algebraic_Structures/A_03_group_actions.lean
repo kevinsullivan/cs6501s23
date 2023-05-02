@@ -100,11 +100,3 @@ instance : mul_action rot tri :=
 
 
 
-/-TEXT: 
-Discussion
-----------
-
-
-
-
-

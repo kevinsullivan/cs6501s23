@@ -179,8 +179,8 @@ are typeclasses used for actions of multiplicative and
 additive monoids and groups; they extend notation classes
 `has_smul` and `has_vadd` defined in `algebra.group.defs`;
 TEXT. -/
--- QUOTE:
 
+-- QUOTE:
 lemma rot_one_action : ∀ (b : tri), (1 : rot) • b = b :=
 begin
 assume b,
@@ -227,16 +227,11 @@ instance : mul_action rot tri :=
   rot_one_action,
   rot_prod_action,
 ⟩ 
-
-
 -- QUOTE.
 
-/-TEXT: 
+/- TEXT: 
 Discussion
 ----------
-
-
-
 TEXT. -/
 
 
