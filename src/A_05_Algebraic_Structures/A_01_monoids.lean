@@ -180,4 +180,3 @@ def rot_comp_n := @mul_foldr rot
 #reduce rot_comp_n [r120,r120]
 #reduce rot_comp_n [r120,r120,r120]
 
-
