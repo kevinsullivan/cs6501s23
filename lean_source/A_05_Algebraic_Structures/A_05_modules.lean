@@ -436,8 +436,8 @@ its own.
 TEXT. -/
 
 -- QUOTE:
-def z_ring [ring ℤ] (r1 r2 : Z) := r1 * r2
-#reduce z_ring 3 4
+def z_ring (r1 r2 : ℤ) [ring ℤ] := r1 * r2
+#reduce z_ring 3 4  -- no error finding instance
 -- QUOTE. 
 
 /- TEXT:
