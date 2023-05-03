@@ -137,7 +137,11 @@
 <li class="toctree-l4"><a class="reference internal" href="#module-rot">6.5.4.4. module &#8484; rot</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#foolproof-abstract-mathematics">6.5.5. Foolproof abstract mathematics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstract-geometry">6.5.5. Abstract geometry</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#fields-and-vector-spaces">6.6. Fields and Vector Spaces</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id14">6.6.1. Introduction</a></li>
 </ul>
 </li>
 </ul>
@@ -173,6 +177,33 @@
              
   <section id="algebraic-structures">
 <span id="introduction"></span><h1><span class="section-number">6. </span>Algebraic Structures<a class="headerlink" href="#algebraic-structures" title="Permalink to this heading">&#61633;</a></h1>
+<p>In this chapter, we&#8217;ll meet a good range of important
+algebraic structures, using a simple running example
+throughout. The example serves two purposes.</p>
+<p>First it&#8217;s so simple, that most of the proofs we&#8217;ll
+need along the way are easy to produce by basic case
+analysis; so we can focus on key algebraic ideas rather
+than on tedious proof details.</p>
+<p>Second, the example will show that we&#8217;ve moved beyond
+algebra involving numbers to  geometry involving things
+that are other than numerical (e.g., equilateral triangles
+and their symmetry-preserving rotations).</p>
+<p>We&#8217;ll have points (triangles), differences between them
+yielding &#8220;vectors&#8221; (symmetry-preserving rotations), and
+&#8220;vectors&#8221; in turn acting on points by displacement (in
+our example, by rotational displacements).</p>
+<p>When actions can be added and subtracted, and also scalar
+multiplied by scalars from a ring (addition, subtraction,
+and multiplication), then we have a module. When scalars
+can be dividing, giving rise to fractions, then our set
+of &#8220;vectors&#8221; has to be closed under scalar multiplication
+by fractions.</p>
+<p>A key aim of ours throughout is to see how to develop and
+formalize an algebra for geometric or temporal reasoning,
+with a torsor of points, differences between them yielding
+a actions (&#8220;vectors&#8221;), that themselves belong to a module
+(no <em>fractions of actions</em>) or vector space (<em>fractions of actions!</em>).</p>
+<p>It&#8217;ll will take a while to get there. Let&#8217;s get started.</p>
 <section id="monoids">
 <h2><span class="section-number">6.1. </span>Monoids<a class="headerlink" href="#monoids" title="Permalink to this heading">&#61633;</a></h2>
 <p>In this section, we&#8217;ll analyze and use the definition of monoids provided
@@ -2106,28 +2137,38 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </div>
 </div></section>
 </section>
-<section id="foolproof-abstract-mathematics">
-<h3><span class="section-number">6.5.5. </span>Foolproof abstract mathematics<a class="headerlink" href="#foolproof-abstract-mathematics" title="Permalink to this heading">&#61633;</a></h3>
+<section id="abstract-geometry">
+<h3><span class="section-number">6.5.5. </span>Abstract geometry<a class="headerlink" href="#abstract-geometry" title="Permalink to this heading">&#61633;</a></h3>
 <p>Now we can write foolproof abstract mathematics
 involving a torsor of symmetric triangles and a
 <em>module</em> of rotation actions, where rotations can
 be added, subtracted, scaled, and act on triangles,
 and where triangles can be subtracted yielding
 rotations.</p>
-<p>Also recall that we&#8217;ve already defined the torsor
-of triangles over the rotation group. We really don&#8217;t
-need to do anything more. The key addition was point
-point subtraction (specifically tri tri subtraction,
-yielding rotation). We already have an operation of
-point (tri) differences, denoted -&#7525;.</p>
-<p>That becomes part of our what emerges as an overall
-language of <em>geometry</em> in the limited world of our
-triangles and their symmetry-preserving rotations.
-Here are a few examples. Notable is that we can now
+<p>Also recall that we&#8217;ve already specified the torsor
+of triangles over the rotation group by defining how
+to subtract points (triangles) to get rotations. We
+really don&#8217;t need anything more. We already have an
+operation of point (tri) differences yielding actions
+(rotations), denoted -&#7525;.</p>
+<p>The concepts of points, differences, and actions of
+differences on points emerge as central concepts in
+a mathematical language of <em>geometry</em> in the small
+world of triangles (points) and symmetry-preserving
+rotational actions that move them around.</p>
+<p>Here are a few examples. Notable is that we can now
 compute with both points and vectors (tri and rot in
-our example).</p>
+our example). One could even imagine a silly robot
+that can do nothing but rotate.</p>
+<p>Now we have a nice little language in which to
+specify the motions it should take. Not only can
+we cause it to undergo sequences of rotations,
+but we can, within our module, compute the net
+effect of any <em>linear combination</em> of actions,
+reducing them to single actions that can then
+be enacted by a robot much more efficiently.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=open%20tri%0A--%20scalar%20mult%20of%20action%20and%20its%20application%0A%23reduce%20((3%3A%E2%84%A4)%20%E2%80%A2%20r120)%20%E2%80%A2%20t120%0A%0A--%20negative%20scalar%20multiplication%20and%20application%0A%23reduce%20((-2%3A%E2%84%A4)%20%E2%80%A2%20r120)%20%E2%80%A2%20t120%0A%0A--%20scalar%20difference%20(a%20scalar)%20multiplied%20by%20rotation%20then%20acting%20on%20triangle%0A%23reduce%20(((3%3A%E2%84%A4)%20-%20(2%3A%E2%84%A4))%20%E2%80%A2%20r120)%20%E2%80%A2%20t120%0A%0A--%20addition%20of%20scaled%20and%20unscaled%20vector%2C%20acting%20on%20a%20triange%0A%23reduce%20(((3%3A%E2%84%A4)%20%E2%80%A2%20r120)%20%2B%E1%B5%A5%20r240)%20%E2%80%A2%20t120%0A%0A--%20important%3A%20function%20subtracting%20points%20yielding%20a%20rot%20then%20acting%20on%20a%20triangle%0A%23reduce%20(t0%20-%E1%B5%A5%20t120)%20%E2%80%A2%20t240" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_472.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=open%20tri%0A--%20scalar%20mult%20of%20action%20and%20its%20application%0A%23reduce%20((3%3A%E2%84%A4)%20%E2%80%A2%20r120)%20%E2%80%A2%20t120%0A%0A--%20negative%20scalar%20multiplication%20and%20application%0A%23reduce%20((-2%3A%E2%84%A4)%20%E2%80%A2%20r120)%20%E2%80%A2%20t120%0A%0A--%20scalar%20difference%20(a%20scalar)%20multiplied%20by%20rotation%20then%20acting%20on%20triangle%0A%23reduce%20(((3%3A%E2%84%A4)%20-%20(2%3A%E2%84%A4))%20%E2%80%A2%20r120)%20%E2%80%A2%20t120%0A%0A--%20addition%20of%20scaled%20and%20unscaled%20vector%2C%20acting%20on%20a%20triange%0A%23reduce%20(((3%3A%E2%84%A4)%20%E2%80%A2%20r120)%20%2B%E1%B5%A5%20r240)%20%E2%80%A2%20t120%0A%0A--%20important%3A%20function%20subtracting%20points%20yielding%20a%20rot%20then%20acting%20on%20a%20triangle%0A%23reduce%20(t0%20-%E1%B5%A5%20t120)%20%E2%80%A2%20t240" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_485.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kn">open</span> <span class="n">tri</span>
 <span class="c1">-- scalar mult of action and its application</span>
 <span class="k">#reduce</span> <span class="o">((</span><span class="mi">3</span><span class="o">:</span><span class="n">&#8484;</span><span class="o">)</span> <span class="bp">&#8226;</span> <span class="n">r120</span><span class="o">)</span> <span class="bp">&#8226;</span> <span class="n">t120</span>
@@ -2146,6 +2187,26 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </pre></div>
 </div>
 </div></section>
+</section>
+<section id="fields-and-vector-spaces">
+<h2><span class="section-number">6.6. </span>Fields and Vector Spaces<a class="headerlink" href="#fields-and-vector-spaces" title="Permalink to this heading">&#61633;</a></h2>
+<section id="id14">
+<h3><span class="section-number">6.6.1. </span>Introduction<a class="headerlink" href="#id14" title="Permalink to this heading">&#61633;</a></h3>
+<p>A module of actions, with addition, subtraction, and
+scalar multiplication, with scalars from a ring, such
+as &#8484;, becomes a vector space when its scalar ring is
+in fact a field. That roughly requires that there be
+multiplicative inverses of scalars.</p>
+<p>A lack of division is exactly what makes &#8484; a ring and
+not a field. On the other hand &#8477;\{0} is a field, with
+the usual addition, subtraction, and multiplication, but
+now also multiplicative inversion, thus division, and
+also fractions.</p>
+<p>One can take any fraction of a vector, but not of a
+symmetry rotation. Our symmetry rotations do form a
+module, but not a vector space. Vector spaces unlike
+modules have all <em>fractions of actions</em> as well.</p>
+</section>
 </section>
 </section>
 

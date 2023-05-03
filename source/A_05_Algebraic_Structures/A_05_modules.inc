@@ -445,8 +445,8 @@ form.
     end
   ⟩ 
 
-Foolproof abstract mathematics
-------------------------------
+Abstract geometry
+-----------------
 
 Now we can write foolproof abstract mathematics
 involving a torsor of symmetric triangles and a
@@ -455,19 +455,32 @@ be added, subtracted, scaled, and act on triangles,
 and where triangles can be subtracted yielding
 rotations. 
 
-Also recall that we've already defined the torsor
-of triangles over the rotation group. We really don't
-need to do anything more. The key addition was point
-point subtraction (specifically tri tri subtraction,
-yielding rotation). We already have an operation of 
-point (tri) differences, denoted -ᵥ. 
+Also recall that we've already specified the torsor
+of triangles over the rotation group by defining how
+to subtract points (triangles) to get rotations. We 
+really don't need anything more. We already have an 
+operation of point (tri) differences yielding actions
+(rotations), denoted -ᵥ. 
 
-That becomes part of our what emerges as an overall 
-language of *geometry* in the limited world of our
-triangles and their symmetry-preserving rotations. 
+The concepts of points, differences, and actions of
+differences on points emerge as central concepts in 
+a mathematical language of *geometry* in the small 
+world of triangles (points) and symmetry-preserving 
+rotational actions that move them around.
+
 Here are a few examples. Notable is that we can now
 compute with both points and vectors (tri and rot in
-our example).
+our example). One could even imagine a silly robot
+that can do nothing but rotate. 
+
+Now we have a nice little language in which to 
+specify the motions it should take. Not only can 
+we cause it to undergo sequences of rotations, 
+but we can, within our module, compute the net 
+effect of any *linear combination* of actions, 
+reducing them to single actions that can then 
+be enacted by a robot much more efficiently.
+
 
 .. code-block:: lean
 
