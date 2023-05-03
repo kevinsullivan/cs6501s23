@@ -82,8 +82,28 @@ an affine space.
   -/
 
 
+Instances
+---------
+
+First we need to recast our multiplicative group, rot, 
+as an additive group. And just as (mul) group inherits 
+from (mul) monoid, we'll need to have add_group inherit
+from add_monoid. This and related steps will be easy as
+we can just relabel our existing mul operation as add,
+and all the proofs (e.g., of associativity) just carry
+through.
+
+add_monoid rot
+~~~~~~~~~~~~~~
+
+To structure rot as an additive group, we need first to 
+structure it as as additive monoid. So we now take these
+steps: first an *additive* monoid of rotations, the the
+corresponding additive group.  
+
 .. code-block:: lean
 
+  
   -- renaming
   def rot_add := rot_mul
   def rot_add_assoc := rot_mul_assoc
@@ -249,7 +269,6 @@ add_action rot tri
       to_has_vadd : has_vadd G P
       zero_vadd : ∀ (p : P), 0 +ᵥ p = p
       add_vadd : ∀ (g₁ g₂ : G) (p : P), g₁ + g₂ +ᵥ p = g₁ +ᵥ (g₂ +ᵥ p)
-  
   -/
   
   #check @add_action.mk

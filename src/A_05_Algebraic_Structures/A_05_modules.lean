@@ -4,17 +4,19 @@ import algebra.ring
 import data.int.basic
 
 
+
+
 /-
 -- here's the module typeclass
 class module (R : Type u) (M : Type v) [semiring R]
   [add_comm_monoid M] extends distrib_mul_action R M :=
 (add_smul : ∀(r s : R) (x : M), (r + s) • x = r • x + s • x)
 (zero_smul : ∀x : M, (0 : R) • x = 0)
+-/
 
+/-
 -- and here's its constructor
-/-
 #check @module.mk
-/-
 module.mk :
   Π {R : Type u_1} 
     {M : Type u_2} 
@@ -29,7 +31,6 @@ module.mk :
 
 /-
 -- Here's the actual semiring typeclass definition and constructor. 
-
 @[protect_proj, ancestor non_unital_semiring non_assoc_semiring monoid_with_zero]
 class semiring (α : Type u) extends non_unital_semiring α, non_assoc_semiring α, monoid_with_zero α
 -/
@@ -39,13 +40,9 @@ class semiring (α : Type u) extends non_unital_semiring α, non_assoc_semiring 
 /-
 Here's the additive commutative monoid typeclass. It defines an additive monoid 
 with *commutative* `(+)`.
-
 @[protect_proj, ancestor add_monoid add_comm_semigroup]
 class add_comm_monoid (M : Type u) extends add_monoid M, add_comm_semigroup M
--/
 
-#check @add_comm_monoid.mk
-/-
 Here's the constructor. We actually already have every field
 value from our prior work except for the proof of commutativity
 of (rot) addition required for the last field of this typeclass. 
@@ -86,13 +83,16 @@ open rot
 
 def rot_add_comm : ∀ (a b : rot), a + b = b + a :=
 begin
-    assume a b,
+  ring, -- ?
+  /-
+  assume a b,
     cases a,
     repeat {
       cases b,
       repeat {exact rfl},
     },
-  end
+  -/
+end
 
 -- now we can have our typeclass instance for rot 
 instance : add_comm_monoid rot := 
@@ -175,7 +175,6 @@ instance : distrib_mul_action ℤ rot :=
 ⟩
 
 
-
 def z_ring (r1 r2 : ℤ) [ring ℤ] := r1 * r2
 #reduce z_ring 3 4  -- no error finding instance
 
@@ -196,9 +195,18 @@ instance : module ℤ rot :=
 
 
 open tri
+-- scalar mult of action and its application
 #reduce ((3:ℤ) • r120) • t120
+
+-- negative scalar multiplication and application
 #reduce ((-2:ℤ) • r120) • t120
+
+-- scalar difference (a scalar) multiplied by rotation then acting on triangle
 #reduce (((3:ℤ) - (2:ℤ)) • r120) • t120
+
+-- addition of scaled and unscaled vector, acting on a triange
+#reduce (((3:ℤ) • r120) +ᵥ r240) • t120
+
+-- important: function subtracting points yielding a rot then acting on a triangle
 #reduce (t0 -ᵥ t120) • t240
 
-#check @add_torsor

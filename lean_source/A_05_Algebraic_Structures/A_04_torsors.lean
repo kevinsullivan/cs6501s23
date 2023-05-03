@@ -71,7 +71,7 @@ operation. In the case of G being a vector space, P is then
 an affine space.
 
 TEXT. -/
-#check rot_zpow
+
 -- QUOTE:
 /-
 structure add_torsor (G : out_param (Type u_1)) (P : Type u_2) [out_param (add_group G)] :
@@ -86,7 +86,8 @@ Type (max u_1 u_2)
 -/
 -- QUOTE.
 
-/- TIME:
+
+/- TEXT:
 
 Instances
 ---------
@@ -109,6 +110,7 @@ corresponding additive group.
 TEXT. -/
 
 -- QUOTE:
+
 -- renaming
 def rot_add := rot_mul
 def rot_add_assoc := rot_mul_assoc
@@ -280,7 +282,6 @@ Type (max u_10 u_11)
     to_has_vadd : has_vadd G P
     zero_vadd : ∀ (p : P), 0 +ᵥ p = p
     add_vadd : ∀ (g₁ g₂ : G) (p : P), g₁ + g₂ +ᵥ p = g₁ +ᵥ (g₂ +ᵥ p)
-
 -/
 
 #check @add_action.mk
