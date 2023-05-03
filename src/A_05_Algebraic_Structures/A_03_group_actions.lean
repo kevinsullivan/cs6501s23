@@ -98,5 +98,3 @@ instance : mul_action rot tri :=
   rot_prod_action,
 ⟩ 
 
-
-

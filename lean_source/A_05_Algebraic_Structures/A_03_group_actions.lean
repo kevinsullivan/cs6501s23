@@ -233,5 +233,3 @@ instance : mul_action rot tri :=
 Discussion
 ----------
 TEXT. -/
-
-
