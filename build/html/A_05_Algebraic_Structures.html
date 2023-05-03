@@ -2052,9 +2052,9 @@ have to do any more work on this issue. Here&#8217;s a
 quick demo showing that Lean finds an instance on
 its own.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20z_ring%20%5Bring%20%E2%84%A4%5D%20(r1%20r2%20%3A%20Z)%20%3A%3D%20r1%20*%20r2%0A%23reduce%20z_ring%203%204" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_413.lean">
-try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">z_ring</span> <span class="o">[</span><span class="n">ring</span> <span class="n">&#8484;</span><span class="o">]</span> <span class="o">(</span><span class="n">r1</span> <span class="n">r2</span> <span class="o">:</span> <span class="n">Z</span><span class="o">)</span> <span class="o">:=</span> <span class="n">r1</span> <span class="bp">*</span> <span class="n">r2</span>
-<span class="k">#reduce</span> <span class="n">z_ring</span> <span class="mi">3</span> <span class="mi">4</span>
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20z_ring%20(r1%20r2%20%3A%20%E2%84%A4)%20%5Bring%20%E2%84%A4%5D%20%3A%3D%20r1%20*%20r2%0A%23reduce%20z_ring%203%204%20%20--%20no%20error%20finding%20instance" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_413.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">z_ring</span> <span class="o">(</span><span class="n">r1</span> <span class="n">r2</span> <span class="o">:</span> <span class="n">&#8484;</span><span class="o">)</span> <span class="o">[</span><span class="n">ring</span> <span class="n">&#8484;</span><span class="o">]</span> <span class="o">:=</span> <span class="n">r1</span> <span class="bp">*</span> <span class="n">r2</span>
+<span class="k">#reduce</span> <span class="n">z_ring</span> <span class="mi">3</span> <span class="mi">4</span>  <span class="c1">-- no error finding instance</span>
 </pre></div>
 </div>
 </div></section>
@@ -2094,14 +2094,17 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <h3><span class="section-number">6.5.5. </span>Foolproof abstract mathematics<a class="headerlink" href="#foolproof-abstract-mathematics" title="Permalink to this heading">&#61633;</a></h3>
 <p>Now we can write foolproof abstract mathematics
 involving a torsor of symmetric triangles and a
-<em>module</em> of actions, where actions can be added,
-subtracted, and scaled.</p>
+<em>module</em> of rotation actions, where rotations can
+be added, subtracted, scaled, and act on triangles,
+and where triangles can be subtracted yielding
+rotations.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=open%20tri%0A%23reduce%20((3%3A%E2%84%A4)%20%E2%80%A2%20r120)%20%E2%80%A2%20t120%0A%23reduce%20((-2%3A%E2%84%A4)%20%E2%80%A2%20r120)%20%E2%80%A2%20t120%0A%23reduce%20(((3%3A%E2%84%A4)%20-%20(2%3A%E2%84%A4))%20%E2%80%A2%20r120)%20%E2%80%A2%20t120" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_459.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=open%20tri%0A%23reduce%20((3%3A%E2%84%A4)%20%E2%80%A2%20r120)%20%E2%80%A2%20t120%0A%23reduce%20((-2%3A%E2%84%A4)%20%E2%80%A2%20r120)%20%E2%80%A2%20t120%0A%23reduce%20(((3%3A%E2%84%A4)%20-%20(2%3A%E2%84%A4))%20%E2%80%A2%20r120)%20%E2%80%A2%20t120%0A%23reduce%20(t0%20-%E1%B5%A5%20t120)%20%E2%80%A2%20t240" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_461.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kn">open</span> <span class="n">tri</span>
 <span class="k">#reduce</span> <span class="o">((</span><span class="mi">3</span><span class="o">:</span><span class="n">&#8484;</span><span class="o">)</span> <span class="bp">&#8226;</span> <span class="n">r120</span><span class="o">)</span> <span class="bp">&#8226;</span> <span class="n">t120</span>
 <span class="k">#reduce</span> <span class="o">((</span><span class="bp">-</span><span class="mi">2</span><span class="o">:</span><span class="n">&#8484;</span><span class="o">)</span> <span class="bp">&#8226;</span> <span class="n">r120</span><span class="o">)</span> <span class="bp">&#8226;</span> <span class="n">t120</span>
 <span class="k">#reduce</span> <span class="o">(((</span><span class="mi">3</span><span class="o">:</span><span class="n">&#8484;</span><span class="o">)</span> <span class="bp">-</span> <span class="o">(</span><span class="mi">2</span><span class="o">:</span><span class="n">&#8484;</span><span class="o">))</span> <span class="bp">&#8226;</span> <span class="n">r120</span><span class="o">)</span> <span class="bp">&#8226;</span> <span class="n">t120</span>
+<span class="k">#reduce</span> <span class="o">(</span><span class="n">t0</span> <span class="bp">-&#7525;</span> <span class="n">t120</span><span class="o">)</span> <span class="bp">&#8226;</span> <span class="n">t240</span>
 </pre></div>
 </div>
 </div></section>

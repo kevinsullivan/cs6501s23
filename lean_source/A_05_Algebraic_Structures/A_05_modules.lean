@@ -482,8 +482,10 @@ Foolproof abstract mathematics
 
 Now we can write foolproof abstract mathematics
 involving a torsor of symmetric triangles and a
-*module* of actions, where actions can be added,
-subtracted, and scaled. 
+*module* of rotation actions, where rotations can 
+be added, subtracted, scaled, and act on triangles, 
+and where triangles can be subtracted yielding
+rotations. 
 TEXT. -/
 
 -- QUOTE:
@@ -491,6 +493,7 @@ open tri
 #reduce ((3:ℤ) • r120) • t120
 #reduce ((-2:ℤ) • r120) • t120
 #reduce (((3:ℤ) - (2:ℤ)) • r120) • t120
+#reduce (t0 -ᵥ t120) • t240
 -- QUOTE. 
 
 #check @add_torsor

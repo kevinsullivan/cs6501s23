@@ -412,8 +412,8 @@ its own.
 
 .. code-block:: lean
 
-  def z_ring [ring ℤ] (r1 r2 : Z) := r1 * r2
-  #reduce z_ring 3 4
+  def z_ring (r1 r2 : ℤ) [ring ℤ] := r1 * r2
+  #reduce z_ring 3 4  -- no error finding instance
 
 
 module ℤ rot 
@@ -453,8 +453,10 @@ Foolproof abstract mathematics
 
 Now we can write foolproof abstract mathematics
 involving a torsor of symmetric triangles and a
-*module* of actions, where actions can be added,
-subtracted, and scaled. 
+*module* of rotation actions, where rotations can 
+be added, subtracted, scaled, and act on triangles, 
+and where triangles can be subtracted yielding
+rotations. 
 
 .. code-block:: lean
 
@@ -462,4 +464,5 @@ subtracted, and scaled.
   #reduce ((3:ℤ) • r120) • t120
   #reduce ((-2:ℤ) • r120) • t120
   #reduce (((3:ℤ) - (2:ℤ)) • r120) • t120
+  #reduce (t0 -ᵥ t120) • t240
 
