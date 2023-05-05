@@ -1,8 +1,3 @@
-import linear_algebra.affine_space.basic
-import .A_04_torsors
-import group_theory.group_action
-
-/- TEXT: 
 
 *************
 Affine Spaces
@@ -24,30 +19,27 @@ In Lean, *affine_space V P*, where *V* is the type of
 vectors and P is the torsor of points, is just another 
 notation for *add_torsor V P* where the action set, V, 
 will have the structure of a vector space.  
-TEXT. -/
 
--- QUOTE:
--- See: they're the same. 
+.. code-block:: lean
 
-#check @add_torsor
-/-
-add_torsor : 
-  Π (G : out_param (Type u_1)), 
-    Type u_2 → 
-  Π [_inst_1 : out_param (add_group G)], 
-    Type (max u_1 u_2)-/
+  -- See: they're the same. 
+  
+  #check @add_torsor
+  /-
+  add_torsor : 
+    Π (G : out_param (Type u_1)), 
+      Type u_2 → 
+    Π [_inst_1 : out_param (add_group G)], 
+      Type (max u_1 u_2)-/
+  
+  open_locale affine
+  #check affine_space
+  /-
+  affine_space : 
+    Π (G : out_param (Type u_1)), 
+      Type u_2 → 
+    Π [_inst_1 : out_param (add_group G)], 
+      Type (max u_1 u_2)
+  -/
 
-open_locale affine
-#check affine_space
-/-
-affine_space : 
-  Π (G : out_param (Type u_1)), 
-    Type u_2 → 
-  Π [_inst_1 : out_param (add_group G)], 
-    Type (max u_1 u_2)
--/
--- QUOTE.
-
-/- TEXT:
 More to come. 
-TEXT. -/

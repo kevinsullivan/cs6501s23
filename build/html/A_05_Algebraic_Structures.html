@@ -140,10 +140,13 @@
 <li class="toctree-l3"><a class="reference internal" href="#abstract-geometry">6.5.5. Abstract geometry</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#fields-and-vector-spaces">6.6. Fields and Vector Spaces</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id14">6.6.1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#vector-spaces">6.6. Vector Spaces</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example-vector-space">6.6.1. Example: Vector Space</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-torsor">6.6.2. Example: Torsor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exercise">6.6.3. Exercise</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#affine-spaces">6.7. Affine Spaces</a></li>
 </ul>
 </li>
 </ul>
@@ -2188,25 +2191,167 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </div>
 </div></section>
 </section>
-<section id="fields-and-vector-spaces">
-<h2><span class="section-number">6.6. </span>Fields and Vector Spaces<a class="headerlink" href="#fields-and-vector-spaces" title="Permalink to this heading">&#61633;</a></h2>
-<section id="id14">
-<h3><span class="section-number">6.6.1. </span>Introduction<a class="headerlink" href="#id14" title="Permalink to this heading">&#61633;</a></h3>
+<section id="vector-spaces">
+<h2><span class="section-number">6.6. </span>Vector Spaces<a class="headerlink" href="#vector-spaces" title="Permalink to this heading">&#61633;</a></h2>
 <p>A module of actions, with addition, subtraction, and
-scalar multiplication, with scalars from a ring, such
-as &#8484;, becomes a vector space when its scalar ring is
-in fact a field. That roughly requires that there be
-multiplicative inverses of scalars.</p>
+scalar multiplication (with scalars from a ring, such
+as &#8484;), becomes a vector space when its scalar ring is
+in fact a <em>field(). That roughly mean that there will
+be multiplicative inverses of scalars, so fractions;
+and so all *fractions of actions</em> will also have to be
+actions.</p>
 <p>A lack of division is exactly what makes &#8484; a ring and
-not a field. On the other hand &#8477;\{0} is a field, with
-the usual addition, subtraction, and multiplication, but
-now also multiplicative inversion, thus division, and
-also fractions.</p>
-<p>One can take any fraction of a vector, but not of a
-symmetry rotation. Our symmetry rotations do form a
-module, but not a vector space. Vector spaces unlike
-modules have all <em>fractions of actions</em> as well.</p>
+not a field. We get a &#8484;-module with scalars from &#8484;, and
+with scalar multiplication reduced to iterated addition.</p>
+<p>On the other hand &#8477;\{0} is a field, with the usual
+addition, subtraction, and multiplication, but now also
+multiplicative inverses, thus division, and fractions.</p>
+<p>One can take any fraction of a vector and get a vector,
+but a fraction of a symmetry rotation is not necessarily
+a symmetry rotation. Our symmetry rotations thus do form
+a module, but not a vector space. Vector spaces unlike
+modules have all <em>fractions of actions</em> as well as all
+sums, differences, and multiples of actions.</p>
+<section id="example-vector-space">
+<h3><span class="section-number">6.6.1. </span>Example: Vector Space<a class="headerlink" href="#example-vector-space" title="Permalink to this heading">&#61633;</a></h3>
+<p>A module with a scalar ring that&#8217;s actually a field is a
+vector space. Lean doesn&#8217;t actually have a vector space
+typeclass. One just defines a module with a scalar <em>field</em>.
+Our example here takes the rational numbers as vector-like
+objects (think of them as 1-D vectors) and rationals, which
+do form a field, as the scalars.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20K%20%3A%20Type%20%3A%3D%20%E2%84%9A%20%20%20%20%20--%20scalars%0Adef%20P%20%3A%20Type%20%3A%3D%20%E2%84%9A%20%20%20%20%20--%20actions%0A%0A%23check%20module.mk%0A%2F-%0A%CE%A0%20%7BR%20%3A%20Type%20u%7D%20%7BM%20%3A%20Type%20v%7D%0A%20%20%5B_inst_1%20%3A%20semiring%20R%5D%0A%20%20%5B_inst_2%20%3A%20add_comm_monoid%20M%5D%0A%20%20%5B_to_distrib_mul_action%20%3A%20distrib_mul_action%20R%20M%5D%2C%0A%20%20(%E2%88%80%20(r%20s%20%3A%20R)%20(x%20%3A%20M)%2C%20(r%20%2B%20s)%20%E2%80%A2%20x%20%3D%20r%20%E2%80%A2%20x%20%2B%20s%20%E2%80%A2%20x)%20%E2%86%92%0A%20%20(%E2%88%80%20(x%20%3A%20M)%2C%200%20%E2%80%A2%20x%20%3D%200)%20%E2%86%92%0Amodule%20R%20M%0A-%2F%0A%0A--%20With%20a%20scalar%20field%20we%20have%20a%20vector%20space%0A--%20The%20point%20are%20rationals%20and%20so%20are%20the%20actions%0A--%20Action%2Fvectors%20act%20on%20point%20by%20translation%0Ainstance%20%3A%20module%20%E2%84%9A%20%E2%84%9A%20%3A%3D%0A%E2%9F%A8%0A%20%20--%20%E2%88%80%20(r%20s%20x%20%3A%20%E2%84%9A)%2C%20(r%20%2B%20s)%20%E2%80%A2%20x%20%3D%20r%20%E2%80%A2%20x%20%2B%20s%20%E2%80%A2%20x%0A%20%20begin%0A%20%20assume%20r%20s%20x%2C%0A%20%20simp%20%5Brat.mul%5D%2C%0A%20%20ring%2C%0A%20%20end%2C%0A%0A%20%20--%20%E2%88%80%20(x%20%3A%20%E2%84%9A)%2C%200%20%E2%80%A2%20x%20%3D%200%0A%20%20begin%0A%20%20assume%20x%2C%0A%20%20simp%20%5Brat.mul%5D%2C%0A%20%20end%0A%E2%9F%A9%0A%0A%2F-%0AWe%20have%20a%20field.%20Here%2C%20(3%3A%E2%84%9A)%20is%20an%20action%2C%0A(1%2F2%3A%E2%84%9A)%20is%20a%20scalar%2C%20and%20the%20result%20of%20the%0Ascalar%20multiplication%20of%201%2F2%20and%203%2C%20(3%2F2%3A%E2%84%9A)%2C%0Ais%20another%20action.%0A-%2F%0A%0A--%20%20%20%20scalar%20%20mul%20vector%0A%23eval%20(1%2F2%3A%E2%84%9A)%20%20%E2%80%A2%20%20(3%3A%E2%84%9A)" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_39.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">K</span> <span class="o">:</span> <span class="kt">Type</span> <span class="o">:=</span> <span class="n">&#8474;</span>     <span class="c1">-- scalars</span>
+<span class="kd">def</span> <span class="n">P</span> <span class="o">:</span> <span class="kt">Type</span> <span class="o">:=</span> <span class="n">&#8474;</span>     <span class="c1">-- actions</span>
+
+<span class="k">#check</span> <span class="n">module.mk</span>
+<span class="c">/-</span>
+<span class="cm">&#928; {R : Type u} {M : Type v}</span>
+<span class="cm">  [_inst_1 : semiring R]</span>
+<span class="cm">  [_inst_2 : add_comm_monoid M]</span>
+<span class="cm">  [_to_distrib_mul_action : distrib_mul_action R M],</span>
+<span class="cm">  (&#8704; (r s : R) (x : M), (r + s) &#8226; x = r &#8226; x + s &#8226; x) &#8594;</span>
+<span class="cm">  (&#8704; (x : M), 0 &#8226; x = 0) &#8594;</span>
+<span class="cm">module R M</span>
+<span class="cm">-/</span>
+
+<span class="c1">-- With a scalar field we have a vector space</span>
+<span class="c1">-- The point are rationals and so are the actions</span>
+<span class="c1">-- Action/vectors act on point by translation</span>
+<span class="kd">instance</span> <span class="o">:</span> <span class="n">module</span> <span class="n">&#8474;</span> <span class="n">&#8474;</span> <span class="o">:=</span>
+<span class="o">&#10216;</span>
+  <span class="c1">-- &#8704; (r s x : &#8474;), (r + s) &#8226; x = r &#8226; x + s &#8226; x</span>
+  <span class="kd">begin</span>
+  <span class="k">assume</span> <span class="n">r</span> <span class="n">s</span> <span class="n">x</span><span class="o">,</span>
+  <span class="n">simp</span> <span class="o">[</span><span class="n">rat.mul</span><span class="o">],</span>
+  <span class="n">ring</span><span class="o">,</span>
+  <span class="kd">end</span><span class="o">,</span>
+
+  <span class="c1">-- &#8704; (x : &#8474;), 0 &#8226; x = 0</span>
+  <span class="kd">begin</span>
+  <span class="k">assume</span> <span class="n">x</span><span class="o">,</span>
+  <span class="n">simp</span> <span class="o">[</span><span class="n">rat.mul</span><span class="o">],</span>
+  <span class="kd">end</span>
+<span class="o">&#10217;</span>
+
+<span class="c">/-</span>
+<span class="cm">We have a field. Here, (3:&#8474;) is an action,</span>
+<span class="cm">(1/2:&#8474;) is a scalar, and the result of the</span>
+<span class="cm">scalar multiplication of 1/2 and 3, (3/2:&#8474;),</span>
+<span class="cm">is another action.</span>
+<span class="cm">-/</span>
+
+<span class="c1">--    scalar  mul vector</span>
+<span class="k">#eval</span> <span class="o">(</span><span class="mi">1</span><span class="bp">/</span><span class="mi">2</span><span class="o">:</span><span class="n">&#8474;</span><span class="o">)</span>  <span class="bp">&#8226;</span>  <span class="o">(</span><span class="mi">3</span><span class="o">:</span><span class="n">&#8474;</span><span class="o">)</span>
+</pre></div>
+</div>
+</div></section>
+<section id="example-torsor">
+<h3><span class="section-number">6.6.2. </span>Example: Torsor<a class="headerlink" href="#example-torsor" title="Permalink to this heading">&#61633;</a></h3>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=instance%20%3A%20add_torsor%20%E2%84%9A%20%E2%84%9A%20%3A%3D%0A%E2%9F%A8%0A%20%20--%20%E2%88%80%20(p1%20p2%20%3A%20%E2%84%9A)%2C%20p1%20-%E1%B5%A5%20p2%20%2B%E1%B5%A5%20p2%20%3D%20p1%0A%20%20begin%0A%20%20assume%20p1%20p2%2C%0A%20%20simp%2C%0A%20%20end%2C%0A%0A%20%20--%20%E2%88%80%20(g%20p%20%3A%20%E2%84%9A)%2C%20g%20%2B%E1%B5%A5%20p%20-%E1%B5%A5%20p%20%3D%20g%0A%20%20begin%0A%20%20assume%20g%20p%2C%0A%20%20simp%2C%0A%20%20end%2C%0A%E2%9F%A9%0A%0A%2F-%0AAnd%20with%20that%20we%20have%20geometry%20again.%20Points%0Aare%20given%20by%20rational%20numbers.%20Differences%0Abetween%20points%20are%20vectors%2C%20and%20are%20also%20given%0Aby%20rational%20numbers.%20Vectors%20act%20additively%20on%0Apoints%20by%20translating%20them.%0A%0AHere's%20an%20example%20where%20we%20compute%20a%20vector%20as%0Aa%20difference%20between%20two%20points%2C%20which%20we%20then%0Aapply%20to%20another%20point.%0A-%2F%0A%0A--%20%20%20(vector%20from%20torsor)%20%20%20point%0A%23eval%20((3%3A%E2%84%9A)%20-%E1%B5%A5%20(1%2F2%3A%E2%84%9A))%20%2B%E1%B5%A5%20(2%3A%E2%84%9A)%20--%20expect%20(9%2F2%3A%E2%84%9A)" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_90.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">instance</span> <span class="o">:</span> <span class="n">add_torsor</span> <span class="n">&#8474;</span> <span class="n">&#8474;</span> <span class="o">:=</span>
+<span class="o">&#10216;</span>
+  <span class="c1">-- &#8704; (p1 p2 : &#8474;), p1 -&#7525; p2 +&#7525; p2 = p1</span>
+  <span class="kd">begin</span>
+  <span class="k">assume</span> <span class="n">p1</span> <span class="n">p2</span><span class="o">,</span>
+  <span class="n">simp</span><span class="o">,</span>
+  <span class="kd">end</span><span class="o">,</span>
+
+  <span class="c1">-- &#8704; (g p : &#8474;), g +&#7525; p -&#7525; p = g</span>
+  <span class="kd">begin</span>
+  <span class="k">assume</span> <span class="n">g</span> <span class="n">p</span><span class="o">,</span>
+  <span class="n">simp</span><span class="o">,</span>
+  <span class="kd">end</span><span class="o">,</span>
+<span class="o">&#10217;</span>
+
+<span class="c">/-</span>
+<span class="cm">And with that we have geometry again. Points</span>
+<span class="cm">are given by rational numbers. Differences</span>
+<span class="cm">between points are vectors, and are also given</span>
+<span class="cm">by rational numbers. Vectors act additively on</span>
+<span class="cm">points by translating them.</span>
+
+<span class="cm">Here&#39;s an example where we compute a vector as</span>
+<span class="cm">a difference between two points, which we then</span>
+<span class="cm">apply to another point.</span>
+<span class="cm">-/</span>
+
+<span class="c1">--   (vector from torsor)   point</span>
+<span class="k">#eval</span> <span class="o">((</span><span class="mi">3</span><span class="o">:</span><span class="n">&#8474;</span><span class="o">)</span> <span class="bp">-&#7525;</span> <span class="o">(</span><span class="mi">1</span><span class="bp">/</span><span class="mi">2</span><span class="o">:</span><span class="n">&#8474;</span><span class="o">))</span> <span class="bp">+&#7525;</span> <span class="o">(</span><span class="mi">2</span><span class="o">:</span><span class="n">&#8474;</span><span class="o">)</span> <span class="c1">-- expect (9/2:&#8474;)</span>
+</pre></div>
+</div>
+</div></section>
+<section id="exercise">
+<h3><span class="section-number">6.6.3. </span>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">&#61633;</a></h3>
+<p>Replace &#8474; with &#8474; &#215; &#8474; (pairs of rationals) as the
+vectors, leaving &#8474; as the scalar field, and then
+establish a torsor of 2-D rational points over this
+now 2-D rational vector space. Yay, we now have a
+2-D rational affine space: a torsor over a vector
+space.</p>
 </section>
+</section>
+<section id="affine-spaces">
+<h2><span class="section-number">6.7. </span>Affine Spaces<a class="headerlink" href="#affine-spaces" title="Permalink to this heading">&#61633;</a></h2>
+<p>Under Construction.</p>
+<p><a class="reference external" href="https://leanprover-community.github.io/mathlib_docs/linear_algebra/affine_space/basic.html">affine_space</a></p>
+<p>In this section we&#8217;ll make sense of the statement that an
+affine space is just a torsor whose action/difference set
+is not just a group or module but a vector space. That means
+we can add and subtract actions and we have scalar multiplication
+by fractional scalars. Differences between torsor points will
+now be vectors in a vector space, which operate on points,
+in turn, additively, by <em>translating</em> them.</p>
+<p>In Lean, <em>affine_space V P</em>, where <em>V</em> is the type of
+vectors and P is the torsor of points, is just another
+notation for <em>add_torsor V P</em> where the action set, V,
+will have the structure of a vector space.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20See%3A%20they're%20the%20same.%0A%0A%23check%20%40add_torsor%0A%2F-%0Aadd_torsor%20%3A%0A%20%20%CE%A0%20(G%20%3A%20out_param%20(Type%20u_1))%2C%0A%20%20%20%20Type%20u_2%20%E2%86%92%0A%20%20%CE%A0%20%5B_inst_1%20%3A%20out_param%20(add_group%20G)%5D%2C%0A%20%20%20%20Type%20(max%20u_1%20u_2)-%2F%0A%0Aopen_locale%20affine%0A%23check%20affine_space%0A%2F-%0Aaffine_space%20%3A%0A%20%20%CE%A0%20(G%20%3A%20out_param%20(Type%20u_1))%2C%0A%20%20%20%20Type%20u_2%20%E2%86%92%0A%20%20%CE%A0%20%5B_inst_1%20%3A%20out_param%20(add_group%20G)%5D%2C%0A%20%20%20%20Type%20(max%20u_1%20u_2)%0A-%2F" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_23.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- See: they&#39;re the same.</span>
+
+<span class="k">#check</span> <span class="bp">@</span><span class="n">add_torsor</span>
+<span class="c">/-</span>
+<span class="cm">add_torsor :</span>
+<span class="cm">  &#928; (G : out_param (Type u_1)),</span>
+<span class="cm">    Type u_2 &#8594;</span>
+<span class="cm">  &#928; [_inst_1 : out_param (add_group G)],</span>
+<span class="cm">    Type (max u_1 u_2)-/</span>
+
+<span class="n">open_locale</span> <span class="n">affine</span>
+<span class="k">#check</span> <span class="n">affine_space</span>
+<span class="c">/-</span>
+<span class="cm">affine_space :</span>
+<span class="cm">  &#928; (G : out_param (Type u_1)),</span>
+<span class="cm">    Type u_2 &#8594;</span>
+<span class="cm">  &#928; [_inst_1 : out_param (add_group G)],</span>
+<span class="cm">    Type (max u_1 u_2)</span>
+<span class="cm">-/</span>
+</pre></div>
+</div>
+</div><p>More to come.</p>
 </section>
 </section>
 
