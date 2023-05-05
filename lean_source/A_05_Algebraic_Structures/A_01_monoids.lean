@@ -347,4 +347,3 @@ have obtained:
 - to do that using a "safe" (new) version of the foldr function
 - a complete, precise, abstract, computable definition of monoid
 TEXT. -/
-
