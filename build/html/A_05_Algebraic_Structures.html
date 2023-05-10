@@ -142,11 +142,20 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#vector-spaces">6.6. Vector Spaces</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#example-vector-space">6.6.1. Example: Vector Space</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#example-torsor">6.6.2. Example: Torsor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#torsor-over-vector-space">6.6.2. Torsor over vector space</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#exercise">6.6.3. Exercise</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#affine-spaces">6.7. Affine Spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#affine-spaces">6.7. Affine Spaces</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id14">6.7.1. Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id15">6.7.2. Example</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#points">6.7.2.1. Points</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vectors">6.7.2.2. Vectors</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#affine-space-v-p">6.7.3. affine_space V P</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -2267,10 +2276,48 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 </pre></div>
 </div>
 </div></section>
-<section id="example-torsor">
-<h3><span class="section-number">6.6.2. </span>Example: Torsor<a class="headerlink" href="#example-torsor" title="Permalink to this heading">&#61633;</a></h3>
+<section id="torsor-over-vector-space">
+<h3><span class="section-number">6.6.2. </span>Torsor over vector space<a class="headerlink" href="#torsor-over-vector-space" title="Permalink to this heading">&#61633;</a></h3>
+<p>&#8474; is defined in mathlab as having the structure of a vector
+space. We can declare it to represent a torsor of points on
+one hand, and a vector space of actions, that act on points
+additively, on the other. Another name for a torsor over a
+vector space is an <em>affine</em> space.</p>
+<p>A vector space is a linear space. It has an origin at zero,
+some vectors, and more vectors derived by the operations of
+inverse and scalar multiplication, by values from a scalar
+<em>field</em>. A vector space is linear. Among the rules that
+make it so are that, for any scalars, &#945; and &#946;, and for any
+vectors, x and y, the following distributive laws hold:</p>
+<ul class="simple">
+<li><p>&#945; &#8226; (x + y) = &#945; &#8226; x + &#945; &#8226; y</p></li>
+<li><p>(&#945; + &#946;) &#8226; x = &#945; &#8226; x + &#946; &#8226; x</p></li>
+</ul>
+<p>The upshot is that you can add and scalar multiply vectors
+in exactly the ways you&#8217;d expect from undergraduate linear
+algebra.</p>
+<p>An <em>affine</em> space, on the other hand, is a set of points
+all of whose <em>differences</em> are all of the vectors. Such
+a torsor (of points) has no distinguished origin. Rather,
+you can pick any point arbitrarily to serve as an origin,
+and now every other point is addressed by a vector added
+to that origin point.</p>
+<p>Example: add_torsor &#8474; &#8474;</p>
+<p>In the following example, which begins the transition to
+the next chapter, we formalize a torsor of points over a
+vector space, where the points are rational numbers (&#8474;),
+so are vectors, and so are the scalars. One can readily
+verify that all the axioms are satisfied.</p>
+<p>Note: we&#8217;re using one <em>copy</em> of the rationals to stand in
+relation to points (no distinguished origin), another to
+stand in relation to vectors, and yet a third to stand in
+relation to the scalars by which vectors can be multiplied.</p>
+<p>Formlizing &#8474; as a torsor over itself as a vector space is
+straightforward, requiring only proofs of the two torsor
+laws, where the values are all rationals. The proofs are
+in turn by straightforward simplification.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=instance%20%3A%20add_torsor%20%E2%84%9A%20%E2%84%9A%20%3A%3D%0A%E2%9F%A8%0A%20%20--%20%E2%88%80%20(p1%20p2%20%3A%20%E2%84%9A)%2C%20p1%20-%E1%B5%A5%20p2%20%2B%E1%B5%A5%20p2%20%3D%20p1%0A%20%20begin%0A%20%20assume%20p1%20p2%2C%0A%20%20simp%2C%0A%20%20end%2C%0A%0A%20%20--%20%E2%88%80%20(g%20p%20%3A%20%E2%84%9A)%2C%20g%20%2B%E1%B5%A5%20p%20-%E1%B5%A5%20p%20%3D%20g%0A%20%20begin%0A%20%20assume%20g%20p%2C%0A%20%20simp%2C%0A%20%20end%2C%0A%E2%9F%A9%0A%0A%2F-%0AAnd%20with%20that%20we%20have%20geometry%20again.%20Points%0Aare%20given%20by%20rational%20numbers.%20Differences%0Abetween%20points%20are%20vectors%2C%20and%20are%20also%20given%0Aby%20rational%20numbers.%20Vectors%20act%20additively%20on%0Apoints%20by%20translating%20them.%0A%0AHere's%20an%20example%20where%20we%20compute%20a%20vector%20as%0Aa%20difference%20between%20two%20points%2C%20which%20we%20then%0Aapply%20to%20another%20point.%0A-%2F%0A%0A--%20%20%20(vector%20from%20torsor)%20%20%20point%0A%23eval%20((3%3A%E2%84%9A)%20-%E1%B5%A5%20(1%2F2%3A%E2%84%9A))%20%2B%E1%B5%A5%20(2%3A%E2%84%9A)%20--%20expect%20(9%2F2%3A%E2%84%9A)" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_90.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=instance%20%3A%20add_torsor%20%E2%84%9A%20%E2%84%9A%20%3A%3D%0A%E2%9F%A8%0A%20%20--%20%E2%88%80%20(p1%20p2%20%3A%20%E2%84%9A)%2C%20p1%20-%E1%B5%A5%20p2%20%2B%E1%B5%A5%20p2%20%3D%20p1%0A%20%20begin%0A%20%20assume%20p1%20p2%2C%0A%20%20simp%2C%0A%20%20end%2C%0A%0A%20%20--%20%E2%88%80%20(g%20p%20%3A%20%E2%84%9A)%2C%20g%20%2B%E1%B5%A5%20p%20-%E1%B5%A5%20p%20%3D%20g%0A%20%20begin%0A%20%20assume%20g%20p%2C%0A%20%20simp%2C%0A%20%20end%2C%0A%E2%9F%A9" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_134.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">instance</span> <span class="o">:</span> <span class="n">add_torsor</span> <span class="n">&#8474;</span> <span class="n">&#8474;</span> <span class="o">:=</span>
 <span class="o">&#10216;</span>
   <span class="c1">-- &#8704; (p1 p2 : &#8474;), p1 -&#7525; p2 +&#7525; p2 = p1</span>
@@ -2285,54 +2332,247 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
   <span class="n">simp</span><span class="o">,</span>
   <span class="kd">end</span><span class="o">,</span>
 <span class="o">&#10217;</span>
-
-<span class="c">/-</span>
-<span class="cm">And with that we have geometry again. Points</span>
-<span class="cm">are given by rational numbers. Differences</span>
-<span class="cm">between points are vectors, and are also given</span>
-<span class="cm">by rational numbers. Vectors act additively on</span>
-<span class="cm">points by translating them.</span>
-
-<span class="cm">Here&#39;s an example where we compute a vector as</span>
-<span class="cm">a difference between two points, which we then</span>
-<span class="cm">apply to another point.</span>
-<span class="cm">-/</span>
-
-<span class="c1">--   (vector from torsor)   point</span>
-<span class="k">#eval</span> <span class="o">((</span><span class="mi">3</span><span class="o">:</span><span class="n">&#8474;</span><span class="o">)</span> <span class="bp">-&#7525;</span> <span class="o">(</span><span class="mi">1</span><span class="bp">/</span><span class="mi">2</span><span class="o">:</span><span class="n">&#8474;</span><span class="o">))</span> <span class="bp">+&#7525;</span> <span class="o">(</span><span class="mi">2</span><span class="o">:</span><span class="n">&#8474;</span><span class="o">)</span> <span class="c1">-- expect (9/2:&#8474;)</span>
 </pre></div>
 </div>
-</div></section>
+</div><p>We can now at least signal our abstract intent by using
+operations that reflect our intended interpretations of
+their argment as points, vectors, or scalars. We can in
+particular use -&#7525; to computes differences of points; +&#7525;
+to represent addition of a vector to a point; and &#8226; to
+represent scalar multiplication of a vector.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20pnt0%20%3A%3D%20(0%3A%E2%84%9A)%0Adef%20pnt1%20%3A%3D%20(1%3A%E2%84%9A)%0Adef%20vec1%20%3A%3D%20pnt1%20-%E1%B5%A5%20pnt0%20%20%20%20--%20see%3A%20we%20do%20have%20this%20operation%0Adef%20vec2%20%3A%3D%20(1%2F2%3A%E2%84%9A)%20%E2%80%A2%20vec1%20%20--%20and%20scalar%20multiplication%2C%20too%0Adef%20pnt3%20%3A%3D%20pnt1%20%2B%20vec2%20%20%20%20%20--%20expect%203%2F2%0A%23eval%20pnt3" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_158.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">pnt0</span> <span class="o">:=</span> <span class="o">(</span><span class="mi">0</span><span class="o">:</span><span class="n">&#8474;</span><span class="o">)</span>
+<span class="kd">def</span> <span class="n">pnt1</span> <span class="o">:=</span> <span class="o">(</span><span class="mi">1</span><span class="o">:</span><span class="n">&#8474;</span><span class="o">)</span>
+<span class="kd">def</span> <span class="n">vec1</span> <span class="o">:=</span> <span class="n">pnt1</span> <span class="bp">-&#7525;</span> <span class="n">pnt0</span>    <span class="c1">-- see: we do have this operation</span>
+<span class="kd">def</span> <span class="n">vec2</span> <span class="o">:=</span> <span class="o">(</span><span class="mi">1</span><span class="bp">/</span><span class="mi">2</span><span class="o">:</span><span class="n">&#8474;</span><span class="o">)</span> <span class="bp">&#8226;</span> <span class="n">vec1</span>  <span class="c1">-- and scalar multiplication, too</span>
+<span class="kd">def</span> <span class="n">pnt3</span> <span class="o">:=</span> <span class="n">pnt1</span> <span class="bp">+</span> <span class="n">vec2</span>     <span class="c1">-- expect 3/2</span>
+<span class="k">#eval</span> <span class="n">pnt3</span>
+</pre></div>
+</div>
+</div><p>What we&#8217;ve constructed is thus not only linear algebra, in
+the vector space, but affine algebra, in the torsor, including
+its vector space of translational actions. We thus have a rich
+language now for moving points around, as we might want to do
+with robots that we wish to occupy certain points.</p>
+</section>
 <section id="exercise">
 <h3><span class="section-number">6.6.3. </span>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">&#61633;</a></h3>
 <p>Replace &#8474; with &#8474; &#215; &#8474; (pairs of rationals) as the
 vectors, leaving &#8474; as the scalar field, and then
 establish a torsor of 2-D rational points over this
-now 2-D rational vector space. Yay, we now have a
-2-D rational affine space: a torsor over a vector
-space.</p>
+now 2-D rational vector space. You now have a 2-D
+rational affine space and its corresponding vector
+space of translational actions.</p>
 </section>
 </section>
 <section id="affine-spaces">
 <h2><span class="section-number">6.7. </span>Affine Spaces<a class="headerlink" href="#affine-spaces" title="Permalink to this heading">&#61633;</a></h2>
-<p>Under Construction.</p>
-<p><a class="reference external" href="https://leanprover-community.github.io/mathlib_docs/linear_algebra/affine_space/basic.html">affine_space</a></p>
-<p>In this section we&#8217;ll make sense of the statement that an
-affine space is just a torsor whose action/difference set
-is not just a group or module but a vector space. That means
-we can add and subtract actions and we have scalar multiplication
-by fractional scalars. Differences between torsor points will
-now be vectors in a vector space, which operate on points,
-in turn, additively, by <em>translating</em> them.</p>
-<p>In Lean, <em>affine_space V P</em>, where <em>V</em> is the type of
-vectors and P is the torsor of points, is just another
-notation for <em>add_torsor V P</em> where the action set, V,
-will have the structure of a vector space.</p>
+<p>While physics and mathematics are usually taught from the
+perspective of vector spaces, the beauty of torsors is that
+they allow us to represent <em>points</em>, not just differences,
+or vectors, between points. Torsors give us an <em>essential</em>
+mathematical structure for representing <em>physical</em> spaces,
+including points in time and in the geometric spaces that
+we inhabit.</p>
+<p>We thus have an algebraic structure in which, for example,
+we can talk about points in 1D or 3D physical spaces as well
+as vectors that <em>act</em> upon points (such as the location of
+a robot or any other object) by <em>translating</em> them. Vectors
+in time represent directed <em>durations</em>, while  vectors in
+geometry  represent directed spatial <em>displacements</em>.</p>
+<p>In this chapter we&#8217;ll formalize these abstractions and show
+how we can use them to represent type-correct computations
+in such physical spaces.</p>
+<section id="id14">
+<h3><span class="section-number">6.7.1. </span>Introduction<a class="headerlink" href="#id14" title="Permalink to this heading">&#61633;</a></h3>
+<p>A torsor whose actions (via -&#7525;) form a vector space is known
+as an <em>affine space</em>. To have a vector space, the associated
+scalars must form a field. That means scalars have inverses,
+and so we have scalar division, thus scalar fractions, and
+therefore we also have all <em>fractions</em> of vectors, as well
+(via scalar multiplication by scalar fractions).</p>
+<p>As an example, we&#8217;ll first consider a one-dimensional torsor
+whose points correspond to the rational numbers. Differences
+(-&#7525;) will be computed by rational number subtraction, so vectors
+will also correspond to rational numbers.</p>
+<p>We&#8217;ll see that if we use bare rational numbers to represent
+points and vectors, we&#8217;ll be able to perform physically and
+mathematically meaningless operations, such as the addition
+of two points. We&#8217;ll then see how to use Lean&#8217;s type system
+to distinguish between rationals representing points and those
+representing vectors, so as to be assured that type correct
+expressions are also physically and mathematically correct.</p>
+<p>For example, if p and v are rationals representing the <em>point</em>
+1/2 and the vector, 1/4, we want to allow p + v, resulting in the
+point 3/4. However, the expression p + p makes no physical sense,
+and so should produce a type error, even though it makes sense to
+add the underlying rational numbers.</p>
+<p>The trick, as we&#8217;ll see, is to define new types for points and
+vectors that are isomorphic to and represented by the rationals,
+and then to <em>lift</em>, from the rationals, only those operations
+and structures that are necessary and sufficient to define an
+affine space of points over a vector space of actions.</p>
+<p>In other words, we&#8217;ll show how we can use types and type
+checking in Lean to enforce mathematical consistency in
+expressions meant to represent geometric and other physical
+computations involving affine spaces and their associated
+vector space operations.</p>
+</section>
+<section id="id15">
+<h3><span class="section-number">6.7.2. </span>Example<a class="headerlink" href="#id15" title="Permalink to this heading">&#61633;</a></h3>
+<p>Suppose we want to model points in time and differences between
+them, also called durations, representing both by rational numbers
+(with which we can compute automatically). The points will form a
+torsor over the vector space of differences (vectors, durations),
+which will thus also be represented by rational numbers. In this
+vector space, the scalar field will also be the rationals.</p>
+<p>As a concrete example, if we represent noon as a point in time,
+n = 0/1, and a duration of one hour as the rational number, h = 1,
+then we can represent the time, one thirty, as n +&#7525; (3/2 * h). That
+is, the point, noon, plus the duration, one and a half hours. What
+we don&#8217;t want to allow is an expression such as n + n. Noon plus
+noon makes no sense whatsoever and so should be ruled as a type
+error.</p>
+<p>So let&#8217;s look at a few false starts on such an algebra, and then
+we&#8217;ll settle on a satisfactory design.</p>
+<section id="points">
+<h4><span class="section-number">6.7.2.1. </span>Points<a class="headerlink" href="#points" title="Permalink to this heading">&#61633;</a></h4>
+<p>We will represent our 1-d space of points in time by rationals. We
+do not treat the rational number, 0, as being special. There is no
+distinguished origin in classical time. We will represent durations
+as vector differences between such points. What can go wrong?</p>
+<p>One approach is to define type, <em>pnt</em> (for &#8220;point&#8221;), as just another
+name for &#8474;. In Lean this can be done using <em>abbreviation.</em> In this
+example, we&#8217;ll see that we can not only add points but also treat
+them as vectors, neither of which we want to be permitted.</p>
+<p>To begin, we&#8217;ll give a name, K, to whatever scalar field we choose
+to use. In this chapter, we&#8217;ll set it to &#8474;, but in principle it can
+change, e.g., to &#8477;.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20See%3A%20they're%20the%20same.%0A%0A%23check%20%40add_torsor%0A%2F-%0Aadd_torsor%20%3A%0A%20%20%CE%A0%20(G%20%3A%20out_param%20(Type%20u_1))%2C%0A%20%20%20%20Type%20u_2%20%E2%86%92%0A%20%20%CE%A0%20%5B_inst_1%20%3A%20out_param%20(add_group%20G)%5D%2C%0A%20%20%20%20Type%20(max%20u_1%20u_2)-%2F%0A%0Aopen_locale%20affine%0A%23check%20affine_space%0A%2F-%0Aaffine_space%20%3A%0A%20%20%CE%A0%20(G%20%3A%20out_param%20(Type%20u_1))%2C%0A%20%20%20%20Type%20u_2%20%E2%86%92%0A%20%20%CE%A0%20%5B_inst_1%20%3A%20out_param%20(add_group%20G)%5D%2C%0A%20%20%20%20Type%20(max%20u_1%20u_2)%0A-%2F" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_23.lean">
-try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- See: they&#39;re the same.</span>
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=abbreviation%20K%20%3A%3D%20%E2%84%9A%20%20%20%20%20%20%20%20%20%20%20%20--%20abstract%20field%20to%20make%20it%20easy%20to%20change" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_104.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">abbreviation</span> <span class="n">K</span> <span class="o">:=</span> <span class="n">&#8474;</span>            <span class="c1">-- abstract field to make it easy to change</span>
+</pre></div>
+</div>
+</div><p>Now we&#8217;ll present our first try at an affine space abstraction
+in which only affine operations are defined, and no ill-formed
+expressions are accepted. We&#8217;ll use Lean&#8217;s <em>abbreviation</em> keyword
+to define pnt as being identical to the type, K, which in turn is
+identical to the type &#8474;; so writing pnt will be exactly the same
+as writing &#8474;.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=abbreviation%20pnt%20%3A%3D%20K%20%20%20%20%20%20%20%20%20%20%20--%20represent%20points%20by%20field%20values%0Adef%20pnt1%20%3A%20pnt%20%3A%3D%20(1%2F2%3AK)%20%20%20%20%20%20%20--%20a%20point%20represented%20arbitrarily%20by%201%2F2%0A%0A--%20this%20approach%20does%20not%20rule%20out%20bad%20expressions%0Adef%20bork%20%3A%3D%20pnt1%20%2B%20pnt1%20%20%20%20%20%20%20%20%20--%20oops%2C%20point-point%20addition%20makes%20no%20sense%0Adef%20brok%20%3A%3D%20pnt1%20%2B%E1%B5%A5%20pnt1%20%20%20%20%20%20%20%20--%20oops%2C%20treating%20point%20as%20vector%20is%20not%20good" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_115.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">abbreviation</span> <span class="n">pnt</span> <span class="o">:=</span> <span class="n">K</span>           <span class="c1">-- represent points by field values</span>
+<span class="kd">def</span> <span class="n">pnt1</span> <span class="o">:</span> <span class="n">pnt</span> <span class="o">:=</span> <span class="o">(</span><span class="mi">1</span><span class="bp">/</span><span class="mi">2</span><span class="o">:</span><span class="n">K</span><span class="o">)</span>       <span class="c1">-- a point represented arbitrarily by 1/2</span>
 
-<span class="k">#check</span> <span class="bp">@</span><span class="n">add_torsor</span>
+<span class="c1">-- this approach does not rule out bad expressions</span>
+<span class="kd">def</span> <span class="n">bork</span> <span class="o">:=</span> <span class="n">pnt1</span> <span class="bp">+</span> <span class="n">pnt1</span>         <span class="c1">-- oops, point-point addition makes no sense</span>
+<span class="kd">def</span> <span class="n">brok</span> <span class="o">:=</span> <span class="n">pnt1</span> <span class="bp">+&#7525;</span> <span class="n">pnt1</span>        <span class="c1">-- oops, treating point as vector is not good</span>
+</pre></div>
+</div>
+</div><p>Unfortunately, because this approach makes pnt exactly the
+same type as &#8474;, all operations on rationals can be applied to
+values of this <em>point</em> type. That includes point-point addition,
+which we&#8217;ve already noted makes no physical sense.</p>
+<p>Rather, what we&#8217;ll need to do is to introduce a new type: one
+that&#8217;s isomorphic to the rationals but on which we will define
+only those operations that make sense given our interpretation
+of pnt as the type of elements in a torsor.</p>
+<p>In Lean, defining a new type name using <em>def</em> actually creates
+a distinct type. So we will try that now.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20pnt%20%3A%3D%20%E2%84%9A%0Adef%20pnt1%20%3A%20pnt%20%3A%3D%20(1%2F2%3A%E2%84%9A)%0Adef%20bork%20%3A%20pnt%20%3A%3D%20pnt1%20%2B%20pnt1%20%20--%20oops%2C%20operation%20not%20defined%0Adef%20brok%20%3A%20pnt%20%3A%3D%20pnt1%20%2B%E1%B5%A5%20pnt1%20--%20oops%2C%20operation%20not%20defined" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_138.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">pnt</span> <span class="o">:=</span> <span class="n">&#8474;</span>
+<span class="kd">def</span> <span class="n">pnt1</span> <span class="o">:</span> <span class="n">pnt</span> <span class="o">:=</span> <span class="o">(</span><span class="mi">1</span><span class="bp">/</span><span class="mi">2</span><span class="o">:</span><span class="n">&#8474;</span><span class="o">)</span>
+<span class="kd">def</span> <span class="n">bork</span> <span class="o">:</span> <span class="n">pnt</span> <span class="o">:=</span> <span class="n">pnt1</span> <span class="bp">+</span> <span class="n">pnt1</span>  <span class="c1">-- oops, operation not defined</span>
+<span class="kd">def</span> <span class="n">brok</span> <span class="o">:</span> <span class="n">pnt</span> <span class="o">:=</span> <span class="n">pnt1</span> <span class="bp">+&#7525;</span> <span class="n">pnt1</span> <span class="c1">-- oops, operation not defined</span>
+</pre></div>
+</div>
+</div><p>So now we&#8217;ve got a new type, isomorphic to &#8474;, but lacking
+any of the structure (including operations) defined for &#8474;
+in the Lean libraries. Do we now have to redefine all of
+those structures for our pnt type? The answer is no, we can
+<em>lift</em> the structures defined for &#8474; that we want defined
+for our pnt type using &#64;derive.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20add_torsor%20%E2%84%9A%0A%40%5Bderive%20%5Badd_torsor%20%E2%84%9A%5D%5D%20def%20pnt%20%3A%20Type%20%3A%3D%20%E2%84%9A%0Adef%20pnt1%20%3A%20pnt%20%3A%3D%20(1%2F2%3A%E2%84%9A)%0Adef%20vec%20%3A%3D%20pnt1%20-%E1%B5%A5%20pnt1%20%20%20--%20oh%2C%20hooray%2C%20allowed%0Adef%20nope%20%3A%3D%20pnt1%20%2B%20pnt1%20%20%20--%20oh%2C%20hooray%2C%20disallowed%0A%23check%20vec%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20oops%2C%20just%20bare%20rationals" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_152.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="n">add_torsor</span> <span class="n">&#8474;</span>
+<span class="kd">@[derive [add_torsor &#8474;]</span><span class="o">]</span> <span class="kd">def</span> <span class="n">pnt</span> <span class="o">:</span> <span class="kt">Type</span> <span class="o">:=</span> <span class="n">&#8474;</span>
+<span class="kd">def</span> <span class="n">pnt1</span> <span class="o">:</span> <span class="n">pnt</span> <span class="o">:=</span> <span class="o">(</span><span class="mi">1</span><span class="bp">/</span><span class="mi">2</span><span class="o">:</span><span class="n">&#8474;</span><span class="o">)</span>
+<span class="kd">def</span> <span class="n">vec</span> <span class="o">:=</span> <span class="n">pnt1</span> <span class="bp">-&#7525;</span> <span class="n">pnt1</span>   <span class="c1">-- oh, hooray, allowed</span>
+<span class="kd">def</span> <span class="n">nope</span> <span class="o">:=</span> <span class="n">pnt1</span> <span class="bp">+</span> <span class="n">pnt1</span>   <span class="c1">-- oh, hooray, disallowed</span>
+<span class="k">#check</span> <span class="n">vec</span>                <span class="c1">-- oops, just bare rationals</span>
+</pre></div>
+</div>
+</div><p>We&#8217;ve now got our torsor -&#7525; operation defined for points,
+but the results of this operation are still bare rationals,
+not elements of a vector type. Let&#8217;s fix that next.</p>
+</section>
+<section id="vectors">
+<h4><span class="section-number">6.7.2.2. </span>Vectors<a class="headerlink" href="#vectors" title="Permalink to this heading">&#61633;</a></h4>
+<p>Given that differences between points still have the type
+of bare rationals, we can use our vector object whereever
+any rational is expected, and we can use any rational, no
+matter what it actually means, as a vector in our physical
+and geometric computations. That is not good enough.</p>
+<p>The solution, again, is to define a vector type isomorphic
+to, but distinct from, &#8474;, while lifting the vector space
+structure from &#8474; to our new <em>vec</em> type. Then we will use
+this new type as the <em>vector space</em> type for our torsor of
+points.</p>
+<p>As an aside: Recall that Lean doesn&#8217;t provide vector_space
+as a typeclass; rather one uses module with a scalar field
+to acheive this result. So we will need to lift the module
+structure from &#8474; to our new <em>vec</em> (for vector) type. We will
+also need to lift add_comm_monoid and add_group structures
+for everything to work. Note how we do this by deriving from
+a list of structures already defined in the libraries for &#8474;.
+Further, not that deriving from has_repr allows Lean to print
+out pnt and vec values in the same way it&#8217;d print rationals.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20First%20we%20define%20our%20vector%20type%20with%20the%20right%20structures%0A%40%5Bderive%20%5Badd_comm_monoid%2C%20add_group%2C%20module%20%E2%84%9A%2C%20has_repr%5D%5D%20def%20vec%20%3A%20Type%20%3A%3D%20%E2%84%9A%0A%0A--%20Now%20we%20define%20a%20torsor%20over%20this%20vector%20space%0A%40%5Bderive%20%5Badd_torsor%20vec%2C%20has_repr%5D%5D%20def%20pnt%20%3A%3D%20K%0A%0A--%20With%20that%20we%20can%20define%20a%20few%20points%0Adef%20pnt1%20%3A%20pnt%20%3A%3D%20(1%2F2%3AK)%0Adef%20pnt2%20%3A%20pnt%20%3A%3D%20(3%2F2%3AK)%0A%0A%23eval%20pnt1%0A%0A--%20We%20can%20confirm%20that%20supported%20operations%20work%20correctly%0Adef%20vec1%20%3A%3D%20pnt2%20-%E1%B5%A5%20pnt1%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20YAY%2C%20point-point%20subtraction%0Adef%20pnt3%20%3A%3D%20vec1%20%2B%E1%B5%A5%20pnt2%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20YAY%2C%20action%20of%20vector%20on%20point%0Adef%20pnt4%20%3A%3D%20((2%2F3)%20%E2%80%A2%20vec1)%20%2B%E1%B5%A5%20pnt2%20%20%20%20--%20YAY%2C%20scalar%20mul%20(%E2%80%A2)%20yields%20vec%0A%0A--%20The%20resulting%20values%20are%20correctly%20computed%0A%23eval%20vec1%20%20%20%20--%20expect%201%0A%23eval%20pnt3%20%20%20%20--%20expect%205%2F3%0A%23eval%20pnt4%20%20%20%20--%20expect%202%2F3*1%20%2B%203%2F2%20%3D%0A%0A--%20And%20physically%20meaningless%20operations%20produce%20type%20errors%0A%23check%20pnt1%20%2B%20pnt1%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20oops%2C%20type%20error%2C%20can't%20add%20points%0Adef%20vec'%20%3A%3D%20pnt2%20-%20pnt1%20%20%20%20%20%20%20%20%20--%20oops%2C%20type%20error%2C%20use%20torsor%20-%E1%B5%A5%20operation%0Adef%20pnt'%20%3A%3D%20pnt2%20%2B%20vec1%20%20%20%20%20%20%20%20%20--%20oops%2C%20type%20error%2C%20use%20vec-point%20%2B%E1%B5%A5%0Adef%20pnt''%20%3A%3D%20pnt2%20%2B%E1%B5%A5%20vec1%20%20%20%20%20%20%20--%20oops%2C%20vector%20arg%20has%20to%20come%20first%0Adef%20pnt'''%20%3A%3D%20((2%2F3%3A%E2%84%9A)%20*%20vec1)%20%2B%E1%B5%A5%20pnt1%20%20--%20oops%2C%20first%20term%20is%20%E2%84%9A%20not%20vec" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_190.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- First we define our vector type with the right structures</span>
+<span class="kd">@[derive [add_comm_monoid, add_group, module &#8474;, has_repr]</span><span class="o">]</span> <span class="kd">def</span> <span class="n">vec</span> <span class="o">:</span> <span class="kt">Type</span> <span class="o">:=</span> <span class="n">&#8474;</span>
+
+<span class="c1">-- Now we define a torsor over this vector space</span>
+<span class="kd">@[derive [add_torsor vec, has_repr]</span><span class="o">]</span> <span class="kd">def</span> <span class="n">pnt</span> <span class="o">:=</span> <span class="n">K</span>
+
+<span class="c1">-- With that we can define a few points</span>
+<span class="kd">def</span> <span class="n">pnt1</span> <span class="o">:</span> <span class="n">pnt</span> <span class="o">:=</span> <span class="o">(</span><span class="mi">1</span><span class="bp">/</span><span class="mi">2</span><span class="o">:</span><span class="n">K</span><span class="o">)</span>
+<span class="kd">def</span> <span class="n">pnt2</span> <span class="o">:</span> <span class="n">pnt</span> <span class="o">:=</span> <span class="o">(</span><span class="mi">3</span><span class="bp">/</span><span class="mi">2</span><span class="o">:</span><span class="n">K</span><span class="o">)</span>
+
+<span class="k">#eval</span> <span class="n">pnt1</span>
+
+<span class="c1">-- We can confirm that supported operations work correctly</span>
+<span class="kd">def</span> <span class="n">vec1</span> <span class="o">:=</span> <span class="n">pnt2</span> <span class="bp">-&#7525;</span> <span class="n">pnt1</span>                <span class="c1">-- YAY, point-point subtraction</span>
+<span class="kd">def</span> <span class="n">pnt3</span> <span class="o">:=</span> <span class="n">vec1</span> <span class="bp">+&#7525;</span> <span class="n">pnt2</span>                <span class="c1">-- YAY, action of vector on point</span>
+<span class="kd">def</span> <span class="n">pnt4</span> <span class="o">:=</span> <span class="o">((</span><span class="mi">2</span><span class="bp">/</span><span class="mi">3</span><span class="o">)</span> <span class="bp">&#8226;</span> <span class="n">vec1</span><span class="o">)</span> <span class="bp">+&#7525;</span> <span class="n">pnt2</span>    <span class="c1">-- YAY, scalar mul (&#8226;) yields vec</span>
+
+<span class="c1">-- The resulting values are correctly computed</span>
+<span class="k">#eval</span> <span class="n">vec1</span>    <span class="c1">-- expect 1</span>
+<span class="k">#eval</span> <span class="n">pnt3</span>    <span class="c1">-- expect 5/3</span>
+<span class="k">#eval</span> <span class="n">pnt4</span>    <span class="c1">-- expect 2/3*1 + 3/2 =</span>
+
+<span class="c1">-- And physically meaningless operations produce type errors</span>
+<span class="k">#check</span> <span class="n">pnt1</span> <span class="bp">+</span> <span class="n">pnt1</span>              <span class="c1">-- oops, type error, can&#39;t add points</span>
+<span class="kd">def</span> <span class="n">vec&#39;</span> <span class="o">:=</span> <span class="n">pnt2</span> <span class="bp">-</span> <span class="n">pnt1</span>         <span class="c1">-- oops, type error, use torsor -&#7525; operation</span>
+<span class="kd">def</span> <span class="n">pnt&#39;</span> <span class="o">:=</span> <span class="n">pnt2</span> <span class="bp">+</span> <span class="n">vec1</span>         <span class="c1">-- oops, type error, use vec-point +&#7525;</span>
+<span class="kd">def</span> <span class="n">pnt&#39;&#39;</span> <span class="o">:=</span> <span class="n">pnt2</span> <span class="bp">+&#7525;</span> <span class="n">vec1</span>       <span class="c1">-- oops, vector arg has to come first</span>
+<span class="kd">def</span> <span class="n">pnt&#39;&#39;&#39;</span> <span class="o">:=</span> <span class="o">((</span><span class="mi">2</span><span class="bp">/</span><span class="mi">3</span><span class="o">:</span><span class="n">&#8474;</span><span class="o">)</span> <span class="bp">*</span> <span class="n">vec1</span><span class="o">)</span> <span class="bp">+&#7525;</span> <span class="n">pnt1</span>  <span class="c1">-- oops, first term is &#8474; not vec</span>
+</pre></div>
+</div>
+</div></section>
+</section>
+<section id="affine-space-v-p">
+<h3><span class="section-number">6.7.3. </span>affine_space V P<a class="headerlink" href="#affine-space-v-p" title="Permalink to this heading">&#61633;</a></h3>
+<p>&#8211; Still under construction.</p>
+<p>In Lean, <em>affine_space V P</em>, where <em>V</em> is the type of
+vectors and P is the type of torsor elements, or points,
+is just anotation for <em>add_torsor V P.</em></p>
+<p><a class="reference external" href="https://leanprover-community.github.io/mathlib_docs/linear_algebra/affine_space/basic.html">affine_space</a></p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20%40add_torsor%0A%2F-%0Aadd_torsor%20%3A%0A%20%20%CE%A0%20(G%20%3A%20out_param%20(Type%20u_1))%2C%0A%20%20%20%20Type%20u_2%20%E2%86%92%0A%20%20%CE%A0%20%5B_inst_1%20%3A%20out_param%20(add_group%20G)%5D%2C%0A%20%20%20%20Type%20(max%20u_1%20u_2)-%2F%0A%0Aopen_locale%20affine%0A%23check%20affine_space%0A%2F-%0Aaffine_space%20%3A%0A%20%20%CE%A0%20(G%20%3A%20out_param%20(Type%20u_1))%2C%0A%20%20%20%20Type%20u_2%20%E2%86%92%0A%20%20%CE%A0%20%5B_inst_1%20%3A%20out_param%20(add_group%20G)%5D%2C%0A%20%20%20%20Type%20(max%20u_1%20u_2)%0A-%2F" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_233.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="bp">@</span><span class="n">add_torsor</span>
 <span class="c">/-</span>
 <span class="cm">add_torsor :</span>
 <span class="cm">  &#928; (G : out_param (Type u_1)),</span>
@@ -2351,7 +2591,16 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <span class="cm">-/</span>
 </pre></div>
 </div>
-</div><p>More to come.</p>
+</div><p>What that means is that we could have declared our torsor as
+an actual affine_space, with no effect on the meaning of our
+definitions.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20%40%5Bderive%20%5Badd_torsor%20%20%20vec%2C%20has_repr%5D%5D%20def%20pnt%20%3A%3D%20K%0A--%20%40%5Bderive%20%5Baffine_space%20vec%2C%20has_repr%5D%5D%20def%20pnt%20%3A%3D%20K" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_257.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- @[derive [add_torsor   vec, has_repr]] def pnt := K</span>
+<span class="c1">-- @[derive [affine_space vec, has_repr]] def pnt := K</span>
+</pre></div>
+</div>
+</div></section>
 </section>
 </section>
 

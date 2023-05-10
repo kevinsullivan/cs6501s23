@@ -48,8 +48,7 @@ is another action.
 
 
 #check @add_torsor.mk
-/-
--/
+
 instance : add_torsor ℚ ℚ := 
 ⟨
   -- ∀ (p1 p2 : ℚ), p1 -ᵥ p2 +ᵥ p2 = p1
@@ -65,18 +64,11 @@ instance : add_torsor ℚ ℚ :=
   end,
 ⟩ 
 
-/- 
-And with that we have geometry again. Points 
-are given by rational numbers. Differences 
-between points are vectors, and are also given
-by rational numbers. Vectors act additively on 
-points by translating them. 
 
-Here's an example where we compute a vector as
-a difference between two points, which we then
-apply to another point. 
--/
-
---   (vector from torsor)   point
-#eval ((3:ℚ) -ᵥ (1/2:ℚ)) +ᵥ (2:ℚ) -- expect (9/2:ℚ)
+def pnt0 := (0:ℚ)
+def pnt1 := (1:ℚ)
+def vec1 := pnt1 -ᵥ pnt0    -- see: we do have this operation
+def vec2 := (1/2:ℚ) • vec1  -- and scalar multiplication, too
+def pnt3 := pnt1 + vec2     -- expect 3/2
+#eval pnt3
 

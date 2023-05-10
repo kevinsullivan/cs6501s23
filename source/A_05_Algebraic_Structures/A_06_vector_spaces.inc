@@ -83,9 +83,53 @@ do form a field, as the scalars.
   #eval (1/2:ℚ)  •  (3:ℚ) 
   
 
-Example: Torsor
----------------
+Torsor over vector space
+------------------------
 
+ℚ is defined in mathlab as having the structure of a vector
+space. We can declare it to represent a torsor of points on
+one hand, and a vector space of actions, that act on points
+additively, on the other. Another name for a torsor over a
+vector space is an *affine* space. 
+
+A vector space is a linear space. It has an origin at zero,
+some vectors, and more vectors derived by the operations of
+inverse and scalar multiplication, by values from a scalar 
+*field*. A vector space is linear. Among the rules that 
+make it so are that, for any scalars, α and β, and for any
+vectors, x and y, the following distributive laws hold: 
+
+- α • (x + y) = α • x + α • y 
+- (α + β) • x = α • x + β • x
+
+The upshot is that you can add and scalar multiply vectors
+in exactly the ways you'd expect from undergraduate linear
+algebra. 
+
+An *affine* space, on the other hand, is a set of points 
+all of whose *differences* are all of the vectors. Such
+a torsor (of points) has no distinguished origin. Rather,
+you can pick any point arbitrarily to serve as an origin,
+and now every other point is addressed by a vector added
+to that origin point. 
+
+Example: add_torsor ℚ ℚ 
+
+In the following example, which begins the transition to
+the next chapter, we formalize a torsor of points over a
+vector space, where the points are rational numbers (ℚ),
+so are vectors, and so are the scalars. One can readily
+verify that all the axioms are satisfied. 
+
+Note: we're using one *copy* of the rationals to stand in 
+relation to points (no distinguished origin), another to
+stand in relation to vectors, and yet a third to stand in
+relation to the scalars by which vectors can be multiplied. 
+
+Formlizing ℚ as a torsor over itself as a vector space is
+straightforward, requiring only proofs of the two torsor
+laws, where the values are all rationals. The proofs are
+in turn by straightforward simplification. 
 
 .. code-block:: lean
 
@@ -103,22 +147,28 @@ Example: Torsor
     simp,
     end,
   ⟩ 
-  
-  /- 
-  And with that we have geometry again. Points 
-  are given by rational numbers. Differences 
-  between points are vectors, and are also given
-  by rational numbers. Vectors act additively on 
-  points by translating them. 
-  
-  Here's an example where we compute a vector as
-  a difference between two points, which we then
-  apply to another point. 
-  -/
-  
-  --   (vector from torsor)   point
-  #eval ((3:ℚ) -ᵥ (1/2:ℚ)) +ᵥ (2:ℚ) -- expect (9/2:ℚ)
 
+We can now at least signal our abstract intent by using 
+operations that reflect our intended interpretations of
+their argment as points, vectors, or scalars. We can in
+particular use -ᵥ to computes differences of points; +ᵥ
+to represent addition of a vector to a point; and • to
+represent scalar multiplication of a vector.  
+
+.. code-block:: lean
+
+  def pnt0 := (0:ℚ)
+  def pnt1 := (1:ℚ)
+  def vec1 := pnt1 -ᵥ pnt0    -- see: we do have this operation
+  def vec2 := (1/2:ℚ) • vec1  -- and scalar multiplication, too
+  def pnt3 := pnt1 + vec2     -- expect 3/2
+  #eval pnt3
+
+What we've constructed is thus not only linear algebra, in
+the vector space, but affine algebra, in the torsor, including
+its vector space of translational actions. We thus have a rich
+language now for moving points around, as we might want to do
+with robots that we wish to occupy certain points. 
 
 Exercise
 --------
@@ -126,6 +176,6 @@ Exercise
 Replace ℚ with ℚ × ℚ (pairs of rationals) as the 
 vectors, leaving ℚ as the scalar field, and then
 establish a torsor of 2-D rational points over this 
-now 2-D rational vector space. Yay, we now have a
-2-D rational affine space: a torsor over a vector
-space. 
+now 2-D rational vector space. You now have a 2-D 
+rational affine space and its corresponding vector
+space of translational actions.
