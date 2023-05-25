@@ -2,6 +2,7 @@ import linear_algebra.affine_space.basic
 import .A_04_torsors
 import group_theory.group_action
 import data.real.basic
+import algebra.direct_sum.basic
 
 
 abbreviation K := ℚ            -- abstract field to make it easy to change
@@ -24,7 +25,7 @@ def pnt := ℚ
 def pnt1 : pnt := (1/2:ℚ)
 def bork : pnt := pnt1 + pnt1  -- oops, operation not defined
 def brok : pnt := pnt1 +ᵥ pnt1 -- oops, operation not defined
-namespace borked2
+end borked2
 
 
 namespace borked3
@@ -39,26 +40,26 @@ end borked3
 
 
 -- First we define our vector type with the right structures
-@[derive [add_comm_monoid, add_group, module ℚ, has_repr]] def vec : Type := ℚ
+@[derive [add_comm_monoid, add_group, module K, has_repr]] def vec : Type := K
 
 -- Now we define a torsor over this vector space
 @[derive [add_torsor vec, has_repr]] def pnt := K
 
--- With that we can define a few points
+
+
+-- define several points, initialized, as we see, by elements of K. 
 def pnt1 : pnt := (1/2:K)
 def pnt2 : pnt := (3/2:K)
-
-#eval pnt1
 
 -- We can confirm that supported operations work correctly
 def vec1 := pnt2 -ᵥ pnt1                -- YAY, point-point subtraction 
 def pnt3 := vec1 +ᵥ pnt2                -- YAY, action of vector on point
-def pnt4 := ((2/3) • vec1) +ᵥ pnt2    -- YAY, scalar mul (•) yields vec
+def pnt4 := ((2/3:ℚ) • vec1) +ᵥ pnt2      -- YAY, scalar mul (•) yields vec
 
--- The resulting values are correctly computed
+-- The resulting values are correctly computed?
 #eval vec1    -- expect 1
-#eval pnt3    -- expect 5/3
-#eval pnt4    -- expect 2/3*1 + 3/2 =
+#eval pnt3    -- expect 5/2
+#eval pnt4    -- expect 2/3 + 3/2 = 13/6
 
 -- And physically meaningless operations produce type errors 
 #check pnt1 + pnt1              -- oops, type error, can't add points
@@ -90,3 +91,4 @@ affine_space :
 
 -- @[derive [add_torsor   vec, has_repr]] def pnt := K
 -- @[derive [affine_space vec, has_repr]] def pnt := K
+

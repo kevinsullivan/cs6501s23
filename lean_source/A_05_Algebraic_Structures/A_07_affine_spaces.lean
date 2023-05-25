@@ -2,6 +2,7 @@ import linear_algebra.affine_space.basic
 import .A_04_torsors
 import group_theory.group_action
 import data.real.basic
+import algebra.direct_sum.basic
 
 /- TEXT: 
 
@@ -14,82 +15,114 @@ perspective of vector spaces, the beauty of torsors is that
 they allow us to represent *points*, not just differences,
 or vectors, between points. Torsors give us an *essential*
 mathematical structure for representing *physical* spaces,
-including points in time and in the geometric spaces that
-we inhabit.  
+comprising both points, e.g., in time, and *differences*,
+constituting vectors each acting by points by displacement.
 
 We thus have an algebraic structure in which, for example, 
-we can talk about points in 1D or 3D physical spaces as well
-as vectors that *act* upon points (such as the location of 
-a robot or any other object) by *translating* them. Vectors
-in time represent directed *durations*, while  vectors in 
-geometry  represent directed spatial *displacements*.
+we can talk about points in 1D or 3D physical spaces (such 
+as a point that some robot inhabits), as well as vectors,
+comrising differences between points, that *act* on points,
+again by displacing, or*translating* them. 
+
+Vectors in our 3-dgeometric space represent displacements: 
+differences between points in space. Vectors our idealied 
+1-d linear model of time are differences between points in
+time. Vectors represent temporal *durations* and spatial 
+*displacements*; but the mathematics now let's us model the
+points as separate, first-class entities. 
 
 In this chapter we'll formalize these abstractions and show
-how we can use them to represent type-correct computations 
-in such physical spaces.
+how to enforce the requisite type distinctions between points
+and vectors. while *inheriting* a full affine space structure
+on these new types. 
+
+The need for such a structure springs from the possibility of
+affine-algebraic, physical-layer type errors in computations in
+cases where the carrier sets of point and vector space typeclass
+instances coincide: e.g., where both the vector and point types
+simply are the rationals, ℚ. 
+
+What we have then is an example of lossy refinement. Distinctions 
+between values representing points and vectors are lost to Lean's 
+type system. All rational computations are allowed, some of which
+are not allowed at the affine/physical level. Example: if points
+are just rationals, they can be added together, but doing that has 
+no defined affine/physical-level meaning.  
 
 Introduction
 ------------
 
+Some redundancy here.
+
 A torsor whose actions (via -ᵥ) form a vector space is known 
 as an *affine space*. To have a vector space, the associated
-scalars must form a field. That means scalars have inverses,
-and so we have scalar division, thus scalar fractions, and 
-therefore we also have all *fractions* of vectors, as well
-(via scalar multiplication by scalar fractions). 
+scalars must form a *field*. That means scalars have inverse;
+thus scalar division, thus scalar fractions; and therefore via 
+scalar multiplication by scalar fraction we have *fractions of 
+actions* (i.e., of vectors) as well. 
 
 As an example, we'll first consider a one-dimensional torsor 
-whose points correspond to the rational numbers. Differences 
-(-ᵥ) will be computed by rational number subtraction, so vectors
-will also correspond to rational numbers. 
+whose points correspond to, and that we represent by, rational 
+numbers understood to be lacking a distinguished zero or origin. 
+Point differences (-ᵥ), on the other hand, are understood to be 
+rational numbers: elements of ℚ.  
 
-We'll see that if we use bare rational numbers to represent 
-points and vectors, we'll be able to perform physically and
-mathematically meaningless operations, such as the addition
-of two points. We'll then see how to use Lean's type system
-to distinguish between rationals representing points and those
-representing vectors, so as to be assured that type correct
-expressions are also physically and mathematically correct.  
+To see what can go wrong, suppose p is a point representedby the
+rational 1/2 and v is a vector, literally a rational, namely 1/4. 
+The expression v + p represents the point arrived at by translating
+p *in the direction and by the magnitude* of v. 
 
-For example, if p and v are rationals representing the *point* 
-1/2 and the vector, 1/4, we want to allow p + v, resulting in the 
-point 3/4. However, the expression p + p makes no physical sense, 
-and so should produce a type error, even though it makes sense to 
-add the underlying rational numbers. 
+Selecting the rationals to represent points was convenient, as we
+can now *compute* what has to be the resulting point (for all the
+algebra to work out): namely the point represented by the rational 
+number, 1/4 + 1/2 = 3/4.  
 
-The trick, as we'll see, is to define new types for points and
-vectors that are isomorphic to and represented by the rationals,
-and then to *lift*, from the rationals, only those operations 
-and structures that are necessary and sufficient to define an
-affine space of points over a vector space of actions. 
+However if we replace p by rational 1/2 and then compute p + p 
+as rational 1/2 + 1/2, we get a result, but it's not meaningful
+in affine algebra. We insist that it should produce a type error, 
+even though it makes sense to add the underlying rational numbers. 
+
+The trick, as we'll see, is to define a new type for points,
+represented by and thus isomorphic to but distinct from ℚ, 
+and subject to be acted on additively by ℚ-valued vectors. 
+Then we *lift*, from Lean's library of typeclass instances for 
+the rationals, the structures needed for our points to define
+a torsor over ℚ-valued vectors. Voila, a typed affine space. 
 
 In other words, we'll show how we can use types and type 
-checking in Lean to enforce mathematical consistency in 
-expressions meant to represent geometric and other physical
-computations involving affine spaces and their associated
-vector space operations. 
+checking in Lean to enforce the axioms/constraints of affine
+algebra even though under the hood we might be representing
+both points and vectors as values of the same type.  
 
 Example
 -------
 
-Suppose we want to model points in time and differences between
-them, also called durations, representing both by rational numbers
-(with which we can compute automatically). The points will form a
-torsor over the vector space of differences (vectors, durations), 
-which will thus also be represented by rational numbers. In this
-vector space, the scalar field will also be the rationals. 
+We will represent the physical dimension of time as a torsor of 
+points in time, isomorphic to the rationals, ℚ; over a rational 
+vector space of differences, which we'll call durations in time.
+We seek a type-system-enforced affine algebra in which to write
+computations in this model of points and durations in time. 
 
-As a concrete example, if we represent noon as a point in time,
-n = 0/1, and a duration of one hour as the rational number, h = 1, 
-then we can represent the time, one thirty, as n +ᵥ (3/2 * h). That
-is, the point, noon, plus the duration, one and a half hours. What
-we don't want to allow is an expression such as n + n. Noon plus
-noon makes no sense whatsoever and so should be ruled as a type
-error. 
+For example, if pa and pb are points in time, then dt = pa -ᵥ pb 
+must be a duration (vector), and dt +ᵥ pb = pa must always be true.
+Suppose pa = 1PM and pb = 3PM. Then dt = (1 - 3) hr = -2 hr. If we
+add -2hr to 3PM we get back to 1PM. It all works and makes sense.
 
-So let's look at a few false starts on such an algebra, and then
-we'll settle on a satisfactory design. 
+What we want to help programmers avoid are errors such as writing
+x = pa + pb. Adding points, such as 1PM and 3PM, just doesn't make
+any sense at all. Yet if we equate the type of points with ℚ then 
+we will be able to write such sums and they will compute. 
 
+The conclusion is that while we might want to represent *abstract* 
+points and vectors as rational numbers, we don't want to treat them 
+rationals. Points pa and pb can be subtracted to get a difference. 
+It is a vector. As such it can be multiplied by a scalar. And it is
+here and only here that rationals appear in our final abstraction of
+time as a (rational) affine space.
+
+Weakly Typed
+------------
+ 
 Points
 ~~~~~~
 
@@ -156,7 +189,7 @@ def pnt1 : pnt := (1/2:ℚ)
 def bork : pnt := pnt1 + pnt1  -- oops, operation not defined
 def brok : pnt := pnt1 +ᵥ pnt1 -- oops, operation not defined
 -- QUOTE.
-namespace borked2
+end borked2
 
 /- TEXT:
 So now we've got a new type, isomorphic to ℚ, but lacking 
@@ -216,35 +249,33 @@ TEXT. -/
 
 -- Now we define a torsor over this vector space
 @[derive [add_torsor vec, has_repr]] def pnt := K
-
-With that we've' constructed the typechecked affine algebra we have sought. 
-The following examples exhibit uses of the torsor and vector space operations
-for the case where points, vectors, and scalars are all (virtual copies of) ℚ. 
 -- QUOTE. 
 
 /- TEXT:
 Affine algebra
 ~~~~~~~~~~~~~~
 
+With that we've constructed a typechecked affine algebra of the kind
+we've sought. The following examples exhibit uses of the torsor and 
+vector space operations for the case where points, vectors, and scalars 
+are all (virtual copies of) ℚ. 
 TEXT. -/
 
 -- QUOTE:
 
-/-
-First define several points, initialized, as we see, by elements of K. 
--/
+-- define several points, initialized, as we see, by elements of K. 
 def pnt1 : pnt := (1/2:K)
 def pnt2 : pnt := (3/2:K)
 
 -- We can confirm that supported operations work correctly
 def vec1 := pnt2 -ᵥ pnt1                -- YAY, point-point subtraction 
 def pnt3 := vec1 +ᵥ pnt2                -- YAY, action of vector on point
-def pnt4 := ((2/3) • vec1) +ᵥ pnt2      -- YAY, scalar mul (•) yields vec
+def pnt4 := ((2/3:ℚ) • vec1) +ᵥ pnt2      -- YAY, scalar mul (•) yields vec
 
--- The resulting values are correctly computed
+-- The resulting values are correctly computed?
 #eval vec1    -- expect 1
-#eval pnt3    -- expect 5/3
-#eval pnt4    -- expect 2/3*1 + 3/2 =
+#eval pnt3    -- expect 5/2
+#eval pnt4    -- expect 2/3 + 3/2 = 13/6
 
 -- And physically meaningless operations produce type errors 
 #check pnt1 + pnt1              -- oops, type error, can't add points
@@ -255,15 +286,22 @@ def pnt''' := ((2/3:ℚ) * vec1) +ᵥ pnt1  -- oops, first term is ℚ not vec
 -- QUOTE. 
 
 
-/- TEXT: 
+/- TEXT:
+We thus now have an algebraic structure that we set out to
+construct at the beginning of this class: a statically type
+checked, and computable affine space abstraction. As a final
+detail, we note that could have used mathlib's *affine_space*
+typeclass in lieu of add_torsor, as they mean the same thing.
+
+
 affine_space V P
 ----------------
 
--- Still under construction. 
+Still a bit under construction. Just one idea. 
 
 In Lean, *affine_space V P*, where *V* is the type of
 vectors and P is the type of torsor elements, or points, 
-is just anotation for *add_torsor V P.* 
+is just a *notation* for *add_torsor V P.* 
 
 `affine_space <https://leanprover-community.github.io/mathlib_docs/linear_algebra/affine_space/basic.html>`_
 TEXT. -/
@@ -298,3 +336,4 @@ TEXT. -/
 -- @[derive [add_torsor   vec, has_repr]] def pnt := K
 -- @[derive [affine_space vec, has_repr]] def pnt := K
 -- QUOTE. 
+

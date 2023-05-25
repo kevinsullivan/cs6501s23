@@ -170,3 +170,40 @@ stripped of mappings by/into any particular coordinate
 system. The group structure of the differences can be
 imposed on the points relative to any selected origin
 point.
+
+
+==== affine spaces
+We'll see that if we use bare rational numbers to represent 
+points and vectors, we'll be able to perform physically and
+mathematically meaningless operations, such as the addition
+of two points. We'll then see how to use Lean's type system
+to distinguish between rationals representing points and those
+representing vectors, so as to be assured that type correct
+expressions are also physically and mathematically correct.  
+
+
+
+
+
+   writing physically meaningless code,
+and to enforce the abstraction of an affine space, we want to hide 
+operations on the rationals even though we're *representing* our
+points and vectors as rationals. 
+
+
+
+When we need to, we choose
+the zerovector to designate the point represented by rational zero. 
+We could choose any other point, represented by any other rational
+as the origin, and it would make no difference in our algebra.
+
+As an example, if we represent noon as the zero point in time
+n = (0:ℚ), and a duration of one hour as the rational number, h = 1/1, 
+then we can represent the time, one thirty, as n +ᵥ (3/2 * h). That
+is, the point, noon, plus the duration, one and a half hours. What
+we don't want to allow is an expression such as n + n: noon plus
+noon makes no sense and should be ruled as a type error. 
+
+Let's look at a few false starts on such an algebra, ultimately
+funding a fully satisfactory design. 
+

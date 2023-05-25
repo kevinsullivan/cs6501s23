@@ -1,5 +1,17 @@
 import .A_07_affine_spaces
 
+/- TEXT:
+
+A dihedral group is a semidirect product of a cyclic group
+of rotations and a flip group of order two. 
+
+See Wikipedia here: The group operation is (r₁, s₁) * (r₂, s₂) = 
+(r₁ * s₁(r₂), s₁s₂) where * denotes the group operation in C_n, 
+s₁(r₂) denotes the conjugate of r₂ by s₁, and s₁s₂ denotes the 
+product of s₁ and s₂ in Z_2.
+
+
+TEXT.-/
 
 namespace d3
 

@@ -151,6 +151,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#id15">6.7.2. Example</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#points">6.7.2.1. Points</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#vectors">6.7.2.2. Vectors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#affine-algebra">6.7.2.3. Affine algebra</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#affine-space-v-p">6.7.3. affine_space V P</a></li>
@@ -2373,19 +2374,37 @@ perspective of vector spaces, the beauty of torsors is that
 they allow us to represent <em>points</em>, not just differences,
 or vectors, between points. Torsors give us an <em>essential</em>
 mathematical structure for representing <em>physical</em> spaces,
-including points in time and in the geometric spaces that
-we inhabit.</p>
+comprising both points, e.g., in time, and <em>differences</em>,
+constituting vectors each acting by points by displacement.</p>
 <p>We thus have an algebraic structure in which, for example,
-we can talk about points in 1D or 3D physical spaces as well
-as vectors that <em>act</em> upon points (such as the location of
-a robot or any other object) by <em>translating</em> them. Vectors
-in time represent directed <em>durations</em>, while  vectors in
-geometry  represent directed spatial <em>displacements</em>.</p>
+we can talk about points in 1D or 3D physical spaces (such
+as a point that some robot inhabits), as well as vectors,
+comrising differences between points, that <em>act</em> on points,
+again by displacing, or*translating* them.</p>
+<p>Vectors in our 3-dgeometric space represent displacements:
+differences between points in space. Vectors our idealied
+1-d linear model of time are differences between points in
+time. Vectors represent temporal <em>durations</em> and spatial
+<em>displacements</em>; but the mathematics now let&#8217;s us model the
+points as separate, first-class entities.</p>
 <p>In this chapter we&#8217;ll formalize these abstractions and show
-how we can use them to represent type-correct computations
-in such physical spaces.</p>
+how to enforce the requisite type distinctions between points
+and vectors. while <em>inheriting</em> a full affine space structure
+on these new types.</p>
+<p>The need for such a structure springs from the possibility of
+affine-algebraic, physical-layer type errors in computations in
+cases where the carrier sets of point and vector space typeclass
+instances coincide: e.g., where both the vector and point types
+simply are the rationals, &#8474;.</p>
+<p>What we have then is an example of lossy refinement. Distinctions
+between values representing points and vectors are lost to Lean&#8217;s
+type system. All rational computations are allowed, some of which
+are not allowed at the affine/physical level. Example: if points
+are just rationals, they can be added together, but doing that has
+no defined affine/physical-level meaning.</p>
 <section id="id14">
 <h3><span class="section-number">6.7.1. </span>Introduction<a class="headerlink" href="#id14" title="Permalink to this heading">&#61633;</a></h3>
+<p>Some redundancy here.</p>
 <p>A torsor whose actions (via -&#7525;) form a vector space is known
 as an <em>affine space</em>. To have a vector space, the associated
 scalars must form a field. That means scalars have inverses,
@@ -2450,7 +2469,7 @@ them as vectors, neither of which we want to be permitted.</p>
 to use. In this chapter, we&#8217;ll set it to &#8474;, but in principle it can
 change, e.g., to &#8477;.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=abbreviation%20K%20%3A%3D%20%E2%84%9A%20%20%20%20%20%20%20%20%20%20%20%20--%20abstract%20field%20to%20make%20it%20easy%20to%20change" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_104.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=abbreviation%20K%20%3A%3D%20%E2%84%9A%20%20%20%20%20%20%20%20%20%20%20%20--%20abstract%20field%20to%20make%20it%20easy%20to%20change" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_126.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">abbreviation</span> <span class="n">K</span> <span class="o">:=</span> <span class="n">&#8474;</span>            <span class="c1">-- abstract field to make it easy to change</span>
 </pre></div>
 </div>
@@ -2461,7 +2480,7 @@ to define pnt as being identical to the type, K, which in turn is
 identical to the type &#8474;; so writing pnt will be exactly the same
 as writing &#8474;.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=abbreviation%20pnt%20%3A%3D%20K%20%20%20%20%20%20%20%20%20%20%20--%20represent%20points%20by%20field%20values%0Adef%20pnt1%20%3A%20pnt%20%3A%3D%20(1%2F2%3AK)%20%20%20%20%20%20%20--%20a%20point%20represented%20arbitrarily%20by%201%2F2%0A%0A--%20this%20approach%20does%20not%20rule%20out%20bad%20expressions%0Adef%20bork%20%3A%3D%20pnt1%20%2B%20pnt1%20%20%20%20%20%20%20%20%20--%20oops%2C%20point-point%20addition%20makes%20no%20sense%0Adef%20brok%20%3A%3D%20pnt1%20%2B%E1%B5%A5%20pnt1%20%20%20%20%20%20%20%20--%20oops%2C%20treating%20point%20as%20vector%20is%20not%20good" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_115.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=abbreviation%20pnt%20%3A%3D%20K%20%20%20%20%20%20%20%20%20%20%20--%20represent%20points%20by%20field%20values%0Adef%20pnt1%20%3A%20pnt%20%3A%3D%20(1%2F2%3AK)%20%20%20%20%20%20%20--%20a%20point%20represented%20arbitrarily%20by%201%2F2%0A%0A--%20this%20approach%20does%20not%20rule%20out%20bad%20expressions%0Adef%20bork%20%3A%3D%20pnt1%20%2B%20pnt1%20%20%20%20%20%20%20%20%20--%20oops%2C%20point-point%20addition%20makes%20no%20sense%0Adef%20brok%20%3A%3D%20pnt1%20%2B%E1%B5%A5%20pnt1%20%20%20%20%20%20%20%20--%20oops%2C%20treating%20point%20as%20vector%20is%20not%20good" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_137.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">abbreviation</span> <span class="n">pnt</span> <span class="o">:=</span> <span class="n">K</span>           <span class="c1">-- represent points by field values</span>
 <span class="kd">def</span> <span class="n">pnt1</span> <span class="o">:</span> <span class="n">pnt</span> <span class="o">:=</span> <span class="o">(</span><span class="mi">1</span><span class="bp">/</span><span class="mi">2</span><span class="o">:</span><span class="n">K</span><span class="o">)</span>       <span class="c1">-- a point represented arbitrarily by 1/2</span>
 
@@ -2481,7 +2500,7 @@ of pnt as the type of elements in a torsor.</p>
 <p>In Lean, defining a new type name using <em>def</em> actually creates
 a distinct type. So we will try that now.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20pnt%20%3A%3D%20%E2%84%9A%0Adef%20pnt1%20%3A%20pnt%20%3A%3D%20(1%2F2%3A%E2%84%9A)%0Adef%20bork%20%3A%20pnt%20%3A%3D%20pnt1%20%2B%20pnt1%20%20--%20oops%2C%20operation%20not%20defined%0Adef%20brok%20%3A%20pnt%20%3A%3D%20pnt1%20%2B%E1%B5%A5%20pnt1%20--%20oops%2C%20operation%20not%20defined" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_138.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=def%20pnt%20%3A%3D%20%E2%84%9A%0Adef%20pnt1%20%3A%20pnt%20%3A%3D%20(1%2F2%3A%E2%84%9A)%0Adef%20bork%20%3A%20pnt%20%3A%3D%20pnt1%20%2B%20pnt1%20%20--%20oops%2C%20operation%20not%20defined%0Adef%20brok%20%3A%20pnt%20%3A%3D%20pnt1%20%2B%E1%B5%A5%20pnt1%20--%20oops%2C%20operation%20not%20defined" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_160.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="kd">def</span> <span class="n">pnt</span> <span class="o">:=</span> <span class="n">&#8474;</span>
 <span class="kd">def</span> <span class="n">pnt1</span> <span class="o">:</span> <span class="n">pnt</span> <span class="o">:=</span> <span class="o">(</span><span class="mi">1</span><span class="bp">/</span><span class="mi">2</span><span class="o">:</span><span class="n">&#8474;</span><span class="o">)</span>
 <span class="kd">def</span> <span class="n">bork</span> <span class="o">:</span> <span class="n">pnt</span> <span class="o">:=</span> <span class="n">pnt1</span> <span class="bp">+</span> <span class="n">pnt1</span>  <span class="c1">-- oops, operation not defined</span>
@@ -2495,7 +2514,7 @@ those structures for our pnt type? The answer is no, we can
 <em>lift</em> the structures defined for &#8474; that we want defined
 for our pnt type using &#64;derive.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20add_torsor%20%E2%84%9A%0A%40%5Bderive%20%5Badd_torsor%20%E2%84%9A%5D%5D%20def%20pnt%20%3A%20Type%20%3A%3D%20%E2%84%9A%0Adef%20pnt1%20%3A%20pnt%20%3A%3D%20(1%2F2%3A%E2%84%9A)%0Adef%20vec%20%3A%3D%20pnt1%20-%E1%B5%A5%20pnt1%20%20%20--%20oh%2C%20hooray%2C%20allowed%0Adef%20nope%20%3A%3D%20pnt1%20%2B%20pnt1%20%20%20--%20oh%2C%20hooray%2C%20disallowed%0A%23check%20vec%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20oops%2C%20just%20bare%20rationals" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_152.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20add_torsor%20%E2%84%9A%0A%40%5Bderive%20%5Badd_torsor%20%E2%84%9A%5D%5D%20def%20pnt%20%3A%20Type%20%3A%3D%20%E2%84%9A%0Adef%20pnt1%20%3A%20pnt%20%3A%3D%20(1%2F2%3A%E2%84%9A)%0Adef%20vec%20%3A%3D%20pnt1%20-%E1%B5%A5%20pnt1%20%20%20--%20oh%2C%20hooray%2C%20allowed%0Adef%20nope%20%3A%3D%20pnt1%20%2B%20pnt1%20%20%20--%20oh%2C%20hooray%2C%20disallowed%0A%23check%20vec%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20oops%2C%20just%20bare%20rationals" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_174.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="n">add_torsor</span> <span class="n">&#8474;</span>
 <span class="kd">@[derive [add_torsor &#8474;]</span><span class="o">]</span> <span class="kd">def</span> <span class="n">pnt</span> <span class="o">:</span> <span class="kt">Type</span> <span class="o">:=</span> <span class="n">&#8474;</span>
 <span class="kd">def</span> <span class="n">pnt1</span> <span class="o">:</span> <span class="n">pnt</span> <span class="o">:=</span> <span class="o">(</span><span class="mi">1</span><span class="bp">/</span><span class="mi">2</span><span class="o">:</span><span class="n">&#8474;</span><span class="o">)</span>
@@ -2530,28 +2549,36 @@ a list of structures already defined in the libraries for &#8474;.
 Further, not that deriving from has_repr allows Lean to print
 out pnt and vec values in the same way it&#8217;d print rationals.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20First%20we%20define%20our%20vector%20type%20with%20the%20right%20structures%0A%40%5Bderive%20%5Badd_comm_monoid%2C%20add_group%2C%20module%20%E2%84%9A%2C%20has_repr%5D%5D%20def%20vec%20%3A%20Type%20%3A%3D%20%E2%84%9A%0A%0A--%20Now%20we%20define%20a%20torsor%20over%20this%20vector%20space%0A%40%5Bderive%20%5Badd_torsor%20vec%2C%20has_repr%5D%5D%20def%20pnt%20%3A%3D%20K%0A%0A--%20With%20that%20we%20can%20define%20a%20few%20points%0Adef%20pnt1%20%3A%20pnt%20%3A%3D%20(1%2F2%3AK)%0Adef%20pnt2%20%3A%20pnt%20%3A%3D%20(3%2F2%3AK)%0A%0A%23eval%20pnt1%0A%0A--%20We%20can%20confirm%20that%20supported%20operations%20work%20correctly%0Adef%20vec1%20%3A%3D%20pnt2%20-%E1%B5%A5%20pnt1%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20YAY%2C%20point-point%20subtraction%0Adef%20pnt3%20%3A%3D%20vec1%20%2B%E1%B5%A5%20pnt2%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20YAY%2C%20action%20of%20vector%20on%20point%0Adef%20pnt4%20%3A%3D%20((2%2F3)%20%E2%80%A2%20vec1)%20%2B%E1%B5%A5%20pnt2%20%20%20%20--%20YAY%2C%20scalar%20mul%20(%E2%80%A2)%20yields%20vec%0A%0A--%20The%20resulting%20values%20are%20correctly%20computed%0A%23eval%20vec1%20%20%20%20--%20expect%201%0A%23eval%20pnt3%20%20%20%20--%20expect%205%2F3%0A%23eval%20pnt4%20%20%20%20--%20expect%202%2F3*1%20%2B%203%2F2%20%3D%0A%0A--%20And%20physically%20meaningless%20operations%20produce%20type%20errors%0A%23check%20pnt1%20%2B%20pnt1%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20oops%2C%20type%20error%2C%20can't%20add%20points%0Adef%20vec'%20%3A%3D%20pnt2%20-%20pnt1%20%20%20%20%20%20%20%20%20--%20oops%2C%20type%20error%2C%20use%20torsor%20-%E1%B5%A5%20operation%0Adef%20pnt'%20%3A%3D%20pnt2%20%2B%20vec1%20%20%20%20%20%20%20%20%20--%20oops%2C%20type%20error%2C%20use%20vec-point%20%2B%E1%B5%A5%0Adef%20pnt''%20%3A%3D%20pnt2%20%2B%E1%B5%A5%20vec1%20%20%20%20%20%20%20--%20oops%2C%20vector%20arg%20has%20to%20come%20first%0Adef%20pnt'''%20%3A%3D%20((2%2F3%3A%E2%84%9A)%20*%20vec1)%20%2B%E1%B5%A5%20pnt1%20%20--%20oops%2C%20first%20term%20is%20%E2%84%9A%20not%20vec" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_190.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20First%20we%20define%20our%20vector%20type%20with%20the%20right%20structures%0A%40%5Bderive%20%5Badd_comm_monoid%2C%20add_group%2C%20module%20K%2C%20has_repr%5D%5D%20def%20vec%20%3A%20Type%20%3A%3D%20K%0A%0A--%20Now%20we%20define%20a%20torsor%20over%20this%20vector%20space%0A%40%5Bderive%20%5Badd_torsor%20vec%2C%20has_repr%5D%5D%20def%20pnt%20%3A%3D%20K" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_212.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- First we define our vector type with the right structures</span>
-<span class="kd">@[derive [add_comm_monoid, add_group, module &#8474;, has_repr]</span><span class="o">]</span> <span class="kd">def</span> <span class="n">vec</span> <span class="o">:</span> <span class="kt">Type</span> <span class="o">:=</span> <span class="n">&#8474;</span>
+<span class="kd">@[derive [add_comm_monoid, add_group, module K, has_repr]</span><span class="o">]</span> <span class="kd">def</span> <span class="n">vec</span> <span class="o">:</span> <span class="kt">Type</span> <span class="o">:=</span> <span class="n">K</span>
 
 <span class="c1">-- Now we define a torsor over this vector space</span>
 <span class="kd">@[derive [add_torsor vec, has_repr]</span><span class="o">]</span> <span class="kd">def</span> <span class="n">pnt</span> <span class="o">:=</span> <span class="n">K</span>
-
-<span class="c1">-- With that we can define a few points</span>
+</pre></div>
+</div>
+</div></section>
+<section id="affine-algebra">
+<h4><span class="section-number">6.7.2.3. </span>Affine algebra<a class="headerlink" href="#affine-algebra" title="Permalink to this heading">&#61633;</a></h4>
+<p>With that we&#8217;ve constructed a typechecked affine algebra of the kind
+we&#8217;ve sought. The following examples exhibit uses of the torsor and
+vector space operations for the case where points, vectors, and scalars
+are all (virtual copies of) &#8474;.</p>
+<div style="position: relative">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20define%20several%20points%2C%20initialized%2C%20as%20we%20see%2C%20by%20elements%20of%20K.%0Adef%20pnt1%20%3A%20pnt%20%3A%3D%20(1%2F2%3AK)%0Adef%20pnt2%20%3A%20pnt%20%3A%3D%20(3%2F2%3AK)%0A%0A--%20We%20can%20confirm%20that%20supported%20operations%20work%20correctly%0Adef%20vec1%20%3A%3D%20pnt2%20-%E1%B5%A5%20pnt1%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20YAY%2C%20point-point%20subtraction%0Adef%20pnt3%20%3A%3D%20vec1%20%2B%E1%B5%A5%20pnt2%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20YAY%2C%20action%20of%20vector%20on%20point%0Adef%20pnt4%20%3A%3D%20((2%2F3%3A%E2%84%9A)%20%E2%80%A2%20vec1)%20%2B%E1%B5%A5%20pnt2%20%20%20%20%20%20--%20YAY%2C%20scalar%20mul%20(%E2%80%A2)%20yields%20vec%0A%0A--%20The%20resulting%20values%20are%20correctly%20computed%3F%0A%23eval%20vec1%20%20%20%20--%20expect%201%0A%23eval%20pnt3%20%20%20%20--%20expect%205%2F2%0A%23eval%20pnt4%20%20%20%20--%20expect%202%2F3%20%2B%203%2F2%20%3D%2013%2F6%0A%0A--%20And%20physically%20meaningless%20operations%20produce%20type%20errors%0A%23check%20pnt1%20%2B%20pnt1%20%20%20%20%20%20%20%20%20%20%20%20%20%20--%20oops%2C%20type%20error%2C%20can't%20add%20points%0Adef%20vec'%20%3A%3D%20pnt2%20-%20pnt1%20%20%20%20%20%20%20%20%20--%20oops%2C%20type%20error%2C%20use%20torsor%20-%E1%B5%A5%20operation%0Adef%20pnt'%20%3A%3D%20pnt2%20%2B%20vec1%20%20%20%20%20%20%20%20%20--%20oops%2C%20type%20error%2C%20use%20vec-point%20%2B%E1%B5%A5%0Adef%20pnt''%20%3A%3D%20pnt2%20%2B%E1%B5%A5%20vec1%20%20%20%20%20%20%20--%20oops%2C%20vector%20arg%20has%20to%20come%20first%0Adef%20pnt'''%20%3A%3D%20((2%2F3%3A%E2%84%9A)%20*%20vec1)%20%2B%E1%B5%A5%20pnt1%20%20--%20oops%2C%20first%20term%20is%20%E2%84%9A%20not%20vec" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_229.lean">
+try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- define several points, initialized, as we see, by elements of K.</span>
 <span class="kd">def</span> <span class="n">pnt1</span> <span class="o">:</span> <span class="n">pnt</span> <span class="o">:=</span> <span class="o">(</span><span class="mi">1</span><span class="bp">/</span><span class="mi">2</span><span class="o">:</span><span class="n">K</span><span class="o">)</span>
 <span class="kd">def</span> <span class="n">pnt2</span> <span class="o">:</span> <span class="n">pnt</span> <span class="o">:=</span> <span class="o">(</span><span class="mi">3</span><span class="bp">/</span><span class="mi">2</span><span class="o">:</span><span class="n">K</span><span class="o">)</span>
-
-<span class="k">#eval</span> <span class="n">pnt1</span>
 
 <span class="c1">-- We can confirm that supported operations work correctly</span>
 <span class="kd">def</span> <span class="n">vec1</span> <span class="o">:=</span> <span class="n">pnt2</span> <span class="bp">-&#7525;</span> <span class="n">pnt1</span>                <span class="c1">-- YAY, point-point subtraction</span>
 <span class="kd">def</span> <span class="n">pnt3</span> <span class="o">:=</span> <span class="n">vec1</span> <span class="bp">+&#7525;</span> <span class="n">pnt2</span>                <span class="c1">-- YAY, action of vector on point</span>
-<span class="kd">def</span> <span class="n">pnt4</span> <span class="o">:=</span> <span class="o">((</span><span class="mi">2</span><span class="bp">/</span><span class="mi">3</span><span class="o">)</span> <span class="bp">&#8226;</span> <span class="n">vec1</span><span class="o">)</span> <span class="bp">+&#7525;</span> <span class="n">pnt2</span>    <span class="c1">-- YAY, scalar mul (&#8226;) yields vec</span>
+<span class="kd">def</span> <span class="n">pnt4</span> <span class="o">:=</span> <span class="o">((</span><span class="mi">2</span><span class="bp">/</span><span class="mi">3</span><span class="o">:</span><span class="n">&#8474;</span><span class="o">)</span> <span class="bp">&#8226;</span> <span class="n">vec1</span><span class="o">)</span> <span class="bp">+&#7525;</span> <span class="n">pnt2</span>      <span class="c1">-- YAY, scalar mul (&#8226;) yields vec</span>
 
-<span class="c1">-- The resulting values are correctly computed</span>
+<span class="c1">-- The resulting values are correctly computed?</span>
 <span class="k">#eval</span> <span class="n">vec1</span>    <span class="c1">-- expect 1</span>
-<span class="k">#eval</span> <span class="n">pnt3</span>    <span class="c1">-- expect 5/3</span>
-<span class="k">#eval</span> <span class="n">pnt4</span>    <span class="c1">-- expect 2/3*1 + 3/2 =</span>
+<span class="k">#eval</span> <span class="n">pnt3</span>    <span class="c1">-- expect 5/2</span>
+<span class="k">#eval</span> <span class="n">pnt4</span>    <span class="c1">-- expect 2/3 + 3/2 = 13/6</span>
 
 <span class="c1">-- And physically meaningless operations produce type errors</span>
 <span class="k">#check</span> <span class="n">pnt1</span> <span class="bp">+</span> <span class="n">pnt1</span>              <span class="c1">-- oops, type error, can&#39;t add points</span>
@@ -2561,17 +2588,22 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 <span class="kd">def</span> <span class="n">pnt&#39;&#39;&#39;</span> <span class="o">:=</span> <span class="o">((</span><span class="mi">2</span><span class="bp">/</span><span class="mi">3</span><span class="o">:</span><span class="n">&#8474;</span><span class="o">)</span> <span class="bp">*</span> <span class="n">vec1</span><span class="o">)</span> <span class="bp">+&#7525;</span> <span class="n">pnt1</span>  <span class="c1">-- oops, first term is &#8474; not vec</span>
 </pre></div>
 </div>
-</div></section>
+</div><p>We thus now have an algebraic structure that we set out to
+construct at the beginning of this class: a statically type
+checked, and computable affine space abstraction. As a final
+detail, we note that could have used mathlib&#8217;s <em>affine_space</em>
+typeclass in lieu of add_torsor, as they mean the same thing.</p>
+</section>
 </section>
 <section id="affine-space-v-p">
 <h3><span class="section-number">6.7.3. </span>affine_space V P<a class="headerlink" href="#affine-space-v-p" title="Permalink to this heading">&#61633;</a></h3>
-<p>&#8211; Still under construction.</p>
+<p>Still a bit under construction. Just one idea.</p>
 <p>In Lean, <em>affine_space V P</em>, where <em>V</em> is the type of
 vectors and P is the type of torsor elements, or points,
-is just anotation for <em>add_torsor V P.</em></p>
+is just a <em>notation</em> for <em>add_torsor V P.</em></p>
 <p><a class="reference external" href="https://leanprover-community.github.io/mathlib_docs/linear_algebra/affine_space/basic.html">affine_space</a></p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20%40add_torsor%0A%2F-%0Aadd_torsor%20%3A%0A%20%20%CE%A0%20(G%20%3A%20out_param%20(Type%20u_1))%2C%0A%20%20%20%20Type%20u_2%20%E2%86%92%0A%20%20%CE%A0%20%5B_inst_1%20%3A%20out_param%20(add_group%20G)%5D%2C%0A%20%20%20%20Type%20(max%20u_1%20u_2)-%2F%0A%0Aopen_locale%20affine%0A%23check%20affine_space%0A%2F-%0Aaffine_space%20%3A%0A%20%20%CE%A0%20(G%20%3A%20out_param%20(Type%20u_1))%2C%0A%20%20%20%20Type%20u_2%20%E2%86%92%0A%20%20%CE%A0%20%5B_inst_1%20%3A%20out_param%20(add_group%20G)%5D%2C%0A%20%20%20%20Type%20(max%20u_1%20u_2)%0A-%2F" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_233.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=%23check%20%40add_torsor%0A%2F-%0Aadd_torsor%20%3A%0A%20%20%CE%A0%20(G%20%3A%20out_param%20(Type%20u_1))%2C%0A%20%20%20%20Type%20u_2%20%E2%86%92%0A%20%20%CE%A0%20%5B_inst_1%20%3A%20out_param%20(add_group%20G)%5D%2C%0A%20%20%20%20Type%20(max%20u_1%20u_2)-%2F%0A%0Aopen_locale%20affine%0A%23check%20affine_space%0A%2F-%0Aaffine_space%20%3A%0A%20%20%CE%A0%20(G%20%3A%20out_param%20(Type%20u_1))%2C%0A%20%20%20%20Type%20u_2%20%E2%86%92%0A%20%20%CE%A0%20%5B_inst_1%20%3A%20out_param%20(add_group%20G)%5D%2C%0A%20%20%20%20Type%20(max%20u_1%20u_2)%0A-%2F" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_271.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="k">#check</span> <span class="bp">@</span><span class="n">add_torsor</span>
 <span class="c">/-</span>
 <span class="cm">add_torsor :</span>
@@ -2595,7 +2627,7 @@ try it!</a></div><div class="highlight-lean notranslate"><div class="highlight">
 an actual affine_space, with no effect on the meaning of our
 definitions.</p>
 <div style="position: relative">
-<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20%40%5Bderive%20%5Badd_torsor%20%20%20vec%2C%20has_repr%5D%5D%20def%20pnt%20%3A%3D%20K%0A--%20%40%5Bderive%20%5Baffine_space%20vec%2C%20has_repr%5D%5D%20def%20pnt%20%3A%3D%20K" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_257.lean">
+<div style='position: absolute; right: 0; top: 0; padding: 1ex'><a href="https://leanprover-community.github.io/lean-web-editor/#code=--%20%40%5Bderive%20%5Badd_torsor%20%20%20vec%2C%20has_repr%5D%5D%20def%20pnt%20%3A%3D%20K%0A--%20%40%5Bderive%20%5Baffine_space%20vec%2C%20has_repr%5D%5D%20def%20pnt%20%3A%3D%20K" target="_blank" tryitfile="../examples/A_05_Algebraic_Structures/unnamed_295.lean">
 try it!</a></div><div class="highlight-lean notranslate"><div class="highlight"><pre><span></span><span class="c1">-- @[derive [add_torsor   vec, has_repr]] def pnt := K</span>
 <span class="c1">-- @[derive [affine_space vec, has_repr]] def pnt := K</span>
 </pre></div>
