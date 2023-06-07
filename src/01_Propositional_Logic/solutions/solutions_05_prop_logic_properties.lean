@@ -1,3 +1,0 @@
-
-#check tt = tt
-

@@ -121,6 +121,7 @@ def zero_left_ident_add_nat : ∀ (a : ℕ), (nat.add 0 a = a)
 
 
 
+
 #check @nat.rec_on
 
 
@@ -143,7 +144,6 @@ def fac' : ℕ → ℕ
 #eval fac' 5
 
 #eval fac 5
-
 
 
 -- We now have that zero is an *additive identity for ℕ*
@@ -223,10 +223,6 @@ apply zero_left_ident_add_nat,
 end
 
 
--- Construct a proof, nat_add_assoc, that nat.add is associative.
--- Construct a proof, nat_mul_assoc, that nat.mul is associative.
-
-
 theorem nat_add_assoc : 
   ∀ (a b c), 
     nat.add a (nat.add b c) =
@@ -247,6 +243,15 @@ end
 
 -- EXERCISE: Prove that nat.mul is associative
 
+/-
+In the middle of trying to prove this theorem, we run into the need
+for another theorem, not yet proved: one that shows that nat add and
+mul follow the distributive law for multiplication on the left over 
+a sum. We present here an example of how one can assume a proof of a
+lemma using sorry, with the intent of filling it in later. This gives
+you a practical approach to top-down proof construction, just like 
+you might follow a discipline of top-down program construction.  
+-/
 theorem nat_mul_assoc : 
   ∀ (a b c : ℕ), nat.mul a (nat.mul b c) = nat.mul (nat.mul a b) c :=
 begin
@@ -265,7 +270,7 @@ have mul_distrib_add_nat_left :
 apply mul_distrib_add_nat_left,
 end
 
-
+-- We leave the proof of left distributivity as an exercise (not trivial)
 lemma mul_distrib_add_nat_left : 
   ∀ x y z, 
     nat.mul x (nat.add y z) = 
@@ -304,11 +309,107 @@ def foldr' {α : Type} : @monoid α → list α → α
 
 
 def monoid_list_append' {α : Type}: @monoid (list α) :=
-  monoid.mk list.append [] _ _
+  monoid.mk list.append [] sorry sorry 
 
 #eval foldr' monoid_list_append' [[1,2,3],[4,5,6],[7,8,9]]
 
 
+
+-- To be proved
+theorem nil_identity_append_list {α : Type u}: 
+  ∀ (l : list α), 
+    list.append list.nil l = l ∧ 
+    list.append l list.nil = l := sorry
+
+-- Here again is the definition list.append (++). 
+#check @list.append
+/-
+def append : list α → list α → list α
+| []       l := l
+| (h :: s) t := h :: (append s t)
+-/
+
+
+def list_nil_right_ident_for {α : Type u} (l : list α) :=
+  list.append l [] = l
+
+
+lemma list_base {α : Type u} : 
+  list_nil_right_ident_for ([] : list α) :=
+begin
+-- unfold list_nil_right_ident_for,
+exact rfl,  -- Lean unfolds name automatically here
+end
+
+-- Now let's prove a step lemma.
+#check @list.rec_on
+
+lemma list_step {α : Type u} : 
+  -- given any new head element, hd
+  (Π (hd : α) 
+  -- and any existing list, l'
+     (l' : list α), 
+  -- if [] is a right identity for l'
+     list_nil_right_ident_for l' → 
+  -- then it's a right identity for one-bigger list
+     list_nil_right_ident_for (hd :: l')) :=
+begin
+unfold list_nil_right_ident_for,
+assume hd l' ih,
+simp [list.append], -- simplify using second rule of append
+assumption,         -- the induction hypothesis finishes it off QED
+end 
+
+-- Now we build a recursive function to return proof for any l
+#check list_base
+
+def nil_right_ident_append_list' {α : Type} : ∀ (l' : list α), list.append l' [] = l'
+| (list.nil) := list_base
+| (h::t) := list_step h t (nil_right_ident_append_list' t)
+
+-- Seems to work!
+#check nil_right_ident_append_list' [1,2]
+
+
+
+
+#check @list.rec_on
+/-
+nat.rec_on :                    
+  Π {motive : ℕ → Sort u_1}   -- property or return value type
+    (n : ℕ),                  -- input argument value
+    motive 0 →                -- answer for base case
+    (Π ('n : ℕ),              -- step function (higher-order!)
+      motive n' → 
+      motive n'.succ
+    ) → 
+  motive n                    -- return values, by recursion
+-/
+
+#check @list.rec_on
+/-
+list.rec_on :
+  Π {T : Type u_2}                -- for any list element type
+    {motive : list T → Sort u_1}  -- property or return type
+    (n : list T),                 -- input argument value  
+    motive list.nil →             -- proof/value for base case
+    (Π (hd : T)                   -- step function: understand it
+       (tl : list T), 
+       motive tl → 
+       motive (hd :: tl)) → 
+  motive n                        -- return value, by recursion
+
+
+QUESTION: What new element is present in the rule for lists
+that isn't involved in the rule for natural numbers?
+
+
+
+/-
+def append : list α → list α → list α
+| []       l := l
+| (h :: s) t := h :: (append s t)
+-/
 
 
 theorem nil_left_ident_append_list (α : Type) : ∀ (l : list α), list.nil ++ l = l :=
@@ -325,19 +426,16 @@ assume l,
 induction l,
 simp [list.append],
 simp,
-end 
+end
 
--- Here's another formal demonstration of the same point
-variables (α : Type) (a : α) (l : list α) 
-example: list.nil ++ l = l := by simp    -- first rule
-example : l ++ list.nil  = l := by simp  -- by [simp] lemma in Lean library
+
 
 
 
 inductive le (n : nat): nat → Prop 
 -- n is an implicit firt argument to each constructor
-| refl : le /-n-/ n     
-| step : ∀ m, le /-n-/ m → le /-n-/ m.succ
+| refl : le (n) n     
+| step : ∀ m, le (n) m → le (n) m.succ
 
 -- you can see it in the types of the constructors
 #check @le.refl

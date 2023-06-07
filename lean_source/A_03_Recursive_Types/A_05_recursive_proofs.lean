@@ -129,6 +129,7 @@ end
 -- QUOTE. 
 
 /- TEXT:
+
 A Solution
 ~~~~~~~~~~
 
@@ -324,6 +325,7 @@ induction*.
 TEXT. -/
 
 /- TEXT:
+
 Summary: Proof by Induction
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -358,6 +360,8 @@ zero is an additive identity (on the left and right) for the
 natural numbers.  
 TEXT. -/
 
+-- QUOTE:
+
 #check @nat.rec_on
 
 
@@ -380,7 +384,7 @@ def fac' : ℕ → ℕ
 #eval fac' 5
 
 #eval fac 5
-
+-- QUOTE. 
 
 /- TEXT:
 
@@ -434,8 +438,9 @@ The plan going forward is:
 TEXT. -/
 
 /- TEXT:
-Induction Axioms
-~~~~~~~~~~~~~~~~
+
+Induction Axiom for ℕ 
+~~~~~~~~~~~~~~~~~~~~~
 
 The principle we've developed is available as an axiom 
 generated from the definition of the nat data type. The
@@ -490,14 +495,14 @@ end
 -- QUOTE.
 
 /- TEXT:
-Examples  
-~~~~~~~~
+
+Theorem: 1 is identity for ⟨ℕ, *⟩  
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Here from Lean's library is the definition
 of natural number multiplication. Your job 
 is to prove that 1 is an identity (left and
-right identity) for nat multiplication. Fill
-in the missing proof.
+right identity) for ⟨ℕ, *⟩. Fill in the missing proof.
 TEXT. -/
 
 
@@ -529,12 +534,20 @@ rw ih,
 simp [nat.mul],
 apply zero_left_ident_add_nat,
 end
+-- QUOTE.
 
+/- TEXT:
 
--- Construct a proof, nat_add_assoc, that nat.add is associative.
--- Construct a proof, nat_mul_assoc, that nat.mul is associative.
+Theorems: ℕ + and * associative
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+In this section we'll first construct a proof, nat_add_assoc, 
+that nat.add is associative, then we'll do the same, under the
+name, nat_mul_assoc, showing that nat.mul is associative, too.
 
+TEXT. -/
+
+-- QUOTE:
 theorem nat_add_assoc : 
   ∀ (a b c), 
     nat.add a (nat.add b c) =
@@ -555,6 +568,15 @@ end
 
 -- EXERCISE: Prove that nat.mul is associative
 
+/-
+In the middle of trying to prove this theorem, we run into the need
+for another theorem, not yet proved: one that shows that nat add and
+mul follow the distributive law for multiplication on the left over 
+a sum. We present here an example of how one can assume a proof of a
+lemma using sorry, with the intent of filling it in later. This gives
+you a practical approach to top-down proof construction, just like 
+you might follow a discipline of top-down program construction.  
+-/
 theorem nat_mul_assoc : 
   ∀ (a b c : ℕ), nat.mul a (nat.mul b c) = nat.mul (nat.mul a b) c :=
 begin
@@ -573,7 +595,7 @@ have mul_distrib_add_nat_left :
 apply mul_distrib_add_nat_left,
 end
 
-
+-- We leave the proof of left distributivity as an exercise (not trivial)
 lemma mul_distrib_add_nat_left : 
   ∀ x y z, 
     nat.mul x (nat.add y z) = 
@@ -633,7 +655,7 @@ TEXT. -/
 
 -- QUOTE:
 def monoid_list_append' {α : Type}: @monoid (list α) :=
-  monoid.mk list.append [] _ _
+  monoid.mk list.append [] sorry sorry 
 
 #eval foldr' monoid_list_append' [[1,2,3],[4,5,6],[7,8,9]]
 -- QUOTE.
@@ -643,33 +665,196 @@ All that remains is to provide the requisite proofs that
 append and nil satisfy the *monoid laws*. Unlike the proofs
 of identities and associativity for natural number operations,
 however, we now need to show that [] is an identity for *list*
-append. If only proof by induction worked as well for lists as
-for natural numbers! As we'll see next, we're in luck. 
+append and that append is associative. If proof by induction 
+worked as well for lists as for natural numbers we'd be all
+set. As we'll see next, we're in luck. 
 TEXT. -/
 
-
 /- TEXT:
-Generalizing from Induction on ℕ
+
+Induction Axioms
+----------------
+
+In this chapter, we will meet the idea that there is
+an induction axiom for *every* inductive definition. 
+We'll start by showing that our reasoning about 0
+being an identity for nat.add extends directly to
+showing that [] is an identity (left and right) for
+list.append. We'll then discuss the general case.
+
+Theorem: [] list append identity  
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Our next task is to construct a *cerified* monoid over 
-lists of values of any type with append as the *add* 
-operator and *list.nil* ([]) as the identity. Once again 
-we'll have to show *[]* is both a left and right identity 
-for append, where one proof is by the definition of append
-and the other is by induction. We'll also need a proof
-that *list.append* is associative: *∀ (l m n : list α), 
-(l ++ m) ++ n = l ++ (m ++ n).  
+Our overall aim is to show that ⟨list α, [], ++⟩ is
+a monoid. Then we'll be able to use foldr to extend
+++ to an operation that will append any number of
+lists as long as they are themselves arranged in a
+list of lists. 
 
-Here's the definition of list.append.
-You can see it defines [] as a left identity for any list. 
-
-def append : list α → list α → list α
-| []       l := l
-| (h :: s) t := h :: (append s t)
+We therefore need to show that [] is an identity on
+the left and right for append (++), and that append
+is associative. Let's take the first theorem here:
+[] is an identity for ++. 
 TEXT. -/
 
 -- QUOTE:
+-- To be proved
+theorem nil_identity_append_list {α : Type u}: 
+  ∀ (l : list α), 
+    list.append list.nil l = l ∧ 
+    list.append l list.nil = l := sorry
+
+-- Here again is the definition list.append (++). 
+#check @list.append
+/-
+def append : list α → list α → list α
+| []       l := l
+| (h :: s) t := h :: (append s t)
+-/
+-- QUOTE.
+
+/- TEXT: 
+By definition, list.nil is a left identity, but as
+with nat.add, there's no rule telling us that [] is
+a right identity. It thus appears (and is the case)
+that we will have to prove that [] is an identity on
+the right by induction.
+
+Let's think about what the induction will look like.
+It will be induction on the left argument to append.
+First we'll need a proof that [] is a right identity
+for [] on the left. Then we'll need to show that *if*
+for any list, l' on the left, [] is a right identity
+for l' then it's a right identity for any one-larger
+list. Such a one-larger list can be any list, hd::l', 
+where hd could be any element of type α. 
+
+Let's start with a bottom-up approach. We'll begin
+by formally defining the *property* of lists that
+we want to show is universal, that [] is a right
+identity for any list, l.
+TEXT. -/
+
+-- QUOTE:
+def list_nil_right_ident_for {α : Type u} (l : list α) :=
+  list.append l [] = l
+
+
+lemma list_base {α : Type u} : 
+  list_nil_right_ident_for ([] : list α) :=
+begin
+-- unfold list_nil_right_ident_for,
+exact rfl,  -- Lean unfolds name automatically here
+end
+
+-- Now let's prove a step lemma.
+#check @list.rec_on
+
+lemma list_step {α : Type u} : 
+  -- given any new head element, hd
+  (Π (hd : α) 
+  -- and any existing list, l'
+     (l' : list α), 
+  -- if [] is a right identity for l'
+     list_nil_right_ident_for l' → 
+  -- then it's a right identity for one-bigger list
+     list_nil_right_ident_for (hd :: l')) :=
+begin
+unfold list_nil_right_ident_for,
+assume hd l' ih,
+simp [list.append], -- simplify using second rule of append
+assumption,         -- the induction hypothesis finishes it off QED
+end 
+
+-- Now we build a recursive function to return proof for any l
+#check list_base
+
+def nil_right_ident_append_list' {α : Type} : ∀ (l' : list α), list.append l' [] = l'
+| (list.nil) := list_base
+| (h::t) := list_step h t (nil_right_ident_append_list' t)
+
+-- Seems to work!
+#check nil_right_ident_append_list' [1,2]
+
+-- QUOTE.
+
+
+/- TEXT:
+
+Induction Axiom for Lists
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We see again that there's nothing myseterious about proof by induction.
+If we have base values/proofs and step functions to build next-bigger 
+ones, and we can have a function that (using recursion on these elements)
+computes a value/proof for any given input value, and thus for all values
+of the input type. 
+
+Proof by induction is done by functions that compute results using
+recursion on given base values and step functions.  Every inductive
+axiom can be understood as a proof of universal generalization that
+asserts that every value of some input type has a corresponging result
+value of type. These return values can be proofs of properties or they
+can be function return values of any type. 
+
+Let's look at and compare and contrast the induction axioms (they're 
+just higher order functions!) for the nat and list α types. We'll then 
+show how the same ideas developed in the last example apply directly 
+as well to induction on list values. 
+TEXT. -/
+
+-- QUOTE:
+#check @list.rec_on
+/-
+nat.rec_on :                    
+  Π {motive : ℕ → Sort u_1}   -- property or return value type
+    (n : ℕ),                  -- input argument value
+    motive 0 →                -- answer for base case
+    (Π ('n : ℕ),              -- step function (higher-order!)
+      motive n' → 
+      motive n'.succ
+    ) → 
+  motive n                    -- return values, by recursion
+-/
+
+#check @list.rec_on
+/-
+list.rec_on :
+  Π {T : Type u_2}                -- for any list element type
+    {motive : list T → Sort u_1}  -- property or return type
+    (n : list T),                 -- input argument value  
+    motive list.nil →             -- proof/value for base case
+    (Π (hd : T)                   -- step function: understand it
+       (tl : list T), 
+       motive tl → 
+       motive (hd :: tl)) → 
+  motive n                        -- return value, by recursion
+
+
+QUESTION: What new element is present in the rule for lists
+that isn't involved in the rule for natural numbers?
+-- QUOTE.
+
+
+/- TEXT: 
+Once again we'll have to show *[]* is both a left and 
+right identity for append, where one proof is by the 
+definition of append and the other is by induction. We'll 
+also need a proof that *list.append* is associative: 
+*∀ (l m n : list α), (l ++ m) ++ n = l ++ (m ++ n).  
+
+Here's the definition of list.append.
+You can see it defines [] as a left identity for any list. 
+TEXT. -/
+
+-- QUOTE:
+/-
+def append : list α → list α → list α
+| []       l := l
+| (h :: s) t := h :: (append s t)
+-/
+
+
 theorem nil_left_ident_append_list (α : Type) : ∀ (l : list α), list.nil ++ l = l :=
 begin
 assume l,
@@ -689,14 +874,6 @@ nil ++ h::t = h::t. By the second axiom of list append,
 we can rewrite nil ++ h::t as h::(nil ++ t), where we can
 obtain (and then us) a proof that nil ++ t = t by recursion,
 terminating when t =nil. 
-
-Fortunately, Lean's library already contains a proof that
-nil is a right identity, and it's annotated as *[simp]*,
-which means that the *simp* tactic will try to use it to
-prove our goal. In other words, we can use [simp] to prove
-the harder case precisely because someone else has already
-done the work for us; and they did it recursively just as
-we did to show that 0 is a right identity for addition. 
 TEXT. -/
 
 -- QUOTE:
@@ -707,35 +884,43 @@ assume l,
 induction l,
 simp [list.append],
 simp,
-end 
-
--- Here's another formal demonstration of the same point
-variables (α : Type) (a : α) (l : list α) 
-example: list.nil ++ l = l := by simp    -- first rule
-example : l ++ list.nil  = l := by simp  -- by [simp] lemma in Lean library
+end
 -- QUOTE.
 
 /- TEXT:
 
-Induction Axioms
-----------------
+Theorem: monoid (list α)
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-YOU MAY STOP READING HERE. THE REMAINDER IS STILL *UNDER CONSTRUCTION.*
+The work you've done until now should have you prepared to finish off
+the definition of a monoid instance for list α, [], list.append. You need
+the following:
 
+- a proof that list.append is associative
+- to package up the elements you now have into a finished monoid instance
+- tests passing this monoid to foldr to see it doing the right things
+
+This is your homework. You should try it by yourself, for sure, and put strong
+effort into solving it. If you end up fruitlessly stuck, you may go ahead and
+talk to others, but take the minimal input needed to get unstuck. Maximize your
+learning and understanding.
 TEXT. -/
 
 /- TEXT:
+
 Inductive Families
 ------------------
 
 Coming soon.
 TEXT. -/
 
+
+
 -- QUOTE:
 inductive le (n : nat): nat → Prop 
 -- n is an implicit firt argument to each constructor
-| refl : le /-n-/ n     
-| step : ∀ m, le /-n-/ m → le /-n-/ m.succ
+| refl : le (n) n     
+| step : ∀ m, le (n) m → le (n) m.succ
 
 -- you can see it in the types of the constructors
 #check @le.refl

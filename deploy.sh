@@ -8,10 +8,6 @@
 #     exit 1
 # fi
 
-# Build
-lean_source/mkall.sh
-make clean html latexpdf
-
 # 3. Deploy
 pushd build/html
 aws s3 cp ./ s3://website-computingfoundations-org-prod-site --recursive

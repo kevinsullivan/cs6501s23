@@ -1,0 +1,209 @@
+M-specific implementations of the abstract interface elements
+and then use those implementation elements as arguments in
+constructing a typeclass instance.
+
+(We sometimes use *class* to mean typeclass.  Don't confuse
+this usage of class with classes in OO languages. The right 
+analogy is that a typeclass in Lean is akin to an abstract 
+interface definition in in an OO language, and a typeclass
+instance is akin to an implementation of that interface.
+
+
+====
+
+/- TEXT: 
+
+has_inv 
+~~~~~~~~
+
+TEXT. -/
+
+-- QUOTE:
+#check @has_inv
+/-
+class has_inv      (α : Type u) := (inv : α → α)
+
+An instance of has_inv holds a single unary operator, inv, 
+on group elements of type α, and provides the notation, a⁻¹, 
+for (inv a). 
+-/
+
+#check @has_div
+/-
+class has_div      (α : Type u) := (div : α → α → α)
+
+An instance of has_div holds a single binary operator, div, 
+on group elements of type α, and provides the notation, a/b 
+to mean (mul a (inv b)), or (add a (inv b)), depending on
+whether one is working with a multiplicative or additive
+group. The notion of division is generalized from arithmetic
+to any group in this way. 
+-/
+-- QUOTE.
+
+/- TEXT:
+An instance of the has_inv typeclass will have one field
+value, a total function from group elements to other group 
+elements. In the context of a group, it will be cosntrained
+to behave as a genuine inverse operation must: that given 
+an element, r, it will return an element r⁻¹, such that
+r⁻¹ * r = 1 (the group identity element). 
+
+Of course the * operator will have to have an inverse for
+every element of the group. We'll now define an inverse
+operation for our rotations and will soon show that it 
+satisfies the axioms for being a (left) inverse. 
+
+
+====
+
+rotation-specific inv 
+~~~~~~~~~~~~~~~~~~~~~~
+
+TEXT. -/
+
+-- QUOTE:
+-- Here's our inverse operation
+def rot_inv : rot → rot := _
+-- it comes with ⁻¹ as a notation
+
+-- Let's stick it in a has_inv instance for rot
+instance : has_inv rot := _
+-- QUOTE.
+
+/- TEXT:
+
+rotation-specific div
+~~~~~~~~~~~~~~~~~~~~~
+
+Instantiating has_div for rot requires a 
+rot-specific implementation of div(ision).
+This function just multiplies by the inv(erse).
+TEXT. -/
+
+-- QUOTE:
+-- Here's our rotation-specific division operation
+def rot_div (x y : rot) :=  x * y⁻¹
+-- note use of notations from monoid (*) and has_inv
+
+-- Now wecan instantiate has_div for rot 
+instance has_div_rot : has_div rot := _
+-- thus overloading div(ision) (/) for rot
+-- QUOTE.
+
+/- TEXT: 
+
+Demo
+~~~~
+TEXT. -/
+
+-- QUOTE:
+/-
+Verify test correctness in your head by 
+first expanding the definition of div, then
+unfolding the application of ⁻¹, and finally
+reasoning about the "geometry" of the example. 
+-/
+example :r240 / r240 = 1 := rfl
+
+-- QUOTE.
+
+/- TEXT:
+
+
+
+======= Torsors
+What this means is we can do arithmetic on transformations 
+in the group--addition, substraction, and multiplication by
+natural number constants (n-iterated addition) separately 
+from the actions then apply the result, or we can apply 
+all the separate transformations, and in either case we'll
+get the same result.
+====
+
+Phys modeling
+
+
+We can model several important physical dimensions, 
+particularly classical geometry and time, as affine 
+spaces. An affine space has the same architecture as 
+our example: a group (in particular a vector space) 
+of actions and a torsor of points, with point-point 
+(-ᵥ) and vector+point (+ᵥ) operations that satisfy
+the torsor axioms. 
+
+A vector space in turn has more structure that a mere
+group. First, it includes scalar vector multiplication. 
+Second, scalars must come from a field. Third, all of
+this plays into how such objects act on other objects. 
+For now the details don't matter. 
+
+What does matter is that you intuit how replacing 
+transformation *groups* with transformation *vector 
+spaces* within torsor instances could make a ton of
+space. A vector (transformation) transforms a point 
+by *translating* it by that "geometric" difference.
+
+Moreover, if you pick an origin point, you then 
+then lay the vector space origin over that point
+to "map" the torsor by the vector space relative
+to the selected origin. (Assuming vector space
+comes with unit [what conditions?] vectors.) 
+
+The key idea will be that every point is mapped 
+by a vector difference from the origin, and that 
+these can be represented as the coefficients of
+linear combinations of basis vectors. In this way
+we can impose non-canonical coordinate systems on 
+otherwise coordinate free, abstract, point spaces,
+provided that they and their difference operations
+work in the right ways with the group actions.  
+
+For example, we can't impose a vector space structure
+on tri. The vector space axioms define linear spaces 
+and won't work with our small set of triangles as the
+points of such a space. 
+
+Perhaps a better way, then, to think of the points set 
+of a vector space torsor, is as exactly the points but
+stripped of mappings by/into any particular coordinate
+system. The group structure of the differences can be
+imposed on the points relative to any selected origin
+point.
+
+
+==== affine spaces
+We'll see that if we use bare rational numbers to represent 
+points and vectors, we'll be able to perform physically and
+mathematically meaningless operations, such as the addition
+of two points. We'll then see how to use Lean's type system
+to distinguish between rationals representing points and those
+representing vectors, so as to be assured that type correct
+expressions are also physically and mathematically correct.  
+
+
+
+
+
+   writing physically meaningless code,
+and to enforce the abstraction of an affine space, we want to hide 
+operations on the rationals even though we're *representing* our
+points and vectors as rationals. 
+
+
+
+When we need to, we choose
+the zerovector to designate the point represented by rational zero. 
+We could choose any other point, represented by any other rational
+as the origin, and it would make no difference in our algebra.
+
+As an example, if we represent noon as the zero point in time
+n = (0:ℚ), and a duration of one hour as the rational number, h = 1/1, 
+then we can represent the time, one thirty, as n +ᵥ (3/2 * h). That
+is, the point, noon, plus the duration, one and a half hours. What
+we don't want to allow is an expression such as n + n: noon plus
+noon makes no sense and should be ruled as a type error. 
+
+Let's look at a few false starts on such an algebra, ultimately
+funding a fully satisfactory design. 
+

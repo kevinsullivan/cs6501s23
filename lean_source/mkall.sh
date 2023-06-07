@@ -27,6 +27,20 @@ lean_source/mkdoc.py A_03_Recursive_Types A_03_polymorphic_lists
 lean_source/mkdoc.py A_03_Recursive_Types A_04_higher_order_functions
 lean_source/mkdoc.py A_03_Recursive_Types A_05_recursive_proofs
 
-lean_source/mkdoc.py A_04_Dependent_Types A_00_unit_title
-lean_source/mkdoc.py A_04_Dependent_Types A_01_Sigma_types
-lean_source/mkdoc.py A_04_Dependent_Types A_02_Pi_types
+lean_source/mkdoc.py A_04_Typeclasses A_00_unit_title
+lean_source/mkdoc.py A_04_Typeclasses A_01_review
+lean_source/mkdoc.py A_04_Typeclasses A_02_monoids
+lean_source/mkdoc.py A_04_Typeclasses A_03_typeclasses
+
+lean_source/mkdoc.py A_05_Algebraic_Structures A_00_unit_title
+lean_source/mkdoc.py A_05_Algebraic_Structures A_01_monoids
+lean_source/mkdoc.py A_05_Algebraic_Structures A_02_groups
+lean_source/mkdoc.py A_05_Algebraic_Structures A_03_group_actions
+lean_source/mkdoc.py A_05_Algebraic_Structures A_04_torsors
+lean_source/mkdoc.py A_05_Algebraic_Structures A_05_modules
+lean_source/mkdoc.py A_05_Algebraic_Structures A_06_vector_spaces
+lean_source/mkdoc.py A_05_Algebraic_Structures A_07_affine_spaces
+
+lean_source/mkdoc.py A_06_Dependent_Types A_00_unit_title
+lean_source/mkdoc.py A_06_Dependent_Types A_01_Sigma_types
+lean_source/mkdoc.py A_06_Dependent_Types A_02_Pi_types
