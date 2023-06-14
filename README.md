@@ -25,15 +25,7 @@ notation for tensors, coordinate-free points on smooth
 manifolds, and charts imposing coordinate systems on them,
 that the software is meant to implement.
 
-This work has been funded in part by the National Science Foundation as part of our project on the Physical Semantics
-of Code. In this project we are devising, realizing, and 
-evaluating new concepts and methods for constructing software
-in statically typechecked and foundationally verified abstract
-mathematics--the mathematics of any given domain. For now we
-are working on classical physics in the service of robotics 
-and cyber-physical systems more generally.
-
-This is vague. Feel free to reach out: sullivan@virginia.edu.
+This work has been funded in part by the National Science Foundation as part of our project on the Physical Semantics of Code. In this project we are devising, realizing, and  evaluating new concepts and methods for constructing semantic domains for complex computations in statically typechecked and foundationally verified abstract mathematics--the mathematics of any given domain. For now we are working on formalizing aspects of classical physics in the service of robotics and cyber-physical systems more generally.
 
 This Repository
 ---------------
