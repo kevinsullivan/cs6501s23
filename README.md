@@ -5,13 +5,7 @@ Mathematical Foundations of Complex Computations
 TL;DR
 -----
 
-This repo supports the development and delivery of notes for an early graduate course in computer science at the University Virginia. This course is intended to take early graduate students from a point of having no knowledge of formal reasoning through basics of logic and proof using the Lean proof assistant, and into the realm of formalized mathematics. The thesis underlying this work is that CS can now benefit greatly by taking advantage of rapid advances in the formalization of abstract and advanced mathemtics to provide deep semantic foundations for critical areas of computer science, including robotics, cyberphysical systems more generally, and AI. This work is thes intended to start to feel a significant gap between mathematics and computer science research.
-
-on how we in CS might leverage advances in the
-formalization of abstract mathematics, being driven by
-a peer community of mathematicians, to fundamentally
-improve software design, productivity, and dependability. 
-The deployed notes as of now are [here](https://www.computingfoundations.org).
+This repo supports the development and delivery of notes for an early graduate course in computer science at the University Virginia. This course is intended to take early graduate students from a point of having no knowledge of formal reasoning through basics of logic and proof using the Lean proof assistant, and into the realm of formalized mathematics. The thesis underlying this work is that CS can now benefit greatly by taking advantage of rapid advances in the formalization of abstract and advanced mathemtics to provide deep semantic foundations for critical areas of computer science, including robotics, cyberphysical systems more generally, and AI. This work is thes intended to start to feel a significant gap between mathematics and computer science research to improve software design, productivity, and dependability. The evolving notes are [here](https://www.computingfoundations.org). We solicit interest and are open to research community engagement.
 
 Motivation
 ----------
