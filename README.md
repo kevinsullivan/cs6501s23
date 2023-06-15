@@ -1,6 +1,6 @@
 
-Mathematical Foundations of Complex Computations
-================================================
+Abstract Mathematics as Semantics Domains for Complex Computations
+==================================================================
 
 TL;DR
 -----
