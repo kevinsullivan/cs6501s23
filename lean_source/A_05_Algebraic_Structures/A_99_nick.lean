@@ -118,3 +118,59 @@ def md : app :=
       )
     )                 -- body end, loop back
   
+/-
+Technical claim: ∃ (a : app), P a, where it seems that 
+P could well be of interest to the community. The proof
+is constructive. That is, we present a witness along with
+a demonstration that the witness has the stated property.
+The challege is to have a P that's new, interesting, and
+useful. What is P? What such properties will our apps have 
+that no others to our knowledge do? 
+
+Explain at a technical but reasonably concise level each
+of the challenges (including what you need to know about
+the particuar stack we used to see the specific problems
+we found and for which we present a solution). The claim
+would be interesting only to the extent that the output 
+is significantly novel in conception. The idea of "mere"
+compositional full-stack modularity is already out. What
+is our P? An example of a technical problem you seem to
+have handled is the sequencing of invocations of apps in 
+sequential compositions of component apps. Now you're on
+to state.
+
+So what is the corresponding specific technical problem
+formulation you're grappling with here? One answer might
+be that the problem is to synthesize state type for a 
+stateful app possibly composed from given component apps. 
+
+Along with the type needs to come an interface/API for
+doing data operations on objects of this type, as allowed
+by their types. 
+
+What ideas are in play here?
+
+- apps have state 
+- apps have apis implementing these types
+  - new
+  - init
+  - delete (or whatever)
+  - etc
+
+
+How can
+you compose states, let me count the ways. For example,
+merge (union), or by contrast sum (disjoint union). And
+from where come the APIs by which on accesses them?
+-/
+
+variables 
+  fe_gui      -- front-end interaction/experience ("gui")
+  fe_proxy    -- concept proxy
+  be_api_ep :  -- concept api: state, metadata, functions, procedures
+  Type
+
+structure app_str  
+  (gui : fe_gui) 
+  (prx : fe_proxy) 
+  (api : be_api_ep)

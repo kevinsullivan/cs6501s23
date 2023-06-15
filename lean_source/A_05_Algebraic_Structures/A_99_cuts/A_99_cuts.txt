@@ -207,3 +207,18 @@ noon makes no sense and should be ruled as a type error.
 Let's look at a few false starts on such an algebra, ultimately
 funding a fully satisfactory design. 
 
+====
+
+The need for such a structure springs from the possibility of
+type errors in computations in
+cases where the carrier sets of point and vector space typeclass
+instances coincide: e.g., where both the vector and point types
+simply are the rationals, ℚ. 
+
+What we have then is an example of lossy refinement. Distinctions 
+between values representing points and vectors are lost to Lean's 
+type system. All rational computations are allowed, some of which
+are not allowed at the affine/physical level. Example: if points
+are just rationals, they can be added together, but doing that has 
+no defined affine/physical-level meaning.  
+

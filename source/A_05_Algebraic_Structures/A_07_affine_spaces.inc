@@ -5,114 +5,145 @@ Affine Spaces
 
 While physics and mathematics are usually taught from the
 perspective of vector spaces, the beauty of torsors is that 
-they allow us to represent *points*, not just differences,
-or vectors, between points. Torsors give us an *essential*
-mathematical structure for representing *physical* spaces,
-comprising both points, e.g., in time, and *differences*,
-constituting vectors each acting by points by displacement.
+they allow us to represent *points*, not just differences
+between points (vectors). 
 
-We thus have an algebraic structure in which, for example, 
-we can talk about points in 1D or 3D physical spaces (such 
-as a point that some robot inhabits), as well as vectors,
-comrising differences between points, that *act* on points,
-again by displacing, or*translating* them. 
+Torsors give us an *essential* structure for representing 
+*physical* spaces, comprising both points, e.g., in time, 
+and *differences*, constituting vectors (e.g., durations)
+that act on points additively by displacement.
 
-Vectors in our 3-dgeometric space represent displacements: 
-differences between points in space. Vectors our idealied 
-1-d linear model of time are differences between points in
-time. Vectors represent temporal *durations* and spatial 
-*displacements*; but the mathematics now let's us model the
-points as separate, first-class entities. 
+We thus have an algebraic structure in which we can talk 
+about points in 1D or 3D physical spaces, such as points 
+in our 3-dimensional geometric space, or in 1-dimensional
+time. 
 
-In this chapter we'll formalize these abstractions and show
-how to enforce the requisite type distinctions between points
-and vectors. while *inheriting* a full affine space structure
-on these new types. 
+In this chapter we'll formalize these abstractions. We will 
+explain how one can represent certain physical spaces as 
+affine spaces; how one can represent computations involving
+points and vectors; how one can statically enforce these  
+abstractions while mostly eliminating the possibility of
+writing expressions that lack physical interpretations. 
 
-The need for such a structure springs from the possibility of
-affine-algebraic, physical-layer type errors in computations in
-cases where the carrier sets of point and vector space typeclass
-instances coincide: e.g., where both the vector and point types
-simply are the rationals, ℚ. 
+In this chapter, as an example we'll mostly stick with the
+representation of the *physical* space of *time* as a 1-D 
+rational affine space. We will get to a final design in a 
+few steps. To generalize from rational to other (e.g, real)
+affine spaces, we'll use the identifer, *K*, to represent 
+the scalar type, defining it here as *Q*, but writing the
+rest of our definitions in terms of *K*. 
 
-What we have then is an example of lossy refinement. Distinctions 
-between values representing points and vectors are lost to Lean's 
-type system. All rational computations are allowed, some of which
-are not allowed at the affine/physical level. Example: if points
-are just rationals, they can be added together, but doing that has 
-no defined affine/physical-level meaning.  
+.. code-block:: lean
 
-Introduction
-------------
+  abbreviation K := ℚ   -- Make K a mere alias for ℚ 
 
-Some redundancy here.
 
-A torsor whose actions (via -ᵥ) form a vector space is known 
-as an *affine space*. To have a vector space, the associated
-scalars must form a field. That means scalars have inverses,
-and so we have scalar division, thus scalar fractions, and 
-therefore we also have all *fractions* of vectors, as well
-(via scalar multiplication by scalar fractions). 
+Rational 1-Torsor  
+-----------------
 
-As an example, we'll first consider a one-dimensional torsor 
-whose points correspond to the rational numbers. Differences 
-(-ᵥ) will be computed by rational number subtraction, so vectors
-will also correspond to rational numbers. 
+With that, we're ready to represent time as a 1-D rational
+affine space. This choice will enable us (and Lean) to carry
+out *computations* involving points and vectors, which would
+not be possible if we chose, for example, to represent time
+as a *real* affine space. 
 
-We'll see that if we use bare rational numbers to represent 
-points and vectors, we'll be able to perform physically and
-mathematically meaningless operations, such as the addition
-of two points. We'll then see how to use Lean's type system
-to distinguish between rationals representing points and those
-representing vectors, so as to be assured that type correct
-expressions are also physically and mathematically correct.  
+In this design we'll represent points, vectors, and scalars 
+as rational numbers. To remind us of our intended intepretations
+of such numbers, we'll provide *lightweight abstractions* by
+defining *pnt*, *vec*, and *scl* as alternative names (type
+aliases) for the rational number type, ℚ. (Lean uses the name, 
+*vector*, for an unrelated type, so we avoid using it here.)
 
-For example, if p and v are rationals representing the *point* 
-1/2 and the vector, 1/4, we want to allow p + v, resulting in the 
-point 3/4. However, the expression p + p makes no physical sense, 
-and so should produce a type error, even though it makes sense to 
-add the underlying rational numbers. 
 
-The trick, as we'll see, is to define new types for points and
-vectors that are isomorphic to and represented by the rationals,
-and then to *lift*, from the rationals, only those operations 
-and structures that are necessary and sufficient to define an
-affine space of points over a vector space of actions. 
+The choice to represent points, vectors, and scalars all as
+rational will make it straightforward to implement torsor, 
+vector space, and scalar operations in terms of underlying
+rational number operations. Yet we will have to be careful
+not to write expressions that work as rational expressions
+but that are inconsistent with geometric/physical meaning. 
+For example, addition of points makes no sense, even though
+the addition of rationals that represent points does; but 
+in this case a rational result no longer represents a point,
+vector, or scalar. 
+
+A torsor whose differences (via -ᵥ) form a vector space is 
+known as an *affine space*. To have a vector space, in turn, 
+the associated scalars must form a *field*. That means scalars
+have inverses, thus scalar division, and thus scalar fractions. 
+That in turn entails that scalar multiplication by fractions
+gives rise to *fractions of actions* (i.e., of vectors). 
+
+As an example, consider a one-dimensional torsor whose points 
+can be placed in in 1-1 correspondence with, and that thus be 
+represented by, rational numbers. Once one picks a point, p, 
+to be associated with, and usually represented by (0:ℚ), every
+other point in the torsor can then be specified as (p +ᵥ v) for
+some vector, v, in the associated 1-dimensional vector space.   
+
+To see what can go wrong, suppose p is a point representedby the
+rational 1/2 and v is a vector, literally a rational, namely 1/4. 
+The expression v + p represents the point arrived at by translating
+p *in the direction and by the magnitude* of v. 
+
+Selecting the rationals to represent points was convenient, as we
+can now *compute* what has to be the resulting point (for all the
+algebra to work out): namely the point represented by the rational 
+number, 1/4 + 1/2 = 3/4.  
+
+However if we replace p by rational 1/2 and then compute p + p 
+as rational 1/2 + 1/2, we get a result, but it's not meaningful
+in affine algebra. We insist that it should produce a type error, 
+even though it makes sense to add the underlying rational numbers. 
+
+The trick, as we'll see, is to define a new type for points,
+represented by and thus isomorphic to but distinct from ℚ, 
+and subject to be acted on additively by ℚ-valued vectors. 
+Then we *lift*, from Lean's library of typeclass instances for 
+the rationals, the structures needed for our points to define
+a torsor over ℚ-valued vectors. Voila, a typed affine space. 
 
 In other words, we'll show how we can use types and type 
-checking in Lean to enforce mathematical consistency in 
-expressions meant to represent geometric and other physical
-computations involving affine spaces and their associated
-vector space operations. 
+checking in Lean to enforce the axioms/constraints of affine
+algebra even though under the hood we might be representing
+both points and vectors as values of the same type.  
 
 Example
 -------
 
-Suppose we want to model points in time and differences between
-them, also called durations, representing both by rational numbers
-(with which we can compute automatically). The points will form a
-torsor over the vector space of differences (vectors, durations), 
-which will thus also be represented by rational numbers. In this
-vector space, the scalar field will also be the rationals. 
+We will represent the physical dimension of time as a torsor of 
+points in time, isomorphic to the rationals, ℚ; over a rational 
+vector space of differences, which we'll call durations in time.
+We seek a type-system-enforced affine algebra in which to write
+computations in this model of points and durations in time. 
 
-As a concrete example, if we represent noon as a point in time,
-n = 0/1, and a duration of one hour as the rational number, h = 1, 
-then we can represent the time, one thirty, as n +ᵥ (3/2 * h). That
-is, the point, noon, plus the duration, one and a half hours. What
-we don't want to allow is an expression such as n + n. Noon plus
-noon makes no sense whatsoever and so should be ruled as a type
-error. 
+For example, if pa and pb are points in time, then dt = pa -ᵥ pb 
+must be a duration (vector), and dt +ᵥ pb = pa must always be true.
+Suppose pa = 1PM and pb = 3PM. Then dt = (1 - 3) hr = -2 hr. If we
+add -2hr to 3PM we get back to 1PM. It all works and makes sense.
 
-So let's look at a few false starts on such an algebra, and then
-we'll settle on a satisfactory design. 
+What we want to help programmers avoid are errors such as writing
+x = pa + pb. Adding points, such as 1PM and 3PM, just doesn't make
+any sense at all. Yet if we equate the type of points with ℚ then 
+we will be able to write such sums and they will compute. 
 
+The conclusion is that while we might want to represent *abstract* 
+points and vectors as rational numbers, we don't want to treat them 
+rationals. Points pa and pb can be subtracted to get a difference. 
+It is a vector. As such it can be multiplied by a scalar. And it is
+here and only here that rationals appear in our final abstraction of
+time as a (rational) affine space.
+
+Weakly Typed
+------------
+ 
 Points
 ~~~~~~
 
 We will represent our 1-d space of points in time by rationals. We
 do not treat the rational number, 0, as being special. There is no
 distinguished origin in classical time. We will represent durations
-as vector differences between such points. What can go wrong?
+as vector differences betwe
+en such points. What can go wrong?
 
 One approach is to define type, *pnt* (for "point"), as just another
 name for ℚ. In Lean this can be done using *abbreviation.* In this

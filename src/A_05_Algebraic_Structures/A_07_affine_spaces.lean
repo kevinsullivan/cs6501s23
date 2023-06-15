@@ -5,6 +5,12 @@ import data.real.basic
 import algebra.direct_sum.basic
 
 
+abbreviation K := ℚ   -- Make K a mere alias for ℚ 
+
+
+
+
+
 abbreviation K := ℚ            -- abstract field to make it easy to change
 
 
@@ -17,7 +23,6 @@ def pnt1 : pnt := (1/2:K)       -- a point represented arbitrarily by 1/2
 def bork := pnt1 + pnt1         -- oops, point-point addition makes no sense
 def brok := pnt1 +ᵥ pnt1        -- oops, treating point as vector is not good
 end borked
-
 
 
 namespace borked2

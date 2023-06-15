@@ -12,60 +12,108 @@ Affine Spaces
 
 While physics and mathematics are usually taught from the
 perspective of vector spaces, the beauty of torsors is that 
-they allow us to represent *points*, not just differences,
-or vectors, between points. Torsors give us an *essential*
-mathematical structure for representing *physical* spaces,
-comprising both points, e.g., in time, and *differences*,
-constituting vectors each acting by points by displacement.
+they allow us to represent *points*, not just differences
+between points (vectors). 
 
-We thus have an algebraic structure in which, for example, 
-we can talk about points in 1D or 3D physical spaces (such 
-as a point that some robot inhabits), as well as vectors,
-comrising differences between points, that *act* on points,
-again by displacing, or*translating* them. 
+Torsors give us an *essential* structure for representing 
+*physical* spaces, comprising both points, e.g., in time, 
+and *differences*, constituting vectors (e.g., durations)
+that act on points additively by displacement.
 
-Vectors in our 3-dgeometric space represent displacements: 
-differences between points in space. Vectors our idealied 
-1-d linear model of time are differences between points in
-time. Vectors represent temporal *durations* and spatial 
-*displacements*; but the mathematics now let's us model the
-points as separate, first-class entities. 
+We thus have an algebraic structure in which we can talk 
+about points in 1D or 3D physical spaces, such as points 
+in our 3-dimensional geometric space, or in 1-dimensional
+time. 
 
-In this chapter we'll formalize these abstractions and show
-how to enforce the requisite type distinctions between points
-and vectors. while *inheriting* a full affine space structure
-on these new types. 
+In this chapter we'll formalize these abstractions. We will 
+explain how one can represent certain physical spaces as 
+affine spaces; how one can represent computations involving
+points and vectors; how one can statically enforce these  
+abstractions while mostly eliminating the possibility of
+writing expressions that lack physical interpretations. 
 
-The need for such a structure springs from the possibility of
-affine-algebraic, physical-layer type errors in computations in
-cases where the carrier sets of point and vector space typeclass
-instances coincide: e.g., where both the vector and point types
-simply are the rationals, ℚ. 
+As a running example we'll mostly stick with representing 
+the *physical* space of *time* as a 1-D rational affine space. 
+We'll proceed from a initial to a final design in several 
+steps.
+TEXT. -/
 
-What we have then is an example of lossy refinement. Distinctions 
-between values representing points and vectors are lost to Lean's 
-type system. All rational computations are allowed, some of which
-are not allowed at the affine/physical level. Example: if points
-are just rationals, they can be added together, but doing that has 
-no defined affine/physical-level meaning.  
+/- TEXT:
 
-Introduction
-------------
+Generalizing over fields
+------------------------
 
-Some redundancy here.
+To begin we'll set up our design to be gneral over scalar
+fields, from rational affine spaces to spaces over other
+fields, such as the real or complex numbers. We'll use the 
+identifer, *K*, to represent the scalar field type. In this
+chapter we'll define *K := ℚ*, but by writing the rest of 
+our definitions in terms of *K* we'll create the option to
+change the field type for an entire application by changing 
+just this one line of code. 
+TEXT. -/
 
-A torsor whose actions (via -ᵥ) form a vector space is known 
-as an *affine space*. To have a vector space, the associated
-scalars must form a *field*. That means scalars have inverse;
-thus scalar division, thus scalar fractions; and therefore via 
-scalar multiplication by scalar fraction we have *fractions of 
-actions* (i.e., of vectors) as well. 
+-- QUOTE:
+abbreviation K := ℚ   -- Makes K a mere alias for ℚ 
+-- QUOTE.
 
-As an example, we'll first consider a one-dimensional torsor 
-whose points correspond to, and that we represent by, rational 
-numbers understood to be lacking a distinguished zero or origin. 
-Point differences (-ᵥ), on the other hand, are understood to be 
-rational numbers: elements of ℚ.  
+/- TEXT:
+
+Time as a rational 1-Torsor  
+---------------------------
+
+With that, we're ready to represent time as a 1-D rational
+affine space. The choice of using a rational field will enable 
+us (and Lean) to carry out *computations* involving points 
+and vectors. That would would not be possible if we chose, 
+for example, to represent time as a *real* affine space,
+because real numbers aren't computable.
+
+As an example of a computation, suppose that *p1* represents
+a point in time, let's say 3PM, and *p2* represents a different
+point in time, say 5PM. Then the expression *p2 -ᵥ p1* will 
+represent the duration (a vector), *2 hours*; the expression 
+*(1/2:ℚ) * (p2 -ᵥ p1)* will represent the duration, *1 hour* 
+(a vector); and the expression *p1 +ᵥ ((1/2:ℚ) * (p2 -ᵥ p1))* 
+will represent the point halfway between *p1* and *p2*.   
+
+In this design we'll represent points, vectors, and scalars 
+as rational numbers. To remind us of our intended intepretations
+of such numbers, we'll provide *lightweight abstractions* by
+defining *pnt*, *vec*, and *scl* as alternative names (type
+aliases) for the rational number type, ℚ. (Lean uses the name, 
+*vector*, for an unrelated type, so we avoid using it here.)
+
+
+The choice to represent points, vectors, and scalars all as
+rational will make it straightforward to implement torsor, 
+vector space, and scalar operations in terms of underlying
+rational number operations. Yet we will have to be careful
+not to write expressions that work as rational expressions
+but that are inconsistent with geometric/physical meaning. 
+For example, addition of points makes no sense, even though
+the addition of rationals that represent points does; but 
+in this case a rational result no longer represents a point,
+vector, or scalar. 
+TEXT. -/
+
+
+
+/- TEXT: 
+
+A torsor whose differences (via -ᵥ) form a vector space is 
+known as an *affine space*. To have a vector space, in turn, 
+the associated scalars must form a *field*. That means scalars
+have inverses, thus scalar division, and thus scalar fractions. 
+That in turn entails that scalar multiplication by fractions
+gives rise to *fractions of actions* (i.e., of vectors). 
+
+As an example, consider a one-dimensional torsor whose points 
+can be placed in in 1-1 correspondence with, and that thus be 
+represented by, rational numbers. Once one picks a point, p, 
+to be associated with, and usually represented by (0:ℚ), every
+other point in the torsor can then be specified as (p +ᵥ v) for
+some vector, v, in the associated 1-dimensional vector space.   
 
 To see what can go wrong, suppose p is a point representedby the
 rational 1/2 and v is a vector, literally a rational, namely 1/4. 
@@ -129,7 +177,8 @@ Points
 We will represent our 1-d space of points in time by rationals. We
 do not treat the rational number, 0, as being special. There is no
 distinguished origin in classical time. We will represent durations
-as vector differences between such points. What can go wrong?
+as vector differences betwe
+en such points. What can go wrong?
 
 One approach is to define type, *pnt* (for "point"), as just another
 name for ℚ. In Lean this can be done using *abbreviation.* In this
@@ -165,7 +214,6 @@ def bork := pnt1 + pnt1         -- oops, point-point addition makes no sense
 def brok := pnt1 +ᵥ pnt1        -- oops, treating point as vector is not good
 -- QUOTE.
 end borked
-
 
 /- TEXT:
 Unfortunately, because this approach makes pnt exactly the 
