@@ -1,16 +1,12 @@
 
-Mathematical Foundations of Physical Computations
-=================================================
+Mathematical Foundations of Complex Computations
+================================================
 
 TL;DR
 -----
 
-This repo supports the development and delivery of a
-set of course notes for a coures at the University of 
-Virginia, on how we might leverage advances in the
-formalization of abstract mathematics to fundamentally
-improve software engineering. The deployed notes as of
-now are [here](https://www.computingfoundations.org).
+This repo supports the development and delivery of notes for an early graduate course in computer science at the University Virginia. This course is intended to take early graduate students from a point of having no knowledge of formal reasoning through basics of logic and proof using the Lean proof assistant, and into the realm of formalized mathematics. The thesis underlying this work is that CS can now benefit greatly by taking advantage of rapid advances in the formalization of abstract and advanced mathemtics to provide deep semantic foundations for critical application areas, including robotics, cyberphysical systems more generally, and AI. This work is thus meant to start to close a significant gap between mathematics and computer science research to improve software design, productivity, and dependability, but *not* on a path to formal verification. The evolving notes are [here](https://www.computingfoundations.org). We solicit interest and are open to research community engagement. Feel free to reach out: sullivan@virginia.edu.
+
 
 Motivation
 ----------
@@ -30,15 +26,7 @@ notation for tensors, coordinate-free points on smooth
 manifolds, and charts imposing coordinate systems on them,
 that the software is meant to implement.
 
-This work has been funded in part by the National Science Foundation as part of our project on the Physical Semantics
-of Code. In this project we are devising, realizing, and 
-evaluating new concepts and methods for constructing software
-in statically typechecked and foundationally verified abstract
-mathematics--the mathematics of any given domain. For now we
-are working on classical physics in the service of robotics 
-and cyber-physical systems more generally.
-
-This is vague. Feel free to reach out: sullivan@virginia.edu.
+This work has been funded in part by the National Science Foundation as part of our project on the Physical Semantics of Code. In this project we are devising, realizing, and  evaluating new concepts and methods for constructing semantic domains for complex computations in statically typechecked and foundationally verified abstract mathematics--the mathematics of any given domain. For now we are working on formalizing aspects of classical physics in the service of robotics and cyber-physical systems more generally.
 
 This Repository
 ---------------
