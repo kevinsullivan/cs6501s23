@@ -8,7 +8,7 @@ As a warmup, and to put some basic
 concepts into play, we'll begin by specifying the syntax 
 and semantics of a simple formal language: the language of
 strings of balanced parentheses. Before we do that, we'll
-better explain wht it all menas. So let's get started.
+better explain what it all means. So let's get started.
 
 Formal languages
 ----------------
@@ -34,7 +34,7 @@ natural number, *n*, there is a such a string with nesting
 depth *n*. 
 
 We clearly can't specify the set of strings by exhaustively
-enumerating them expliciitly. There are too many for that. 
+enumerating them explicitly. There are too many for that. 
 Rather, we need a concise, precise, finite, and manageable 
 way to specify the set of all such strings. We will do that
 by defining a small set of *basic rules for building* strings 
@@ -66,13 +66,13 @@ Paper & Pencil Syntax
 What we've basically done in this case is to specify the set of
 strings in our language with a *grammar* or *syntax definition*.
 Such grammars are often expressed, especially in the programming
-worls, using so-called *Backus-Naur Form (BNF)*. 
+world, using so-called *Backus-Naur Form (BNF)*. 
 
 Backus first used BNF notation to define the syntax of the Algol 
 60 programming language. BNF is basically a notation for specifying
 what the linguist, Noam Chomsky, called *context-free grammars*. 
 
-Here's a grammer in BNF for our language of balanced parentheses. 
+Here's a grammar in BNF for our language of balanced parentheses. 
 We can say that the BNF grammar defines the syntax, or permitted
 forms, of strings in our language. Be sure you see how this grammar
 allow larger expressions to be build from smaller ones of the same 
@@ -232,7 +232,7 @@ data types in Lean that you should now understand. First, they
 are *disjoint*. Different constructors *never* produce the same
 value. Second, they are *injective*. A constructor applied to
 different argument values will always produce different terms.
-Finally, they are complete. The langauge they define contains 
+Finally, they are complete. The language they define contains 
 *all* of the strings constructible by any finite number of
 applications of the defined constructors *and no other terms*. 
 For example, our *bal* language doesn't contain any *error* or
