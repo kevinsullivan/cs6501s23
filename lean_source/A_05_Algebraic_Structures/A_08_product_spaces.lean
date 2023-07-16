@@ -220,7 +220,7 @@ points.
 
 As an aside: Recall that Lean doesn't provide vector_space 
 as a typeclass; rather one uses module with a scalar field 
-to acheive this result. So we will need to lift the module
+to achieve this result. So we will need to lift the module
 structure from ℚ to our new *vec* (for vector) type. We will
 also need to lift add_comm_monoid and add_group structures
 for everything to work. Note how we do this by deriving from
