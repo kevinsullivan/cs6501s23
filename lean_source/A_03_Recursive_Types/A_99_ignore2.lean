@@ -65,7 +65,7 @@ functions given as arguments, a higher-order function can
 also *return* function values. Suppose, for example, that
 you apply *apply_comp* to just two function values, without
 giving the third argument. The result is a new function,
-which we can write as (g ∘ f), pronouned as *g after f*, 
+which we can write as (g ∘ f), pronounced as *g after f*, 
 that takes an argument, *a*, and returns *g(f(a)).* 
 
 As an exercise, let's write a version, *comp*, of 
@@ -212,7 +212,7 @@ fold
 The *fold* function, also often called *reduce*, takes a list,
 *l*, of values of some type, α, and reduces it to a single value 
 of some type β. It is defined by case analysis on *l*. If *l* is
-nil, fold needs to return an approriate result. For now, we will
+nil, fold needs to return an appropriate result. For now, we will
 pass this "value for the base case" as an additional argument to
 fold. In the second, cases, where *l* is non-empty and thus of
 the form, *h::t,* fold returns the result obtained by applying 
