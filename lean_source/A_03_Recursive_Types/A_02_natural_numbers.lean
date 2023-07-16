@@ -131,7 +131,7 @@ def plus : nat → nat → nat
 #eval plus 3 4
 
 -- multiplication adds the second argument
--- to itself the first argumen number of times
+-- to itself the first argument number of times
 def times : nat → nat → nat
 | 0 m := 0
 | (n'+1) m := plus m (times n' m)
@@ -140,7 +140,7 @@ def times : nat → nat → nat
 #eval times 1 20
 
 
--- substraction illustrates case analysis on 
+-- subtraction illustrates case analysis on 
 -- multiple (here two) arguments at once
 def subtract :  nat → nat → nat
 | 0 _ := 0
