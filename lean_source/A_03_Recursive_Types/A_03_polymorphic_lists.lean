@@ -126,7 +126,7 @@ is empty.
 When we defined pred, above, we defined pred of zero to be 
 zero (rather than to be undefined). Doing that makes the 
 function total and easily represented as a function (lambda 
-abstractraction) in Lean. However, in a different application
+abstraction) in Lean. However, in a different application
 we really might want to define pred 0 to be undefined, not 0.
 
 A similar set of issues arises when we consider head and
@@ -183,7 +183,7 @@ fully to an empty list, in which case (3) no real result has
 to be specified to "prove the return type" because such a case 
 can't happen. It would be a contradiction if it did, and so it
 can be dismissed as an impossibility. Magic: It *is* a total 
-function, but it can never be fully appied to an empty list
+function, but it can never be fully applied to an empty list
 because a required proof argument, for *that* list, can never
 be given; so one can dismiss this case by false elimination,
 without having to give an actual proof of the conclusion. 
