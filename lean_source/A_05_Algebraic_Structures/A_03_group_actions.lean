@@ -41,7 +41,7 @@ objects that group elements act on.
 To make the concept of a group action clearer, we'll develop
 it in the context of our running example of the rotational 
 symmetries of equilateral triangles. What these actions act
-on are equilaterial triangles. We'll overload an operation
+on are equilateral triangles. We'll overload an operation
 called smul, introduced by the group_action typeclass, and
 denoted g • b to represent the result of applying the action
 g to the object b, with a result of the same type b has. As
@@ -63,7 +63,7 @@ result of g acting on b.
 
 Lean provides this notation through instantiation of its
 group_action typeclass. In addition to this notation, this
-typeclass requires verification of the two actioms of group
+typeclass requires verification of the two axioms of group
 actions, namely that 1 • b = b, and that (g₁ \* g₂) • b =
 g₁ • (g₂ • b). 
 
