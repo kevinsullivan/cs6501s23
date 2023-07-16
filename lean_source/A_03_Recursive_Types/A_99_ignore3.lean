@@ -28,7 +28,7 @@ is succ (0 + 0). *BE SURE YOU UNDERSTAND THIS
 STEP.*  Now yy the first rule, 0 + 0 = 0, so 
 we can rewrite succ (0 + 0) to just succ 0. 
 With this expression on the left side, all 
-thatremains to prove is that succ 0 = succ 0,
+that remains to prove is that succ 0 = succ 0,
 and this is true of course by the reflexivity 
 of the equality relation. 
 
