@@ -78,7 +78,7 @@ has_inv and has_div
 
 An instance of the has_inv typeclass will have one field
 value, a total function from group elements to other group 
-elements. In the context of a group, it will be cosntrained
+elements. In the context of a group, it will be constrained
 to behave as a genuine inverse operation must: that given 
 an element, r, it will return an element r⁻¹, such that
 r⁻¹ * r = 1 (the group identity element). 
