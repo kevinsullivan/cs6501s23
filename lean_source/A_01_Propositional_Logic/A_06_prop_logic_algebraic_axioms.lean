@@ -114,7 +114,7 @@ Another Notation
 As we've seen, mathematical theories are often
 augmented with concrete syntactic notations that 
 make it easier for people to read and write such
-mathemantics. We would typically write *3 + 4*,
+mathematics. We would typically write *3 + 4*,
 for example, in lieu of *nat.add 3 4*. For that
 matter, we write *3* for (succ(succ(succ zero))).
 Good notations are important.
@@ -197,7 +197,7 @@ Specialization of Generalizations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Observe: We can *apply* these theorems
-to particular objects to specalize the
+to particular objects to specialize the
 generalized statement to the particular
 objects.
 TEXT. -/
@@ -358,7 +358,7 @@ developed into a mathematical library component
 with an emphasis on good design. 
 
 What does that even mean? Good with respect to
-what criteria, deciderata, needs, objectives?
+what criteria, desiderata, needs, objectives?
 
 - data type definitions
 - operation definitions
