@@ -54,8 +54,8 @@ Costs of Concreteness
 
 This ubiquitous approach to programming physical computations
 is problematical in multiple dimensions. First, as mentioned,
-it substitues concrete representations for abstract, adding
-inessesntial complexity to models and computations. Second,
+it substitutes concrete representations for abstract, adding
+inessential complexity to models and computations. Second,
 it generally strips away crucial mathematical properties of
 the abstract representations of objects of interest, making
 it impossible to check programs for consistency with such
@@ -111,7 +111,7 @@ exercise, making it, hard even impossible, to connect code
 to such mathematics. 
 
 Now, with rapidly developing work by a still small set of
-ressearchers in mathematics, the complete formalization and
+researchers in mathematics, the complete formalization and
 mechanization of advanced abstract mathematics is becoming
 a reality. As and example Massot and his colleagues in 2022
 managed to formalize not only a statement, but a proof, of 
@@ -133,7 +133,7 @@ The insight driving this class is that this kind of work
 from the  mathematics community is now making it possible 
 to develop *computable abstract mathematics* for purposes
 of software engineering. Promising application domains for
-such work clearly include divere cyber-physical systems and
+such work clearly include diverse cyber-physical systems and
 might be relevant to deep learning as well, with its basic
 assumption that real-world data have geometric properties, 
 such as lying on high-dimensional manifolds. 
@@ -160,7 +160,7 @@ TEXT. -/
 /-
 The idea of raising the abstraction level of programming
 languages and programs is ages old. But these increases
-in abstration are usually incremental and ad hoc, moving
+in abstraction are usually incremental and ad hoc, moving
 in small steps from the language of the machine closer to
 but never really approaching the richness of the abstract
 mathematics of the domain, using its concepts, notations,
@@ -209,7 +209,7 @@ manifolds.
 
 Linking such abstract mathematics to code has always been
 a manual processes. Now, however, with the automation of
-abstract mathemtics by parts of the mathematics community
+abstract mathematics by parts of the mathematics community
 using constructive logic proof assistants and type theory,
 that has become possible. This course will teach you the
 basic concepts that you will need to start to make such
