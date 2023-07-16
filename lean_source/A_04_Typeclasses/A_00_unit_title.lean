@@ -24,7 +24,7 @@ Key ideas include the following: (1) we will define a safe version
 of  *foldr* that wil works for any monoid; we'll see how to associate
 monoid data (a binary operation, identity element, property proofs)
 with types, whose values are taken as monoid elements; (4) how to 
-tell Lean to automaticall (implicitly) find and pass monoid data 
+tell Lean to automatically (implicitly) find and pass monoid data 
 structures to functions depending on the types of other arguments;
 (5) and ways to use this approach in useful ways. 
 TEXT. -/
