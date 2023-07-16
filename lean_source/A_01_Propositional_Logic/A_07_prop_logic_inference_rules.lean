@@ -6,7 +6,7 @@ Inference Rules
 
 In this chapter we will present another approach 
 to validating our model of propositional logic: by 
-verifying that it satisifies the *inference rules* 
+verifying that it satisfies the *inference rules* 
 of this logic.
 
 An inference rule is basically a function that takes 
