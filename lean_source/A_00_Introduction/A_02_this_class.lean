@@ -27,14 +27,14 @@ Here, the adjective, abstract, means *being coordinate-free*.
 For the opposite of *abstract*, we'll use *parametric*. The idea 
 is that a mathematical object, such as a vector, can be understood
 simply as such, with no reference to coordinates; or that same abstract
-vector can be represented concretely/parametrically as a struture of
+vector can be represented concretely/parametrically as a structure of
 parameter values expressed relative to some given frame of reference.
 
 Why *abstract* mathematics?
 ---------------------------
 
 A premise of this class is that domain experts (e.g., in the
-physics of terrestrial robotics, or of elemenary particles) speak,
+physics of terrestrial robotics, or of elementary particles) speak,
 model, analyze, and understand the operation of systems in the 
 abstract mathematical language of the domain, and very often not
 in terms of ultimately arbitrarily selected frames of reference . 
@@ -73,7 +73,7 @@ of the domain and with very little custom coding needed also to
 have corresponding verified implementations, even if only used as
 test oracles for production code.  
 
-This is the of abstract specifictions from which concrete 
+This is the of abstract specifications from which concrete 
 implementations are derived. I will not say refined because 
 in practice most derivations are not refinements but rather
 toyish models of semantically rich and complex computations
@@ -84,7 +84,7 @@ This class
 
 The first major part of this class will teach you the fundamentals
 of programming and reasoning in Lean 3. We will mainly use Lean 3, 
-nothwithstaning that Lean 4 is garnering real attention and effort.
+notwithstanding that Lean 4 is garnering real attention and effort.
 Student might wish to explore Lean 4 as an optional class activity.
 
 The second part of the class will focus on how to formalized abstract
