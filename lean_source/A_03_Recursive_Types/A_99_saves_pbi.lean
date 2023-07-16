@@ -5,7 +5,7 @@ define *le a* to the a *property* (one property for each *a*,
 making a family) of being less than or equal to a second ℕ,
 *b*. We then define constructors necessary and sufficient to
 build proofs of *a is less or equal to than b* whenever that
-is mathemtically true. A *refl* constructor will produce a
+is mathematically true. A *refl* constructor will produce a
 proof of *a is less than or equal to a* for any *a*, and a
 *step* constructor given any proof of *a ≤ b* will return
 a proof of *a ≤ b + 1*. Think about it. It works.  
@@ -53,7 +53,7 @@ define *le a* to the a *property* (one property for each *a*,
 making a family) of being less than or equal to a second ℕ,
 *b*. We then define constructors necessary and sufficient to
 build proofs of *a is less or equal to than b* whenever that
-is mathemtically true. A *refl* constructor will produce a
+is mathematically true. A *refl* constructor will produce a
 proof of *a is less than or equal to a* for any *a*, and a
 *step* constructor given any proof of *a ≤ b* will return
 a proof of *a ≤ b + 1*. Think about it. It works.  
@@ -122,7 +122,7 @@ to natural numbers in particular is often call proof by
 *mathematical* induction.
 
 In the next section of this chapter, we will stick with
-the usual approach of introducting the general idea via
+the usual approach of introducing the general idea via
 the special case of mathematical induction. In the next
 chapter after, we'll see proof by induction generalizes
 to all inductively defined types. It is a very general
@@ -161,7 +161,7 @@ repeat {
 },
 end
 
--- dumb change of notation lema only
+-- dumb change of notation lemma only
 lemma zero_ident_nat_add_notation :  
   ∀ (a : ℕ), 
     (a + 0 = a ∧ 0 + a = a) ↔ 
