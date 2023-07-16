@@ -18,7 +18,7 @@ You already have a reasonable intuitive grasp of the
 meanings of the connectives in propositional logic.
 Predicate logic uses the same connectives to compose
 given propositions into new ones, with the same basic
-meanings. For example, we still have one introdcution
+meanings. For example, we still have one introduction
 (construction) rule for ∧ and two elimination rules. 
 
 Key differences, already discussed in class, are that
@@ -30,7 +30,7 @@ terms of proof/type judgments rather than in terms of
 For example, instead of *P* and *Q* being of type
 *prop_expr*, we now have them being of type *Prop*.
 They are types that encode logical propositions. And
-whereas the *and_intro* rule in proposital logic is
+whereas the *and_intro* rule in propositional logic is
 (⟦P⟧ i = tt) → (⟦Q⟧ i = tt) → (⟦P ∧ Q⟧ i = tt), now it
 is *∀ (P Q : Prop), P → Q → and P Q*. ∧ is notation
 for *and.* 
