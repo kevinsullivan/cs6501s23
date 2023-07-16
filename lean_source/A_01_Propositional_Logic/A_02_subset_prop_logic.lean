@@ -7,7 +7,7 @@ Simplified Propositional Logic
 
 Our next step toward formalizing abstract mathematics for software 
 engineering, we will specify the syntax and semantics of a simple 
-but important mathatical language, namely *propositional logic*.
+but important mathematical language, namely *propositional logic*.
 
 Propositional logic is isomorphic to (essentially the same thing 
 as) Boolean algebra. You already know about Boolean algebra from 
