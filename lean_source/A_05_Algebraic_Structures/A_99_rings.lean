@@ -25,7 +25,7 @@ semiring is a single type with these additionalstructures.
 
 Without inverses, there is no division., but we do now 
 have both (commutative) addition and (not necessarily
-commutative) multipication of elements in a way that no
+commutative) multiplication of elements in a way that no
 matter what those elements are obeys the distributive
 laws, both left and right. So arithmetic with addition and
 multiplication, identities, and n-times iterated addition

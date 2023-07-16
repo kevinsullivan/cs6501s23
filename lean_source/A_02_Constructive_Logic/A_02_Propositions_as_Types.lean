@@ -17,7 +17,7 @@ propositional logic to provide a way to reason about
 the truth of given propositions. In this chapter, we
 will represent propositions as types of a special kind,
 instead, and proofs as values of these types. We will
-then adopt exacty the same inference rules we saw in
+then adopt exactly the same inference rules we saw in
 the last chapter, but generalized to this far more
 expressive logic.   
 
@@ -187,7 +187,7 @@ elements values of type Type 0 is itself a value of type Type 1.
 
 As a final comment, Lean allows one to generalize over these
 type universes. To do so you declare one or more *universe 
-variable* which you can then use in decaring types. Lean can
+variable* which you can then use in declaring types. Lean can
 also infer universe levels.
 TEXT. -/
 

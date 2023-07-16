@@ -21,7 +21,7 @@ for  smaller values of *a*, and (2) starting from proofs of
 
 The rest of this chapter will: 
 
-- provide a concrete and pecific example of this reasoning and how we can automate it using tools we already have, concluding what is called the induction axiom for natural numbers (arguments to *P*); 
+- provide a concrete and specific example of this reasoning and how we can automate it using tools we already have, concluding what is called the induction axiom for natural numbers (arguments to *P*); 
 - see how the concept of an induction axiom generalizes to any inductively defined type, α; 
 - introduce the concept of *inductive families* with recursive constructors; 
 - introduce the idea of well founded recursion, meaning that a proof for every value of a type can be constructed starting with smallest values of the type. 
@@ -75,7 +75,7 @@ end
 -- QUOTE. 
 
 /- TEXT:
-The *simp* tactict tries to find, and if found applies, 
+The *simp* tactic tries to find, and if found applies, 
 rules/axioms from the definition of the listed functions: 
 here from just nat.add. We could have used *rfl* instead
 of *simp*, but writing the proof in this way emphasizes
@@ -445,7 +445,7 @@ Induction Axiom for ℕ
 The principle we've developed is available as an axiom 
 generated from the definition of the nat data type. The
 name of the principle is *nat.rec_on*. Applying it to the
-smaller lemmas yeilds a proof of the generalization. 
+smaller lemmas yields a proof of the generalization. 
 
 If you prove the lemmas first, in a bottom-up proof style,
 you can just apply the induction principle to a value, *a*,
@@ -784,7 +784,7 @@ def nil_right_ident_append_list' {α : Type} : ∀ (l' : list α), list.append l
 Induction Axiom for Lists
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We see again that there's nothing myseterious about proof by induction.
+We see again that there's nothing mysterious about proof by induction.
 If we have base values/proofs and step functions to build next-bigger 
 ones, and we can have a function that (using recursion on these elements)
 computes a value/proof for any given input value, and thus for all values
@@ -793,7 +793,7 @@ of the input type.
 Proof by induction is done by functions that compute results using
 recursion on given base values and step functions.  Every inductive
 axiom can be understood as a proof of universal generalization that
-asserts that every value of some input type has a corresponging result
+asserts that every value of some input type has a corresponding result
 value of type. These return values can be proofs of properties or they
 can be function return values of any type. 
 
@@ -918,7 +918,7 @@ TEXT. -/
 
 -- QUOTE:
 inductive le (n : nat): nat → Prop 
--- n is an implicit firt argument to each constructor
+-- n is an implicit first argument to each constructor
 | refl : le (n) n     
 | step : ∀ m, le (n) m → le (n) m.succ
 

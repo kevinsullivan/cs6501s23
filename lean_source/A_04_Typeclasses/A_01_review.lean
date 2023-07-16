@@ -43,7 +43,7 @@ Monoids so far
 
 We have so far defined one monoid type. It is a product
 type, which is to say that it has just constructor (mk), 
-with multiple argments, and can be thought of as defining
+with multiple arguments, and can be thought of as defining
 an ordinary *record* type. We associate such records with
 element types, such as nat and list α, in order to extend
 them with additional monoid structure. Such structure is

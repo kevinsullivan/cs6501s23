@@ -101,7 +101,7 @@ variables
   (condition : bool_expr)
 
 /-
-Here's a model of our app. Dooes it capture it (but for the outer loop)?
+Here's a model of our app. Does it capture it (but for the outer loop)?
 -/
 def md : app := 
   seq 
@@ -123,13 +123,13 @@ Technical claim: ∃ (a : app), P a, where it seems that
 P could well be of interest to the community. The proof
 is constructive. That is, we present a witness along with
 a demonstration that the witness has the stated property.
-The challege is to have a P that's new, interesting, and
+The challenge is to have a P that's new, interesting, and
 useful. What is P? What such properties will our apps have 
 that no others to our knowledge do? 
 
 Explain at a technical but reasonably concise level each
 of the challenges (including what you need to know about
-the particuar stack we used to see the specific problems
+the particular stack we used to see the specific problems
 we found and for which we present a solution). The claim
 would be interesting only to the extent that the output 
 is significantly novel in conception. The idea of "mere"

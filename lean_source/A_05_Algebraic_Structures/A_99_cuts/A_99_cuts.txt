@@ -44,7 +44,7 @@ to any group in this way.
 /- TEXT:
 An instance of the has_inv typeclass will have one field
 value, a total function from group elements to other group 
-elements. In the context of a group, it will be cosntrained
+elements. In the context of a group, it will be constrained
 to behave as a genuine inverse operation must: that given 
 an element, r, it will return an element r⁻¹, such that
 r⁻¹ * r = 1 (the group identity element). 
@@ -114,7 +114,7 @@ example :r240 / r240 = 1 := rfl
 
 ======= Torsors
 What this means is we can do arithmetic on transformations 
-in the group--addition, substraction, and multiplication by
+in the group--addition, subtraction, and multiplication by
 natural number constants (n-iterated addition) separately 
 from the actions then apply the result, or we can apply 
 all the separate transformations, and in either case we'll

@@ -9,7 +9,7 @@ import data.int.basic
 Modules
 *******
 
-We've now undertood what it means to be a torsor over 
+We've now understood what it means to be a torsor over 
 a group. A concrete example is our torsor of triangles 
 over a group of rotational symmetries. That fact that
 rotational symmetries form an additive group lets us 
@@ -27,7 +27,7 @@ then s • v is scalar multiplication of s and v yielding a
 new, "scaled" group action. 
 
 The set of scalars must form at least a *ring*, so you 
-can add, invert, substract, and multiply scalars by each 
+can add, invert, subtract, and multiply scalars by each 
 other (+, -, *). For example, the integers for a ring: 
 you can multiply, add, invert, and thus subtract them,
 but dividing them generally doesn't produce new integers.
@@ -38,7 +38,7 @@ set of real numbers minus {0} forms a field. A module with
 a scalar *field* is called a vector space.
 
 The overall picture, then, is one in which, in a module, 
-you can not only add, invert, and substract actions, but
+you can not only add, invert, and subtract actions, but
 you can also multiply (*scale*) them by scalars. Example:
 if v₁ and v₂ are group actions and s₁ and s₂ are scalars,
 then s₁ • (v1 +ᵥ v2) is also an action, s₁ • v₁ + s₁ • v₂; 
@@ -331,13 +331,13 @@ distrib_mul_action ℤ rot
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 First we'll define s • m to mean rot_zpow s m. 
-In other workds, we'll define scalar multiplication 
+In other words, we'll define scalar multiplication 
 integer s by rotation r to be: (1) for a non-negative
 s, the rotation *added* to itself that many times 
 (already implemented by rot_zpow), and for a negative
 s by the additive inverse (negation) of that sum.
 The  we'll need to prove that scaling a rotation b
-by scalar (x * y) is the same as scalaing b first 
+by scalar (x * y) is the same as scaling b first 
 by y then by x. With that we can define an instance,
 (mul_action ℤ rot). 
  
@@ -371,7 +371,7 @@ instance : mul_action ℤ rot :=
 
 /- TEXT:
 With our (mul_action ℤ rot) defined we now put together
-the final peices needed for (distrib_mul_action ℤ rot). 
+the final pieces needed for (distrib_mul_action ℤ rot). 
 With this instance in hand, in the next subsection we 
 instantiate (module ℤ rot), which was our aim: to have
 not just a group, but a *module*, of rotation actions:
@@ -388,7 +388,7 @@ lemma rot_smul_zero : ∀ (a : ℤ), a • (0 : rot) = 0 :=
   simp [rot_zpow],
   end
 
--- scalaing a sum of rotations is the sum of the scalaed rotations 
+-- scaling a sum of rotations is the sum of the scaled rotations 
 lemma rot_smul_add : ∀ (a : ℤ) (x y : rot), a • (x + y) = a • x + a • y :=
   begin
   assume z x y,
@@ -525,7 +525,7 @@ open tri
 -- scalar difference (a scalar) multiplied by rotation then acting on triangle
 #reduce (((3:ℤ) - (2:ℤ)) • r120) • t120
 
--- addition of scaled and unscaled vector, acting on a triange
+-- addition of scaled and unscaled vector, acting on a triangle
 #reduce (((3:ℤ) • r120) +ᵥ r240) • t120
 
 -- important: function subtracting points yielding a rot then acting on a triangle

@@ -5,13 +5,13 @@ Abstract Mathematics as Semantics Domains for Complex Computations
 TL;DR
 -----
 
-This repo supports the development and delivery of notes for an early graduate course in computer science at the University Virginia. This course is intended to take early graduate students from a point of having no knowledge of formal reasoning through basics of logic and proof using the Lean proof assistant, and into the realm of formalized mathematics. The thesis underlying this work is that CS can now benefit greatly by taking advantage of rapid advances in the formalization of abstract and advanced mathemtics to provide deep semantic foundations for critical application areas, including robotics, cyberphysical systems more generally, and AI. This work is thus meant to start to close a significant gap between mathematics and computer science research to improve software design, productivity, and dependability, but *not* on a path to formal verification. The evolving notes are [here](https://www.computingfoundations.org). We solicit interest and are open to research community engagement. Feel free to reach out: sullivan@virginia.edu.
+This repo supports the development and delivery of notes for an early graduate course in computer science at the University Virginia. This course is intended to take early graduate students from a point of having no knowledge of formal reasoning through basics of logic and proof using the Lean proof assistant, and into the realm of formalized mathematics. The thesis underlying this work is that CS can now benefit greatly by taking advantage of rapid advances in the formalization of abstract and advanced mathematics to provide deep semantic foundations for critical application areas, including robotics, cyberphysical systems more generally, and AI. This work is thus meant to start to close a significant gap between mathematics and computer science research to improve software design, productivity, and dependability, but *not* on a path to formal verification. The evolving notes are [here](https://www.computingfoundations.org). We solicit interest and are open to research community engagement. Feel free to reach out: sullivan@virginia.edu.
 
 
 Motivation
 ----------
 
-For millenia, to the present day, abstract mathematics
+For millennia, to the present day, abstract mathematics
 has been an analog, paper-and-pencil, pursuit.  For most
 of that time, there was nothing but paper and pencil, of
 course and that's what it mostly remains.
@@ -31,7 +31,7 @@ This work has been funded in part by the National Science Foundation as part of 
 This Repository
 ---------------
 
-This repository is the course development and delivery platform for CS6501, Special Topics in Software Engineering, Abstract Mathemtical Foundations, being taught in the Spring of 2023.
+This repository is the course development and delivery platform for CS6501, Special Topics in Software Engineering, Abstract Mathematical Foundations, being taught in the Spring of 2023.
 
 The rest of this document is entirely for my own use. It presents instructions, mostly for myself, on how to use it.
 
@@ -71,7 +71,7 @@ Manual Processes
 ----------------
 
 The following files are maintained by hand:
-- The file `source/index.rst` should have an entry for each chapter/dicrectory.
+- The file `source/index.rst` should have an entry for each chapter/directory.
 - For each chapter/directory, there should be a `.rst` file in `source`. It should include
   - each of the sections.
   - For each section, there should be a `.lean` file in the appropriate place in `lean_source`.
@@ -100,7 +100,7 @@ From the top-level directory of the cloned repo do this:
 - deploy.sh (TODO: needs to be fixed)
 - instead follow instructions in UPLOAD.md
   
-The script `deploy.sh` KS: FIX deploy everythings (textbook
+The script `deploy.sh` KS: FIX deploy everything (textbook
 and user version of the example and solution files) to an
 arbitrary repository, set up to use the `gh-pages` branch
 to display the html. Note: Avigad uses the following here:

@@ -51,7 +51,7 @@ Algebraic Properties
 First, a propositional logic can be understood as an algebra over
 Boolean-valued terms, variables, and constants. Constants and variables
 are are terms, but terms can also be constructed from smaller terms using
-connectives: ∧, ∨, ¬, and so on. The axioms of propopsitiona logic impose
+connectives: ∧, ∨, ¬, and so on. The axioms of propositional logic impose
 constraints on how these operations behave, on their own and combined. 
 
 The constraints are algebraic, just as the axioms are algebraic that
@@ -91,7 +91,7 @@ and_commutes  -- proof from last chapter
 As we've seen, mathematical theories are often
 augmented with concrete syntax / notations that 
 make it practical for people to read and write 
-such mathemantics. 
+such mathematics. 
 
 A standard notation for a "meaning-of-expression" 
 operator is a pair of *denotation* or *Scoot* 
@@ -131,7 +131,7 @@ to be the same as function arguments.
 
 /-
 Observe: We can *apply* these theorems
-to particular objects to specalize the
+to particular objects to specialize the
 generalized statement to the particular
 objects.
 -/

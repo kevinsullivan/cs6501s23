@@ -46,7 +46,7 @@ Indexed Families
 ~~~~~~~~~~~~~~~~
 
 Note that each *n* to to which one applies 
-*Q* gives rised to a proposition--a type--that 
+*Q* gives rise to a proposition--a type--that 
 *is about* (and in this sense, depends on) *n*. 
 Such a types is said to be a *dependent type*.
 

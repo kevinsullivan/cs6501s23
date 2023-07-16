@@ -244,7 +244,7 @@ instance : add_group rot :=
 
 /- TEXT:
 
-Next we formulate the action of a rotation on a triange. 
+Next we formulate the action of a rotation on a triangle. 
 We do it in two steps, first adding a binary operation 
 taking a rot and a tri and yielding a tri, with +ᵥ as 
 notation; then we formally define an add_action and show
@@ -519,5 +519,5 @@ To be sure that we've given modules their due, we will
 cross through them on our way to replacing the rot group
 in our example so far with a one dimensional vector space 
 over a (coefficient) *field*, K. The corresponding point
-torsor will then be the corresonding affine space.  
+torsor will then be the corresponding affine space.  
 TEXT. -/

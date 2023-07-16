@@ -45,7 +45,7 @@ which generate all and only the well formed formulae strings of  in the language
 
 
 The strings are called the *well formed formulae* (or *wffs, 
-terms, or expressions*) of the language. The sematics of a
+terms, or expressions*) of the language. The semantics of a
 formal language is as assignment of meanings to expressions.
 
 It is possible, in general, that only some expressions in a

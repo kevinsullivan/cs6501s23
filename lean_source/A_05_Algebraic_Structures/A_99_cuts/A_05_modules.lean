@@ -225,7 +225,7 @@ addition, subtraction, multiplication, and sometimes
 division *of pairs of scalars* with scalar multiplication 
 by of scalars by monoid elements. 
 
-For exampe, it better be the case that (r₁ + r₂) • v = 
+For example, it better be the case that (r₁ + r₂) • v = 
 (r₁ • v) + (r₂ • v). Be sure you see that the + on the
 left is addition of scalars, while the + on the right
 is addition of monoid elements (each obtained by scalar
@@ -241,7 +241,7 @@ are headed here.
 The monoid structure
 gives us associative addition and an identity element. 
 We then select a scalar ring or field and define the
-scalar muliplication operation taking a scalar and a
+scalar multiplication operation taking a scalar and a
 monoid element to another monoid element (just like
 multiplying a scalar and a vector yields a scaled
 vector). 

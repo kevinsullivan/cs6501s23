@@ -135,7 +135,7 @@ relation to points (no distinguished origin), another to
 stand in relation to vectors, and yet a third to stand in
 relation to the scalars by which vectors can be multiplied. 
 
-Formlizing ℚ as a torsor over itself as a vector space is
+Formalizing ℚ as a torsor over itself as a vector space is
 straightforward, requiring only proofs of the two torsor
 laws, where the values are all rationals. The proofs are
 in turn by straightforward simplification. 
@@ -161,7 +161,7 @@ instance : add_torsor ℚ ℚ :=
 /- TEXT:
 We can now at least signal our abstract intent by using 
 operations that reflect our intended interpretations of
-their argment as points, vectors, or scalars. We can in
+their argument as points, vectors, or scalars. We can in
 particular use -ᵥ to computes differences of points; +ᵥ
 to represent addition of a vector to a point; and • to
 represent scalar multiplication of a vector.  

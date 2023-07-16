@@ -17,7 +17,7 @@ The first section of this chapter refactors the partial
 solution we developed in class, grouping definitions of
 the propositions that represent them, and separately a
 proof that each rule expresses in our model is valid.
-These sections also afford opportunities to intruduce
+These sections also afford opportunities to introduce
 a few more concepts in type theory and Lean.
 
 To begin we import some definitions and declare a set
@@ -177,7 +177,7 @@ Identify any rules that fail to be provably valid in the
 presence of the bug we'd injected in bimp. Which rule
 validation proofs break when you re-activate that bug? 
 
-To get you started, the following proof shosws that the
+To get you started, the following proof shows that the
 false elimination inference rule is valid in our logic.
 TEXT. -/
 
@@ -196,12 +196,12 @@ theorem false_elim : false_elim_rule X i :=
 begin
 unfold false_elim_rule pEval,
 assume h,
-cases h,  -- contradiction, can't hppen, no cases!
+cases h,  -- contradiction, can't happen, no cases!
           -- Lean determines tt = ff is impossible
 end
 
 
--- Define the remaning propositions and proofs here: 
+-- Define the remaining propositions and proofs here: 
 
 
 end rule_validation -- section

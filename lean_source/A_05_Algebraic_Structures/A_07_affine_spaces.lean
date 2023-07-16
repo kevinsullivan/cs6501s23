@@ -43,10 +43,10 @@ TEXT. -/
 Generalizing over fields
 ------------------------
 
-To begin we'll set up our design to be gneral over scalar
+To begin we'll set up our design to be general over scalar
 fields, from rational affine spaces to spaces over other
 fields, such as the real or complex numbers. We'll use the 
-identifer, *K*, to represent the scalar field type. In this
+identifier, *K*, to represent the scalar field type. In this
 chapter we'll define *K := ℚ*, but by writing the rest of 
 our definitions in terms of *K* we'll create the option to
 change the field type for an entire application by changing 
@@ -78,7 +78,7 @@ represent the duration (a vector), *2 hours*; the expression
 will represent the point halfway between *p1* and *p2*.   
 
 In this design we'll represent points, vectors, and scalars 
-as rational numbers. To remind us of our intended intepretations
+as rational numbers. To remind us of our intended interpretations
 of such numbers, we'll provide *lightweight abstractions* by
 defining *pnt*, *vec*, and *scl* as alternative names (type
 aliases) for the rational number type, ℚ. (Lean uses the name, 
@@ -115,7 +115,7 @@ to be associated with, and usually represented by (0:ℚ), every
 other point in the torsor can then be specified as (p +ᵥ v) for
 some vector, v, in the associated 1-dimensional vector space.   
 
-To see what can go wrong, suppose p is a point representedby the
+To see what can go wrong, suppose p is a point represented by the
 rational 1/2 and v is a vector, literally a rational, namely 1/4. 
 The expression v + p represents the point arrived at by translating
 p *in the direction and by the magnitude* of v. 
@@ -177,8 +177,7 @@ Points
 We will represent our 1-d space of points in time by rationals. We
 do not treat the rational number, 0, as being special. There is no
 distinguished origin in classical time. We will represent durations
-as vector differences betwe
-en such points. What can go wrong?
+as vector differences between such points. What can go wrong?
 
 One approach is to define type, *pnt* (for "point"), as just another
 name for ℚ. In Lean this can be done using *abbreviation.* In this
@@ -268,7 +267,7 @@ Vectors
 ~~~~~~~
 
 Given that differences between points still have the type 
-of bare rationals, we can use our vector object whereever 
+of bare rationals, we can use our vector object wherever 
 any rational is expected, and we can use any rational, no 
 matter what it actually means, as a vector in our physical
 and geometric computations. That is not good enough. 
@@ -281,7 +280,7 @@ points.
 
 As an aside: Recall that Lean doesn't provide vector_space 
 as a typeclass; rather one uses module with a scalar field 
-to acheive this result. So we will need to lift the module
+to achieve this result. So we will need to lift the module
 structure from ℚ to our new *vec* (for vector) type. We will
 also need to lift add_comm_monoid and add_group structures
 for everything to work. Note how we do this by deriving from

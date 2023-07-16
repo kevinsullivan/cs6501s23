@@ -21,7 +21,7 @@ binary operations of monoid objects. We can for example,
 define *+* as a notation for *op* in an additive monoid, 
 such as ⟨list,++,[]⟩, and *\** as a notation for *op* in a 
 multiplicative monoid, such as ⟨nat, *, 1⟩. We can then use
-the *+* and *\** notations to denote whathever operators
+the *+* and *\** notations to denote whatever operators
 are recorded in the *op* field of any given monoid object.
 
 For this to work (and for some other reasons) we'' define 
@@ -39,7 +39,7 @@ Sadly then, we'll also need two definitions of foldr, one that
 takes any additive monoid as an argument and one that takes
 a multiplicative monoid. The need to split definitions into
 additive and multiplicative is counter-intuitive to most
-mathematicians but is forced by our type theory. In practce,
+mathematicians but is forced by our type theory. In practice,
 Lean provides mechanisms for writing one definition and then
 cloning it automatically to produce the code for the other.
 TEXT. -/
@@ -82,7 +82,7 @@ a list of elements of some type α if and *only if* we have a
 definition of a monoid for α. For example, given what we've
 defined above, we can apply fold operation to lists of nat
 and lists of list, but not to list of bool, because we have
-not yet defined a monoid (additive or muliplicative) for the
+not yet defined a monoid (additive or multiplicative) for the
 bool type. 
 
 In other words, to apply foldr to lists of elements of type,

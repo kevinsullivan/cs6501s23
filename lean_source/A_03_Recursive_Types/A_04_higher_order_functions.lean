@@ -333,14 +333,14 @@ The key roadblock will be that there's no way to do this
 using exactly the same code for, say, lists and options.
 So the kind of parametric polymorphism we've been using
 will no longer be enough. The answer will be found in a
-different kind of polymorphism, *ad hoc* polynorphism, of 
+different kind of polymorphism, *ad hoc* polymorphism, of 
 which *operator overloading* (as in C++) is an example. 
 For instance, you can write complex number and string
 classes and overload the + operator in each class to do
 respective complex number addition and string append, but
 the implementations of these operations will hardly share
 the same code. Completely different implementations will
-be needed, to be selected (by the compler in C++) based
+be needed, to be selected (by the compiler in C++) based
 on the types of the arguments to which the + operator is
 applied.  More on this topic later.
 TEXT. -/
@@ -351,7 +351,7 @@ Fold list: α → α → α
 --------------------
 
 We now turn to a very different higher-order function
-appliable to lists. It's called *fold* (or event better, 
+applicable to lists. It's called *fold* (or event better, 
 *fold_right*) or *reduce*.
 
 Overview

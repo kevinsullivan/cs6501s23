@@ -15,10 +15,10 @@ As an exceptionally simple example, we'll define an instance of this
 concept where the elements of a multiplicative monoid are *rotations* 
 of an equilateral triangle that leave its vertices pointing in the 
 same direction as the original. We call such rotations *symmetries*
-of an equilateral triange.  
+of an equilateral triangle.  
 
 Think of such a triangle with a black dot marking the top vertex when
-the triangle is in an un-rotated state. The symetries are rotations
+the triangle is in an un-rotated state. The symmetries are rotations
 that leave the rotated triangle sitting right on top of where it was
 in its unrotated state. These are rotations by 0 degrees, which 
 leaves the dot where it is; by 120 degrees, which rotates the dot by one
@@ -230,7 +230,7 @@ mul_one_class instance
 
 To complete a typeclass instance for monoid, we also need an instance
 for mul_one_class, and as we'll now see, that in turn requires 
-instances of has_one and has_mul. We aready have an instance of has_mul,
+instances of has_one and has_mul. We already have an instance of has_mul,
 so all we need to define now is has_one, which identities the identity
 element in the monoid, which will then be denoted by *1*. 
 TEXT. -/

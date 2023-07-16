@@ -11,7 +11,7 @@ library of mathematical definitions.
 Your next major task is to know and understand these
 inference rules. For each connective, learn its related
 introduction (proof constructing) and elimination (proof
-consuming) rules. Grasp the sense of each rule clerly.
+consuming) rules. Grasp the sense of each rule clearly.
 And learn how to to compose them, e.g., in proof scripts, 
 to produce proofs of more complex propositions. 
 
@@ -510,7 +510,7 @@ TEXT. -/
 
 
 -- QUOTE:
--- A proof of 0 = 0 by contradition 
+-- A proof of 0 = 0 by contradiction 
 example : 0 = 0 :=
 begin
 by_contradiction, -- applies ¬¬P → P
@@ -559,7 +559,7 @@ that for any given proposition, P, there is a proof of P ∨ ¬P.
 
 This axiom then enables proof by contradiction. That's an easy
 proof. We need to prove that if *P ∨ ¬ P* then *¬¬P → P*. The
-proof is by case analysis on an assumped proof of *P ∨ ¬ P*.
+proof is by case analysis on an assumed proof of *P ∨ ¬ P*.
 In the first case, we assume a proof of P, so the implication
 is true trivially. In the case where we have a proof of ¬P, we
 have a contradiction between ¬P and ¬¬P, and so this case can't
@@ -746,7 +746,7 @@ In this section you've encountered analogs in
 higher-order logic of the reasoning principles 
 that you saw (in weaker forms) in propositional
 logic, but now as rules for and expressed in a 
-higher-order predicae logic itself embedded in
+higher-order predicate logic itself embedded in
 the higher-order logic of Lean. 
 
 Just as we ourselves specified an embedding

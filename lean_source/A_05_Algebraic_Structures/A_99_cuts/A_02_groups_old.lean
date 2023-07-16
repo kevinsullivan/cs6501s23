@@ -74,7 +74,7 @@ action, of rotations on (representations of) equilateral
 triangles. 
 
 A rotation of this kind rotates an equilateral triangle by 
-an amount that makes the resulting triang sit right on top 
+an amount that makes the resulting triangle sit right on top 
 of the original equilateral triangle. These are rotations
 by 0, 120, and 240 degrees. There are no other rotational
 symmetries of such a triangle. 
@@ -95,7 +95,7 @@ typeclass for a new type, with three values, representing the
 set of symmetry rotations. We'll start top-down, with Lean's 
 group typeclass, see what typeclasses it extends, and then
 construct the elements needed to instantiate all of these
-typeclasses, finally assembing all of these pieces into a
+typeclasses, finally assembling all of these pieces into a
 group typeclass instance for our set of rotation-representing
 group elements. 
 
@@ -179,7 +179,7 @@ in this way.
 /- TEXT:
 An instance of the has_inv typeclass will have one field
 value, a total function from group elements to other group 
-elements. In the context of a group, it will be cosntrained
+elements. In the context of a group, it will be constrained
 to behave as a genuine inverse operation must: that given 
 an element, r, it will return an element r⁻¹, such that
 r⁻¹ * r = 1 (the group identity element). 
@@ -304,7 +304,7 @@ div_inv_monoid
 Now we can turn to zpow. Its type is reported as ℤ → G → G, 
 where, here, G = rot. If the argument, (z :  ℤ), is not
 negative, we know how to recurse down from z to 0 in order to
-iterate some operation; but what do we do with argumentss that
+iterate some operation; but what do we do with arguments that
 are negative integers? More generally, how do we define a
 function to compute a result for any values of type integer?  
 
