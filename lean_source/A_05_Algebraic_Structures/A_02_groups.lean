@@ -75,7 +75,7 @@ action, of rotations on (representations of) equilateral
 triangles. 
 
 A rotation of this kind rotates an equilateral triangle by 
-an amount that makes the resulting triang sit right on top 
+an amount that makes the resulting triangle sit right on top 
 of the original equilateral triangle. These are rotations
 by 0, 120, and 240 degrees. There are no other rotational
 symmetries of such a triangle. 
